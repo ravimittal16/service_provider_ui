@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "module": "esnext",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2015",
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "@abp/*": ["./node_modules/abp-ng2-module/dist/src/*"],
+      "@app/*": ["./src/app/*"],
+      "@account/*": ["./src/account/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@node_modules/*": ["./node_modules/*"]
+    },
+    "lib": ["es2017", "dom"],
+
+  },
+  "exclude": ["node_modules"]
+}
