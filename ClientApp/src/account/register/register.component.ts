@@ -1,4 +1,4 @@
-import { Component, Injector } from "@angular/core";
+import { Component, Injector, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { finalize } from "rxjs/operators";
 
@@ -9,19 +9,26 @@ import {
   RegisterOutput
 } from "@shared/service-proxies/service-proxies";
 import { LoginService } from "../login/login.service";
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from "@angular/forms";
 
 @Component({
   templateUrl: "./register.component.html",
   animations: [accountModuleAnimation()],
-  styles: [``]
+  styleUrls: ["./register.component.less"]
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   model: RegisterInput = new RegisterInput();
   saving = false;
-
+  registerForm: FormGroup;
   constructor(
     injector: Injector,
     private _accountService: AccountServiceProxy,
+    private _fb: FormBuilder,
     private _router: Router,
     private _loginService: LoginService
   ) {}
@@ -30,29 +37,25 @@ export class RegisterComponent {
     this._router.navigate(["/login"]);
   }
 
-  save(): void {
-    this.saving = true;
-    this._accountService
-      .register(this.model)
-      .pipe(
-        finalize(() => {
-          this.saving = false;
-        })
-      )
-      .subscribe((result: RegisterOutput) => {
-        if (!result.canLogin) {
-          //  this.notify.success(this.l('SuccessfullyRegistered'));
-          this._router.navigate(["/login"]);
-          return;
-        }
+  register(): void {
+    console.log(this.registerForm.value);
+  }
 
-        // Autheticate
-        this.saving = true;
-        this._loginService.authenticateModel.userNameOrEmailAddress = this.model.userName;
-        this._loginService.authenticateModel.password = this.model.password;
-        this._loginService.authenticate(() => {
-          this.saving = false;
-        });
-      });
+  private _createRegisterForm(): void {
+    this.registerForm = this._fb.group({
+      fullName: ["", [Validators.required]],
+      userName: ["", [Validators.required]],
+      companyName: ["", [Validators.required]],
+      emailAddress: ["", [Validators.required]],
+      phoneNumber: [""],
+      password: ["", [Validators.required]],
+      confirmPassword: ["", [Validators.required]],
+      privatePolicyCheck: [false]
+    });
+  }
+  save(): void {}
+
+  ngOnInit(): void {
+    this._createRegisterForm();
   }
 }

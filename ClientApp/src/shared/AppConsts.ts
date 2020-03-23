@@ -10,11 +10,11 @@ export class AppConsts {
   };
 
   static readonly appSettings = {
-    displayName: "Network"
+    displayName: "Service Provider"
   };
 
   static readonly localization = {
-    defaultLocalizationSourceName: "Network"
+    defaultLocalizationSourceName: "Service Provider"
   };
 
   static readonly authorization = {

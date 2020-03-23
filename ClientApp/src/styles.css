@@ -56,3 +56,13 @@ a {
   cursor: pointer;
   color: #0366d6 !important;
 }
+
+.help-text {
+  display: inline-flex;
+  color: #bcbcbc;
+  font-size: 75%;
+}
+
+.help-text strong {
+  margin-left: 5px;
+}
