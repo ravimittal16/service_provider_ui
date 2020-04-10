@@ -5,24 +5,24 @@ import { finalize } from "rxjs/operators";
 import { accountModuleAnimation } from "@shared/animations/routerTransition";
 import {
   AccountServiceProxy,
-  RegisterInput,
-  RegisterOutput
+  RegisterModel,
+  RegisterOutput,
 } from "@shared/service-proxies/service-proxies";
 import { LoginService } from "../login/login.service";
 import {
   FormGroup,
   FormControl,
   Validators,
-  FormBuilder
+  FormBuilder,
 } from "@angular/forms";
 
 @Component({
   templateUrl: "./register.component.html",
   animations: [accountModuleAnimation()],
-  styleUrls: ["./register.component.less"]
+  styleUrls: ["./register.component.less"],
 })
 export class RegisterComponent implements OnInit {
-  model: RegisterInput = new RegisterInput();
+  model: RegisterModel = new RegisterModel();
   saving = false;
   registerForm: FormGroup;
   constructor(
@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
       phoneNumber: [""],
       password: ["", [Validators.required]],
       confirmPassword: ["", [Validators.required]],
-      privatePolicyCheck: [false]
+      privatePolicyCheck: [false],
     });
   }
   save(): void {}

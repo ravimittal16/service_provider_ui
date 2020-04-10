@@ -7,7 +7,7 @@ import { UrlHelper } from "@shared/helpers/UrlHelper";
 import {
   AuthenticateModel,
   AuthenticateResultModel,
-  TokenAuthServiceProxy
+  AccountServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs/operators";
 
@@ -22,7 +22,7 @@ export class LoginService {
   rememberMe: boolean;
 
   constructor(
-    private _tokenAuthService: TokenAuthServiceProxy,
+    private _tokenAuthService: AccountServiceProxy,
     private _router: Router,
     private _tokenService: TokenService,
     private _logService: LogService
@@ -34,7 +34,7 @@ export class LoginService {
     finallyCallback = finallyCallback || (() => {});
 
     this._tokenAuthService
-      .authenticate(this.authenticateModel)
+      .login(this.authenticateModel)
       .pipe(
         finalize(() => {
           finallyCallback();

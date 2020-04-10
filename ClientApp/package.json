@@ -39,7 +39,7 @@
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.27",
+    "moment-timezone": "^0.5.28",
     "oidc-client": "^1.9.0",
     "popper.js": "^1.14.3",
     "rxjs": "^6.4.0",
@@ -62,7 +62,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.5",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "nswag": "^13.1.6",
+    "nswag": "^13.3.0",
     "typescript": "3.4.5"
   },
   "optionalDependencies": {
