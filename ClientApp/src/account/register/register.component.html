@@ -17,7 +17,7 @@
           </div>
           <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-group"><input formControlName="fullName" class="form-control" autofocus="" type="text"
-                required placeholder="Full Name" tabindex="1">
+                autocomplete="new-password" required placeholder="Full Name" tabindex="1">
               <span class="help-text">Please enter your name e.g. <strong>John Smith</strong></span>
             </div>
             <div class="row text-left justify-content-between align-items-center mb-2">
@@ -26,7 +26,7 @@
               </div>
             </div>
             <div class="form-group"><input formControlName="companyName" class="form-control" type="text" tabindex="2"
-                required placeholder="Company Name">
+                autocomplete="new-password" required placeholder="Company Name">
               <span class="help-text">Please enter your company name e.g. <strong>Your Company</strong></span>
             </div>
             <div class="form-group"><input formControlName="emailAddress" class="form-control" type="email" tabindex="2"

@@ -7,8 +7,9 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "target": "es2015",
     "typeRoots": ["./node_modules/@types"],
     "paths": {
@@ -18,8 +19,12 @@
       "@shared/*": ["./src/shared/*"],
       "@node_modules/*": ["./node_modules/*"]
     },
-    "lib": ["es2017", "dom"],
+    "lib": ["es2018", "dom"],
 
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
 }

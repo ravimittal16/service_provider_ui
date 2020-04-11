@@ -7,12 +7,12 @@ import { RootRoutingModule } from "./root-routing.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import {
   BrowserModule,
-  HAMMER_GESTURE_CONFIG
+  HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
 import { RootComponent } from "./root.component";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { PlatformLocation } from "@angular/common";
-import { GestureConfig } from "@angular/material";
+import { GestureConfig } from "@angular/material/core";
 import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
 
 export function convertAbpLocaleToAngularLocale(locale: string): string {
@@ -53,24 +53,24 @@ function getCurrentLanguage(): string {
     BrowserAnimationsModule,
     ServiceProxyModule,
     RootRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [RootComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpReqInterceptor, multi: true },
     { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: null,
-    //   deps: [Injector, PlatformLocation],
-    //   multi: true
-    // },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: null,
+      deps: [Injector, PlatformLocation],
+      multi: true,
+    },
     {
       provide: LOCALE_ID,
-      useFactory: getCurrentLanguage
+      useFactory: getCurrentLanguage,
     },
-    { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig }
+    { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
   ],
-  bootstrap: [RootComponent]
+  bootstrap: [RootComponent],
 })
 export class RootModule {}
