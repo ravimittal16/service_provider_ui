@@ -47,6 +47,45 @@ function getCurrentLanguage(): string {
   return "en";
 }
 
+export function appInitializerFactory(
+  injector: Injector,
+  platformLocation: PlatformLocation
+) {
+  return () => {
+    abp.ui.setBusy();
+    return new Promise<boolean>((resolve, reject) => {
+      //  AppConsts.appBaseHref = getBaseHref(platformLocation);
+      const appBaseUrl = getDocumentOrigin() + AppConsts.appBaseHref;
+      resolve(true);
+      console.log(appBaseUrl);
+      // AppPreBootstrap.run(appBaseUrl, () => {
+      //     abp.event.trigger('abp.dynamicScriptsInitialized');
+      //     const appSessionService: AppSessionService = injector.get(AppSessionService);
+      //     appSessionService.init().then(
+      //         (result) => {
+      //             abp.ui.clearBusy();
+
+      //             if (shouldLoadLocale()) {
+      //                 const angularLocale = convertAbpLocaleToAngularLocale(abp.localization.currentLanguage.name);
+      //                 import(`@angular/common/locales/${angularLocale}.js`)
+      //                     .then(module => {
+      //                         registerLocaleData(module.default);
+      //                         resolve(result);
+      //                     }, reject);
+      //             } else {
+      //                 resolve(result);
+      //             }
+      //         },
+      //         (err) => {
+      //             abp.ui.clearBusy();
+      //             reject(err);
+      //         }
+      //     );
+      // });
+    });
+  };
+}
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -61,7 +100,7 @@ function getCurrentLanguage(): string {
     { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },
     {
       provide: APP_INITIALIZER,
-      useFactory: null,
+      useFactory: appInitializerFactory,
       deps: [Injector, PlatformLocation],
       multi: true,
     },

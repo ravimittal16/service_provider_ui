@@ -10,6 +10,7 @@ import { LoginService } from "./login/login.service";
 import { AccountRoutingModule } from "./account-routing.module";
 import { AbpModule } from "@abp/abp.module";
 import { SharedModule } from "@shared/shared.module";
+import { CoreDataModule } from "src/core-data/core.data.module";
 
 const _components = [AccountComponent, LoginComponent, RegisterComponent];
 
@@ -23,9 +24,14 @@ const _components = [AccountComponent, LoginComponent, RegisterComponent];
     AbpModule,
     SharedModule.forRoot(),
     ServiceProxyModule,
-    AccountRoutingModule
+    AccountRoutingModule,
+    CoreDataModule,
   ],
   declarations: [..._components],
-  providers: [LoginService]
+  providers: [LoginService],
 })
-export class AccountModule {}
+export class AccountModule {
+  constructor() {
+    console.log("HELLO ");
+  }
+}

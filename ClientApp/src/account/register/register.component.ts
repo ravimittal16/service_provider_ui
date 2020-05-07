@@ -1,20 +1,15 @@
 import { Component, Injector, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { finalize } from "rxjs/operators";
 
 import { accountModuleAnimation } from "@shared/animations/routerTransition";
 import {
-  AccountServiceProxy,
   RegisterModel,
   RegisterOutput,
 } from "@shared/service-proxies/service-proxies";
-import { LoginService } from "../login/login.service";
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-} from "@angular/forms";
+
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { Store } from "@ngrx/store";
+import { AppState, AccountRegisterAction } from "src/core-data";
 
 @Component({
   templateUrl: "./register.component.html",
@@ -27,10 +22,9 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   constructor(
     injector: Injector,
-    private _accountService: AccountServiceProxy,
     private _fb: FormBuilder,
     private _router: Router,
-    private _loginService: LoginService
+    private _store: Store<AppState>
   ) {}
 
   back(): void {
@@ -38,7 +32,8 @@ export class RegisterComponent implements OnInit {
   }
 
   register(): void {
-    console.log(this.registerForm.value);
+    const payload = this.registerForm.value as RegisterModel;
+    this._store.dispatch(new AccountRegisterAction(payload));
   }
 
   private _createRegisterForm(): void {
