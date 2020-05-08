@@ -381,6 +381,7 @@ export interface IRegisterModel {
 }
 
 export class RegisterOutput implements IRegisterOutput {
+    errors: string[] | undefined;
     isSuccess: boolean;
 
     constructor(data?: IRegisterOutput) {
@@ -394,6 +395,11 @@ export class RegisterOutput implements IRegisterOutput {
 
     init(_data?: any) {
         if (_data) {
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
             this.isSuccess = _data["isSuccess"];
         }
     }
@@ -407,6 +413,11 @@ export class RegisterOutput implements IRegisterOutput {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
         data["isSuccess"] = this.isSuccess;
         return data; 
     }
@@ -420,6 +431,7 @@ export class RegisterOutput implements IRegisterOutput {
 }
 
 export interface IRegisterOutput {
+    errors: string[] | undefined;
     isSuccess: boolean;
 }
 

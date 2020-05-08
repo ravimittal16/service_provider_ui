@@ -7,7 +7,7 @@ import { FetchDataComponent } from "./fetch-data/fetch-data.component";
 const rountingComponents = [
   HomeComponent,
   CounterComponent,
-  FetchDataComponent
+  FetchDataComponent,
 ];
 
 @NgModule({
@@ -15,9 +15,9 @@ const rountingComponents = [
     RouterModule.forChild([
       { path: "home", component: HomeComponent, pathMatch: "full" },
       { path: "counter", component: CounterComponent },
-      { path: "fetch-data", component: FetchDataComponent }
-    ])
+      { path: "fetch-data", component: FetchDataComponent },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

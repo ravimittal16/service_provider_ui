@@ -6,7 +6,7 @@ import {
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { DataPersistence } from "@nrwl/nx";
 import { map, switchMap, catchError } from "rxjs/operators";
-import { of, Observable } from "rxjs";
+import { of, Observable, throwError } from "rxjs";
 
 import {
   AccountRegisterActionTypes,
@@ -23,13 +23,20 @@ export class AccountRegisterEffects {
     AccountRegisterActionTypes.AccountRegister,
     {
       run: (action: AccountRegisterAction, state: AccountRegisterState) => {
-        console.log(action);
         return this.accountServiceProxy.register(action.payload).pipe(
           map((response) => {
+            console.log("EFFECT", response);
             const payload = { model: action.payload, output: response };
             return new AccountRegisterCompletedAction(payload);
+          }),
+          catchError((error) => {
+            console.log("Error", error);
+            return throwError(error);
           })
         );
+      },
+      onError: (error) => {
+        console.log("ERROR", error);
       },
     }
   );

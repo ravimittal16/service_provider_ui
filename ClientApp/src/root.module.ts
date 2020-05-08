@@ -14,6 +14,7 @@ import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { PlatformLocation } from "@angular/common";
 import { GestureConfig } from "@angular/material/core";
 import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
+import { environment } from "./environments/environment";
 
 export function convertAbpLocaleToAngularLocale(locale: string): string {
   if (!AppConsts.localeMappings) {
@@ -29,7 +30,7 @@ export function convertAbpLocaleToAngularLocale(locale: string): string {
 }
 
 export function getRemoteServiceBaseUrl(): string {
-  return AppConsts.remoteServiceBaseUrl;
+  return !environment.production ? AppConsts.remoteServiceBaseUrl : "";
 }
 
 function getDocumentOrigin() {

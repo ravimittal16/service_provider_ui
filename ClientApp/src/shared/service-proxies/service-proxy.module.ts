@@ -9,7 +9,7 @@ import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
   providers: [
     ApiServiceProxies.AccountServiceProxy,
     ApiServiceProxies.WeatherForecastServiceProxy,
-    { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpReqInterceptor, multi: true },
   ],
 })
 export class ServiceProxyModule {}
