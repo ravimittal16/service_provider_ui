@@ -5,11 +5,13 @@ import { AppLogoComponent } from "@shared/logo/logo.component";
 
 import { BlockDirective } from "./directives/block.directive";
 import { BusyDirective } from "./directives/busy.directive";
+import { AppErrorViewComponent } from "./error-view/error.view.component";
 
-const directive = [BlockDirective, BusyDirective];
+const directives = [BlockDirective, BusyDirective];
+const components = [AppErrorViewComponent];
 @NgModule({
-  declarations: [LocalizePipe, AppLogoComponent, ...directive],
-  exports: [LocalizePipe, AppLogoComponent, ...directive],
+  declarations: [LocalizePipe, AppLogoComponent, ...directives, ...components],
+  exports: [LocalizePipe, AppLogoComponent, ...directives, ...components],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

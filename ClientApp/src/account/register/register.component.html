@@ -11,13 +11,15 @@
             <div class="col-auto">
               <h5>Register</h5>
             </div>
+
             <div class="col-auto">
               <p class="fs--1 text-600 mb-0">Have an account? <a [routerLink]="['/account/login']">Login</a></p>
             </div>
           </div>
+          <!-- <app-error-view></app-error-view> -->
           <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-group"><input formControlName="fullName" class="form-control" autofocus="" type="text"
-                autocomplete="new-password" required placeholder="Full Name" tabindex="1">
+                autocomplete="new-password" placeholder="Full Name" tabindex="1">
               <span class="help-text">Please enter your name e.g. <strong>John Smith</strong></span>
             </div>
             <div class="row text-left justify-content-between align-items-center mb-2">
@@ -26,11 +28,11 @@
               </div>
             </div>
             <div class="form-group"><input formControlName="companyName" class="form-control" type="text" tabindex="2"
-                autocomplete="new-password" required placeholder="Company Name">
+                autocomplete="new-password" placeholder="Company Name">
               <span class="help-text">Please enter your company name e.g. <strong>Your Company</strong></span>
             </div>
             <div class="form-group"><input formControlName="emailAddress" class="form-control" type="email" tabindex="2"
-                required placeholder="Email Address">
+                placeholder="Email Address">
               <span class="help-text">Please enter your company email e.g.
                 <strong>someone@yourcompany.com</strong></span>
             </div>

@@ -87,7 +87,7 @@ export class AccountServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    register(body: RegisterModel | undefined): Observable<RegisterOutput> {
+    register(body: RegisterModel | undefined): Observable<RegisterModelGenericResponse> {
         let url_ = this.baseUrl + "/api/Account/Register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -110,14 +110,14 @@ export class AccountServiceProxy {
                 try {
                     return this.processRegister(<any>response_);
                 } catch (e) {
-                    return <Observable<RegisterOutput>><any>_observableThrow(e);
+                    return <Observable<RegisterModelGenericResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<RegisterOutput>><any>_observableThrow(response_);
+                return <Observable<RegisterModelGenericResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRegister(response: HttpResponseBase): Observable<RegisterOutput> {
+    protected processRegister(response: HttpResponseBase): Observable<RegisterModelGenericResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -128,7 +128,7 @@ export class AccountServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RegisterOutput.fromJS(resultData200);
+            result200 = RegisterModelGenericResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -136,7 +136,7 @@ export class AccountServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<RegisterOutput>(<any>null);
+        return _observableOf<RegisterModelGenericResponse>(<any>null);
     }
 }
 
@@ -314,12 +314,12 @@ export interface IAuthenticateResultModel {
 }
 
 export class RegisterModel implements IRegisterModel {
-    userName: string;
-    fullName: string;
-    emailAddress: string;
-    password: string;
-    confirmPassword: string;
-    companyName: string;
+    userName: string | undefined;
+    fullName: string | undefined;
+    emailAddress: string | undefined;
+    password: string | undefined;
+    confirmPassword: string | undefined;
+    companyName: string | undefined;
     phoneNumber: string | undefined;
 
     constructor(data?: IRegisterModel) {
@@ -371,20 +371,101 @@ export class RegisterModel implements IRegisterModel {
 }
 
 export interface IRegisterModel {
-    userName: string;
-    fullName: string;
-    emailAddress: string;
-    password: string;
-    confirmPassword: string;
-    companyName: string;
+    userName: string | undefined;
+    fullName: string | undefined;
+    emailAddress: string | undefined;
+    password: string | undefined;
+    confirmPassword: string | undefined;
+    companyName: string | undefined;
     phoneNumber: string | undefined;
 }
 
-export class RegisterOutput implements IRegisterOutput {
-    errors: string[] | undefined;
-    isSuccess: boolean;
+export enum HttpStatusCode {
+    _100 = 100,
+    _101 = 101,
+    _102 = 102,
+    _103 = 103,
+    _200 = 200,
+    _201 = 201,
+    _202 = 202,
+    _203 = 203,
+    _204 = 204,
+    _205 = 205,
+    _206 = 206,
+    _207 = 207,
+    _208 = 208,
+    _226 = 226,
+    _300 = 300,
+    _300 = 300,
+    _301 = 301,
+    _301 = 301,
+    _302 = 302,
+    _302 = 302,
+    _303 = 303,
+    _303 = 303,
+    _304 = 304,
+    _305 = 305,
+    _306 = 306,
+    _307 = 307,
+    _307 = 307,
+    _308 = 308,
+    _400 = 400,
+    _401 = 401,
+    _402 = 402,
+    _403 = 403,
+    _404 = 404,
+    _405 = 405,
+    _406 = 406,
+    _407 = 407,
+    _408 = 408,
+    _409 = 409,
+    _410 = 410,
+    _411 = 411,
+    _412 = 412,
+    _413 = 413,
+    _414 = 414,
+    _415 = 415,
+    _416 = 416,
+    _417 = 417,
+    _421 = 421,
+    _422 = 422,
+    _423 = 423,
+    _424 = 424,
+    _426 = 426,
+    _428 = 428,
+    _429 = 429,
+    _431 = 431,
+    _451 = 451,
+    _500 = 500,
+    _501 = 501,
+    _502 = 502,
+    _503 = 503,
+    _504 = 504,
+    _505 = 505,
+    _506 = 506,
+    _507 = 507,
+    _508 = 508,
+    _510 = 510,
+    _511 = 511,
+}
 
-    constructor(data?: IRegisterOutput) {
+export enum ErrorTypes {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
+export class RegisterModelGenericResponse implements IRegisterModelGenericResponse {
+    httpStatusCode: HttpStatusCode;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: RegisterModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+
+    constructor(data?: IRegisterModelGenericResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -395,44 +476,56 @@ export class RegisterOutput implements IRegisterOutput {
 
     init(_data?: any) {
         if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? RegisterModel.fromJS(_data["entity"]) : <any>undefined;
             if (Array.isArray(_data["errors"])) {
                 this.errors = [] as any;
                 for (let item of _data["errors"])
                     this.errors.push(item);
             }
-            this.isSuccess = _data["isSuccess"];
+            this.errorType = _data["errorType"];
         }
     }
 
-    static fromJS(data: any): RegisterOutput {
+    static fromJS(data: any): RegisterModelGenericResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new RegisterOutput();
+        let result = new RegisterModelGenericResponse();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
                 data["errors"].push(item);
         }
-        data["isSuccess"] = this.isSuccess;
+        data["errorType"] = this.errorType;
         return data; 
     }
 
-    clone(): RegisterOutput {
+    clone(): RegisterModelGenericResponse {
         const json = this.toJSON();
-        let result = new RegisterOutput();
+        let result = new RegisterModelGenericResponse();
         result.init(json);
         return result;
     }
 }
 
-export interface IRegisterOutput {
-    errors: string[] | undefined;
+export interface IRegisterModelGenericResponse {
+    httpStatusCode: HttpStatusCode;
+    hasError: boolean;
     isSuccess: boolean;
+    entity: RegisterModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
 }
 
 export class WeatherForecast implements IWeatherForecast {

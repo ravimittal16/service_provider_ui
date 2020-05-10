@@ -11,6 +11,7 @@ import {
 export interface AccountRegisterState extends EntityState<RegisterModel> {
   isSuccess: false;
   errorState: false;
+  errors: [];
 }
 
 export const adapter: EntityAdapter<RegisterModel> = createEntityAdapter<
@@ -20,6 +21,7 @@ export const initialRegisterState: AccountRegisterState = adapter.getInitialStat
   {
     isSuccess: false,
     errorState: false,
+    errors: [],
   }
 );
 

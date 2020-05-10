@@ -2,10 +2,7 @@ import { Component, Injector, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { accountModuleAnimation } from "@shared/animations/routerTransition";
-import {
-  RegisterModel,
-  RegisterOutput,
-} from "@shared/service-proxies/service-proxies";
+import { RegisterModel } from "@shared/service-proxies/service-proxies";
 
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Store } from "@ngrx/store";
@@ -41,7 +38,7 @@ export class RegisterComponent implements OnInit {
       fullName: ["", [Validators.required]],
       userName: ["", [Validators.required]],
       companyName: ["", [Validators.required]],
-      emailAddress: ["", [Validators.required]],
+      emailAddress: ["", [Validators.required, Validators.email]],
       phoneNumber: [""],
       password: ["", [Validators.required]],
       confirmPassword: ["", [Validators.required]],

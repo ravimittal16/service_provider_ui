@@ -1,7 +1,7 @@
 import { Action } from "@ngrx/store";
 import {
   RegisterModel,
-  RegisterOutput,
+  RegisterModelGenericResponse,
 } from "@shared/service-proxies/service-proxies";
 
 export enum AccountRegisterActionTypes {
@@ -18,7 +18,10 @@ export class AccountRegisterAction implements Action {
 export class AccountRegisterCompletedAction implements Action {
   readonly type = AccountRegisterActionTypes.AccountRegisterCompleted;
   constructor(
-    public payload: { model: RegisterModel; output: RegisterOutput }
+    public payload: {
+      model: RegisterModel;
+      output: RegisterModelGenericResponse;
+    }
   ) {}
 }
 
