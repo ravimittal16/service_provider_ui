@@ -3,7 +3,7 @@ import {
   AccountServiceProxy,
   RegisterModelGenericResponse,
 } from "@shared/service-proxies/service-proxies";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Actions, Effect } from "@ngrx/effects";
 import { DataPersistence } from "@nrwl/nx";
 import { map, catchError, tap } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
@@ -14,6 +14,7 @@ import {
   AccountRegisterSuccessAction,
   AccountRegisterErrorAction,
   AccountRegisterUiIdleAction,
+  AccountRegisterUiBusyAction,
 } from "./register.actions";
 import { AccountRegisterState } from "./register.reducers";
 import { Store } from "@ngrx/store";
@@ -27,6 +28,7 @@ export class AccountRegisterEffects {
     RegisterModelGenericResponse
   > = this.dataPersistence.fetch(AccountRegisterActionTypes.AccountRegister, {
     run: (action: AccountRegisterAction, state: AccountRegisterState) => {
+      this._store.dispatch(new AccountRegisterUiBusyAction());
       return this.accountServiceProxy.register(action.payload).pipe(
         tap((res) => this._store.dispatch(new AccountRegisterUiIdleAction())),
         map((response) => {
@@ -47,7 +49,6 @@ export class AccountRegisterEffects {
           });
         }),
         catchError((error) => {
-          console.log("Error", error);
           return throwError(error);
         })
       );

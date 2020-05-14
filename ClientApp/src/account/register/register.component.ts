@@ -11,7 +11,6 @@ import {
   AccountRegisterAction,
   registrationErrors,
   registrationUiState,
-  AccountRegisterUiBusyAction,
 } from "src/core-data";
 import { Observable } from "rxjs";
 
@@ -40,7 +39,6 @@ export class RegisterComponent implements OnInit {
   register(isValid): void {
     if (isValid) {
       const payload = this.registerForm.value as RegisterModel;
-      this._store.dispatch(new AccountRegisterUiBusyAction());
       this._store.dispatch(new AccountRegisterAction(payload));
     }
   }

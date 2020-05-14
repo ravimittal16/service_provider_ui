@@ -4,6 +4,4 @@ export {
   AccountRegisterActionTypes,
   AccountRegisterAction,
   AccountRegisterSuccessAction as AccountRegisterCompletedAction,
-  AccountRegisterUiBusyAction,
-  AccountRegisterUiIdleAction,
 } from "./register/register.actions";
