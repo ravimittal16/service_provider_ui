@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
   AccountServiceProxy,
-  RegisterOutput,
+  RegisterModelGenericResponse,
 } from "@shared/service-proxies/service-proxies";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { DataPersistence } from "@nrwl/nx";
@@ -11,7 +11,8 @@ import { of, Observable, throwError } from "rxjs";
 import {
   AccountRegisterActionTypes,
   AccountRegisterAction,
-  AccountRegisterCompletedAction,
+  AccountRegisterSuccessAction,
+  AccountRegisterErrorAction,
 } from "./register.actions";
 import { AccountRegisterState } from "./register.reducers";
 
@@ -19,27 +20,38 @@ import { AccountRegisterState } from "./register.reducers";
 @Injectable({ providedIn: "root" })
 export class AccountRegisterEffects {
   @Effect()
-  triggerRegister$: Observable<RegisterOutput> = this.dataPersistence.fetch(
-    AccountRegisterActionTypes.AccountRegister,
-    {
-      run: (action: AccountRegisterAction, state: AccountRegisterState) => {
-        return this.accountServiceProxy.register(action.payload).pipe(
-          map((response) => {
-            console.log("EFFECT", response);
+  triggerRegister$: Observable<
+    RegisterModelGenericResponse
+  > = this.dataPersistence.fetch(AccountRegisterActionTypes.AccountRegister, {
+    run: (action: AccountRegisterAction, state: AccountRegisterState) => {
+      return this.accountServiceProxy.register(action.payload).pipe(
+        map((response) => {
+          if (response.isSuccess) {
+            // ==========================================================
+            // return a success action
+            // ==========================================================
             const payload = { model: action.payload, output: response };
-            return new AccountRegisterCompletedAction(payload);
-          }),
-          catchError((error) => {
-            console.log("Error", error);
-            return throwError(error);
-          })
-        );
-      },
-      onError: (error) => {
-        console.log("ERROR", error);
-      },
-    }
-  );
+            return new AccountRegisterSuccessAction(payload);
+          }
+          console.log(response);
+          // ==========================================================
+          // return a error action
+          // ==========================================================
+          return new AccountRegisterErrorAction({
+            model: action.payload,
+            errors: response.errors,
+          });
+        }),
+        catchError((error) => {
+          console.log("Error", error);
+          return throwError(error);
+        })
+      );
+    },
+    onError: (error) => {
+      console.log("ERROR", error);
+    },
+  });
   constructor(
     private actions$: Actions,
     private accountServiceProxy: AccountServiceProxy,

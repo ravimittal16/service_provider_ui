@@ -3,5 +3,5 @@ export { AppState } from "./register";
 export {
   AccountRegisterActionTypes,
   AccountRegisterAction,
-  AccountRegisterCompletedAction,
+  AccountRegisterSuccessAction as AccountRegisterCompletedAction,
 } from "./register/register.actions";

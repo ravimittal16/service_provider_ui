@@ -6,7 +6,9 @@ import {
 
 export enum AccountRegisterActionTypes {
   AccountRegister = "[Account.Register] Triggered",
-  AccountRegisterCompleted = "[Account.Register] Completed",
+  AccountRegisterUiBusy = "[Account.Register] Busy",
+  AccountRegisterUiIdle = "[Account.Register] Idle",
+  AccountRegisterSuccess = "[Account.Register] Success",
   AccountRegisterError = "[Account.Register] Error",
 }
 
@@ -15,8 +17,8 @@ export class AccountRegisterAction implements Action {
   constructor(public payload: RegisterModel) {}
 }
 
-export class AccountRegisterCompletedAction implements Action {
-  readonly type = AccountRegisterActionTypes.AccountRegisterCompleted;
+export class AccountRegisterSuccessAction implements Action {
+  readonly type = AccountRegisterActionTypes.AccountRegisterSuccess;
   constructor(
     public payload: {
       model: RegisterModel;
@@ -25,6 +27,17 @@ export class AccountRegisterCompletedAction implements Action {
   ) {}
 }
 
+export class AccountRegisterErrorAction implements Action {
+  readonly type = AccountRegisterActionTypes.AccountRegisterError;
+  constructor(
+    public payload: {
+      model: RegisterModel;
+      errors: string[];
+    }
+  ) {}
+}
+
 export type RegisterActions =
   | AccountRegisterAction
-  | AccountRegisterCompletedAction;
+  | AccountRegisterSuccessAction
+  | AccountRegisterErrorAction;
