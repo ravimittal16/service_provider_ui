@@ -20,3 +20,8 @@ export const registrationErrors = createSelector(
   selectRegisterState,
   fromAccountRegister.errors
 );
+
+export const registrationUiState = createSelector(
+  selectRegisterState,
+  fromAccountRegister.busyState
+);

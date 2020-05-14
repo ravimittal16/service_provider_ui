@@ -5,16 +5,19 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { DataPersistence } from "@nrwl/nx";
-import { map, switchMap, catchError } from "rxjs/operators";
-import { of, Observable, throwError } from "rxjs";
+import { map, catchError, tap } from "rxjs/operators";
+import { Observable, throwError } from "rxjs";
 
 import {
   AccountRegisterActionTypes,
   AccountRegisterAction,
   AccountRegisterSuccessAction,
   AccountRegisterErrorAction,
+  AccountRegisterUiIdleAction,
 } from "./register.actions";
 import { AccountRegisterState } from "./register.reducers";
+import { Store } from "@ngrx/store";
+import { AppState } from ".";
 
 //Observable<RegisterOutput>
 @Injectable({ providedIn: "root" })
@@ -25,6 +28,7 @@ export class AccountRegisterEffects {
   > = this.dataPersistence.fetch(AccountRegisterActionTypes.AccountRegister, {
     run: (action: AccountRegisterAction, state: AccountRegisterState) => {
       return this.accountServiceProxy.register(action.payload).pipe(
+        tap((res) => this._store.dispatch(new AccountRegisterUiIdleAction())),
         map((response) => {
           if (response.isSuccess) {
             // ==========================================================
@@ -33,7 +37,7 @@ export class AccountRegisterEffects {
             const payload = { model: action.payload, output: response };
             return new AccountRegisterSuccessAction(payload);
           }
-          console.log(response);
+
           // ==========================================================
           // return a error action
           // ==========================================================
@@ -48,12 +52,16 @@ export class AccountRegisterEffects {
         })
       );
     },
-    onError: (error) => {
-      console.log("ERROR", error);
+    onError: (action) => {
+      return new AccountRegisterErrorAction({
+        model: action.payload,
+        errors: ["Error while connecting to server."],
+      });
     },
   });
   constructor(
     private actions$: Actions,
+    private _store: Store<AppState>,
     private accountServiceProxy: AccountServiceProxy,
     private dataPersistence: DataPersistence<AccountRegisterState>
   ) {}

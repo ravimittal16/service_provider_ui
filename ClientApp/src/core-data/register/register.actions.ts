@@ -37,7 +37,17 @@ export class AccountRegisterErrorAction implements Action {
   ) {}
 }
 
+export class AccountRegisterUiIdleAction implements Action {
+  readonly type = AccountRegisterActionTypes.AccountRegisterUiIdle;
+}
+
+export class AccountRegisterUiBusyAction implements Action {
+  readonly type = AccountRegisterActionTypes.AccountRegisterUiBusy;
+}
+
 export type RegisterActions =
   | AccountRegisterAction
   | AccountRegisterSuccessAction
-  | AccountRegisterErrorAction;
+  | AccountRegisterErrorAction
+  | AccountRegisterUiIdleAction
+  | AccountRegisterUiBusyAction;

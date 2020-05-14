@@ -10,6 +10,8 @@ import {
   AppState,
   AccountRegisterAction,
   registrationErrors,
+  registrationUiState,
+  AccountRegisterUiBusyAction,
 } from "src/core-data";
 import { Observable } from "rxjs";
 
@@ -23,6 +25,7 @@ export class RegisterComponent implements OnInit {
   saving = false;
   registerForm: FormGroup;
   errors$: Observable<string[]>;
+  uiState$: Observable<boolean>;
   constructor(
     injector: Injector,
     private _fb: FormBuilder,
@@ -34,9 +37,12 @@ export class RegisterComponent implements OnInit {
     this._router.navigate(["/login"]);
   }
 
-  register(): void {
-    const payload = this.registerForm.value as RegisterModel;
-    this._store.dispatch(new AccountRegisterAction(payload));
+  register(isValid): void {
+    if (isValid) {
+      const payload = this.registerForm.value as RegisterModel;
+      this._store.dispatch(new AccountRegisterUiBusyAction());
+      this._store.dispatch(new AccountRegisterAction(payload));
+    }
   }
 
   private _createRegisterForm(): void {
@@ -56,5 +62,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this._createRegisterForm();
     this.errors$ = this._store.pipe(select(registrationErrors));
+    this.uiState$ = this._store.pipe(select(registrationUiState));
   }
 }
