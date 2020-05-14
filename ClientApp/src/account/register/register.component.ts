@@ -5,8 +5,13 @@ import { accountModuleAnimation } from "@shared/animations/routerTransition";
 import { RegisterModel } from "@shared/service-proxies/service-proxies";
 
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-import { Store } from "@ngrx/store";
-import { AppState, AccountRegisterAction } from "src/core-data";
+import { Store, select } from "@ngrx/store";
+import {
+  AppState,
+  AccountRegisterAction,
+  registrationErrors,
+} from "src/core-data";
+import { Observable } from "rxjs";
 
 @Component({
   templateUrl: "./register.component.html",
@@ -17,6 +22,7 @@ export class RegisterComponent implements OnInit {
   model: RegisterModel = new RegisterModel();
   saving = false;
   registerForm: FormGroup;
+  errors$: Observable<string[]>;
   constructor(
     injector: Injector,
     private _fb: FormBuilder,
@@ -49,5 +55,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this._createRegisterForm();
+    this.errors$ = this._store.pipe(select(registrationErrors));
   }
 }

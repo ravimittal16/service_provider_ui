@@ -1,4 +1,4 @@
-export { AppState } from "./register";
+export { AppState, registrationErrors } from "./register";
 
 export {
   AccountRegisterActionTypes,

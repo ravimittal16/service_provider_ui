@@ -6,10 +6,12 @@ import { AppLogoComponent } from "@shared/logo/logo.component";
 import { BlockDirective } from "./directives/block.directive";
 import { BusyDirective } from "./directives/busy.directive";
 import { AppErrorViewComponent } from "./error-view/error.view.component";
+import { CommonModule } from "@angular/common";
 
 const directives = [BlockDirective, BusyDirective];
 const components = [AppErrorViewComponent];
 @NgModule({
+  imports: [CommonModule],
   declarations: [LocalizePipe, AppLogoComponent, ...directives, ...components],
   exports: [LocalizePipe, AppLogoComponent, ...directives, ...components],
 })

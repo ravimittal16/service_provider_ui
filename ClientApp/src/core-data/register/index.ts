@@ -1,5 +1,9 @@
 import * as fromAccountRegister from "./register.reducers";
-import { ActionReducerMap } from "@ngrx/store";
+import {
+  ActionReducerMap,
+  createFeatureSelector,
+  createSelector,
+} from "@ngrx/store";
 
 export interface AppState {
   accountRegister: fromAccountRegister.AccountRegisterState;
@@ -8,3 +12,11 @@ export interface AppState {
 export const accountReducers: ActionReducerMap<AppState> = {
   accountRegister: fromAccountRegister.accountRegisterReducer,
 };
+export const selectRegisterState = createFeatureSelector<
+  fromAccountRegister.AccountRegisterState
+>("accountRegister");
+
+export const registrationErrors = createSelector(
+  selectRegisterState,
+  fromAccountRegister.errors
+);

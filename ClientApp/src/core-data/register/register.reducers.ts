@@ -15,6 +15,7 @@ export interface AccountRegisterState extends EntityState<RegisterModel> {
 export const adapter: EntityAdapter<RegisterModel> = createEntityAdapter<
   RegisterModel
 >();
+
 export const initialRegisterState: AccountRegisterState = adapter.getInitialState(
   {
     busyState: false,
@@ -52,3 +53,4 @@ export function accountRegisterReducer(
 // ==========================================================
 // Working with Selectors
 // ==========================================================
+export const errors = (state: AccountRegisterState) => state.errors;

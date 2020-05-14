@@ -16,7 +16,8 @@
               <p class="fs--1 text-600 mb-0">Have an account? <a [routerLink]="['/account/login']">Login</a></p>
             </div>
           </div>
-          <!-- <app-error-view></app-error-view> -->
+          <app-error-view [errors]="errors$ | async"></app-error-view>
+
           <form [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-group"><input formControlName="fullName" class="form-control" autofocus="" type="text"
                 autocomplete="new-password" placeholder="Full Name" tabindex="1">

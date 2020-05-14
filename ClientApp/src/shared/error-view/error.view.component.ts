@@ -6,8 +6,10 @@ import { Component, OnInit, Input } from "@angular/core";
   styleUrls: ["./error.view.component.less"],
 })
 export class AppErrorViewComponent implements OnInit {
-  @Input() errors: [];
+  @Input() errors: string[];
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.errors);
+  }
 }
