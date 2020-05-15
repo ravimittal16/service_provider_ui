@@ -262,7 +262,7 @@ export class AuthenticateResultModel implements IAuthenticateResultModel {
     accessToken: string | undefined;
     encryptedAccessToken: string | undefined;
     expireInSeconds: number;
-    userId: number;
+    userId: string | undefined;
 
     constructor(data?: IAuthenticateResultModel) {
         if (data) {
@@ -310,7 +310,7 @@ export interface IAuthenticateResultModel {
     accessToken: string | undefined;
     encryptedAccessToken: string | undefined;
     expireInSeconds: number;
-    userId: number;
+    userId: string | undefined;
 }
 
 export class RegisterModel implements IRegisterModel {

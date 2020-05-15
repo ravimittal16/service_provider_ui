@@ -8,6 +8,7 @@ import { DataPersistence } from "@nrwl/nx";
 import { HttpClientModule } from "@angular/common/http";
 import { AccountRegisterEffects } from "./register/register.effects";
 import { accountReducers } from "./register";
+import { RegsiterFacade } from "./register/register.facade";
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { accountReducers } from "./register";
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 10 }),
   ],
-  providers: [DataPersistence],
+  providers: [DataPersistence, RegsiterFacade],
 })
 export class CoreDataModule {}

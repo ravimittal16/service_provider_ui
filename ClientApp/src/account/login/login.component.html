@@ -17,22 +17,22 @@
             </div>
           </div>
           <form [formGroup]="loginForm" (ngSubmit)="login()">
-            <div class="form-group"><input formControlName="userNameOrEmailAddress" class="form-control" autofocus=""
-                type="email" placeholder="Email address">
+            <div class="form-group"><input formControlName="userNameOrEmailAddress" class="form-control"
+                autofocus="autofocus" type="email" placeholder="User name" tabindex="1" autocomplete="new-password">
             </div>
             <div class="form-group"><input formControlName="password" class="form-control" type="password"
-                placeholder="Password"></div>
+                placeholder="Password" tabindex="2" autocomplete="new-password"></div>
             <div class="row justify-content-between align-items-center">
               <div class="col-auto">
                 <div class="custom-control custom-checkbox"><input formControlName="rememberClient"
-                    class="custom-control-input" type="checkbox" id="basic-checkbox" checked="checked"><label
-                    class="custom-control-label" for="basic-checkbox">Remember me</label></div>
+                    class="custom-control-input" type="checkbox" id="basic-checkbox" tabindex="3"
+                    checked="checked"><label class="custom-control-label" for="basic-checkbox">Remember me</label></div>
               </div>
               <div class="col-auto"><a class="btn btn-link fs--1">Forgot
                   Password?</a></div>
             </div>
-            <div class="form-group"><button [disabled]="loginForm.invalid" class="btn btn-primary btn-block mt-3"
-                type="submit" name="submit">Log
+            <div class="form-group"><button [disabled]="loginForm.invalid" tabindex="4"
+                class="btn btn-primary btn-block mt-3" type="submit" name="submit">Log
                 in</button></div>
           </form>
           <div class="w-100 position-relative mt-4">
@@ -41,6 +41,10 @@
               class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap">
               or log in with</div>
           </div>
+          <div class="form-group"><button [disabled]="loginForm.invalid" class="btn btn-light btn-block mt-3"
+              type="button" name="submit">Login with <span><strong style="color:#Da251C;">Goo</strong><strong
+                  style="color:#Da251C;">gle</strong> </span>
+            </button></div>
         </div>
       </div>
     </div>

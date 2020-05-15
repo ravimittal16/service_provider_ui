@@ -41,8 +41,7 @@ export class LoginService {
         })
       )
       .subscribe((result: AuthenticateResultModel) => {
-        console.log("COMPLETED", result);
-        // this.processAuthenticateResult(result);
+        this.processAuthenticateResult(result);
       });
   }
 
@@ -50,7 +49,6 @@ export class LoginService {
     authenticateResult: AuthenticateResultModel
   ) {
     this.authenticateResult = authenticateResult;
-    console.log(this.authenticateResult);
     if (authenticateResult.accessToken) {
       // Successfully logged in
       this.login(
@@ -60,8 +58,6 @@ export class LoginService {
         this.rememberMe
       );
     } else {
-      // Unexpected result!
-
       this._logService.warn("Unexpected authenticateResult!");
       this._router.navigate(["account/login"]);
     }

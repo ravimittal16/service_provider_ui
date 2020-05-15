@@ -1,18 +1,12 @@
-import { Component, Injector, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
 
 import { accountModuleAnimation } from "@shared/animations/routerTransition";
 import { RegisterModel } from "@shared/service-proxies/service-proxies";
 
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-import { Store, select } from "@ngrx/store";
-import {
-  AppState,
-  AccountRegisterAction,
-  registrationErrors,
-  registrationUiState,
-} from "src/core-data";
+
 import { Observable } from "rxjs";
+import { RegsiterFacade } from "@core-data/register/register.facade";
 
 @Component({
   templateUrl: "./register.component.html",
@@ -21,25 +15,18 @@ import { Observable } from "rxjs";
 })
 export class RegisterComponent implements OnInit {
   model: RegisterModel = new RegisterModel();
-  saving = false;
   registerForm: FormGroup;
   errors$: Observable<string[]>;
   uiState$: Observable<boolean>;
   constructor(
-    injector: Injector,
     private _fb: FormBuilder,
-    private _router: Router,
-    private _store: Store<AppState>
+    private _registerFacade: RegsiterFacade
   ) {}
-
-  back(): void {
-    this._router.navigate(["/login"]);
-  }
 
   register(isValid): void {
     if (isValid) {
       const payload = this.registerForm.value as RegisterModel;
-      this._store.dispatch(new AccountRegisterAction(payload));
+      this._registerFacade.processRegister(payload);
     }
   }
 
@@ -59,7 +46,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this._createRegisterForm();
-    this.errors$ = this._store.pipe(select(registrationErrors));
-    this.uiState$ = this._store.pipe(select(registrationUiState));
+    this.errors$ = this._registerFacade.errors$;
+    this.uiState$ = this._registerFacade.uiState$;
   }
 }

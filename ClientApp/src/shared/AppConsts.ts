@@ -1,6 +1,6 @@
 export class AppConsts {
   static remoteServiceBaseUrl: string = "http://localhost:2158";
-  static appBaseUrl: string;
+  static appBaseUrl: string = "app/home";
   static appBaseHref: string = "/"; // returns angular's base-href parameter value if used during the publish
 
   static localeMappings: any = [];
