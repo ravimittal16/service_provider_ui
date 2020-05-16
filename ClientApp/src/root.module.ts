@@ -53,12 +53,12 @@ export function appInitializerFactory(
   platformLocation: PlatformLocation
 ) {
   return () => {
-    abp.ui.setBusy();
+    // abp.ui.setBusy();
     return new Promise<boolean>((resolve, reject) => {
       //  AppConsts.appBaseHref = getBaseHref(platformLocation);
-      const appBaseUrl = getDocumentOrigin() + AppConsts.appBaseHref;
+      // const appBaseUrl = getDocumentOrigin() + AppConsts.appBaseHref;
       resolve(true);
-      console.log(appBaseUrl);
+      // console.log(appBaseUrl);
       // AppPreBootstrap.run(appBaseUrl, () => {
       //     abp.event.trigger('abp.dynamicScriptsInitialized');
       //     const appSessionService: AppSessionService = injector.get(AppSessionService);

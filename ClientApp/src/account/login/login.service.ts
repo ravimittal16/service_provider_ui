@@ -81,13 +81,13 @@ export class LoginService {
     //     tokenExpireDate,
     //     abp.appPath
     // );
+    this._router.navigate(["/app/home"]);
+    // let initialUrl = UrlHelper.initialUrl;
+    // if (initialUrl.indexOf("/login") > 0) {
+    //   initialUrl = AppConsts.appBaseUrl;
+    // }
 
-    let initialUrl = UrlHelper.initialUrl;
-    if (initialUrl.indexOf("/login") > 0) {
-      initialUrl = AppConsts.appBaseUrl;
-    }
-
-    location.href = initialUrl;
+    // location.href = initialUrl;
   }
 
   private clear(): void {

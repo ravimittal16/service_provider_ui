@@ -12,16 +12,16 @@ import { FetchDataComponent } from "./fetch-data/fetch-data.component";
 import { AppRoutingModule } from "./app-rounting.module";
 import { CommonModule } from "@angular/common";
 
+const _components = [
+  NavMenuComponent,
+  AppComponent,
+  HomeComponent,
+  CounterComponent,
+  FetchDataComponent,
+];
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    FetchDataComponent
-  ],
+  declarations: [..._components],
   imports: [CommonModule, HttpClientModule, FormsModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
 })
 export class AppModule {}
