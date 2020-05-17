@@ -36,7 +36,8 @@
             "styles": [
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/custom-styles.less"
             ],
             "scripts": [
               "node_modules/abp-web-resources/Abp/Framework/scripts/abp.js"

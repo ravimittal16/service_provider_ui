@@ -21,6 +21,13 @@ export const rountingComponents = [
           { path: "home", component: HomeComponent },
           { path: "counter", component: CounterComponent },
           { path: "fetch-data", component: FetchDataComponent },
+          {
+            path: "customers",
+            loadChildren: () =>
+              import("./customers/customers.module").then(
+                (m) => m.CustomersModule
+              ),
+          },
         ],
       },
     ]),
