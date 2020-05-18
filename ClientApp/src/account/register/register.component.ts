@@ -6,7 +6,7 @@ import { RegisterModel } from "@shared/service-proxies/service-proxies";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 
 import { Observable } from "rxjs";
-import { RegsiterFacade } from "@core-data/register/register.facade";
+import { RegsiterFacade } from "@core-data/index";
 
 @Component({
   templateUrl: "./register.component.html",
