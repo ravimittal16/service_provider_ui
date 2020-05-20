@@ -37,19 +37,20 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "src/styles.css",
-              "src/custom-styles.less"
+              "src/custom-styles.scss"
             ],
             "scripts": [
-
               "node_modules/abp-web-resources/Abp/Framework/scripts/abp.js"
             ]
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -150,5 +151,10 @@
   "defaultProject": "Network.UI",
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
   }
 }

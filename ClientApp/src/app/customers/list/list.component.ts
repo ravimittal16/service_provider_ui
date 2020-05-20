@@ -18,25 +18,38 @@ import {
 })
 export class ListComponent implements OnInit {
   closeResult = "";
-  @ViewChild(NgbDatepicker) d: NgbDatepicker;
+  rowData: [] = [];
   constructor(private modalService: NgbModal, private calendar: NgbCalendar) {}
-  open(content): void {
-    console.log(this.d);
-    this.modalService
-      .open(content, {
-        ariaLabelledBy: "modal-basic-title",
-        keyboard: false,
-        centered: true,
-        backdrop: "static",
-      })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `DIsmissed`;
-        }
-      );
-  }
+  columnDefs = [
+    {
+      headerName: "Display Name",
+      field: "make",
+      sortable: true,
+      filter: true,
+      checkboxSelection: true,
+    },
+    {
+      headerName: "Company Name",
+      field: "model",
+      sortable: true,
+      filter: true,
+    },
+    { headerName: "Given Name", field: "price", sortable: true, filter: true },
+    { headerName: "Given Name", field: "price", sortable: true, filter: true },
+    {
+      headerName: "Business Address Name",
+      field: "price",
+      sortable: true,
+      filter: true,
+    },
+    {
+      headerName: "Customer Since",
+      field: "price",
+      sortable: true,
+      filter: true,
+    },
+  ];
+
+  open(content): void {}
   ngOnInit(): void {}
 }

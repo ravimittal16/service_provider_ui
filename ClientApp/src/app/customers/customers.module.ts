@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { CustomersRoutingModule } from "./customers-routing.module";
-
+import { AgGridModule } from "ag-grid-angular";
 import { ListComponent } from "./list/list.component";
 import { SharedModule } from "@shared/shared.module";
 
@@ -18,6 +18,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
     NgbModule,
     SharedModule,
     CustomersRoutingModule,
+    AgGridModule.withComponents([]),
   ],
 })
 export class CustomersModule {}
