@@ -11,4 +11,4 @@ import { environment } from "../../environments/environment";
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
 })
-export class CustomerStoreModule {}
+export class LoginStoreModule {}

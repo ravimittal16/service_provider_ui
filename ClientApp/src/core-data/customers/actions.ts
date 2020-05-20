@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+
 export const openCreateModalAction = createAction("[Customer] Open Modal");
 export const processCreateCustomerAction = createAction(
   "[Customer] Open Create Sent",
