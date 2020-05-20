@@ -221,7 +221,7 @@ code {
 .content-page {
   margin-left: 250px;
   overflow: hidden;
-  padding: 70px 12px 65px;
+  padding: 70px 12px 0px;
   min-height: 100vh;
 }
 

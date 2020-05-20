@@ -15,6 +15,7 @@ import { PlatformLocation } from "@angular/common";
 import { GestureConfig } from "@angular/material/core";
 import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
 import { environment } from "./environments/environment";
+import { NgbDate, NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 export function convertAbpLocaleToAngularLocale(locale: string): string {
   if (!AppConsts.localeMappings) {
@@ -94,6 +95,7 @@ export function appInitializerFactory(
     ServiceProxyModule,
     RootRoutingModule,
     HttpClientModule,
+    NgbModule,
   ],
   declarations: [RootComponent],
   providers: [
