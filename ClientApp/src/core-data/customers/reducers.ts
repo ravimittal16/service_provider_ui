@@ -1,14 +1,22 @@
-import { on, createReducer, State, Action } from "@ngrx/store";
+import { on, createReducer, Action } from "@ngrx/store";
 import * as customerActions from "./actions";
+import {
+  CustomerDto,
+  CreateCustomerModel,
+} from "@shared/service-proxies/service-proxies";
 
 export interface CustomerState {
-  model: any;
+  customers: CustomerDto[];
+  model: CreateCustomerModel;
   isBusy: boolean;
   errors: [];
+  companyId: number;
   success: boolean;
 }
 
 export const initialState: CustomerState = {
+  customers: [],
+  companyId: 0,
   model: null,
   isBusy: false,
   errors: [],
@@ -20,6 +28,10 @@ const customerReducer = createReducer(
   on(customerActions.openCreateModalAction, (state) => ({
     ...state,
     prop: 1,
+  })),
+  on(customerActions.customersLoadedAction, (state: CustomerState, props) => ({
+    ...state,
+    customers: props.customers,
   }))
 );
 

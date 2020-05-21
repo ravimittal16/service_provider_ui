@@ -141,6 +141,135 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
+export class CustomersServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createCustomer(companyId: number, body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/customers/{companyId}/CreateCustomer";
+        if (companyId === undefined || companyId === null)
+            throw new Error("The parameter 'companyId' must be defined.");
+        url_ = url_.replace("{companyId}", encodeURIComponent("" + companyId)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateCustomer(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateCustomer(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateCustomerModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateCustomerModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateCustomer(response: HttpResponseBase): Observable<CreateCustomerModelGenericResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateCustomerModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateCustomerModelGenericResponse>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllCustomers(companyId: number): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/customers/{companyId}/GetAllCustomers";
+        if (companyId === undefined || companyId === null)
+            throw new Error("The parameter 'companyId' must be defined.");
+        url_ = url_.replace("{companyId}", encodeURIComponent("" + companyId)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllCustomers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCustomers(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomerDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomerDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllCustomers(response: HttpResponseBase): Observable<CustomerDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(CustomerDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomerDto[]>(<any>null);
+    }
+}
+
+@Injectable()
 export class WeatherForecastServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -457,6 +586,322 @@ export interface IRegisterModelGenericResponse {
     entity: RegisterModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+}
+
+export enum PropertyTypes {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
+export class AddressDto implements IAddressDto {
+    propertyType: PropertyTypes;
+    propertyName: string | undefined;
+    addressLine1: string | undefined;
+    addressLine2: string | undefined;
+    city: string | undefined;
+    countrySubDivisionCode: string | undefined;
+    country: string | undefined;
+    postalCode: string | undefined;
+    latitude: number | undefined;
+    longitude: number | undefined;
+    isPrimary: boolean | undefined;
+
+    constructor(data?: IAddressDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.propertyType = _data["propertyType"];
+            this.propertyName = _data["propertyName"];
+            this.addressLine1 = _data["addressLine1"];
+            this.addressLine2 = _data["addressLine2"];
+            this.city = _data["city"];
+            this.countrySubDivisionCode = _data["countrySubDivisionCode"];
+            this.country = _data["country"];
+            this.postalCode = _data["postalCode"];
+            this.latitude = _data["latitude"];
+            this.longitude = _data["longitude"];
+            this.isPrimary = _data["isPrimary"];
+        }
+    }
+
+    static fromJS(data: any): AddressDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddressDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["propertyType"] = this.propertyType;
+        data["propertyName"] = this.propertyName;
+        data["addressLine1"] = this.addressLine1;
+        data["addressLine2"] = this.addressLine2;
+        data["city"] = this.city;
+        data["countrySubDivisionCode"] = this.countrySubDivisionCode;
+        data["country"] = this.country;
+        data["postalCode"] = this.postalCode;
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
+        data["isPrimary"] = this.isPrimary;
+        return data; 
+    }
+
+    clone(): AddressDto {
+        const json = this.toJSON();
+        let result = new AddressDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAddressDto {
+    propertyType: PropertyTypes;
+    propertyName: string | undefined;
+    addressLine1: string | undefined;
+    addressLine2: string | undefined;
+    city: string | undefined;
+    countrySubDivisionCode: string | undefined;
+    country: string | undefined;
+    postalCode: string | undefined;
+    latitude: number | undefined;
+    longitude: number | undefined;
+    isPrimary: boolean | undefined;
+}
+
+export class CreateCustomerModel implements ICreateCustomerModel {
+    displayName: string | undefined;
+    givenName: string | undefined;
+    middleName: string | undefined;
+    suffix: string | undefined;
+    familyName: string | undefined;
+    title: string | undefined;
+    primaryEmailAddr: string | undefined;
+    mobile: string | undefined;
+    primaryPhone: string | undefined;
+    fax: string | undefined;
+    companyName: string | undefined;
+    businessAddress: AddressDto;
+    shippingAddress: AddressDto;
+
+    constructor(data?: ICreateCustomerModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.displayName = _data["displayName"];
+            this.givenName = _data["givenName"];
+            this.middleName = _data["middleName"];
+            this.suffix = _data["suffix"];
+            this.familyName = _data["familyName"];
+            this.title = _data["title"];
+            this.primaryEmailAddr = _data["primaryEmailAddr"];
+            this.mobile = _data["mobile"];
+            this.primaryPhone = _data["primaryPhone"];
+            this.fax = _data["fax"];
+            this.companyName = _data["companyName"];
+            this.businessAddress = _data["businessAddress"] ? AddressDto.fromJS(_data["businessAddress"]) : <any>undefined;
+            this.shippingAddress = _data["shippingAddress"] ? AddressDto.fromJS(_data["shippingAddress"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateCustomerModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateCustomerModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["displayName"] = this.displayName;
+        data["givenName"] = this.givenName;
+        data["middleName"] = this.middleName;
+        data["suffix"] = this.suffix;
+        data["familyName"] = this.familyName;
+        data["title"] = this.title;
+        data["primaryEmailAddr"] = this.primaryEmailAddr;
+        data["mobile"] = this.mobile;
+        data["primaryPhone"] = this.primaryPhone;
+        data["fax"] = this.fax;
+        data["companyName"] = this.companyName;
+        data["businessAddress"] = this.businessAddress ? this.businessAddress.toJSON() : <any>undefined;
+        data["shippingAddress"] = this.shippingAddress ? this.shippingAddress.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): CreateCustomerModel {
+        const json = this.toJSON();
+        let result = new CreateCustomerModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateCustomerModel {
+    displayName: string | undefined;
+    givenName: string | undefined;
+    middleName: string | undefined;
+    suffix: string | undefined;
+    familyName: string | undefined;
+    title: string | undefined;
+    primaryEmailAddr: string | undefined;
+    mobile: string | undefined;
+    primaryPhone: string | undefined;
+    fax: string | undefined;
+    companyName: string | undefined;
+    businessAddress: AddressDto;
+    shippingAddress: AddressDto;
+}
+
+export class CreateCustomerModelGenericResponse implements ICreateCustomerModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: CreateCustomerModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+
+    constructor(data?: ICreateCustomerModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? CreateCustomerModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+        }
+    }
+
+    static fromJS(data: any): CreateCustomerModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateCustomerModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        return data; 
+    }
+
+    clone(): CreateCustomerModelGenericResponse {
+        const json = this.toJSON();
+        let result = new CreateCustomerModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateCustomerModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: CreateCustomerModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+}
+
+export class CustomerDto implements ICustomerDto {
+    displayName: string | undefined;
+    givenName: string | undefined;
+    middleName: string | undefined;
+    suffix: string | undefined;
+    familyName: string | undefined;
+    title: string | undefined;
+
+    constructor(data?: ICustomerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.displayName = _data["displayName"];
+            this.givenName = _data["givenName"];
+            this.middleName = _data["middleName"];
+            this.suffix = _data["suffix"];
+            this.familyName = _data["familyName"];
+            this.title = _data["title"];
+        }
+    }
+
+    static fromJS(data: any): CustomerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["displayName"] = this.displayName;
+        data["givenName"] = this.givenName;
+        data["middleName"] = this.middleName;
+        data["suffix"] = this.suffix;
+        data["familyName"] = this.familyName;
+        data["title"] = this.title;
+        return data; 
+    }
+
+    clone(): CustomerDto {
+        const json = this.toJSON();
+        let result = new CustomerDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICustomerDto {
+    displayName: string | undefined;
+    givenName: string | undefined;
+    middleName: string | undefined;
+    suffix: string | undefined;
+    familyName: string | undefined;
+    title: string | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {

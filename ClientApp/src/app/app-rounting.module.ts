@@ -1,15 +1,10 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { HomeComponent } from "./home/home.component";
-import { CounterComponent } from "./counter/counter.component";
-import { FetchDataComponent } from "./fetch-data/fetch-data.component";
+
 import { AppComponent } from "./app.component";
 
-export const rountingComponents = [
-  HomeComponent,
-  CounterComponent,
-  FetchDataComponent,
-];
+export const rountingComponents = [HomeComponent];
 
 @NgModule({
   imports: [
@@ -19,8 +14,6 @@ export const rountingComponents = [
         component: AppComponent,
         children: [
           { path: "home", component: HomeComponent },
-          { path: "counter", component: CounterComponent },
-          { path: "fetch-data", component: FetchDataComponent },
           {
             path: "customers",
             loadChildren: () =>
