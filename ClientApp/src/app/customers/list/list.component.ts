@@ -9,6 +9,9 @@ import {
   NgbCalendar,
   NgbDatepicker,
 } from "@ng-bootstrap/ng-bootstrap";
+import { CustomersFacade } from "@core-data/customers/customers.facade";
+import { Observable } from "rxjs";
+import { CustomerDto } from "@shared/service-proxies/service-proxies";
 
 @Component({
   selector: "app-list",
@@ -19,7 +22,14 @@ import {
 export class ListComponent implements OnInit {
   closeResult = "";
   rowData: [] = [];
-  constructor(private modalService: NgbModal, private calendar: NgbCalendar) {}
+  customers$: Observable<CustomerDto[]>;
+  constructor(
+    private modalService: NgbModal,
+    private calendar: NgbCalendar,
+    private customerFacade: CustomersFacade
+  ) {
+    this.customers$ = customerFacade.customers$;
+  }
   columnDefs = [
     {
       headerName: "Display Name",
@@ -51,5 +61,7 @@ export class ListComponent implements OnInit {
   ];
 
   open(content): void {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customerFacade.loadCustomers(1);
+  }
 }

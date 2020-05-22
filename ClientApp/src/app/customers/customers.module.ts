@@ -8,6 +8,7 @@ import { SharedModule } from "@shared/shared.module";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { CoreDataModule } from "@core-data/core.data.module";
 
 @NgModule({
   declarations: [ListComponent],
@@ -18,6 +19,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
     NgbModule,
     SharedModule,
     CustomersRoutingModule,
+    CoreDataModule,
     AgGridModule.withComponents([]),
   ],
 })

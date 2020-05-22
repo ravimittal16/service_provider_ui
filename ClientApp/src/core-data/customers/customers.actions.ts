@@ -33,3 +33,7 @@ export const customersLoadedAction = createAction(
   "[Customer] Loaded",
   props<{ customers: CustomerDto[] }>()
 );
+export const loadCustomerErrorAction = createAction(
+  "[Customer] Load Error",
+  props<{ errors: any[] }>()
+);
