@@ -3,12 +3,13 @@ import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../../environments/environment";
-import { CustomerEffects } from "./effects";
+import { CustomerEffects } from "./customers.effects";
+import { reducer } from "./customers.reducers";
 
 @NgModule({
   imports: [
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([CustomerEffects]),
+    StoreModule.forFeature("customers", reducer),
+    EffectsModule.forFeature([CustomerEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
 })

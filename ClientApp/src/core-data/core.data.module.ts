@@ -7,13 +7,17 @@ import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module
 import { DataPersistence } from "@nrwl/nx";
 import { HttpClientModule } from "@angular/common/http";
 import { AccountRegisterEffects } from "./register/register.effects";
-import { accountReducers } from "./register";
+
 import { RegsiterFacade } from "./register/register.facade";
+
+import { reducers } from "./core.data.reducers";
+import { CustomerStoreModule } from "./customers/customers-store.module";
 
 @NgModule({
   imports: [
+    CustomerStoreModule,
     ServiceProxyModule,
-    StoreModule.forRoot(accountReducers),
+    StoreModule.forRoot(reducers),
     HttpClientModule,
     EffectsModule.forRoot([AccountRegisterEffects]),
     environment.production

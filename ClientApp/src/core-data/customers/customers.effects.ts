@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as customerActions from "./actions";
+import * as customerActions from "./customers.actions";
 import { Actions, ofType, createEffect } from "@ngrx/effects";
 import {
   CustomersServiceProxy,

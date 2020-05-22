@@ -1,27 +1,23 @@
 import { on, createReducer, Action } from "@ngrx/store";
-import * as customerActions from "./actions";
+import * as customerActions from "./customers.actions";
 import {
   CustomerDto,
   CreateCustomerModel,
 } from "@shared/service-proxies/service-proxies";
+import { CustomerState } from "./customers.state";
+import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 
-export interface CustomerState {
-  customers: CustomerDto[];
-  model: CreateCustomerModel;
-  isBusy: boolean;
-  errors: [];
-  companyId: number;
-  success: boolean;
-}
+export const adapter: EntityAdapter<CustomerDto> = createEntityAdapter<
+  CustomerDto
+>();
 
-export const initialState: CustomerState = {
-  customers: [],
+export const initialState: CustomerState = adapter.getInitialState({
   companyId: 0,
   model: null,
   isBusy: false,
   errors: [],
   success: false,
-};
+});
 
 const customerReducer = createReducer(
   initialState,
@@ -29,10 +25,9 @@ const customerReducer = createReducer(
     ...state,
     prop: 1,
   })),
-  on(customerActions.customersLoadedAction, (state: CustomerState, props) => ({
-    ...state,
-    customers: props.customers,
-  }))
+  on(customerActions.customersLoadedAction, (state: CustomerState, props) =>
+    adapter.addAll(props.customers, state)
+  )
 );
 
 export function reducer(state: CustomerState | undefined, action: Action) {

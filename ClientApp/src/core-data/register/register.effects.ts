@@ -18,7 +18,6 @@ import {
 } from "./register.actions";
 import { AccountRegisterState } from "./register.reducers";
 import { Store } from "@ngrx/store";
-import { AppState } from ".";
 
 //Observable<RegisterOutput>
 @Injectable({ providedIn: "root" })
@@ -61,8 +60,7 @@ export class AccountRegisterEffects {
     },
   });
   constructor(
-    private actions$: Actions,
-    private _store: Store<AppState>,
+    private _store: Store<AccountRegisterState>,
     private accountServiceProxy: AccountServiceProxy,
     private dataPersistence: DataPersistence<AccountRegisterState>
   ) {}
