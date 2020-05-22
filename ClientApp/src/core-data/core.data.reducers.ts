@@ -2,8 +2,10 @@ import { ActionReducerMap } from "@ngrx/store";
 
 import * as fromAccountRegister from "./register/register.reducers";
 import * as fromRegisterSelectors from "./register/register.selectors";
+
 import * as fromCustomers from "./customers/customers.reducers";
 import * as customerStates from "./customers/customers.state";
+import * as customersSelectors from "./customers/customers.selectors";
 
 export interface AppState {
   accountRegister: fromAccountRegister.AccountRegisterState;
@@ -19,3 +21,5 @@ export const selectRegisterState = fromRegisterSelectors.selectRegisterState;
 export const registrationErrors = fromRegisterSelectors.registrationErrors;
 
 export const registrationUiState = fromRegisterSelectors.registrationUiState;
+
+export const selectAllCustomers = customersSelectors.selectAllCustomers;

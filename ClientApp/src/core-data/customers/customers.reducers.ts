@@ -26,7 +26,7 @@ const customerReducer = createReducer(
     prop: 1,
   })),
   on(customerActions.customersLoadedAction, (state: CustomerState, props) =>
-    adapter.addAll(props.customers, state)
+    adapter.addMany(props.customers, state)
   )
 );
 

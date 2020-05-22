@@ -7,6 +7,7 @@ import { CustomerEffects } from "./customers.effects";
 import { reducer } from "./customers.reducers";
 import { CustomersFacade } from "./customers.facade";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
+import { NWTOkenService } from "@shared/services/token.service";
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module
     EffectsModule.forFeature([CustomerEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
-  providers: [CustomersFacade],
+  providers: [NWTOkenService, CustomersFacade],
 })
 export class CustomerStoreModule {}
