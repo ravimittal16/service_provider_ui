@@ -41,8 +41,8 @@ export function accountRegisterReducer(
       });
       break;
     case AccountRegisterActionTypes.AccountRegisterUiBusy:
-      return Object.assign({ ...state, busyState: true });
-      break;
+      return { ...state, busyState: true };
+
     case AccountRegisterActionTypes.AccountRegisterUiIdle:
       return Object.assign({ ...state, busyState: false });
       break;
@@ -50,8 +50,3 @@ export function accountRegisterReducer(
       return state;
   }
 }
-// ==========================================================
-// Working with Selectors
-// ==========================================================
-export const errors = (state: AccountRegisterState) => state.errors;
-export const busyState = (state: AccountRegisterState) => state.busyState;

@@ -15,6 +15,7 @@ import { map, catchError, switchMap } from "rxjs/operators";
 export class HttpReqInterceptor implements HttpInterceptor {
   constructor(_tokenService: NWTOkenService) {
     console.log("HELLO WORLD");
+    console.log(_tokenService.getToken());
   }
 
   private blobToText(blob): Observable<any> {

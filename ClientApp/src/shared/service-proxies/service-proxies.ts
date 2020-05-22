@@ -848,6 +848,7 @@ export class CustomerDto implements ICustomerDto {
     suffix: string | undefined;
     familyName: string | undefined;
     title: string | undefined;
+    companyName: string | undefined;
 
     constructor(data?: ICustomerDto) {
         if (data) {
@@ -866,6 +867,7 @@ export class CustomerDto implements ICustomerDto {
             this.suffix = _data["suffix"];
             this.familyName = _data["familyName"];
             this.title = _data["title"];
+            this.companyName = _data["companyName"];
         }
     }
 
@@ -884,6 +886,7 @@ export class CustomerDto implements ICustomerDto {
         data["suffix"] = this.suffix;
         data["familyName"] = this.familyName;
         data["title"] = this.title;
+        data["companyName"] = this.companyName;
         return data; 
     }
 
@@ -902,6 +905,7 @@ export interface ICustomerDto {
     suffix: string | undefined;
     familyName: string | undefined;
     title: string | undefined;
+    companyName: string | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {

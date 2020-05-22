@@ -1,17 +1,10 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ViewChild,
-} from "@angular/core";
-import {
-  NgbModal,
-  NgbCalendar,
-  NgbDatepicker,
-} from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { NgbModal, NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
+import { tap, map } from "rxjs/operators";
+import { Dictionary } from "@ngrx/entity";
 
 @Component({
   selector: "app-list",
@@ -33,19 +26,23 @@ export class ListComponent implements OnInit {
   columnDefs = [
     {
       headerName: "Display Name",
-      field: "make",
       sortable: true,
       filter: true,
       checkboxSelection: true,
     },
     {
       headerName: "Company Name",
-      field: "model",
+      field: "displayName",
       sortable: true,
       filter: true,
     },
     { headerName: "Given Name", field: "price", sortable: true, filter: true },
-    { headerName: "Given Name", field: "price", sortable: true, filter: true },
+    {
+      headerName: "Company",
+      field: "companyName",
+      sortable: true,
+      filter: true,
+    },
     {
       headerName: "Business Address Name",
       field: "price",
