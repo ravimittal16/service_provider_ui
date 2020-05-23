@@ -33,3 +33,12 @@ const customerReducer = createReducer(
 export function reducer(state: CustomerState | undefined, action: Action) {
   return customerReducer(state, action);
 }
+
+// ==========================================================
+// Customer Adapter Selectors
+// ==========================================================
+const { selectIds, selectEntities, selectAll } = adapter.getSelectors();
+
+export const selectCustomerIds = selectIds;
+export const selectCustomerEntities = selectEntities;
+export const selectAllCustomers = selectAll;

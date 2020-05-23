@@ -15,10 +15,7 @@ import { map } from "rxjs/operators";
 export class CustomersFacade implements Facade {
   customers$: Observable<CustomerDto[]>;
   constructor(private _store: Store<CustomerState>) {
-    this.customers$ = this._store.pipe(
-      select(selectAllCustomers),
-      map((data) => Object.keys(data).map((k) => data[k]))
-    );
+    this.customers$ = this._store.pipe(select(selectAllCustomers));
   }
   dispatch(action: Action) {
     this._store.dispatch(action);
