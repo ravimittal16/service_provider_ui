@@ -50,6 +50,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
+  private patchValue(fieldName: string, value: any): void {
+    const field = this.registerForm.get(fieldName);
+    if (field) {
+      console.log(value);
+      field.setValue(value);
+      field.disable();
+    }
+  }
+
   private _fetchSignupInformation() {
     this._registerFacade.fetchExternalSignupModel(this.externalSignupId);
   }
@@ -64,7 +73,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   bindExternalSignupProperties(model: RegisterModel) {
-    console.log(model);
+    this.patchValue("fullName", model.fullName);
+    this.patchValue("companyName", model.companyName);
+    this.patchValue("emailAddress", model.emailAddress);
+    this.patchValue("phoneNumber", model.phoneNumber);
   }
 
   ngOnDestroy(): void {
@@ -72,14 +84,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._createRegisterForm();
     this.routeParamsForExternalSignup();
+    this._createRegisterForm();
     setTimeout(() => {
       if (this.externalSignupId) {
         this._fetchSignupInformation();
-        this._registerFacade.externalModel$.subscribe((model) => {
-          if (model) {
-            this.bindExternalSignupProperties.bind(model);
+        this._registerFacade.externalModel$.subscribe((payload) => {
+          if (payload) {
+            this.bindExternalSignupProperties(payload["model"]);
           }
         });
       }
