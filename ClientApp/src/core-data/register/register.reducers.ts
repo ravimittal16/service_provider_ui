@@ -10,6 +10,7 @@ export interface AccountRegisterState extends EntityState<RegisterModel> {
   busyState: boolean;
   errorState: boolean;
   errors: [];
+  model: RegisterModel;
 }
 
 export const adapter: EntityAdapter<RegisterModel> = createEntityAdapter<
@@ -22,6 +23,7 @@ export const initialRegisterState: AccountRegisterState = adapter.getInitialStat
     isSuccess: false,
     errorState: false,
     errors: [],
+    model: null,
   }
 );
 
@@ -32,20 +34,18 @@ export function accountRegisterReducer(
   switch (action.type) {
     case AccountRegisterActionTypes.AccountRegisterSuccess:
       return Object.assign({ ...state, isSuccess: true });
-      break;
     case AccountRegisterActionTypes.AccountRegisterError:
       return Object.assign({
         ...state,
         errors: action.payload.errors,
         isSuccess: false,
       });
-      break;
     case AccountRegisterActionTypes.AccountRegisterUiBusy:
       return { ...state, busyState: true };
-
     case AccountRegisterActionTypes.AccountRegisterUiIdle:
       return Object.assign({ ...state, busyState: false });
-      break;
+    case AccountRegisterActionTypes.ExternalSignupInfoLoadedAction:
+      return { ...state, model: action.payload };
     default:
       return state;
   }

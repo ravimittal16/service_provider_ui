@@ -138,6 +138,107 @@ export class AccountServiceProxy {
         }
         return _observableOf<RegisterModelGenericResponse>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    intuitSignIn(): Observable<void> {
+        let url_ = this.baseUrl + "/api/Account/IntuitSignIn";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIntuitSignIn(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIntuitSignIn(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIntuitSignIn(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param signupKey (optional) 
+     * @return Success
+     */
+    getExternalSignupModel(signupKey: string | null | undefined): Observable<RegisterModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/Account/GetExternalSignupModel?";
+        if (signupKey !== undefined)
+            url_ += "signupKey=" + encodeURIComponent("" + signupKey) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExternalSignupModel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExternalSignupModel(<any>response_);
+                } catch (e) {
+                    return <Observable<RegisterModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RegisterModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetExternalSignupModel(response: HttpResponseBase): Observable<RegisterModelGenericResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RegisterModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RegisterModelGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -450,6 +551,7 @@ export class RegisterModel implements IRegisterModel {
     confirmPassword: string | undefined;
     companyName: string | undefined;
     phoneNumber: string | undefined;
+    externalSignupId: string | undefined;
 
     constructor(data?: IRegisterModel) {
         if (data) {
@@ -469,6 +571,7 @@ export class RegisterModel implements IRegisterModel {
             this.confirmPassword = _data["confirmPassword"];
             this.companyName = _data["companyName"];
             this.phoneNumber = _data["phoneNumber"];
+            this.externalSignupId = _data["externalSignupId"];
         }
     }
 
@@ -488,6 +591,7 @@ export class RegisterModel implements IRegisterModel {
         data["confirmPassword"] = this.confirmPassword;
         data["companyName"] = this.companyName;
         data["phoneNumber"] = this.phoneNumber;
+        data["externalSignupId"] = this.externalSignupId;
         return data; 
     }
 
@@ -507,6 +611,7 @@ export interface IRegisterModel {
     confirmPassword: string | undefined;
     companyName: string | undefined;
     phoneNumber: string | undefined;
+    externalSignupId: string | undefined;
 }
 
 export enum ErrorTypes {
@@ -515,6 +620,7 @@ export enum ErrorTypes {
     _2 = 2,
     _3 = 3,
     _4 = 4,
+    _5 = 5,
 }
 
 export class RegisterModelGenericResponse implements IRegisterModelGenericResponse {

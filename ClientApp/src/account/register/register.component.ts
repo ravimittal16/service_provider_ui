@@ -7,6 +7,7 @@ import { RegisterModel } from "@shared/service-proxies/service-proxies";
 import { RegsiterFacade } from "@core-data/index";
 
 import { Observable, Subscription } from "rxjs";
+import { finalize } from "rxjs/operators";
 
 @Component({
   templateUrl: "./register.component.html",
@@ -16,7 +17,7 @@ import { Observable, Subscription } from "rxjs";
 export class RegisterComponent implements OnInit, OnDestroy {
   model: RegisterModel = new RegisterModel();
   registerForm: FormGroup;
-  externalSignupId: String;
+  externalSignupId: string;
   routeSub: Subscription;
   errors$: Observable<string[]>;
   uiState$: Observable<boolean>;
@@ -49,10 +50,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
+  private _fetchSignupInformation() {
+    this._registerFacade.fetchExternalSignupModel(this.externalSignupId);
+  }
+
   private routeParamsForExternalSignup() {
-    this.routeSub = this._route.queryParams.subscribe((params) => {
-      this.externalSignupId = params["exsignup"] || "";
-    });
+    this.routeSub = this._route.queryParams
+      // .pipe(finalize())
+      .subscribe((params) => {
+        console.log(params);
+        this.externalSignupId = params["exsignup"] || "";
+      });
+  }
+
+  bindExternalSignupProperties(model: RegisterModel) {
+    console.log(model);
   }
 
   ngOnDestroy(): void {
@@ -62,5 +74,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._createRegisterForm();
     this.routeParamsForExternalSignup();
+    setTimeout(() => {
+      if (this.externalSignupId) {
+        this._fetchSignupInformation();
+        this._registerFacade.externalModel$.subscribe((model) => {
+          if (model) {
+            this.bindExternalSignupProperties.bind(model);
+          }
+        });
+      }
+    }, 100);
   }
 }

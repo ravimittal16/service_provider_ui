@@ -22,4 +22,7 @@ export const registrationErrors = fromRegisterSelectors.registrationErrors;
 
 export const registrationUiState = fromRegisterSelectors.registrationUiState;
 
+export const selectExternalSignModel =
+  fromRegisterSelectors.selectExternalSignModel;
+
 export const selectAllCustomers = customersSelectors.selectAllCustomers;
