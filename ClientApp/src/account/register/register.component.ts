@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   register(isValid): void {
     if (isValid) {
-      const payload = this.registerForm.value as RegisterModel;
+      const payload = this.registerForm.getRawValue() as RegisterModel;
       this._registerFacade.processRegister(payload);
     }
   }
@@ -47,6 +47,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: ["", [Validators.required]],
       confirmPassword: ["", [Validators.required]],
       privatePolicyCheck: [false],
+      externalSignupId: [""],
     });
   }
 
@@ -77,6 +78,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.patchValue("companyName", model.companyName);
     this.patchValue("emailAddress", model.emailAddress);
     this.patchValue("phoneNumber", model.phoneNumber);
+    this.patchValue("externalSignupId", model.externalSignupId);
   }
 
   ngOnDestroy(): void {
