@@ -68,6 +68,23 @@ $agGrid-RowHeader-FontWeight:600;
   height: 90vh;
 }
 
+a:hover {
+
+  text-decoration: none;
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: $primary-color;
+  border-color: $border-primary-color;
+}
 
 // AG-GRID STYLES
 //====================================================================

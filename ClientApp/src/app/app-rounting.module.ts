@@ -13,6 +13,13 @@ export const rountingComponents = [HomeComponent];
         path: "",
         component: AppComponent,
         children: [
+          {
+            path: "main",
+            loadChildren: () =>
+              import("./dashboard/dashboard.module").then(
+                (m) => m.DashboardModule
+              ),
+          },
           { path: "home", component: HomeComponent },
           {
             path: "customers",

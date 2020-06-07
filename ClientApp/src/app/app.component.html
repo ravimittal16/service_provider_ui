@@ -7,7 +7,7 @@
       <div class="sidebar-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" [routerLink]="['home']">
+            <a class="nav-link active" [routerLink]="['main/dashboard']">
               <span class="fa fa-home"></span>
               Dashboard <span class="sr-only">(current)</span>
             </a>
@@ -32,22 +32,23 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
-              <span class="fa fa-bar-chart-2"></span>
+              <span class="fa fa-bar-chart"></span>
               Reports
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
-              <span class="fa fa-layers"></span>
+              <span class="fa fa-cogs"></span>
               Integrations
             </a>
           </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
-          <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-            <span class="fa fa-plus-circle"></span>
+          <span>JOBS</span>
+          <a class="d-flex align-items-center text-muted" aria-label="Add a new report" data-toggle="tooltip"
+            data-placement="top" title="Create new Job">
+            <span class="fa fa-plus-circle text-warning" style="font-size: 25px;"></span>
           </a>
         </h6>
         <ul class="nav flex-column mb-2">
@@ -80,6 +81,9 @@
     </nav>
   </div>
   <div class="content-page">
+    <router-outlet></router-outlet>
+  </div>
+  <!-- <div class="content-page">
     <div class="content">
       <div class="container-fluid">
         <div class="row">
@@ -96,5 +100,5 @@
         <router-outlet></router-outlet>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

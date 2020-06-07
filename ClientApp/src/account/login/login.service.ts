@@ -1,9 +1,7 @@
 import { TokenService } from "@abp/auth/token.service";
-import { LogService } from "@abp/log/log.service";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { AppConsts } from "@shared/AppConsts";
-import { UrlHelper } from "@shared/helpers/UrlHelper";
+
 import {
   AuthenticateModel,
   AuthenticateResultModel,
@@ -24,8 +22,7 @@ export class LoginService {
   constructor(
     private _tokenAuthService: AccountServiceProxy,
     private _router: Router,
-    private _tokenService: TokenService,
-    private _logService: LogService
+    private _tokenService: TokenService
   ) {
     this.clear();
   }
@@ -58,7 +55,6 @@ export class LoginService {
         this.rememberMe
       );
     } else {
-      this._logService.warn("Unexpected authenticateResult!");
       this._router.navigate(["account/login"]);
     }
   }
@@ -74,20 +70,7 @@ export class LoginService {
       : undefined;
 
     this._tokenService.setToken(accessToken, tokenExpireDate);
-
-    // this._utilsService.setCookieValue(
-    //     AppConsts.authorization.encryptedAuthTokenName,
-    //     encryptedAccessToken,
-    //     tokenExpireDate,
-    //     abp.appPath
-    // );
     this._router.navigate(["/app/home"]);
-    // let initialUrl = UrlHelper.initialUrl;
-    // if (initialUrl.indexOf("/login") > 0) {
-    //   initialUrl = AppConsts.appBaseUrl;
-    // }
-
-    // location.href = initialUrl;
   }
 
   private clear(): void {

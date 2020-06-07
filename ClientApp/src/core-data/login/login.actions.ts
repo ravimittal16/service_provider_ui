@@ -12,6 +12,11 @@ export const loginTrigger = createAction(
   props<{ payload: AuthenticateModel }>()
 );
 
+export const loginAuthTokenSaved = createAction(
+  "[Login] Auth Token Saved",
+  props<{ payload: AuthenticateResultModel }>()
+);
+
 export const loginFailure = createAction(
   "[Login] Login Failure",
   props<{ payload: any }>()

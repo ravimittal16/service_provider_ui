@@ -37,7 +37,6 @@ export class RegsiterFacade implements Facade {
   }
 
   fetchExternalSignupModel(signupKey: string) {
-    console.log("HELLO WORLD");
     const payload = { signupKey: signupKey };
     this.dispatch(new LoadExternalSignupInfoAction(payload));
   }

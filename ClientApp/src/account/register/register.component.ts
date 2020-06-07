@@ -68,7 +68,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.routeSub = this._route.queryParams
       // .pipe(finalize())
       .subscribe((params) => {
-        console.log(params);
         this.externalSignupId = params["exsignup"] || "";
       });
   }
