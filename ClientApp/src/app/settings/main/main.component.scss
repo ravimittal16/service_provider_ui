@@ -1,0 +1,36 @@
+.settings-mein-container {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  height: 100%;
+
+
+  & div {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-grow: 1;
+
+
+    flex-shrink: 1;
+    flex-basis: auto;
+    flex-direction: column;
+  }
+}
+
+
+.settings-side-panel {
+  width: 22%;
+  max-width: 22%;
+  flex: 0 0 22%;
+}
+
+.settings-main-body {
+  width: 78%;
+  max-width: 78%;
+  flex: 0 0 78%;
+}
+
+.tab-content {
+  padding: 10px
+}

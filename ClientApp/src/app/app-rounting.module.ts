@@ -28,6 +28,13 @@ export const rountingComponents = [HomeComponent];
                 (m) => m.CustomersModule
               ),
           },
+          {
+            path: "settings",
+            loadChildren: () =>
+              import("./settings/settings.module").then(
+                (m) => m.SettingsModule
+              ),
+          },
         ],
       },
     ]),

@@ -7,11 +7,12 @@
         <hr class="my-4">
         <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
         <div>
-          <a class="btn btn-warning btn-lg" href="#" role="button">
-            Go to Company Setup</a>
-          <a class="btn btn-info btn-lg" href="#" role="button">
+          <button type="button" class="btn btn-warning btn-lg" role="button"
+            (click)="goToRoute('app/settings/company')">
+            Go to Company Setup</button>
+          <a class="btn btn-info btn-lg" role="button">
             Sync Data With QuickBooks</a>
-          <a class="btn btn-info btn-lg" href="#" role="button">
+          <a class="btn btn-info btn-lg" role="button">
             Start Exploring</a>
         </div>
       </div>

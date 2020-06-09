@@ -1,10 +1,26 @@
 <div class="p-1 vh-90">
-  <div class="row no-gutters">
-    <div class="col-md-3">
-      HELLO WORLD
+  <div class="row">
+    <div class="col-md-3 settings-side-panel">
+      <div class="card">
+        <div class="card-header">
+          <h5> <i class="fa fa-gear"></i> Settings</h5>
+        </div>
+        <div class="card-body d-flex settings-mein-container">
+          <div class="settings-panel">
+            <div class="settings-menu-container">
+              <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" (click)="goToRoute('app/settings/company')">Company Name</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-9">
-      <router-outlet></router-outlet>
+    <div class="col-md-9 settings-main-body">
+      <div class="card">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 </div>

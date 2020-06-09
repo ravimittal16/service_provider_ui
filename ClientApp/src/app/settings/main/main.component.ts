@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  selector: "app-main",
+  templateUrl: "./main.component.html",
+  styleUrls: ["./main.component.scss"],
 })
 export class MainComponent implements OnInit {
+  constructor(private _router: Router) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  goToRoute(routeName: string): void {
+    if (routeName) {
+      this._router.navigate([routeName]);
+    }
   }
-
+  ngOnInit(): void {}
 }
