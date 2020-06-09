@@ -31,7 +31,8 @@ export function convertAbpLocaleToAngularLocale(locale: string): string {
 }
 
 export function getRemoteServiceBaseUrl(): string {
-  return !environment.production ? AppConsts.remoteServiceBaseUrl : "";
+  console.log(environment.apiBaseUrl);
+  return environment.apiBaseUrl;
 }
 
 function getDocumentOrigin() {

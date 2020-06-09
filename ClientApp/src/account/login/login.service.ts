@@ -65,9 +65,10 @@ export class LoginService {
     expireInSeconds: number,
     rememberMe?: boolean
   ): void {
+    //TODO: NEED TO CHANGE
     const tokenExpireDate = rememberMe
       ? new Date(new Date().getTime() + 1000 * expireInSeconds)
-      : undefined;
+      : new Date(new Date().getTime() + 1000 * expireInSeconds + 10);
 
     this._tokenService.setToken(accessToken, tokenExpireDate);
     this._router.navigate(["/app/home"]);

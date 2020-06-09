@@ -13,7 +13,7 @@ import { map, catchError, switchMap } from "rxjs/operators";
 
 @Injectable()
 export class HttpReqInterceptor implements HttpInterceptor {
-  constructor(_tokenService: NWTokenService) {}
+  constructor(private _tokenService: NWTokenService) {}
 
   private blobToText(blob): Observable<any> {
     return new Observable(function (observer) {
@@ -97,13 +97,20 @@ export class HttpReqInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     var _this = this;
     var interceptObservable = new Subject();
+    let token = this._tokenService.getToken();
 
     if (!request.headers.has("Content-Type")) {
       request = request.clone({
         headers: request.headers.set("Content-Type", "application/json"),
       });
     }
-
+    console.log(token);
+    if (request.headers && token) {
+      request = request.clone({
+        headers: request.headers.set("Authorization", "Bearer " + token),
+      });
+      console.log(request.headers);
+    }
     return next.handle(request).pipe(
       catchError((error) => {
         return this.handleErrorResponse(error, null);

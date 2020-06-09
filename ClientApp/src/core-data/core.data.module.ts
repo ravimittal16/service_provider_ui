@@ -12,6 +12,7 @@ import { RegsiterFacade } from "./register/register.facade";
 
 import { reducers } from "./core.data.reducers";
 import { CustomerStoreModule } from "./customers/customers-store.module";
+import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 
 @NgModule({
   imports: [
@@ -24,6 +25,10 @@ import { CustomerStoreModule } from "./customers/customers-store.module";
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 10 }),
   ],
-  providers: [DataPersistence, RegsiterFacade],
+  providers: [
+    { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
+    DataPersistence,
+    RegsiterFacade,
+  ],
 })
 export class CoreDataModule {}

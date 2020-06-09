@@ -306,14 +306,16 @@ export class CustomersServiceProxy {
     }
 
     /**
+     * @param companyId (optional) 
      * @param body (optional) 
      * @return Success
      */
-    createCustomer(companyId: number, body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
-        let url_ = this.baseUrl + "/api/customers/{companyId}/CreateCustomer";
-        if (companyId === undefined || companyId === null)
-            throw new Error("The parameter 'companyId' must be defined.");
-        url_ = url_.replace("{companyId}", encodeURIComponent("" + companyId));
+    createCustomer(companyId: number | undefined, body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/customers/CreateCustomer?";
+        if (companyId === null)
+            throw new Error("The parameter 'companyId' cannot be null.");
+        else if (companyId !== undefined)
+            url_ += "companyId=" + encodeURIComponent("" + companyId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -365,13 +367,15 @@ export class CustomersServiceProxy {
     }
 
     /**
+     * @param companyId (optional) 
      * @return Success
      */
-    getAllCustomers(companyId: number): Observable<CustomerDto[]> {
-        let url_ = this.baseUrl + "/api/customers/{companyId}/GetAllCustomers";
-        if (companyId === undefined || companyId === null)
-            throw new Error("The parameter 'companyId' must be defined.");
-        url_ = url_.replace("{companyId}", encodeURIComponent("" + companyId));
+    getAllCustomers(companyId: number | undefined): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/customers/GetAllCustomers?";
+        if (companyId === null)
+            throw new Error("The parameter 'companyId' cannot be null.");
+        else if (companyId !== undefined)
+            url_ += "companyId=" + encodeURIComponent("" + companyId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

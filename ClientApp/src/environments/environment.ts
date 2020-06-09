@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   hmr: false,
-  appConfig: "appconfig.json"
+  appConfig: "appconfig.json",
+  apiBaseUrl: "http://localhost:2158",
 };
 
 /*

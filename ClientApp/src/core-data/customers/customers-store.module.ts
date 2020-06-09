@@ -8,6 +8,7 @@ import { reducer } from "./customers.reducers";
 import { CustomersFacade } from "./customers.facade";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
 import { NWTokenService } from "@shared/services/token.service";
+import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 
 @NgModule({
   imports: [
@@ -16,6 +17,10 @@ import { NWTokenService } from "@shared/services/token.service";
     EffectsModule.forFeature([CustomerEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
-  providers: [NWTokenService, CustomersFacade],
+  providers: [
+    { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
+    NWTokenService,
+    CustomersFacade,
+  ],
 })
 export class CustomerStoreModule {}
