@@ -1,4 +1,3 @@
-import { TokenService } from "@abp/auth/token.service";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 
@@ -8,6 +7,7 @@ import {
   AccountServiceProxy,
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs/operators";
+import { NWTokenService } from "@shared/services/token.service";
 
 @Injectable()
 export class LoginService {
@@ -22,7 +22,7 @@ export class LoginService {
   constructor(
     private _tokenAuthService: AccountServiceProxy,
     private _router: Router,
-    private _tokenService: TokenService
+    private _tokenService: NWTokenService
   ) {
     this.clear();
   }

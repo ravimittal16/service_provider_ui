@@ -8,15 +8,12 @@ import {
 } from "@angular/common/http";
 import { Observable, Subject, throwError, of } from "rxjs";
 import { Injectable } from "@angular/core";
-import { NWTOkenService } from "@shared/services/token.service";
+import { NWTokenService } from "@shared/services/token.service";
 import { map, catchError, switchMap } from "rxjs/operators";
 
 @Injectable()
 export class HttpReqInterceptor implements HttpInterceptor {
-  constructor(_tokenService: NWTOkenService) {
-    console.log("HELLO WORLD");
-    console.log(_tokenService.getToken());
-  }
+  constructor(_tokenService: NWTokenService) {}
 
   private blobToText(blob): Observable<any> {
     return new Observable(function (observer) {
@@ -68,7 +65,6 @@ export class HttpReqInterceptor implements HttpInterceptor {
     return this.blobToText(error.error).pipe(
       switchMap((json) => {
         var errorBody = json == "" || json == "null" ? {} : JSON.parse(json);
-        console.log(errorBody);
         var errorResponse = new HttpResponse({
           headers: error.headers,
           status: error.status,
@@ -110,12 +106,10 @@ export class HttpReqInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error) => {
-        console.log(error);
         return this.handleErrorResponse(error, null);
       }),
       switchMap((event: HttpEvent<any>) => {
         if (event instanceof HttpErrorResponse) {
-          console.log("ËVENT", event);
         } else if (event instanceof HttpResponse) {
           if (
             event.body instanceof Blob &&
@@ -124,7 +118,6 @@ export class HttpReqInterceptor implements HttpInterceptor {
           ) {
             this.blobToText(event.body).subscribe((json) => {
               var responseBody = json == "null" ? {} : JSON.parse(json);
-              console.log(responseBody);
               var modifiedResponse = this.checkResponseTypeOrNull(
                 event.clone({
                   body: responseBody,

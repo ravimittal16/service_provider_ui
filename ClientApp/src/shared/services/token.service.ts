@@ -1,8 +1,29 @@
 import { Injectable } from "@angular/core";
 
 @Injectable()
-export class NWTOkenService {
+export class NWTokenService {
+  private ID_TOKEN: string = "AUTH_TOKEN";
+  private ID_TOKEN_EXPIRES_AT: string = "AUTH_TOKEN_EXPIRES_AT";
   getToken(): string {
-    return "";
+    return localStorage.getItem(this.ID_TOKEN);
+  }
+
+  clearToken() {
+    if (window.localStorage) {
+      localStorage.removeItem(this.ID_TOKEN);
+      localStorage.removeItem(this.ID_TOKEN_EXPIRES_AT);
+    }
+  }
+
+  setToken(token: string, expirationDate: Date): void {
+    if (window.localStorage) {
+      localStorage.setItem(this.ID_TOKEN, token);
+      if (expirationDate) {
+        localStorage.setItem(
+          this.ID_TOKEN_EXPIRES_AT,
+          JSON.stringify(expirationDate.valueOf())
+        );
+      }
+    }
   }
 }
