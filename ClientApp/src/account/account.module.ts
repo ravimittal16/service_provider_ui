@@ -30,7 +30,5 @@ const _components = [AccountComponent, LoginComponent, RegisterComponent];
   declarations: [..._components],
 })
 export class AccountModule {
-  constructor() {
-    console.log("HELLO ");
-  }
+  constructor() {}
 }
