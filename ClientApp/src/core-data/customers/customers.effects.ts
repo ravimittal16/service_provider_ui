@@ -16,17 +16,14 @@ export class CustomerEffects {
   ) {}
 
   customers$ = createEffect(() => {
-    console.log("EFFECT");
     return this.actions$.pipe(
       ofType(customerActions.loadCustomersAction),
       mergeMap((action) =>
         this.customerService.getAllCustomers(action.companyId).pipe(
           map((data) => {
-            console.log("HELLO WORLD");
             return customerActions.customersLoadedAction({ customers: data });
           }),
           catchError((error) => {
-            console.log(error);
             return of(
               customerActions.createCustomerErrorAction({
                 errors: ["Error while loading customers.", error],

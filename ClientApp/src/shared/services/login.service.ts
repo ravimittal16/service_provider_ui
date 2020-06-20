@@ -8,6 +8,7 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { finalize } from "rxjs/operators";
 import { NWTokenService } from "@shared/services/token.service";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class LoginService {
@@ -25,6 +26,10 @@ export class LoginService {
     private _tokenService: NWTokenService
   ) {
     this.clear();
+  }
+
+  loginUser(model: AuthenticateModel): Observable<AuthenticateResultModel> {
+    return this._tokenAuthService.login(this.authenticateModel);
   }
 
   authenticate(finallyCallback?: () => void): void {

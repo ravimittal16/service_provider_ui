@@ -3,15 +3,15 @@ import {
   ViewContainerRef,
   OnInit,
   ViewEncapsulation,
-  Injector
+  Injector,
 } from "@angular/core";
-import { LoginService } from "./login/login.service";
+import { LoginService } from "../shared/services/login.service";
 // import { AppComponentBase } from '@shared/app-component-base';
 
 @Component({
   templateUrl: "./account.component.html",
   styleUrls: ["./account.component.less"],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class AccountComponent implements OnInit {
   versionText: string;

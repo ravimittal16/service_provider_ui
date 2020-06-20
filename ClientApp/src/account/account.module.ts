@@ -6,7 +6,7 @@ import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module
 import { AccountComponent } from "./account.component";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
-import { LoginService } from "./login/login.service";
+
 import { AccountRoutingModule } from "./account-routing.module";
 import { AbpModule } from "@abp/abp.module";
 import { SharedModule } from "@shared/shared.module";
@@ -28,7 +28,6 @@ const _components = [AccountComponent, LoginComponent, RegisterComponent];
     CoreDataModule,
   ],
   declarations: [..._components],
-  providers: [LoginService],
 })
 export class AccountModule {
   constructor() {

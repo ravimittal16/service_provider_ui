@@ -6,29 +6,26 @@ import { environment } from "../environments/environment";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
 import { DataPersistence } from "@nrwl/nx";
 import { HttpClientModule } from "@angular/common/http";
-import { AccountRegisterEffects } from "./register/register.effects";
 
-import { RegsiterFacade } from "./register/register.facade";
-
-import { reducers } from "./core.data.reducers";
 import { CustomerStoreModule } from "./customers/customers-store.module";
-import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
+
+import { LoginStoreModule } from "./login/login-store.module";
+
+import { RegisterStoreModule } from "./register/register.store.module";
 
 @NgModule({
   imports: [
-    CustomerStoreModule,
     ServiceProxyModule,
-    StoreModule.forRoot(reducers),
+    CustomerStoreModule,
+    LoginStoreModule,
+    RegisterStoreModule,
+    StoreModule.forRoot([]),
     HttpClientModule,
-    EffectsModule.forRoot([AccountRegisterEffects]),
+    EffectsModule.forRoot([]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 10 }),
   ],
-  providers: [
-    { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
-    DataPersistence,
-    RegsiterFacade,
-  ],
+  providers: [DataPersistence],
 })
 export class CoreDataModule {}
