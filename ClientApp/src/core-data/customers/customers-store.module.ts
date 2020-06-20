@@ -17,10 +17,6 @@ import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
     EffectsModule.forFeature([CustomerEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
-  providers: [
-    { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
-    NWTokenService,
-    CustomersFacade,
-  ],
+  providers: [NWTokenService, CustomersFacade],
 })
 export class CustomerStoreModule {}
