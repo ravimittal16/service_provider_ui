@@ -91,6 +91,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       if (this.externalSignupId) {
         this._fetchSignupInformation();
         this._registerFacade.externalModel$.subscribe((payload) => {
+          console.log(payload);
           if (payload) {
             this.bindExternalSignupProperties(payload["model"]);
           }
