@@ -31,9 +31,15 @@
               <div class="col-auto"><a class="btn btn-link fs--1">Forgot
                   Password?</a></div>
             </div>
-            <div class="form-group"><button [disabled]="loginForm.invalid" tabindex="4"
-                class="btn btn-primary btn-block mt-3" type="submit" name="submit">Log
-                in</button></div>
+            <div class="form-group"><button [disabled]="loginForm.invalid || (isBusy$ | async)" tabindex="4"
+                class="btn btn-primary btn-block mt-3" type="submit" name="submit">
+                <span *ngIf="!(isBusy$ | async)">Authenticate</span>
+                <span *ngIf="(isBusy$ | async)">
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  Authenticating...
+                </span>
+              </button>
+            </div>
           </form>
           <div class="w-100 position-relative mt-4">
             <hr class="text-300">
@@ -41,9 +47,9 @@
               class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap">
               or log in with</div>
           </div>
-          <div class="form-group"><button [disabled]="loginForm.invalid" class="btn btn-light btn-block mt-3"
-              type="button" name="submit">Login with <span><strong style="color:#Da251C;">Goo</strong><strong
-                  style="color:#Da251C;">gle</strong> </span>
+          <div class="form-group"><button [disabled]="loginForm.invalid || (isBusy$ | async)"
+              class="btn btn-light btn-block mt-3" type="button" name="submit">Login with <span><strong
+                  style="color:#Da251C;">Goo</strong><strong style="color:#Da251C;">gle</strong> </span>
             </button></div>
         </div>
       </div>

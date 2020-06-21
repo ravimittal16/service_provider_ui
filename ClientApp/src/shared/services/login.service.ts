@@ -22,7 +22,6 @@ export class LoginService {
 
   constructor(
     private _tokenAuthService: AccountServiceProxy,
-    private _router: Router,
     private _tokenService: NWTokenService
   ) {
     this.clear();
@@ -32,51 +31,11 @@ export class LoginService {
     return this._tokenAuthService.login(this.authenticateModel);
   }
 
-  authenticate(finallyCallback?: () => void): void {
-    finallyCallback = finallyCallback || (() => {});
-
-    this._tokenAuthService
-      .login(this.authenticateModel)
-      .pipe(
-        finalize(() => {
-          finallyCallback();
-        })
-      )
-      .subscribe((result: AuthenticateResultModel) => {
-        this.processAuthenticateResult(result);
-      });
-  }
-
-  private processAuthenticateResult(
-    authenticateResult: AuthenticateResultModel
-  ) {
-    this.authenticateResult = authenticateResult;
-    if (authenticateResult.accessToken) {
-      // Successfully logged in
-      this.login(
-        authenticateResult.accessToken,
-        authenticateResult.encryptedAccessToken,
-        authenticateResult.expireInSeconds,
-        this.rememberMe
-      );
-    } else {
-      this._router.navigate(["account/login"]);
-    }
-  }
-
-  private login(
-    accessToken: string,
-    encryptedAccessToken: string,
-    expireInSeconds: number,
-    rememberMe?: boolean
-  ): void {
-    //TODO: NEED TO CHANGE
+  setToken(response: AuthenticateResultModel, rememberMe?: boolean): void {
     const tokenExpireDate = rememberMe
-      ? new Date(new Date().getTime() + 1000 * expireInSeconds)
-      : new Date(new Date().getTime() + 1000 * expireInSeconds + 10);
-
-    this._tokenService.setToken(accessToken, tokenExpireDate);
-    this._router.navigate(["/app/home"]);
+      ? new Date(new Date().getTime() + 1000 * response.expireInSeconds)
+      : new Date(new Date().getTime() + 1000 * response.expireInSeconds + 10);
+    this._tokenService.setToken(response.accessToken, tokenExpireDate);
   }
 
   private clear(): void {

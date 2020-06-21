@@ -5,28 +5,34 @@ import {
 } from "@shared/service-proxies/service-proxies";
 
 export const loginTrigger = createAction(
-  "[Login] Login Trigger",
+  "[Auth] Trigger",
   props<{ payload: AuthenticateModel }>()
 );
 
 export const loginAuthTokenSaved = createAction(
-  "[Login] Auth Token Saved",
+  "[Auth] Auth Token Saved",
   props<{ payload: AuthenticateResultModel }>()
 );
 
 export const loginRunningAction = createAction(
-  "[Login] Login Running",
+  "[Auth] Running",
   props<{ payload: boolean }>()
 );
 
-export const loginCompletedAction = createAction("[Login] Login Completed");
+export const loginCompletedAction = createAction("[Auth] Login Completed");
 
 export const loginFailure = createAction(
-  "[Login] Login Failure",
+  "[Auth] Failure",
   props<{ payload: any }>()
 );
 
 export const loginSuccess = createAction(
-  "[Login] Login Success",
+  "[Auth] Success",
   props<{ payload: AuthenticateResultModel }>()
+);
+
+export const checkAuth = createAction("[Auth] check auth");
+export const handleRedirectSuccess = createAction(
+  "[Auth] redirect",
+  props<{ redirectUrl: string }>()
 );

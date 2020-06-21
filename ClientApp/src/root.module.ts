@@ -16,6 +16,7 @@ import { GestureConfig } from "@angular/material/core";
 import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
 import { environment } from "./environments/environment";
 import { NgbDate, NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { CookieService } from "ngx-cookie-service";
 
 export function convertAbpLocaleToAngularLocale(locale: string): string {
   if (!AppConsts.localeMappings) {
@@ -100,6 +101,7 @@ export function appInitializerFactory(
   ],
   declarations: [RootComponent],
   providers: [
+    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpReqInterceptor, multi: true },
     { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },
     {
