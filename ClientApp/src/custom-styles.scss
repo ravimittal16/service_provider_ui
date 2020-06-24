@@ -98,3 +98,15 @@ a:hover {
 }
 
 //====================================================================
+.btn-outline-primary.disabled,
+.btn-outline-primary:disabled {
+  color: #a8a8a8;
+  background-color: transparent;
+  border-color: #bebebe;
+}
+
+.link {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4f48EC !important;
+}
