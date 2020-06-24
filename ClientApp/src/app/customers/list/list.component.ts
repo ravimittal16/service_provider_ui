@@ -5,6 +5,7 @@ import { Observable, of } from "rxjs";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
 import { tap, map } from "rxjs/operators";
 import { Dictionary } from "@ngrx/entity";
+import { GridOptions, ColDef } from "ag-grid-community";
 
 @Component({
   selector: "app-list",
@@ -16,27 +17,43 @@ export class ListComponent implements OnInit {
   closeResult = "";
   rowData: [] = [];
   customers$: Observable<CustomerDto[]>;
+  gridOptions: GridOptions;
   constructor(
     private modalService: NgbModal,
     private calendar: NgbCalendar,
     private customerFacade: CustomersFacade
   ) {
-    this.customers$ = customerFacade.customers$;
+    this.customers$ = customerFacade.customers$.pipe(
+      tap((customer) => console.log(customer))
+    );
   }
-  columnDefs = [
+
+  importCustomers(): void {
+    this.customerFacade.importCustomers();
+  }
+
+  initGrid() {}
+
+  columnDefs: ColDef[] = [
     {
-      headerName: "Display Name",
       sortable: true,
       filter: true,
       checkboxSelection: true,
+      width: 60,
+      headerCheckboxSelection: true,
     },
     {
-      headerName: "Company Name",
+      headerName: "Display Name",
       field: "displayName",
       sortable: true,
       filter: true,
     },
-    { headerName: "Given Name", field: "price", sortable: true, filter: true },
+    {
+      headerName: "Customer Name",
+      field: "fullName",
+      sortable: true,
+      filter: true,
+    },
     {
       headerName: "Company",
       field: "companyName",
@@ -44,14 +61,21 @@ export class ListComponent implements OnInit {
       filter: true,
     },
     {
-      headerName: "Business Address Name",
-      field: "price",
+      headerName: "Email",
+      field: "primaryEmailAddr",
+      sortable: true,
+      filter: true,
+      width: 250,
+    },
+    {
+      headerName: "Mobile",
+      field: "mobile",
       sortable: true,
       filter: true,
     },
     {
-      headerName: "Customer Since",
-      field: "price",
+      headerName: "Phone",
+      field: "primaryPhone",
       sortable: true,
       filter: true,
     },

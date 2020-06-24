@@ -22,9 +22,9 @@ const customerReducer = createReducer(
     ...state,
     prop: 1,
   })),
-  on(customerActions.customersLoadedAction, (state: CustomerState, props) =>
-    adapter.addMany(props.customers, state)
-  )
+  on(customerActions.customersLoadedAction, (state: CustomerState, props) => {
+    return adapter.addMany(props.customers, state);
+  })
 );
 
 export function reducer(state: CustomerState | undefined, action: Action) {
