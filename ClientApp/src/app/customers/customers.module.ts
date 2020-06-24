@@ -9,6 +9,8 @@ import { SharedModule } from "@shared/shared.module";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CoreDataModule } from "@core-data/core.data.module";
+import { CustomerDisplayNameLinkCellRenderer } from "./grid-cell-renderers/display-name.link.cell.renderer";
+import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 
 @NgModule({
   declarations: [ListComponent],
@@ -20,7 +22,10 @@ import { CoreDataModule } from "@core-data/core.data.module";
     SharedModule,
     CustomersRoutingModule,
     CoreDataModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([
+      CustomerDisplayNameLinkCellRenderer,
+      EmailAddressLinkCellRenderer,
+    ]),
   ],
 })
 export class CustomersModule {}

@@ -1,10 +1,19 @@
 <div class="card">
+  <div class="card-body">
+    <h4>
+      <span>
+        <strong>Sandbox Company_US_1</strong> | <span>CUSTOMERS</span>
+      </span>
+    </h4>
+  </div>
+</div>
+<div class="card mt-1">
   <div class="card-header">
     <div class="row no-gutters">
       <div class="col-md-6">
         <div class="btn-group mr-3">
           <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-outline-primary" ngbDropdownToggle>
+            <button class="btn btn-outline-primary" ngbDropdownToggle [disabled]="selectedRecordsCount === 0">
               Batch Actions
             </button>
             <div class="dropdown-menu" ngbDropdownMenu>
@@ -18,14 +27,13 @@
       <div class="col-md-6">
         <div class="float-right">
           <div class="btn-group">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary" (click)="addNewCustomerClick()">
               <span class="fa fa-plus"></span> New Customer
             </button>
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
               <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
               <div class="dropdown-menu" ngbDropdownMenu>
                 <button ngbDropdownItem (click)="importCustomers()">Import Customers</button>
-                <button ngbDropdownItem>Sync Customers</button>
               </div>
             </div>
           </div>
@@ -34,7 +42,7 @@
     </div>
   </div>
   <div class="card-body">
-    <ag-grid-angular style="width: 100%; height: 80vh;" class="ag-theme-alpine" [columnDefs]="columnDefs"
+    <ag-grid-angular style="width: 100%; height: 80vh;" class="ag-theme-alpine" [gridOptions]="gridOptions"
       [rowData]="customers$ | async">
     </ag-grid-angular>
   </div>
