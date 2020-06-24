@@ -44,3 +44,4 @@ export const selectAllCustomers = customersSelectors.selectAllCustomers;
 // ==========================================================
 export const isAuthenticated = fromAuthSelectors.isAuthenticated;
 export const authToken = fromAuthSelectors.accessToken;
+export const isBusyLogin = fromAuthSelectors.isBusy;

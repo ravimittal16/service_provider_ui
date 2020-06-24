@@ -24,7 +24,7 @@
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
               <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
               <div class="dropdown-menu" ngbDropdownMenu>
-                <button ngbDropdownItem>Import Customers</button>
+                <button ngbDropdownItem (click)="importCustomers()">Import Customers</button>
                 <button ngbDropdownItem>Sync Customers</button>
               </div>
             </div>

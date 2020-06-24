@@ -11,4 +11,5 @@ export interface LoginState {
   isAuthenticated: boolean;
   accessToken: string;
   error: string;
+  userId: string;
 }

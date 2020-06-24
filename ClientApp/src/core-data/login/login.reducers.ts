@@ -11,6 +11,7 @@ export const initialState: LoginState = {
   isAuthenticated: false,
   error: "",
   loginModel: null,
+  userId: "",
 };
 
 const _loginReducer = createReducer(
@@ -19,15 +20,25 @@ const _loginReducer = createReducer(
     ...state,
     isRunning: false,
     accessToken: props.payload.accessToken,
+    userId: props.payload.userId,
+    response: props.payload,
+    isAuthenticated: true,
   })),
   on(loginActions.loginFailure, (state: LoginState) => ({
     ...state,
     errors: ["error while login"],
     isRunning: false,
+    userId: null,
+    isAuthenticated: false,
+    response: null,
   })),
   on(loginActions.loginRunningAction, (state: LoginState, props) => ({
     ...state,
     isRunning: props.payload,
+  })),
+  on(loginActions.loginCompletedAction, (state: LoginState, props) => ({
+    ...state,
+    isRunning: false,
   }))
 );
 

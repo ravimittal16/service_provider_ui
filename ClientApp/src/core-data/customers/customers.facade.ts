@@ -25,4 +25,8 @@ export class CustomersFacade implements Facade {
       customerActions.loadCustomersAction({ companyId: companyId })
     );
   }
+
+  importCustomers() {
+    this.dispatch(customerActions.importCustomerAction());
+  }
 }

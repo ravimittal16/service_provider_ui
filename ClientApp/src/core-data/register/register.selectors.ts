@@ -2,7 +2,7 @@ import { createSelector, createFeatureSelector } from "@ngrx/store";
 import { AccountRegisterState } from "./register.reducers";
 
 export const selectRegisterState = createFeatureSelector<AccountRegisterState>(
-  "accountRegister"
+  "register"
 );
 
 export const errors = (state: AccountRegisterState) => state.errors;

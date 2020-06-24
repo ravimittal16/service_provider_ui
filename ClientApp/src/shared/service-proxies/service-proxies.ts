@@ -311,7 +311,7 @@ export class CustomersServiceProxy {
      * @return Success
      */
     createCustomer(companyId: number | undefined, body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
-        let url_ = this.baseUrl + "/api/customers/CreateCustomer?";
+        let url_ = this.baseUrl + "/api/Customers/CreateCustomer?";
         if (companyId === null)
             throw new Error("The parameter 'companyId' cannot be null.");
         else if (companyId !== undefined)
@@ -367,15 +367,65 @@ export class CustomersServiceProxy {
     }
 
     /**
-     * @param companyId (optional) 
      * @return Success
      */
-    getAllCustomers(companyId: number | undefined): Observable<CustomerDto[]> {
-        let url_ = this.baseUrl + "/api/customers/GetAllCustomers?";
-        if (companyId === null)
-            throw new Error("The parameter 'companyId' cannot be null.");
-        else if (companyId !== undefined)
-            url_ += "companyId=" + encodeURIComponent("" + companyId) + "&";
+    importCustomers(): Observable<DataImportResponseModel[]> {
+        let url_ = this.baseUrl + "/api/Customers/ImportCustomers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportCustomers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportCustomers(<any>response_);
+                } catch (e) {
+                    return <Observable<DataImportResponseModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DataImportResponseModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processImportCustomers(response: HttpResponseBase): Observable<DataImportResponseModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(DataImportResponseModel.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DataImportResponseModel[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllCustomers(): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/Customers/GetAllCustomers";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -495,8 +545,8 @@ export class WeatherForecastServiceProxy {
 }
 
 export class AuthenticateModel implements IAuthenticateModel {
-    userNameOrEmailAddress: string;
-    password: string;
+    userNameOrEmailAddress: string | undefined;
+    password: string | undefined;
     rememberClient: boolean;
 
     constructor(data?: IAuthenticateModel) {
@@ -540,8 +590,8 @@ export class AuthenticateModel implements IAuthenticateModel {
 }
 
 export interface IAuthenticateModel {
-    userNameOrEmailAddress: string;
-    password: string;
+    userNameOrEmailAddress: string | undefined;
+    password: string | undefined;
     rememberClient: boolean;
 }
 
@@ -1008,14 +1058,88 @@ export interface ICreateCustomerModelGenericResponse {
     errorType: ErrorTypes;
 }
 
+export enum EntityTypes {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+    _8 = 8,
+    _9 = 9,
+    _10 = 10,
+    _11 = 11,
+    __1 = -1,
+}
+
+export class DataImportResponseModel implements IDataImportResponseModel {
+    companyId: number;
+    totalImportedRecords: number;
+    isSuccess: boolean | undefined;
+    errors: string | undefined;
+    entityType: EntityTypes;
+
+    constructor(data?: IDataImportResponseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.totalImportedRecords = _data["totalImportedRecords"];
+            this.isSuccess = _data["isSuccess"];
+            this.errors = _data["errors"];
+            this.entityType = _data["entityType"];
+        }
+    }
+
+    static fromJS(data: any): DataImportResponseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new DataImportResponseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["totalImportedRecords"] = this.totalImportedRecords;
+        data["isSuccess"] = this.isSuccess;
+        data["errors"] = this.errors;
+        data["entityType"] = this.entityType;
+        return data; 
+    }
+
+    clone(): DataImportResponseModel {
+        const json = this.toJSON();
+        let result = new DataImportResponseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDataImportResponseModel {
+    companyId: number;
+    totalImportedRecords: number;
+    isSuccess: boolean | undefined;
+    errors: string | undefined;
+    entityType: EntityTypes;
+}
+
 export class CustomerDto implements ICustomerDto {
+    id: number;
     displayName: string | undefined;
-    givenName: string | undefined;
-    middleName: string | undefined;
-    suffix: string | undefined;
-    familyName: string | undefined;
-    title: string | undefined;
+    fullName: string | undefined;
     companyName: string | undefined;
+    primaryEmailAddr: string | undefined;
+    mobile: string | undefined;
+    primaryPhone: string | undefined;
 
     constructor(data?: ICustomerDto) {
         if (data) {
@@ -1028,13 +1152,13 @@ export class CustomerDto implements ICustomerDto {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.displayName = _data["displayName"];
-            this.givenName = _data["givenName"];
-            this.middleName = _data["middleName"];
-            this.suffix = _data["suffix"];
-            this.familyName = _data["familyName"];
-            this.title = _data["title"];
+            this.fullName = _data["fullName"];
             this.companyName = _data["companyName"];
+            this.primaryEmailAddr = _data["primaryEmailAddr"];
+            this.mobile = _data["mobile"];
+            this.primaryPhone = _data["primaryPhone"];
         }
     }
 
@@ -1047,13 +1171,13 @@ export class CustomerDto implements ICustomerDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["displayName"] = this.displayName;
-        data["givenName"] = this.givenName;
-        data["middleName"] = this.middleName;
-        data["suffix"] = this.suffix;
-        data["familyName"] = this.familyName;
-        data["title"] = this.title;
+        data["fullName"] = this.fullName;
         data["companyName"] = this.companyName;
+        data["primaryEmailAddr"] = this.primaryEmailAddr;
+        data["mobile"] = this.mobile;
+        data["primaryPhone"] = this.primaryPhone;
         return data; 
     }
 
@@ -1066,13 +1190,13 @@ export class CustomerDto implements ICustomerDto {
 }
 
 export interface ICustomerDto {
+    id: number;
     displayName: string | undefined;
-    givenName: string | undefined;
-    middleName: string | undefined;
-    suffix: string | undefined;
-    familyName: string | undefined;
-    title: string | undefined;
+    fullName: string | undefined;
     companyName: string | undefined;
+    primaryEmailAddr: string | undefined;
+    mobile: string | undefined;
+    primaryPhone: string | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {

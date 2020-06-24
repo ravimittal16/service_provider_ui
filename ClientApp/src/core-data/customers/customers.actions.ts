@@ -37,3 +37,5 @@ export const loadCustomerErrorAction = createAction(
   "[Customer] Load Error",
   props<{ errors: any[] }>()
 );
+
+export const importCustomerAction = createAction("[Customer] import started");

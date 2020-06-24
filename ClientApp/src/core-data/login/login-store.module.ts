@@ -8,6 +8,7 @@ import { loginReducer } from "./login.reducers";
 
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
 import { LoginFacade } from "./login.facade";
+import { LoginService } from "@shared/services/login.service";
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { LoginFacade } from "./login.facade";
     EffectsModule.forFeature([LoginEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
-  providers: [LoginFacade],
+  providers: [LoginService, LoginFacade],
 })
 export class LoginStoreModule {}
