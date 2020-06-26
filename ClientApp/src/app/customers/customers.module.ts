@@ -19,7 +19,7 @@ const cellRenderers = [
   CustomerActionsCellRenderer,
 ];
 @NgModule({
-  declarations: [ListComponent],
+  declarations: [ListComponent, ...cellRenderers],
   imports: [
     CommonModule,
     SharedModule,

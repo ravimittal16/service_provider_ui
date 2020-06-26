@@ -108,3 +108,25 @@ a:hover {
   font-weight: 400;
   color: #4f48EC !important;
 }
+
+.ag-cell {
+  overflow: visible !important;
+}
+
+.ag-row {
+  z-index: 0 !important;
+}
+
+.ag-row.ag-row-focus {
+  z-index: 1 !important;
+}
+
+.ag-root.ag-layout-auto-height,
+.ag-body-viewport.ag-layout-auto-height,
+.ag-body-viewport-wrapper.ag-layout-auto-height {
+  overflow: visible !important;
+}
+
+.ag-row.ag-row-no-focus.ag-row-level-0.ag-row-position-absolute {
+  z-index: 0;
+}

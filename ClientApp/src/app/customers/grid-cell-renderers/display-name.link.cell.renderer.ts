@@ -7,7 +7,7 @@ import { Component } from "@angular/core";
 
 @Component({
   selector: "app-customer-display-name-link",
-  template: "<a class='btn btn-link link'>{{params.value}}</a>",
+  template: `<a class="btn btn-link link">{{ params.value }}</a>`,
 })
 export class CustomerDisplayNameLinkCellRenderer
   implements ICellRendererAngularComp {

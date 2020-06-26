@@ -1,25 +1,175 @@
-<header>
-  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['home']">
-        Service Provider</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-        aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
-        <ul class="navbar-nav flex-grow">
-          <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['counter']">Counter</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['fetch-data']">Fetch data</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
+<div class="collapse navbar-collapse perfect-scrollbar scrollbar" id="navbarVerticalCollapse">
+  <ul class="navbar-nav flex-column">
+    <li class="nav-item"><a class="nav-link" [routerLink]="['main/dashboard']">
+        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+              class="fa fa-bar-chart"></span></span><span class="nav-link-text"> Dashboard</span>
+        </div>
+      </a></li>
+    <li class="nav-item">
+      <a class="nav-link dropdown-indicator" href="#pages" data-toggle="collapse" role="button" aria-expanded="false"
+        aria-controls="pages">
+        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+              class="fa fa-calendar"></span></span><span class="nav-link-text">Schedule</span>
+        </div>
+      </a>
+      <ul class="nav collapse" id="pages" data-parent="#navbarVerticalCollapse">
+        <li class="nav-item"><a class="nav-link" href="../pages/activity.html">Activity</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/associations.html">Associations</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/billing.html">Billing</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/customer-details.html">Customer details</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/event-detail.html">Event detail</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/event-create.html">Event create</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/events.html">Events</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/faq.html">Faq</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/invoice.html">Invoice</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/invite-people.html">Invite people</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/notifications.html">Notifications</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/people.html">People</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/pricing.html">Pricing</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/pricing-alt.html">Pricing alt</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/profile.html">Profile</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/settings.html">Settings</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../pages/starter.html">Starter</a>
+        </li>
+        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#pages-errors" data-toggle="collapse"
+            role="button" aria-expanded="false" aria-controls="pages-errors">Errors</a>
+          <ul class="nav collapse" id="pages-errors" data-parent="#pages">
+            <li class="nav-item"><a class="nav-link" href="../pages/errors/404.html">404</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../pages/errors/500.html">500</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['customers/list']">
+        <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fa fa-users"></span></span><span
+            class="nav-link-text"> Customers</span>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="../kanban.html">
+        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+              class="fa fa-trello"></span></span><span class="nav-link-text"> Kanban</span>
+        </div>
+      </a></li>
+    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#email" data-toggle="collapse" role="button"
+        aria-expanded="false" aria-controls="email">
+        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+              class="fa fa-envelope-open"></span></span><span class="nav-link-text">Email</span><span
+            class="badge badge-pill ml-2 badge-soft-success"></span>
+        </div>
+      </a>
+      <ul class="nav collapse" id="email" data-parent="#navbarVerticalCollapse">
+        <li class="nav-item"><a class="nav-link" href="../email/inbox.html">Inbox</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../email/email-detail.html">Email detail</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../email/compose.html">Compose</a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#authentication" data-toggle="collapse"
+        role="button" aria-expanded="false" aria-controls="authentication">
+        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+              class="fa fa-unlock-alt"></span></span><span class="nav-link-text">Authentication</span>
+        </div>
+      </a>
+      <ul class="nav collapse" id="authentication" data-parent="#navbarVerticalCollapse">
+        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#authentication-basic" data-toggle="collapse"
+            role="button" aria-expanded="false" aria-controls="authentication-basic">Basic</a>
+          <ul class="nav collapse" id="authentication-basic" data-parent="#authentication">
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/login.html">Login</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/logout.html">Logout</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/register.html">Register</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/forgot-password.html">Forgot
+                password</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/reset-password.html">Reset
+                password</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/confirm-mail.html">Confirm
+                mail</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/basic/lock-screen.html">Lock screen</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#authentication-card" data-toggle="collapse"
+            role="button" aria-expanded="false" aria-controls="authentication-card">Card</a>
+          <ul class="nav collapse" id="authentication-card" data-parent="#authentication">
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/login.html">Login</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/logout.html">Logout</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/register.html">Register</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/forgot-password.html">Forgot
+                password</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/reset-password.html">Reset
+                password</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/confirm-mail.html">Confirm
+                mail</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/card/lock-screen.html">Lock screen</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#authentication-split" data-toggle="collapse"
+            role="button" aria-expanded="false" aria-controls="authentication-split">Split</a>
+          <ul class="nav collapse" id="authentication-split" data-parent="#authentication">
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/login.html">Login</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/logout.html">Logout</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/register.html">Register</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/forgot-password.html">Forgot
+                password</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/reset-password.html">Reset
+                password</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/confirm-mail.html">Confirm
+                mail</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../authentication/split/lock-screen.html">Lock screen</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="../authentication/wizard.html">Wizard</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#!" data-toggle="modal" data-target="#authentication-modal">In
+            Modal</a></li>
+      </ul>
+    </li>
+  </ul>
+  <div class="settings px-3 px-xl-0">
+    <div class="navbar-vertical-divider">
+      <hr class="navbar-vertical-hr my-3" />
+    </div><a class="btn btn-sm btn-block btn-purchase mb-3" [routerLink]="['settings/company']">
+      <i class="fa fa-gear"></i> Settings</a>
+  </div>
+</div>

@@ -46,6 +46,7 @@ export class ListComponent implements OnInit {
       rowSelection: "multiple",
       enableRangeSelection: true,
       suppressCellSelection: true,
+      suppressRowClickSelection: true,
       frameworkComponents: {
         customerDisplayNameLink: CustomerDisplayNameLinkCellRenderer,
         emailAddressLink: EmailAddressLinkCellRenderer,
@@ -66,6 +67,15 @@ export class ListComponent implements OnInit {
       checkboxSelection: true,
       width: 60,
       headerCheckboxSelection: true,
+      pinned: true,
+    },
+    {
+      headerName: "Actions",
+      field: "",
+      width: 80,
+      checkboxSelection: false,
+      suppressSorting: true,
+      cellRenderer: "customerActionsCell",
       pinned: true,
     },
     {
@@ -122,12 +132,6 @@ export class ListComponent implements OnInit {
       filter: true,
       width: 300,
       resizable: true,
-    },
-    {
-      headerName: "Action",
-      field: "",
-      width: 100,
-      cellRenderer: "customerActionsCell",
     },
   ];
 

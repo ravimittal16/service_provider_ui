@@ -12,26 +12,29 @@
     <div class="row no-gutters">
       <div class="col-md-6">
         <div class="btn-group mr-3">
-          <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-outline-primary" ngbDropdownToggle [disabled]="selectedRecordsCount === 0">
+          <div class="btn-group btn-group-sm" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+            <button class="btn btn-light btn-outline-primary" ngbDropdownToggle [disabled]="selectedRecordsCount === 0">
               Batch Actions
+              <span class="badge badge-soft-success badge-pill ml-1" *ngIf="selectedRecordsCount > 0">
+                {{selectedRecordsCount}}</span>
             </button>
             <div class="dropdown-menu" ngbDropdownMenu>
-              <button ngbDropdownItem>One</button>
-              <button ngbDropdownItem>Two</button>
-              <button ngbDropdownItem>Four!</button>
+              <button ngbDropdownItem>Make In-active</button>
+              <button ngbDropdownItem>
+                <span class="text-danger">Delete</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="float-right">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary" (click)="addNewCustomerClick()">
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-light" (click)="addNewCustomerClick()">
               <span class="fa fa-plus"></span> New Customer
             </button>
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-              <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+              <button class="btn btn-light dropdown-toggle-split" ngbDropdownToggle></button>
               <div class="dropdown-menu" ngbDropdownMenu>
                 <button ngbDropdownItem (click)="importCustomers()">
                   Import Customers
