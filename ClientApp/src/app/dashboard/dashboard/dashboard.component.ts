@@ -10,8 +10,8 @@ export class DashboardComponent implements OnInit {
   constructor(private _router: Router) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this._router.navigate(["app/main/welcome"]);
-    }, 5000);
+    // setTimeout(() => {
+    //   this._router.navigate(["app/main/welcome"]);
+    // }, 5000);
   }
 }

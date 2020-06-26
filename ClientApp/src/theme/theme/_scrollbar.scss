@@ -1,0 +1,16 @@
+/*-----------------------------------------------
+|   Scrollbar style for windows
+-----------------------------------------------*/
+.scrollbar{ overflow: auto; }
+.windows{
+  &.chrome{
+    .scrollbar{
+      @include chrome-scrollbar;
+    }
+  }
+  &.firefox{
+    .scrollbar{
+      @include firefox-scrollbar;
+    }
+  }
+}

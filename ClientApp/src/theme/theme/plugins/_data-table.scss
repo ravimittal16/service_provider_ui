@@ -1,0 +1,182 @@
+/*-----------------------------------------------
+|   Data table
+-----------------------------------------------*/
+
+.dataTables_wrapper {
+  .table-dashboard {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  .table-responsive {
+    margin-bottom: map_get($spacers, 3);
+  }
+  .dataTables_info {
+    padding-top: 0 !important;
+    font-size: map_get($font-sizes, "-1");
+  }
+  .data-table.dataTable {
+    border-collapse: collapse !important;
+    td,
+    th {
+      white-space: nowrap;
+    }
+  }
+  .dataTables_filter input {
+    max-width: 15rem;
+  }
+  .dataTable.dtr-inline.collapsed {
+    > tbody > tr[role="row"] {
+      > td {
+        &:first-child,
+        &:last-child {
+          padding-left: 3.125rem !important;
+        }
+      }
+      > td,
+      > th {
+        &:first-child:before {
+          left: 1.25rem !important;
+        }
+      }
+    }
+  }
+
+  .paging_simple {
+    .page-link {
+      border-radius: $border-radius !important;
+      margin-left: map-get($spacers, 2) !important;
+      background-color: $primary;
+      padding-left: map-get($spacers, 4) !important;
+      padding-right: map-get($spacers, 4) !important;
+      border: 0;
+      color: #fff;
+      &:hover {
+        background-color: darken($primary, 7.5%);
+      }
+    }
+    .pagination {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    .dataTables_wrapper {
+      .dataTables_info {
+        padding-top: 0 !important;
+        text-align: left;
+      }
+    }
+  }
+  .disabled {
+    .page-link {
+      background-color: $light !important;
+      color: $gray-600;
+    }
+  }
+
+  .dtr-details {
+    margin-left: 1.875rem !important;
+  }
+  .sort {
+    padding-right: map-get($spacers, 1) !important;
+    &:before {
+      display: none !important;
+    }
+    &:after {
+      position: relative !important;
+      display: inline !important;
+      top: 1px !important;
+      bottom: auto !important;
+      margin-left: 0.75rem !important;
+      opacity: 1 !important;
+    }
+    &.sorting {
+      &:after {
+        content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAMCAYAAABfnvydAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjYyRDM0RDdDQTdDMTExRTlBNTEzQ0Y4MkQzMDY2OEEwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjYyRDM0RDdEQTdDMTExRTlBNTEzQ0Y4MkQzMDY2OEEwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NjJEMzREN0FBN0MxMTFFOUE1MTNDRjgyRDMwNjY4QTAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NjJEMzREN0JBN0MxMTFFOUE1MTNDRjgyRDMwNjY4QTAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6ovByxAAAAkklEQVR42mLcdvASAxI4CsTqQCwOxH9BAkxIks1AbAXEwkA8HyYIUxAKxDVIimOBuATEYAFiTSBewYAJuoH4DMiEtWhWIYOFIBPSoJzfaJIsMOIzEDMC8R80BcxA/B+kYCXUa9jAY5Dd0Qy4QSZIwVkgjsciWQ/EW2GuXwTEk5AkNwBxE3pI5gPxBaij4dYCBBgAAMwZE+SQxfoAAAAASUVORK5CYII=");
+      }
+    }
+    &.sorting_asc {
+      &:after {
+        content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ppVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpCNjRDMURCQUE3QjcxMUU5OTBCNUM1NjUyRkJFMDI2OSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2MTlBNEY0REE4ODQxMUU5QTVDRDg3RDhFMTBBNDI0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2MTlBNEY0Q0E4ODQxMUU5QTVDRDg3RDhFMTBBNDI0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxNSAoV2luZG93cykiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4REIzMjJDQUE3QzAxMUU5QjI4NkY3MTFBN0FGREY0QiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4REIzMjJDQkE3QzAxMUU5QjI4NkY3MTFBN0FGREY0QiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Phben5IAAABUSURBVHjaYtx28BIDEjgNxBpAzAsTYEKSbAJiEyDmAeJF6AoCgbgWSXEsEOeDGCxArAbEaxgwwQQgPgsyYQuaVchgOciEg0B8BYg/oEmCHPoJIMAAKCQNZ8MlE9IAAAAASUVORK5CYII=") !important;
+        top: -2px !important;
+      }
+    }
+    &.sorting_desc {
+      &:after {
+        content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAMCAYAAABfnvydAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUJBRDIwODhBN0MxMTFFOTkwOTJDODBDQUNENkUxNUIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUJBRDIwODdBN0MxMTFFOTkwOTJDODBDQUNENkUxNUIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OUZEREJFQzFBN0I3MTFFOTkzRjRFQ0RGODIxRkNGQUEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OUZEREJFQzJBN0I3MTFFOTkzRjRFQ0RGODIxRkNGQUEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5fe/nQAAAAXElEQVR42mL8//8/Az7AxEAADAYFLNsPXZ4CpKWA+AOaHB8Qv2YBEt5ArIDDgGcgK4Lx2JACUnAOiBOxSDYC8XaYIxcA8UQkyQ1A3IDuiwIgvgHEoLCPggkCBBgArk0Rbfvo4CAAAAAASUVORK5CYII=") !important;
+        top: -2px !important;
+      }
+    }
+  }
+
+  .no-sort {
+    padding-right: map-get($spacers, 1) !important;
+    &:before,
+    &:after {
+      display: none !important;
+    }
+  }
+}
+.data-table-pagination-sm {
+  .paging_simple {
+    .page-link {
+      padding-left: map-get($spacers, 3) !important;
+      padding-right: map-get($spacers, 3) !important;
+      background-color: $gray-200 !important;
+      color: $gray-500 !important;
+      @include hover-focus {
+        background-color: $gray-300 !important;
+        color: $gray-600 !important;
+      }
+    }
+    .disabled {
+      .page-link {
+        background-color: $light !important;
+      }
+    }
+  }
+}
+.falcon-data-table {
+  .data-table {
+    margin: 0 !important;
+  }
+  .paging_full_numbers,
+  .paging_first_last_numbers,
+  .paging_full,
+  .paging_numbers,
+  .paging_simple_numbers {
+    .page-link {
+      @extend .btn;
+      @extend .btn-falcon-default;
+      margin-left: map-get($spacers, 1);
+      margin-right: map-get($spacers, 1);
+      padding: 3px 12px;
+      border-radius: $border-radius !important;
+      border: 1px solid $white !important;
+    }
+    .page-item.active {
+      .page-link {
+        background-color: transparent;
+        color: $primary !important;
+      }
+    }
+  }
+}
+
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > td:first-child:before,
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > th:first-child:before {
+  top: 0.3125rem;
+}
+.data-table-row-bulk-select {
+  width: 1.75rem !important;
+}
+.data-table-row-action {
+  width: 2.5rem !important;
+}
+table.dataTable.table-sm > thead > tr > th :not(.sorting_disabled) {
+  padding-right: 0;
+}

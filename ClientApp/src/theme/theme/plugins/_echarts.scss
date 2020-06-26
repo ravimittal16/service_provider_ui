@@ -1,0 +1,29 @@
+/*-----------------------------------------------
+|   Echarts
+-----------------------------------------------*/
+.echart-bar-weekly-sales {
+  width: 8.5rem;
+}
+.echart-line-total-order {
+  width: 8.75rem;
+  min-height: 5rem;
+}
+.echart-line-total-sales {
+  min-height: 18.4375rem;
+  @include media-breakpoint-up(lg) {
+    min-height: 250px;
+  }
+}
+.echart-bar-top-products {
+  min-height: 18.4375rem;
+  @include media-breakpoint-up(xxl) {
+    min-height: 250px;
+  }
+}
+.echart-doughnut {
+  width: 6.625rem;
+  height: 6.625rem;
+}
+.echart-world-map {
+  min-height: 26.25rem;
+}

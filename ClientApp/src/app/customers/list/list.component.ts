@@ -13,6 +13,7 @@ import { Dictionary } from "@ngrx/entity";
 import { GridOptions, ColDef } from "ag-grid-community";
 import { CustomerDisplayNameLinkCellRenderer } from "../grid-cell-renderers/display-name.link.cell.renderer";
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
+import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.cell.renderer";
 
 @Component({
   selector: "app-list",
@@ -32,9 +33,7 @@ export class ListComponent implements OnInit {
     private customerFacade: CustomersFacade,
     private _cdr: ChangeDetectorRef
   ) {
-    this.customers$ = customerFacade.customers$.pipe(
-      tap((customer) => console.log(customer))
-    );
+    this.customers$ = customerFacade.customers$;
   }
 
   importCustomers(): void {
@@ -46,10 +45,11 @@ export class ListComponent implements OnInit {
       columnDefs: this.columnDefs,
       rowSelection: "multiple",
       enableRangeSelection: true,
-      enableColResize: true,
+      suppressCellSelection: true,
       frameworkComponents: {
         customerDisplayNameLink: CustomerDisplayNameLinkCellRenderer,
         emailAddressLink: EmailAddressLinkCellRenderer,
+        customerActionsCell: CustomerActionsCellRenderer,
       },
       onSelectionChanged: (params) => {
         if (params.api) {
@@ -62,30 +62,35 @@ export class ListComponent implements OnInit {
 
   columnDefs: ColDef[] = [
     {
-      sortable: true,
-      filter: true,
+      resizable: false,
       checkboxSelection: true,
       width: 60,
       headerCheckboxSelection: true,
+      pinned: true,
     },
     {
       headerName: "Display Name",
       field: "displayName",
       sortable: true,
       filter: true,
+      resizable: true,
       cellRenderer: "customerDisplayNameLink",
+      width: 250,
+      pinned: true,
     },
     {
       headerName: "Customer Name",
       field: "fullName",
       sortable: true,
       filter: true,
+      resizable: true,
     },
     {
       headerName: "Company",
       field: "companyName",
       sortable: true,
       filter: true,
+      resizable: true,
     },
     {
       headerName: "Email",
@@ -94,18 +99,35 @@ export class ListComponent implements OnInit {
       filter: true,
       width: 250,
       cellRenderer: "emailAddressLink",
+      resizable: true,
     },
     {
       headerName: "Mobile",
       field: "mobile",
       sortable: true,
       filter: true,
+      resizable: true,
     },
     {
       headerName: "Phone",
       field: "primaryPhone",
       sortable: true,
       filter: true,
+      resizable: true,
+    },
+    {
+      headerName: "Business Address",
+      field: "businessAddress",
+      sortable: true,
+      filter: true,
+      width: 300,
+      resizable: true,
+    },
+    {
+      headerName: "Action",
+      field: "",
+      width: 100,
+      cellRenderer: "customerActionsCell",
     },
   ];
 

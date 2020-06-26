@@ -1,0 +1,35 @@
+/*-----------------------------------------------
+|   Browser Fixing
+-----------------------------------------------*/
+// Firefox fixed
+.firefox {
+  .dropcap:first-letter {
+    margin-top: 0.175em;
+  }
+}
+
+// IE fixed
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  img {
+    max-width: 100%;
+  }
+  .card-img-top {
+    height: 100%;
+    overflow: hidden;
+  }
+  .hoverbox-content img {
+    width: 100%;
+  }
+  .min-vh-100 {
+    height: 100vh;
+  }
+  .customer-name-column {
+    min-width: 11.25rem;
+  }
+  .navbar-vertical.navbar-vibrant {
+    .navbar-collapse {
+      background-image: none;
+      background-color: $primary;
+    }
+  }
+}

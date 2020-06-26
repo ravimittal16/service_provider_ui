@@ -1140,6 +1140,7 @@ export class CustomerDto implements ICustomerDto {
     primaryEmailAddr: string | undefined;
     mobile: string | undefined;
     primaryPhone: string | undefined;
+    businessAddress: string | undefined;
 
     constructor(data?: ICustomerDto) {
         if (data) {
@@ -1159,6 +1160,7 @@ export class CustomerDto implements ICustomerDto {
             this.primaryEmailAddr = _data["primaryEmailAddr"];
             this.mobile = _data["mobile"];
             this.primaryPhone = _data["primaryPhone"];
+            this.businessAddress = _data["businessAddress"];
         }
     }
 
@@ -1178,6 +1180,7 @@ export class CustomerDto implements ICustomerDto {
         data["primaryEmailAddr"] = this.primaryEmailAddr;
         data["mobile"] = this.mobile;
         data["primaryPhone"] = this.primaryPhone;
+        data["businessAddress"] = this.businessAddress;
         return data; 
     }
 
@@ -1197,6 +1200,7 @@ export interface ICustomerDto {
     primaryEmailAddr: string | undefined;
     mobile: string | undefined;
     primaryPhone: string | undefined;
+    businessAddress: string | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {
