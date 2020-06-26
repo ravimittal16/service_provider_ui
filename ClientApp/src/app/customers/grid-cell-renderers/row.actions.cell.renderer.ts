@@ -4,6 +4,7 @@ import {
   ICellRendererParams,
   IAfterGuiAttachedParams,
 } from "ag-grid-community";
+import { ListComponent } from "../list/list.component";
 
 @Component({
   selector: "app-customer-display-name-link",
@@ -17,17 +18,18 @@ import {
         data-boundary="viewport"
         aria-haspopup="true"
         aria-expanded="false"
-        (click)="onClicked()"
       >
-        <span class="fa fa-ellipsis-h fs--2"></span>
+        <span class="fa fa-ellipsis-v fs--2"></span>
       </button>
       <div
         class="dropdown-menu border py-0"
-        [ngClass]="{ show: showingMenu }"
         attr.aria-labelledby="{{ params.data.id }}"
       >
         <div class="bg-white">
           <a class="dropdown-item" (click)="raiseClickEvent('edit')">Edit</a>
+          <a class="dropdown-item" (click)="raiseClickEvent('details')"
+            >Show All Details</a
+          >
           <a class="dropdown-item" (click)="raiseClickEvent('createJob')"
             >Create Job</a
           >
@@ -51,21 +53,26 @@ import {
 export class CustomerActionsCellRenderer
   implements ICellRendererAngularComp, OnDestroy {
   params: any;
-  showingMenu = false;
 
   ngOnDestroy(): void {}
   // ==========================================================
-  // handling click event for each menu item
+  // handling click event for each menu item | triggerCustomerEvent
   // ==========================================================
+  // TODO : REFACTORING REQUIRED
   raiseClickEvent(
-    eventName: "edit" | "createJob" | "createEstimate" | "report" | "delete"
+    eventName:
+      | "edit"
+      | "details"
+      | "createJob"
+      | "createEstimate"
+      | "report"
+      | "delete"
   ): void {
     console.log(eventName);
-    this.showingMenu = !this.showingMenu;
-  }
-
-  onClicked(): void {
-    this.showingMenu = !this.showingMenu;
+    const listComponent = this.params.context as ListComponent;
+    if (listComponent) {
+      listComponent.triggerCustomerEvent(eventName, this.params.data);
+    }
   }
 
   refresh(params: any): boolean {
