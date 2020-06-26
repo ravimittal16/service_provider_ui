@@ -43,7 +43,12 @@ import { ListComponent } from "../list/list.component";
           <a
             class="dropdown-item text-danger"
             (click)="raiseClickEvent('delete')"
-            >Remove</a
+            >Delete customer</a
+          >
+          <a
+            class="dropdown-item text-danger"
+            (click)="raiseClickEvent('in-active')"
+            >Make in-active</a
           >
         </div>
       </div>

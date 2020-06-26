@@ -15,6 +15,7 @@ import { CustomerDisplayNameLinkCellRenderer } from "../grid-cell-renderers/disp
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.cell.renderer";
 import { Router } from "@angular/router";
+import { CustomerEditCreateModalComponent } from "../customer-edit-create-modal/customer-edit-create-modal.component";
 
 @Component({
   selector: "app-list",
@@ -51,6 +52,10 @@ export class ListComponent implements OnInit {
       | "delete",
     customer: CustomerDto
   ) {
+    if (eventName === "edit") {
+      const modalRef = this.modalService.open(CustomerEditCreateModalComponent);
+      modalRef.componentInstance.selectedCustomer = customer;
+    }
     if (eventName === "details") {
       this._router.navigate(["app/customers/detail", customer.id]);
     }

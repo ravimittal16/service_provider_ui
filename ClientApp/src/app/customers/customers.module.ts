@@ -13,6 +13,7 @@ import { CustomerDisplayNameLinkCellRenderer } from "./grid-cell-renderers/displ
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 import { CustomerActionsCellRenderer } from "./grid-cell-renderers/row.actions.cell.renderer";
 import { CustomerDetailComponent } from "./customer-detail/customer-detail.component";
+import { CustomerEditCreateModalComponent } from './customer-edit-create-modal/customer-edit-create-modal.component';
 
 const cellRenderers = [
   CustomerDisplayNameLinkCellRenderer,
@@ -22,7 +23,7 @@ const cellRenderers = [
 
 const _routeComponents = [ListComponent, CustomerDetailComponent];
 @NgModule({
-  declarations: [..._routeComponents, ...cellRenderers],
+  declarations: [..._routeComponents, ...cellRenderers, CustomerEditCreateModalComponent],
   imports: [
     CommonModule,
     SharedModule,
