@@ -11,21 +11,24 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CoreDataModule } from "@core-data/core.data.module";
 import { CustomerDisplayNameLinkCellRenderer } from "./grid-cell-renderers/display-name.link.cell.renderer";
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
+import { CustomerActionsCellRenderer } from "./grid-cell-renderers/row.actions.cell.renderer";
 
+const cellRenderers = [
+  CustomerDisplayNameLinkCellRenderer,
+  EmailAddressLinkCellRenderer,
+  CustomerActionsCellRenderer,
+];
 @NgModule({
   declarations: [ListComponent],
   imports: [
     CommonModule,
+    SharedModule,
+    AgGridModule.withComponents([...cellRenderers]),
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    SharedModule,
     CustomersRoutingModule,
     CoreDataModule,
-    AgGridModule.withComponents([
-      CustomerDisplayNameLinkCellRenderer,
-      EmailAddressLinkCellRenderer,
-    ]),
   ],
 })
 export class CustomersModule {}

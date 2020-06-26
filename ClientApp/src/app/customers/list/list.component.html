@@ -33,7 +33,9 @@
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
               <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
               <div class="dropdown-menu" ngbDropdownMenu>
-                <button ngbDropdownItem (click)="importCustomers()">Import Customers</button>
+                <button ngbDropdownItem (click)="importCustomers()">
+                  Import Customers
+                </button>
               </div>
             </div>
           </div>
@@ -42,8 +44,9 @@
     </div>
   </div>
   <div class="card-body">
-    <ag-grid-angular style="width: 100%; height: 80vh;" class="ag-theme-alpine" [gridOptions]="gridOptions"
-      [rowData]="customers$ | async">
+    <!-- <button mat-raised-button>Your Time</button> -->
+    <ag-grid-angular style="width: 100%; height: calc(100vh - 15.6rem);" class="ag-theme-alpine"
+      [gridOptions]="gridOptions" [rowData]="customers$ | async">
     </ag-grid-angular>
   </div>
 </div>

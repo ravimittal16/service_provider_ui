@@ -1,0 +1,20 @@
+/*-----------------------------------------------
+|   jQuery Validation
+-----------------------------------------------*/
+.form-validation{
+  textarea.error,
+  input.error{
+    border-color: $danger;
+  }
+  label.error{
+    color: $danger;
+  }
+  .custom-checkbox{
+    display: flex;
+    flex-direction: column;
+    .error{
+      display: block;
+      order: 1;
+    }
+  }
+}

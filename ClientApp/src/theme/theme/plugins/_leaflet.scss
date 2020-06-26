@@ -1,0 +1,42 @@
+/*-----------------------------------------------
+|   Leaflet
+-----------------------------------------------*/
+.leaflet-bar{
+  box-shadow: $box-shadow;
+}
+.marker-cluster-small{
+  background-color: rgba($primary, 0.2);
+  div{
+    margin: 5px;
+    background-color: $primary;
+    color: #fff;
+  }
+}
+.marker-cluster-medium{
+  background-color: rgba($warning, 0.2);
+  div{
+    margin: 5px;
+    background-color: $warning;
+    color: #fff;
+  }
+}
+.marker-cluster-large{
+  background-color: rgba($success, 0.2);
+  div{
+    margin: 5px;
+    background-color: $success;
+    color: #fff;
+  }
+}
+.leaflet-popup-content-wrapper{
+  box-shadow: $box-shadow-lg;
+  border-radius: $border-radius;
+}
+.leaflet-popup-close-button{
+  right: 3px !important;
+  top: 3px !important;
+}
+.leaflet-marker-icon{
+  height: auto !important;
+  width: auto !important;
+}

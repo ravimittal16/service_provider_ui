@@ -1,0 +1,26 @@
+/*-----------------------------------------------
+|   Toastr
+-----------------------------------------------*/
+#toast-container{
+  .toast {
+    background-color: $gray-200;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,.1), 0 2px 15px 0 rgba(0,0,0,.05) !important;
+    opacity: 1 !important;
+    border: 0 !important;
+    padding: 13px 16px 13px 50px !important;
+    .toast-close-button{
+      font-size: map_get($font-sizes, 0) !important;
+      text-shadow: none;
+      font-weight: $font-weight-light !important;
+    }
+    .toast-progress{
+      height: 0.125rem !important;
+      background-color: hsla(0,0%,100%,.7) !important;
+      opacity: 1 !important;
+    }
+  }
+  .toast-success { background-color: $success; }
+  .toast-error { background-color: $danger; }
+  .toast-info { background-color: $info; }
+  .toast-warning { background-color: $warning; }
+}

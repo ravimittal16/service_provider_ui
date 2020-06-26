@@ -1,0 +1,99 @@
+/*-----------------------------------------------
+|   Flatpickr
+-----------------------------------------------*/
+
+.flatpickr-calendar{
+  background-color: $white !important;
+  box-shadow: none !important;
+  border: 1px solid $border-color !important;
+  &.arrowTop{
+    &:after{
+      border-bottom-color: $white !important;
+    }
+    &:before{
+      border-bottom-color: $border-color !important;
+    }
+  }
+  &.arrowBottom{
+    &:after{
+      border-top-color: $white !important;
+    }
+    &:before{
+      border-top-color: $border-color !important;
+    }
+  }
+  
+}
+.flatpickr-input{
+  &:disabled,
+  &[readonly]{
+    background-color: $white;
+  }
+}
+.flatpickr-time input{
+  @include hover-focus{
+    background-color: $gray-100 !important;
+  }
+}
+.flatpickr-day{
+  &.endRange,
+  &.startRange{
+    background-color: $primary !important;
+    border: 0;
+    @include hover-focus{
+      background-color: $primary !important;
+    }
+  }
+  &.inRange, 
+  &.prevMonthDay.inRange, 
+  &.nextMonthDay.inRange, 
+  &.today.inRange, 
+  &.prevMonthDay.today.inRange, 
+  &.nextMonthDay.today.inRange, 
+  &:hover, 
+  &.prevMonthDay:hover, 
+  &.nextMonthDay:hover, 
+  &:focus, 
+  &.prevMonthDay:focus, 
+  &.nextMonthDay:focus{
+    background-color: $gray-200;
+    border-color: $gray-200;
+  }
+  &.today{
+    @include hover-focus{
+      background-color: $white;
+      color: $black;
+    }
+  }
+  &.selected{ 
+    background-color: $primary;
+    border-color: $primary; 
+    @include hover-focus{
+      background-color: $primary;
+      border-color: $primary; 
+    }
+  }
+}
+.flatpickr-time {
+  input.flatpickr-hour{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 5px;
+  }
+}
+.flatpickr-calendar.showTimeInput.hasTime .flatpickr-time{
+  border-top: 0 !important;
+}
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)), 
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)), 
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)){
+  box-shadow: none;;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month{
+  background-color: $white !important;
+}
+span.flatpickr-weekday,
+.flatpickr-weekdaycontainer,
+.flatpickr-monthDropdown-months,
+.flatpickr-months .flatpickr-month{
+  background-color: $white !important;
+}

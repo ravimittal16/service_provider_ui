@@ -10,7 +10,6 @@ export class NWTokenService {
 
   getToken(): string {
     // return localStorage.getItem(this.ID_TOKEN);
-    console.log(this.cookieService);
     return this.cookieService.get(this.ID_TOKEN);
   }
 
@@ -26,7 +25,6 @@ export class NWTokenService {
     if (window.localStorage) {
       //localStorage.setItem(this.ID_TOKEN, token);
       this.cookieService.set(this.ID_TOKEN, token);
-      console.log(this.cookieService.get(this.ID_TOKEN));
       if (expirationDate) {
         localStorage.setItem(
           this.ID_TOKEN_EXPIRES_AT,

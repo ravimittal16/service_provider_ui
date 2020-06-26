@@ -10,12 +10,28 @@ import { CommonModule } from "@angular/common";
 import { API_BASE_URL } from "./service-proxies/service-proxies";
 import { LoginService } from "./services/login.service";
 
+import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatIconModule } from "@angular/material/icon";
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from "@angular/material/core";
+
 const directives = [BlockDirective, BusyDirective];
 const components = [AppErrorViewComponent];
+
+const matModules = [MatButtonModule, MatMenuModule, MatIconModule];
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, ...matModules],
   declarations: [LocalizePipe, AppLogoComponent, ...directives, ...components],
-  exports: [LocalizePipe, AppLogoComponent, ...directives, ...components],
+  exports: [
+    LocalizePipe,
+    AppLogoComponent,
+    ...directives,
+    ...components,
+    ...matModules,
+  ],
+  providers: [
+    { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } },
+  ],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
