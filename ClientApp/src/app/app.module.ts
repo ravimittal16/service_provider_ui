@@ -9,8 +9,14 @@ import { HomeComponent } from "./home/home.component";
 import { AppRoutingModule } from "./app-rounting.module";
 import { CommonModule } from "@angular/common";
 import { SharedModule } from "@shared/shared.module";
+import { TopNavMenuComponent } from "./top-nav-menu/top-nav-menu.component";
 
-const _components = [NavMenuComponent, AppComponent, HomeComponent];
+const _components = [
+  NavMenuComponent,
+  AppComponent,
+  HomeComponent,
+  TopNavMenuComponent,
+];
 @NgModule({
   declarations: [..._components],
   imports: [

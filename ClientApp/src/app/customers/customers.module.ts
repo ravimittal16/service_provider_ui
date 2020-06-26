@@ -12,14 +12,17 @@ import { CoreDataModule } from "@core-data/core.data.module";
 import { CustomerDisplayNameLinkCellRenderer } from "./grid-cell-renderers/display-name.link.cell.renderer";
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 import { CustomerActionsCellRenderer } from "./grid-cell-renderers/row.actions.cell.renderer";
+import { CustomerDetailComponent } from "./customer-detail/customer-detail.component";
 
 const cellRenderers = [
   CustomerDisplayNameLinkCellRenderer,
   EmailAddressLinkCellRenderer,
   CustomerActionsCellRenderer,
 ];
+
+const _routeComponents = [ListComponent, CustomerDetailComponent];
 @NgModule({
-  declarations: [ListComponent],
+  declarations: [..._routeComponents, ...cellRenderers],
   imports: [
     CommonModule,
     SharedModule,

@@ -14,6 +14,7 @@ import { GridOptions, ColDef } from "ag-grid-community";
 import { CustomerDisplayNameLinkCellRenderer } from "../grid-cell-renderers/display-name.link.cell.renderer";
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.cell.renderer";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-list",
@@ -29,9 +30,9 @@ export class ListComponent implements OnInit {
   selectedRecordsCount = 0;
   constructor(
     private modalService: NgbModal,
-    private calendar: NgbCalendar,
     private customerFacade: CustomersFacade,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _router: Router
   ) {
     this.customers$ = customerFacade.customers$;
   }
@@ -40,12 +41,29 @@ export class ListComponent implements OnInit {
     this.customerFacade.importCustomers();
   }
 
+  triggerCustomerEvent(
+    eventName:
+      | "edit"
+      | "details"
+      | "createJob"
+      | "createEstimate"
+      | "report"
+      | "delete",
+    customer: CustomerDto
+  ) {
+    if (eventName === "details") {
+      this._router.navigate(["app/customers/detail", customer.id]);
+    }
+  }
+
   initGrid() {
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
+      context: this,
       rowSelection: "multiple",
       enableRangeSelection: true,
       suppressCellSelection: true,
+      suppressRowClickSelection: true,
       frameworkComponents: {
         customerDisplayNameLink: CustomerDisplayNameLinkCellRenderer,
         emailAddressLink: EmailAddressLinkCellRenderer,
@@ -66,6 +84,15 @@ export class ListComponent implements OnInit {
       checkboxSelection: true,
       width: 60,
       headerCheckboxSelection: true,
+      pinned: true,
+    },
+    {
+      headerName: "Actions",
+      field: "",
+      width: 80,
+      checkboxSelection: false,
+      suppressSorting: true,
+      cellRenderer: "customerActionsCell",
       pinned: true,
     },
     {
@@ -122,12 +149,6 @@ export class ListComponent implements OnInit {
       filter: true,
       width: 300,
       resizable: true,
-    },
-    {
-      headerName: "Action",
-      field: "",
-      width: 100,
-      cellRenderer: "customerActionsCell",
     },
   ];
 

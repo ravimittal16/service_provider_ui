@@ -40,6 +40,8 @@
               "src/custom-styles.scss"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/abp-web-resources/Abp/Framework/scripts/abp.js"
             ]
           },

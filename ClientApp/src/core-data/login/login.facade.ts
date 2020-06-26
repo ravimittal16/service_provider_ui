@@ -26,7 +26,7 @@ export class LoginFacade implements Facade {
           if (isAuthenticated) {
             this.dispatch(
               loginActions.handleRedirectSuccess({
-                redirectUrl: "app/main/welcome",
+                redirectUrl: "app/main/dashboard",
               })
             );
           }
