@@ -8,9 +8,10 @@ import { CustomerDto } from "@shared/service-proxies/service-proxies";
   styleUrls: ["./customer-edit-create-modal.component.scss"],
 })
 export class CustomerEditCreateModalComponent implements OnInit {
-  @Input() name;
-  @Input() selectedCustomer: CustomerDto;
+  @Input() selectedCustomer?: CustomerDto;
   constructor(public activeModal: NgbActiveModal) {}
+
+  isForNew = () => this.selectedCustomer === null;
 
   ngOnInit(): void {}
 }

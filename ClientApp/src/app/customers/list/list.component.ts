@@ -42,6 +42,15 @@ export class ListComponent implements OnInit {
     this.customerFacade.importCustomers();
   }
 
+  private _openCustomerModal(customer?: CustomerDto) {
+    const modalRef = this.modalService.open(CustomerEditCreateModalComponent, {
+      size: "lg",
+      keyboard: false,
+      backdrop: "static",
+    });
+    modalRef.componentInstance.selectedCustomer = customer;
+  }
+
   triggerCustomerEvent(
     eventName:
       | "edit"
@@ -53,8 +62,7 @@ export class ListComponent implements OnInit {
     customer: CustomerDto
   ) {
     if (eventName === "edit") {
-      const modalRef = this.modalService.open(CustomerEditCreateModalComponent);
-      modalRef.componentInstance.selectedCustomer = customer;
+      this._openCustomerModal(customer);
     }
     if (eventName === "details") {
       this._router.navigate(["app/customers/detail", customer.id]);
@@ -157,7 +165,9 @@ export class ListComponent implements OnInit {
     },
   ];
 
-  addNewCustomerClick(): void {}
+  addNewCustomerClick(): void {
+    this._openCustomerModal(null);
+  }
 
   ngOnInit(): void {
     this.initGrid();
