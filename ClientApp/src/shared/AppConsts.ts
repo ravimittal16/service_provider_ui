@@ -3,7 +3,7 @@ export enum EntityTypes {
   ADDRESS = 2,
 }
 export enum AddressTypes {
-  SERVICE = -1,
+  SERVICE,
   BUSINESS = 1,
   ALTERNATIVESERVICE = 2,
   LEGAL = 3,

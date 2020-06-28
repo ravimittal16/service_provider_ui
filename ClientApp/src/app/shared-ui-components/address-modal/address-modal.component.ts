@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { EntityTypes, AddressTypes } from "@shared/AppConsts";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AddressDto } from "@shared/service-proxies/service-proxies";
 
 @Component({
   selector: "app-address-modal",
@@ -30,7 +31,9 @@ export class AddressModalComponent implements OnInit {
     }
   }
   onAddressFormSubmit(): void {
-    console.log(this.addressFormGroup.getRawValue());
+    if (this.addressFormGroup.valid) {
+      this.activeModal.close(this.addressFormGroup.getRawValue() as AddressDto);
+    }
   }
   // ==========================================================
   // building address form
@@ -40,7 +43,7 @@ export class AddressModalComponent implements OnInit {
     console.log(this.addressType);
     if (this.addressType) {
       switch (this.addressType) {
-        case AddressTypes.SERVICE:
+        case 0:
           _addressType = "Service";
           break;
         case AddressTypes.BUSINESS:

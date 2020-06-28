@@ -35,16 +35,33 @@ export class CustomerEditCreateModalComponent implements OnInit, AfterViewInit {
   isForNew = () => this.selectedCustomer === null;
 
   openAddAddressModal(): void {
+    this._openAddressModal(null);
+  }
+
+  private _openAddressModal(
+    addressDto?: AddressDto,
+    addressType: AddressTypes = AddressTypes.BUSINESS
+  ): void {
     const _addressModal = this.componentsService.openAddressModal(
       null,
       EntityTypes.CUSTOMER,
       AddressTypes.BUSINESS
     );
     _addressModal.result.then((response) => {
-      console.log(response);
+      if (response) {
+        this.addresses.push(response);
+      }
     });
   }
 
+  triggerAddressAction(
+    action: "edit" | "delete" | "clone",
+    address: AddressDto
+  ): void {
+    if (action === "edit") {
+      this._openAddressModal(address, +address.propertyType);
+    }
+  }
   // ==========================================================
   // this will render a case for switch statement on UI
   // ==========================================================
@@ -57,25 +74,6 @@ export class CustomerEditCreateModalComponent implements OnInit, AfterViewInit {
     }
     return -1;
   }
-
-  // addSampleAddresses() {
-  //   for (let index = 0; index < 2; index++) {
-  //     const _add: AddressDto = new AddressDto({
-  //       addressLine1: "Address Line 1",
-  //       city: "Zumbrota",
-  //       country: "USA",
-  //       countrySubDivisionCode: "MN",
-  //       isPrimary: true,
-  //       postalCode: "55992",
-  //       propertyName: "Company Address",
-  //       propertyType: index,
-  //       addressLine2: "",
-  //       latitude: 0,
-  //       longitude: 0,
-  //     });
-  //     this.addresses.push(_add);
-  //   }
-  // }
 
   ngOnInit(): void {}
 

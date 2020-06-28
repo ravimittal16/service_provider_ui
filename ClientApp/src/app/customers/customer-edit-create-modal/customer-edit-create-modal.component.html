@@ -88,7 +88,8 @@
                         <span>
                           <h5 class="fs-0">{{add.propertyName}} <span
                               class="badge badge-pill badge-soft-primary">Business</span></h5>
-                          <h5 class="fs-1">Your Town at, Zumbrota,MN 64644</h5>
+                          <h5 class="fs-1">{{add.addressLine1}}, {{add.city}},{{add.countrySubDivisionCode}}
+                            {{add.postalCode}}</h5>
                         </span>
                       </div>
                       <div class="col-md-1">
@@ -96,10 +97,11 @@
                           type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
                             class="fa fa-ellipsis-h"></span></button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Clone Address</a>
+                          <a class="dropdown-item" (click)="triggerAddressAction('edit',add)">Edit</a>
+                          <a class="dropdown-item" (click)="triggerAddressAction('clone',add)">Clone Address</a>
                           <div class="dropdown-divider"></div>
-                          <a class="dropdown-item text-danger" href="#">Delete Address</a>
+                          <a class="dropdown-item text-danger" (click)="triggerAddressAction('delete',add)">Delete
+                            Address</a>
                         </div>
                       </div>
                     </div>
