@@ -12,56 +12,56 @@
     <div class="row">
       <div class="col">
         <div class="form-row">
-          <div class="form-group col-md-2">
-            <label for="inputZip">Title</label>
-            <input type="text" class="form-control" id="inputZip">
+          <div class="form-group col-md-2 width-title">
+            <label>Title</label>
+            <input type="text" #titleInput class="form-control" autofocus="">
           </div>
-          <div class="form-group col-md-5">
-            <label for="inputZip">First Name</label>
-            <input type="text" class="form-control" id="inputZip">
+          <div class="form-group col-md-5 width-name">
+            <label>First Name</label>
+            <input type="text" #firstName class="form-control">
           </div>
 
-          <div class="form-group col-md-5">
-            <label for="inputZip">Last Name</label>
-            <input type="text" class="form-control" id="inputZip">
+          <div class="form-group col-md-5 width-name">
+            <label>Last Name</label>
+            <input type="text" class="form-control">
           </div>
         </div>
         <div class="form-group">
-          <label for="inputZip">Company</label>
-          <input type="text" class="form-control" id="inputZip">
+          <label>Company</label>
+          <input type="text" class="form-control">
         </div>
         <div class="form-group">
-          <label for="inputZip">Display name*</label>
-          <input type="text" class="form-control" id="inputZip">
+          <label>Display name*</label>
+          <input type="text" class="form-control">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="inputZip">Email</label>
-          <input type="text" class="form-control" id="inputZip">
+          <label>Email</label>
+          <input type="text" class="form-control">
         </div>
         <div class="form-row">
           <div class="form-group col-md-4">
-            <label for="inputZip">Phone</label>
-            <input type="text" class="form-control" id="inputZip">
+            <label>Phone</label>
+            <input type="text" class="form-control">
           </div>
           <div class="form-group col-md-4">
-            <label for="inputZip">Mobile</label>
-            <input type="text" class="form-control" id="inputZip">
+            <label>Mobile</label>
+            <input type="text" class="form-control">
           </div>
           <div class="form-group col-md-4">
-            <label for="inputZip">Fax</label>
-            <input type="text" class="form-control" id="inputZip">
+            <label>Fax</label>
+            <input type="text" class="form-control">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-4">
-            <label for="inputZip">Other</label>
-            <input type="text" class="form-control" id="inputZip">
+            <label>Other</label>
+            <input type="text" class="form-control">
           </div>
           <div class="form-group col-md-8">
-            <label for="inputZip">Website</label>
-            <input type="text" class="form-control" id="inputZip">
+            <label>Website</label>
+            <input type="text" class="form-control">
           </div>
         </div>
       </div>
@@ -72,12 +72,21 @@
           <ngb-tab title="Address">
             <ng-template ngbTabContent>
               <div class="pt-2">
-                <div class="card">
+                <div [ngSwitch]="addAddressOptions()">
+                  <div *ngSwitchCase="0">
+                    <div class="mt-2">
+                      <button class="btn btn-falcon-primary mr-1 mb-1" type="button" (click)="openAddAddressModal()">
+                        <span class="fa fa-plus mr-1" data-fa-transform="shrink-3"></span>Add New Address
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card mt-1" *ngFor="let add of addresses;">
                   <div class="card-body">
                     <div class="row">
                       <div class="col">
                         <span>
-                          <h5 class="fs-0">Transfer Ownership <span
+                          <h5 class="fs-0">{{add.propertyName}} <span
                               class="badge badge-pill badge-soft-primary">Business</span></h5>
                           <h5 class="fs-1">Your Town at, Zumbrota,MN 64644</h5>
                         </span>
@@ -94,32 +103,6 @@
                         </div>
                       </div>
                     </div>
-
-                  </div>
-                </div>
-                <div class="card mt-1">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <span>
-                          <h5 class="fs-0">Transfer Ownership <span
-                              class="badge badge-pill badge-soft-warning">Service</span></h5>
-                          <h5 class="fs-1">Your Town at,Zumbrota, MN 64644</h5>
-                        </span>
-                      </div>
-                      <div class="col-md-1">
-                        <button class="btn btn-falcon-default btn-sm dropdown-toggle ml-2 dropdown-caret-none"
-                          type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
-                            class="fa fa-ellipsis-h"></span></button>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Clone Address</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item text-danger" href="#">Delete Address</a>
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
               </div>
