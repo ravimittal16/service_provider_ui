@@ -42,12 +42,16 @@ export class ListComponent implements OnInit {
     this.customerFacade.importCustomers();
   }
 
+  // ==========================================================
+  // opening customer edit/add modal pop-up
+  // ==========================================================
   private _openCustomerModal(customer?: CustomerDto) {
     const modalRef = this.modalService.open(CustomerEditCreateModalComponent, {
       size: "lg",
       keyboard: false,
       backdrop: "static",
     });
+    this.customerFacade.loadEditedCustomerDetail(customer.id);
     modalRef.componentInstance.selectedCustomer = customer;
   }
 
