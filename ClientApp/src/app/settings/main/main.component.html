@@ -1,4 +1,4 @@
-<div class="p-1 vh-90">
+<!-- <div class="p-1 vh-90">
   <div class="row">
     <div class="col-md-3 settings-side-panel">
       <div class="card">
@@ -21,6 +21,102 @@
       <div class="card">
         <router-outlet></router-outlet>
       </div>
+    </div>
+  </div>
+</div> -->
+<div>
+  <nav class="navbar navbar-vertical navbar-expand-xl navbar-light navbar-card" style="top:58px;">
+    <div class="collapse navbar-collapse perfect-scrollbar scrollbar bg-soft-secondary"
+      style="height: calc(100vh - 4.2rem);">
+      <ul class="navbar-nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-home"></span></span><span class="nav-link-text"> Company Settings</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-film"></span></span><span class="nav-link-text"> Branding</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-wrench"></span></span><span class="nav-link-text"> Products & Services</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-list-alt"></span></span><span class="nav-link-text"> Custom Fields</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <div class="navbar-vertical-divider">
+            <hr class="navbar-vertical-hr my-3" />
+          </div>
+        </li>
+        <li class="nav-item">
+          <h6>Features</h6>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-money"></span></span><span class="nav-link-text"> Expense Tracking</span>
+            </div>
+          </a>
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-hdd-o"></span></span><span class="nav-link-text"> Equipment Tracking</span>
+            </div>
+          </a>
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-flask"></span></span><span class="nav-link-text"> Chemical Tracking</span>
+            </div>
+          </a>
+          <a class="nav-link" [routerLink]="['main/dashboard']">
+            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                  class="fa fa-envelope-o"></span></span><span class="nav-link-text"> Notifications</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <div class="navbar-vertical-divider">
+            <hr class="navbar-vertical-hr my-3" />
+          </div>
+        </li>
+        <li class="nav-item">
+          <h6>Team Management</h6>
+        </li>
+        <a class="nav-link" [routerLink]="['main/dashboard']">
+          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                class="fa fa-flask"></span></span><span class="nav-link-text"> Manage Teams</span>
+          </div>
+        </a>
+        <a class="nav-link" [routerLink]="['main/dashboard']">
+          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                class="fa fa-flask"></span></span><span class="nav-link-text"> Job Forms</span>
+          </div>
+        </a>
+        <a class="nav-link" [routerLink]="['main/dashboard']">
+          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                class="fa fa-flask"></span></span><span class="nav-link-text"> Access Management</span>
+          </div>
+        </a>
+      </ul>
+    </div>
+  </nav>
+  <div class="content">
+    <div class="card">
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

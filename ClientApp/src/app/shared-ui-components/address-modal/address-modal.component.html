@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h5 class="modal-title">New Address</h5>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="addressFormGroup" (ngSubmit)="onAddressFormSubmit()">
+  <div class="modal-body">
+
+    <div class="form-row">
+      <div class="form-group col-md-8">
+        <label>Address Name*</label>
+        <input type="text" class="form-control form-control-sm" formControlName="propertyName" autofocus
+          autocomplete="new-password" maxlength="100">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Address Type*</label>
+        <select class="form-control form-control-sm" formControlName="propertyType">
+          <option *ngFor="let _adtype of addressTypes" [value]="_adtype.addressTypeId">{{_adtype.typeName}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Address Lilne*</label>
+      <textarea type="text" class="form-control form-control-sm" ngbAutofocus formControlName="addressLine1"
+        autocomplete="new-password" rows="3"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>City</label>
+        <input type="text" class="form-control form-control-sm" formControlName="city" autocomplete="new-password"
+          maxlength="100">
+      </div>
+      <div class="form-group col-md-4">
+        <label>State</label>
+        <input type="text" class="form-control form-control-sm" formControlName="countrySubDivisionCode" maxlength="100"
+          autocomplete="new-password">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Postal Code</label>
+        <input type="text" class="form-control form-control-sm" formControlName="postalCode" maxlength="20"
+          autocomplete="new-password">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark btn-sm mr-1 mb-1"
+      (click)="activeModal.close(null)">Cancel</button>
+    <button type="button" class="btn btn-primary btn-sm mr-1 mb-1" type="submit">Create</button>
+  </div>
+</form>

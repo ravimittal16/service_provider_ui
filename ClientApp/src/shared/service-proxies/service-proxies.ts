@@ -306,16 +306,11 @@ export class CustomersServiceProxy {
     }
 
     /**
-     * @param companyId (optional) 
      * @param body (optional) 
      * @return Success
      */
-    createCustomer(companyId: number | undefined, body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
-        let url_ = this.baseUrl + "/api/Customers/CreateCustomer?";
-        if (companyId === null)
-            throw new Error("The parameter 'companyId' cannot be null.");
-        else if (companyId !== undefined)
-            url_ += "companyId=" + encodeURIComponent("" + companyId) + "&";
+    createCustomer(body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/Customers/CreateCustomer";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -364,6 +359,62 @@ export class CustomersServiceProxy {
             }));
         }
         return _observableOf<CreateCustomerModelGenericResponse>(<any>null);
+    }
+
+    /**
+     * @param customerId (optional) 
+     * @return Success
+     */
+    getCustomerEditDetails(customerId: number | undefined): Observable<CustomerDetailModel> {
+        let url_ = this.baseUrl + "/api/Customers/GetCustomerEditDetails?";
+        if (customerId === null)
+            throw new Error("The parameter 'customerId' cannot be null.");
+        else if (customerId !== undefined)
+            url_ += "customerId=" + encodeURIComponent("" + customerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCustomerEditDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCustomerEditDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomerDetailModel>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomerDetailModel>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCustomerEditDetails(response: HttpResponseBase): Observable<CustomerDetailModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomerDetailModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomerDetailModel>(<any>null);
     }
 
     /**
@@ -907,6 +958,7 @@ export class CreateCustomerModel implements ICreateCustomerModel {
     mobile: string | undefined;
     primaryPhone: string | undefined;
     fax: string | undefined;
+    alternatePhone: string | undefined;
     companyName: string | undefined;
     businessAddress: AddressDto;
     shippingAddress: AddressDto;
@@ -932,6 +984,7 @@ export class CreateCustomerModel implements ICreateCustomerModel {
             this.mobile = _data["mobile"];
             this.primaryPhone = _data["primaryPhone"];
             this.fax = _data["fax"];
+            this.alternatePhone = _data["alternatePhone"];
             this.companyName = _data["companyName"];
             this.businessAddress = _data["businessAddress"] ? AddressDto.fromJS(_data["businessAddress"]) : <any>undefined;
             this.shippingAddress = _data["shippingAddress"] ? AddressDto.fromJS(_data["shippingAddress"]) : <any>undefined;
@@ -957,6 +1010,7 @@ export class CreateCustomerModel implements ICreateCustomerModel {
         data["mobile"] = this.mobile;
         data["primaryPhone"] = this.primaryPhone;
         data["fax"] = this.fax;
+        data["alternatePhone"] = this.alternatePhone;
         data["companyName"] = this.companyName;
         data["businessAddress"] = this.businessAddress ? this.businessAddress.toJSON() : <any>undefined;
         data["shippingAddress"] = this.shippingAddress ? this.shippingAddress.toJSON() : <any>undefined;
@@ -982,6 +1036,7 @@ export interface ICreateCustomerModel {
     mobile: string | undefined;
     primaryPhone: string | undefined;
     fax: string | undefined;
+    alternatePhone: string | undefined;
     companyName: string | undefined;
     businessAddress: AddressDto;
     shippingAddress: AddressDto;
@@ -1056,6 +1111,113 @@ export interface ICreateCustomerModelGenericResponse {
     entity: CreateCustomerModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+}
+
+export class CustomerDetailModel implements ICustomerDetailModel {
+    givenName: string | undefined;
+    middleName: string | undefined;
+    suffix: string | undefined;
+    familyName: string | undefined;
+    fax: string | undefined;
+    webSiteAddress: string | undefined;
+    addresses: AddressDto[] | undefined;
+    id: number;
+    displayName: string | undefined;
+    fullName: string | undefined;
+    companyName: string | undefined;
+    primaryEmailAddr: string | undefined;
+    mobile: string | undefined;
+    primaryPhone: string | undefined;
+    businessAddress: string | undefined;
+
+    constructor(data?: ICustomerDetailModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.givenName = _data["givenName"];
+            this.middleName = _data["middleName"];
+            this.suffix = _data["suffix"];
+            this.familyName = _data["familyName"];
+            this.fax = _data["fax"];
+            this.webSiteAddress = _data["webSiteAddress"];
+            if (Array.isArray(_data["addresses"])) {
+                this.addresses = [] as any;
+                for (let item of _data["addresses"])
+                    this.addresses.push(AddressDto.fromJS(item));
+            }
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+            this.fullName = _data["fullName"];
+            this.companyName = _data["companyName"];
+            this.primaryEmailAddr = _data["primaryEmailAddr"];
+            this.mobile = _data["mobile"];
+            this.primaryPhone = _data["primaryPhone"];
+            this.businessAddress = _data["businessAddress"];
+        }
+    }
+
+    static fromJS(data: any): CustomerDetailModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomerDetailModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["givenName"] = this.givenName;
+        data["middleName"] = this.middleName;
+        data["suffix"] = this.suffix;
+        data["familyName"] = this.familyName;
+        data["fax"] = this.fax;
+        data["webSiteAddress"] = this.webSiteAddress;
+        if (Array.isArray(this.addresses)) {
+            data["addresses"] = [];
+            for (let item of this.addresses)
+                data["addresses"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        data["fullName"] = this.fullName;
+        data["companyName"] = this.companyName;
+        data["primaryEmailAddr"] = this.primaryEmailAddr;
+        data["mobile"] = this.mobile;
+        data["primaryPhone"] = this.primaryPhone;
+        data["businessAddress"] = this.businessAddress;
+        return data; 
+    }
+
+    clone(): CustomerDetailModel {
+        const json = this.toJSON();
+        let result = new CustomerDetailModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICustomerDetailModel {
+    givenName: string | undefined;
+    middleName: string | undefined;
+    suffix: string | undefined;
+    familyName: string | undefined;
+    fax: string | undefined;
+    webSiteAddress: string | undefined;
+    addresses: AddressDto[] | undefined;
+    id: number;
+    displayName: string | undefined;
+    fullName: string | undefined;
+    companyName: string | undefined;
+    primaryEmailAddr: string | undefined;
+    mobile: string | undefined;
+    primaryPhone: string | undefined;
+    businessAddress: string | undefined;
 }
 
 export enum EntityTypes {

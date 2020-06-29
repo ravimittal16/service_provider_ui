@@ -39,6 +39,8 @@ export const selectExternalSignModel =
 // CUSTOMERS
 // ==========================================================
 export const selectAllCustomers = customersSelectors.selectAllCustomers;
+export const selectEditedCustomerDetail =
+  customersSelectors.selectEditedCustomerDetail;
 // ==========================================================
 // LOGIN
 // ==========================================================

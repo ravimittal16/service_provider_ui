@@ -1,0 +1,268 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span *ngIf="isForNew()">New Customer</span>
+    <span *ngIf="!isForNew()">{{ selectedCustomer.displayName }}</span>
+  </h5>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="customerFormGroup" (ngSubmit)="onCustomerSubmitted()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col">
+        <div class="form-row">
+          <div class="form-group col-md-2 width-title">
+            <label>Title</label>
+            <input
+              type="text"
+              #titleInput
+              formControlName="title"
+              class="form-control form-control-sm"
+              autofocus=""
+            />
+          </div>
+          <div class="form-group col-md-5 width-name">
+            <label>First Name</label>
+            <input
+              type="text"
+              #firstName
+              formControlName="givenName"
+              class="form-control form-control-sm"
+            />
+          </div>
+
+          <div class="form-group col-md-5 width-name">
+            <label>Last Name</label>
+            <input
+              type="text"
+              formControlName="familyName"
+              class="form-control form-control-sm"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input
+            type="text"
+            formControlName="companyName"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div class="form-group">
+          <label>Display name*</label>
+          <input
+            type="text"
+            formControlName="displayName"
+            class="form-control form-control-sm"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            formControlName="primaryEmailAddr"
+          />
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Phone</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              formControlName="primaryPhone"
+            />
+          </div>
+          <div class="form-group col-md-4">
+            <label>Mobile</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              formControlName="mobile"
+            />
+          </div>
+          <div class="form-group col-md-4">
+            <label>Fax</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              formControlName="fax"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Other</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              formControlName="alternatePhone"
+            />
+          </div>
+          <div class="form-group col-md-8">
+            <label>Website</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              formControlName="webSiteAddress"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <ngb-tabset [destroyOnHide]="false">
+          <ngb-tab title="Address">
+            <ng-template ngbTabContent>
+              <div class="pt-2">
+                <div [ngSwitch]="addAddressOptions()">
+                  <!-- NO ADDRESS IS ADDED -->
+                  <div *ngSwitchCase="0">
+                    <div class="mt-2">
+                      <button
+                        class="btn btn-falcon-primary btn-sm mr-1 mb-1"
+                        type="button"
+                        (click)="openAddAddressModal(1)"
+                      >
+                        <span
+                          class="fa fa-plus mr-1"
+                          data-fa-transform="shrink-3"
+                        ></span
+                        >Add Business Address
+                      </button>
+                    </div>
+                  </div>
+                  <!-- NO SERVICE ADDRESS BUT BUSINESS ADDRESS ADDED-->
+                  <div *ngSwitchCase="1">
+                    <div class="mt-2">
+                      <button
+                        class="btn btn-outline-primary btn-sm mr-1 mb-1"
+                        type="button"
+                        (click)="openAddAddressModal(0)"
+                      >
+                        <span
+                          class="fa fa-plus mr-1"
+                          data-fa-transform="shrink-3"
+                        ></span
+                        >Add Service Address
+                      </button>
+                      <button
+                        class="btn btn-outline-primary btn-sm mr-1 mb-1"
+                        type="button"
+                        (click)="copyBusinessAsService()"
+                      >
+                        <span
+                          class="fa fa-copy mr-1"
+                          data-fa-transform="shrink-3"
+                        ></span
+                        >Same as Business Address
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card mt-1"
+                  *ngFor="let add of addresses; let i = index"
+                >
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <span>
+                          <h5 class="fs-0">
+                            {{ add.propertyName }}
+                            <span
+                              *ngIf="add.propertyType === 1"
+                              class="badge badge-pill badge-soft-primary"
+                              >Business</span
+                            >
+                            <span
+                              *ngIf="add.propertyType === 0"
+                              class="badge badge-pill badge-soft-warning"
+                              >Service</span
+                            >
+                          </h5>
+                          <h5 class="fs-1">
+                            {{ add.addressLine1 }}, {{ add.city }},
+                            {{ add.countrySubDivisionCode }}
+                            {{ add.postalCode }}
+                          </h5>
+                        </span>
+                      </div>
+                      <div class="col-md-1">
+                        <button
+                          class="btn btn-falcon-default btn-sm dropdown-toggle ml-2 dropdown-caret-none"
+                          type="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <span class="fa fa-ellipsis-h"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a
+                            class="dropdown-item"
+                            (click)="triggerAddressAction('edit', add, i)"
+                            >Edit</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            (click)="triggerAddressAction('clone', add, i)"
+                            >Clone Address</a
+                          >
+                          <div class="dropdown-divider"></div>
+                          <a
+                            class="dropdown-item text-danger"
+                            (click)="triggerAddressAction('delete', add, i)"
+                            >Delete Address</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Notes">
+            <ng-template ngbTabContent>
+              NOTES
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col pl-2" *ngIf="!isForNew()">
+      <div class="float-left">
+        <button class="btn btn-danger btn-sm mr-1 mb-1" type="button">
+          Make In-active
+        </button>
+      </div>
+    </div>
+    <div class="col pr-0">
+      <div class="float-right">
+        <button
+          type="button"
+          class="btn btn-outline-dark btn-sm mr-1 mb-1"
+          (click)="activeModal.close('Close click')"
+        >
+          Cancel
+        </button>
+        <button class="btn btn-primary btn-sm mr-1 mb-1" type="button">
+          <span *ngIf="isForNew()">Create</span>
+          <span *ngIf="!isForNew()">Update</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

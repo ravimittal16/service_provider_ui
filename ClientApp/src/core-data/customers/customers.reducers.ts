@@ -3,6 +3,7 @@ import * as customerActions from "./customers.actions";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
 import { CustomerState } from "./customers.state";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
+import { state } from "@angular/animations";
 
 export const adapter: EntityAdapter<CustomerDto> = createEntityAdapter<
   CustomerDto
@@ -14,6 +15,7 @@ export const initialState: CustomerState = adapter.getInitialState({
   isBusy: false,
   errors: [],
   success: false,
+  editedCustomerDetails: null,
 });
 
 const customerReducer = createReducer(
@@ -24,7 +26,21 @@ const customerReducer = createReducer(
   })),
   on(customerActions.customersLoadedAction, (state: CustomerState, props) => {
     return adapter.addMany(props.customers, state);
-  })
+  }),
+  on(
+    customerActions.editedCustomerDetailsLoaded,
+    (state: CustomerState, props) => ({
+      ...state,
+      editedCustomerDetails: props.details,
+    })
+  ),
+  on(
+    customerActions.clearPreviousEditedDetails,
+    (state: CustomerState, props) => ({
+      ...state,
+      editedCustomerDetails: null,
+    })
+  )
 );
 
 export function reducer(state: CustomerState | undefined, action: Action) {

@@ -2,6 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import {
   CustomerDto,
   CreateCustomerModel,
+  CustomerDetailModel,
 } from "@shared/service-proxies/service-proxies";
 
 export const openCreateModalAction = createAction("[Customer] Open Modal");
@@ -36,6 +37,20 @@ export const customersLoadedAction = createAction(
 export const loadCustomerErrorAction = createAction(
   "[Customer] Load Error",
   props<{ errors: any[] }>()
+);
+
+export const loadEditedCustomerDetails = createAction(
+  "[Customer] Load Customer Details",
+  props<{ customerId: number }>()
+);
+
+export const clearPreviousEditedDetails = createAction(
+  "[Customer] Clear Previous Loaded Customer"
+);
+
+export const editedCustomerDetailsLoaded = createAction(
+  "[Customer] Customer Details Loaded",
+  props<{ details: CustomerDetailModel }>()
 );
 
 export const importCustomerAction = createAction("[Customer] import started");

@@ -2,27 +2,44 @@ import { Facade } from "@core-data/iFacade";
 import { Injectable } from "@angular/core";
 import { Action, Store, select } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { CustomerDto } from "@shared/service-proxies/service-proxies";
+import {
+  CustomerDto,
+  CustomerDetailModel,
+} from "@shared/service-proxies/service-proxies";
 import { CustomerState } from "./customers.state";
 import * as customerActions from "./customers.actions";
-import { selectAllCustomers } from "./customers.selectors";
-
-import { map } from "rxjs/operators";
+import {
+  selectAllCustomers,
+  selectEditedCustomerDetail,
+} from "./customers.selectors";
 
 @Injectable({
   providedIn: "root",
 })
 export class CustomersFacade implements Facade {
   customers$: Observable<CustomerDto[]>;
+  editedCustomerDetails$: Observable<CustomerDetailModel>;
   constructor(private _store: Store<CustomerState>) {
     this.customers$ = this._store.pipe(select(selectAllCustomers));
+    this.editedCustomerDetails$ = this._store.pipe(
+      select(selectEditedCustomerDetail)
+    );
   }
+
   dispatch(action: Action) {
     this._store.dispatch(action);
   }
+
   loadCustomers(companyId: number) {
     this.dispatch(
       customerActions.loadCustomersAction({ companyId: companyId })
+    );
+  }
+
+  loadEditedCustomerDetail(customerId: number) {
+    this.dispatch(customerActions.clearPreviousEditedDetails());
+    this.dispatch(
+      customerActions.loadEditedCustomerDetails({ customerId: customerId })
     );
   }
 

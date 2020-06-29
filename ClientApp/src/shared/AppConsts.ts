@@ -1,3 +1,14 @@
+export enum EntityTypes {
+  CUSTOMER = 1,
+  ADDRESS = 2,
+}
+export enum AddressTypes {
+  SERVICE,
+  BUSINESS = 1,
+  ALTERNATIVESERVICE = 2,
+  LEGAL = 3,
+  OTHER = 4,
+}
 export class AppConsts {
   static remoteServiceBaseUrl: string = "http://localhost:2158";
   static appBaseUrl: string = "app/home";

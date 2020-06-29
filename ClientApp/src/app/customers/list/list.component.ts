@@ -15,6 +15,7 @@ import { CustomerDisplayNameLinkCellRenderer } from "../grid-cell-renderers/disp
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.cell.renderer";
 import { Router } from "@angular/router";
+import { CustomerEditCreateModalComponent } from "../customer-edit-create-modal/customer-edit-create-modal.component";
 
 @Component({
   selector: "app-list",
@@ -41,6 +42,19 @@ export class ListComponent implements OnInit {
     this.customerFacade.importCustomers();
   }
 
+  // ==========================================================
+  // opening customer edit/add modal pop-up
+  // ==========================================================
+  private _openCustomerModal(customer?: CustomerDto) {
+    const modalRef = this.modalService.open(CustomerEditCreateModalComponent, {
+      size: "lg",
+      keyboard: false,
+      backdrop: "static",
+    });
+    this.customerFacade.loadEditedCustomerDetail(customer.id);
+    modalRef.componentInstance.selectedCustomer = customer;
+  }
+
   triggerCustomerEvent(
     eventName:
       | "edit"
@@ -51,6 +65,9 @@ export class ListComponent implements OnInit {
       | "delete",
     customer: CustomerDto
   ) {
+    if (eventName === "edit") {
+      this._openCustomerModal(customer);
+    }
     if (eventName === "details") {
       this._router.navigate(["app/customers/detail", customer.id]);
     }
@@ -152,7 +169,9 @@ export class ListComponent implements OnInit {
     },
   ];
 
-  addNewCustomerClick(): void {}
+  addNewCustomerClick(): void {
+    this._openCustomerModal(null);
+  }
 
   ngOnInit(): void {
     this.initGrid();

@@ -3,11 +3,16 @@ import { CustomerState } from "./customers.state";
 
 import * as fromCustomerReducers from "./customers.reducers";
 
-export const selectCustomersFeature = createFeatureSelector<CustomerState>(
+export const customerFeatureState = createFeatureSelector<CustomerState>(
   "customers"
 );
 
 export const selectAllCustomers = createSelector(
-  selectCustomersFeature,
+  customerFeatureState,
   fromCustomerReducers.selectAllCustomers
+);
+
+export const selectEditedCustomerDetail = createSelector(
+  customerFeatureState,
+  (state) => state.editedCustomerDetails
 );
