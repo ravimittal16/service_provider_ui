@@ -3,7 +3,6 @@ import * as customerActions from "./customers.actions";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
 import { CustomerState } from "./customers.state";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-import { state } from "@angular/animations";
 
 export const adapter: EntityAdapter<CustomerDto> = createEntityAdapter<
   CustomerDto
@@ -24,23 +23,28 @@ const customerReducer = createReducer(
     ...state,
     prop: 1,
   })),
-  on(customerActions.customersLoadedAction, (state: CustomerState, props) => {
+  on(customerActions.customersLoadedAction, (state, props) => {
     return adapter.addMany(props.customers, state);
   }),
+  on(customerActions.editedCustomerDetailsLoaded, (state, props) => ({
+    ...state,
+    editedCustomerDetails: props.details,
+  })),
+  on(customerActions.clearPreviousEditedDetails, (state, props) => ({
+    ...state,
+    editedCustomerDetails: null,
+  })),
   on(
-    customerActions.editedCustomerDetailsLoaded,
-    (state: CustomerState, props) => ({
-      ...state,
-      editedCustomerDetails: props.details,
-    })
-  ),
-  on(
-    customerActions.clearPreviousEditedDetails,
-    (state: CustomerState, props) => ({
+    customerActions.createEditCustomerModalDismissedAction,
+    (state, props) => ({
       ...state,
       editedCustomerDetails: null,
     })
-  )
+  ),
+  on(customerActions.createCustomerErrorAction, (state, props) => ({
+    ...state,
+    errors: props.errors,
+  }))
 );
 
 export function reducer(state: CustomerState | undefined, action: Action) {

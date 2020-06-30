@@ -14,6 +14,7 @@ import {
   CustomerDto,
   AddressDto,
   CustomerDetailModel,
+  CustomerModel,
 } from "@shared/service-proxies/service-proxies";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 
@@ -85,7 +86,6 @@ export class CustomerEditCreateModalComponent
     if (action === "delete") {
       if (this.isForNew()) {
         this.addresses.splice(index, 1);
-        console.log(this.addresses);
         this._cdr.detectChanges();
       } else {
         //TODO: RUN THROUGH SERVICE
@@ -134,9 +134,18 @@ export class CustomerEditCreateModalComponent
   private _subscribeToEditedCustomerDetails() {
     this.subs.add(
       this.editedCustomerDetails$.subscribe((details) => {
-        if (details && details.id === this.selectedCustomer.id) {
+        if (
+          details &&
+          this.selectedCustomer &&
+          details.id === this.selectedCustomer.id
+        ) {
           this._customerDetailModel = details;
-          this._patchFormValues(details);
+          // ==========================================================
+          // patch values to form in case of edit customer
+          // ==========================================================
+          if (!this.isForNew()) {
+            this._patchFormValues(details);
+          }
         }
       })
     );
@@ -145,7 +154,6 @@ export class CustomerEditCreateModalComponent
   // ==========================================================
   // patching form values from edited object
   // ==========================================================
-
   private _patchFormValues(details: CustomerDetailModel) {
     var _keys = Object.keys(details);
     _keys.forEach((key) => {
@@ -157,11 +165,28 @@ export class CustomerEditCreateModalComponent
     });
     this.addresses = details.addresses;
     this._cdr.detectChanges();
-    console.log(this.addresses);
   }
 
   onCustomerSubmitted(): void {
-    console.log(this.customerFormGroup.getRawValue());
+    console.log(this.customerFormGroup);
+    if (this.customerFormGroup.valid) {
+      var _customerDto: CustomerModel = this.customerFormGroup.getRawValue();
+      if (this.addresses && this.addresses.length > 0) {
+        const businessAddress = this.addresses.filter(
+          (x) => +x.propertyType === AddressTypes.BUSINESS
+        );
+        const _sa = this.addresses.filter(
+          (x) => +x.propertyType === +AddressTypes.SERVICE
+        );
+        if (businessAddress.length > 0) {
+          _customerDto.businessAddress = Object.assign({}, businessAddress[0]);
+        }
+        if (_sa.length > 0) {
+          _customerDto.serviceAddress = Object.assign({}, _sa[0]);
+        }
+      }
+      this.customerFacade.saveUpdateCustomer(_customerDto);
+    }
   }
 
   private buildForm() {
@@ -173,15 +198,21 @@ export class CustomerEditCreateModalComponent
       suffix: [""],
       familyName: [""],
       title: [""],
-      primaryEmailAddr: [""],
+      primaryEmailAddr: ["", [Validators.maxLength(100)]],
       mobile: [""],
       primaryPhone: [""],
       fax: [""],
       companyName: [""],
       alternatePhone: [""],
       webSiteAddress: [""],
+      sourceId: [""],
     });
     this._subscribeToEditedCustomerDetails();
+
+    //TODO: NEED TO WRITE A WRAPPER FOR FORMS
+    if (!this.isForNew()) {
+      this.customerFormGroup.get("displayName").disable();
+    }
   }
 
   ngOnInit(): void {

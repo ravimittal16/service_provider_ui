@@ -1,14 +1,14 @@
 import { createAction, props } from "@ngrx/store";
 import {
   CustomerDto,
-  CreateCustomerModel,
+  CustomerModel,
   CustomerDetailModel,
 } from "@shared/service-proxies/service-proxies";
 
 export const openCreateModalAction = createAction("[Customer] Open Modal");
-export const processCreateCustomerAction = createAction(
+export const processCreateEditCustomerAction = createAction(
   "[Customer] Open Create Sent",
-  props<{ customerModel: CreateCustomerModel }>()
+  props<{ customerModel: CustomerModel }>()
 );
 export const createCustomerSuccessAction = createAction(
   "[Customer] Create Customer Success",
@@ -18,14 +18,18 @@ export const createCustomerErrorAction = createAction(
   "[Customer] Create Customer Error",
   props<{ errors: string[] }>()
 );
-export const createCustomerModalDismissedAction = createAction(
-  "[Customer] Create Customer Modal Dismissed",
+export const createEditCustomerModalDismissedAction = createAction(
+  "[Customer] Create/Edit Customer Modal Dismissed",
   props<{ dismissedResons: any }>()
 );
 export const createCustomerBusyStateAction = createAction(
   "[Customer] Create Customer Modal Busy State",
   props<{ isBusy: boolean }>()
 );
+// ==========================================================
+// IMPORT CUSTOMER ACTIONS
+// ==========================================================
+
 export const loadCustomersAction = createAction(
   "[Customer] Load",
   props<{ companyId: number }>()
@@ -39,6 +43,11 @@ export const loadCustomerErrorAction = createAction(
   props<{ errors: any[] }>()
 );
 
+export const importCustomerAction = createAction("[Customer] import started");
+
+// ==========================================================
+// EDIT CUSTOMER ACTIONS
+// ==========================================================
 export const loadEditedCustomerDetails = createAction(
   "[Customer] Load Customer Details",
   props<{ customerId: number }>()
@@ -52,5 +61,3 @@ export const editedCustomerDetailsLoaded = createAction(
   "[Customer] Customer Details Loaded",
   props<{ details: CustomerDetailModel }>()
 );
-
-export const importCustomerAction = createAction("[Customer] import started");

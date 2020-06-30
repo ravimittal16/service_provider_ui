@@ -15,6 +15,7 @@ import { CustomerActionsCellRenderer } from "./grid-cell-renderers/row.actions.c
 import { CustomerDetailComponent } from "./customer-detail/customer-detail.component";
 import { CustomerEditCreateModalComponent } from "./customer-edit-create-modal/customer-edit-create-modal.component";
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
+import { NgxMaskModule, IConfig } from "ngx-mask";
 
 const cellRenderers = [
   CustomerDisplayNameLinkCellRenderer,
@@ -32,6 +33,7 @@ const _routeComponents = [ListComponent, CustomerDetailComponent];
   imports: [
     CommonModule,
     SharedModule,
+    NgxMaskModule.forRoot(),
     AgGridModule.withComponents([...cellRenderers]),
     FormsModule,
     ReactiveFormsModule,
