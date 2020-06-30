@@ -45,6 +45,28 @@ export class CustomerEffects {
     );
   });
 
+  saveCustomer$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.processCreateEditCustomerAction),
+      /** An EMPTY observable only emits completion. Replace with your own observable stream */
+      mergeMap((action) =>
+        this.customerService.createUpdateCustomer(action.customerModel).pipe(
+          map((res) => {
+            if (res.isSuccess) {
+              return customerActions.createCustomerSuccessAction({
+                customerModelResponse: res,
+              });
+            } else {
+              return customerActions.createCustomerErrorAction({
+                errors: res.errors,
+              });
+            }
+          })
+        )
+      )
+    );
+  });
+
   customers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(customerActions.loadCustomersAction),

@@ -309,8 +309,8 @@ export class CustomersServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createCustomer(body: CreateCustomerModel | undefined): Observable<CreateCustomerModelGenericResponse> {
-        let url_ = this.baseUrl + "/api/Customers/CreateCustomer";
+    createUpdateCustomer(body: CustomerModel | undefined): Observable<CustomerModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/Customers/CreateUpdateCustomer";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -326,20 +326,20 @@ export class CustomersServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateCustomer(response_);
+            return this.processCreateUpdateCustomer(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateCustomer(<any>response_);
+                    return this.processCreateUpdateCustomer(<any>response_);
                 } catch (e) {
-                    return <Observable<CreateCustomerModelGenericResponse>><any>_observableThrow(e);
+                    return <Observable<CustomerModelGenericResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<CreateCustomerModelGenericResponse>><any>_observableThrow(response_);
+                return <Observable<CustomerModelGenericResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateCustomer(response: HttpResponseBase): Observable<CreateCustomerModelGenericResponse> {
+    protected processCreateUpdateCustomer(response: HttpResponseBase): Observable<CustomerModelGenericResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -350,7 +350,7 @@ export class CustomersServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CreateCustomerModelGenericResponse.fromJS(resultData200);
+            result200 = CustomerModelGenericResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -358,7 +358,7 @@ export class CustomersServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<CreateCustomerModelGenericResponse>(<any>null);
+        return _observableOf<CustomerModelGenericResponse>(<any>null);
     }
 
     /**
@@ -876,6 +876,7 @@ export class AddressDto implements IAddressDto {
     latitude: number | undefined;
     longitude: number | undefined;
     isPrimary: boolean | undefined;
+    readonly formattedAddress: string | undefined;
 
     constructor(data?: IAddressDto) {
         if (data) {
@@ -899,6 +900,7 @@ export class AddressDto implements IAddressDto {
             this.latitude = _data["latitude"];
             this.longitude = _data["longitude"];
             this.isPrimary = _data["isPrimary"];
+            (<any>this).formattedAddress = _data["formattedAddress"];
         }
     }
 
@@ -922,6 +924,7 @@ export class AddressDto implements IAddressDto {
         data["latitude"] = this.latitude;
         data["longitude"] = this.longitude;
         data["isPrimary"] = this.isPrimary;
+        data["formattedAddress"] = this.formattedAddress;
         return data; 
     }
 
@@ -945,9 +948,11 @@ export interface IAddressDto {
     latitude: number | undefined;
     longitude: number | undefined;
     isPrimary: boolean | undefined;
+    formattedAddress: string | undefined;
 }
 
-export class CreateCustomerModel implements ICreateCustomerModel {
+export class CustomerModel implements ICustomerModel {
+    id: number;
     displayName: string | undefined;
     givenName: string | undefined;
     middleName: string | undefined;
@@ -960,10 +965,12 @@ export class CreateCustomerModel implements ICreateCustomerModel {
     fax: string | undefined;
     alternatePhone: string | undefined;
     companyName: string | undefined;
+    sourceId: string | undefined;
+    webSiteAddress: string | undefined;
     businessAddress: AddressDto;
-    shippingAddress: AddressDto;
+    serviceAddress: AddressDto;
 
-    constructor(data?: ICreateCustomerModel) {
+    constructor(data?: ICustomerModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -974,6 +981,7 @@ export class CreateCustomerModel implements ICreateCustomerModel {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.displayName = _data["displayName"];
             this.givenName = _data["givenName"];
             this.middleName = _data["middleName"];
@@ -986,20 +994,23 @@ export class CreateCustomerModel implements ICreateCustomerModel {
             this.fax = _data["fax"];
             this.alternatePhone = _data["alternatePhone"];
             this.companyName = _data["companyName"];
+            this.sourceId = _data["sourceId"];
+            this.webSiteAddress = _data["webSiteAddress"];
             this.businessAddress = _data["businessAddress"] ? AddressDto.fromJS(_data["businessAddress"]) : <any>undefined;
-            this.shippingAddress = _data["shippingAddress"] ? AddressDto.fromJS(_data["shippingAddress"]) : <any>undefined;
+            this.serviceAddress = _data["serviceAddress"] ? AddressDto.fromJS(_data["serviceAddress"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): CreateCustomerModel {
+    static fromJS(data: any): CustomerModel {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateCustomerModel();
+        let result = new CustomerModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["displayName"] = this.displayName;
         data["givenName"] = this.givenName;
         data["middleName"] = this.middleName;
@@ -1012,20 +1023,23 @@ export class CreateCustomerModel implements ICreateCustomerModel {
         data["fax"] = this.fax;
         data["alternatePhone"] = this.alternatePhone;
         data["companyName"] = this.companyName;
+        data["sourceId"] = this.sourceId;
+        data["webSiteAddress"] = this.webSiteAddress;
         data["businessAddress"] = this.businessAddress ? this.businessAddress.toJSON() : <any>undefined;
-        data["shippingAddress"] = this.shippingAddress ? this.shippingAddress.toJSON() : <any>undefined;
+        data["serviceAddress"] = this.serviceAddress ? this.serviceAddress.toJSON() : <any>undefined;
         return data; 
     }
 
-    clone(): CreateCustomerModel {
+    clone(): CustomerModel {
         const json = this.toJSON();
-        let result = new CreateCustomerModel();
+        let result = new CustomerModel();
         result.init(json);
         return result;
     }
 }
 
-export interface ICreateCustomerModel {
+export interface ICustomerModel {
+    id: number;
     displayName: string | undefined;
     givenName: string | undefined;
     middleName: string | undefined;
@@ -1038,19 +1052,21 @@ export interface ICreateCustomerModel {
     fax: string | undefined;
     alternatePhone: string | undefined;
     companyName: string | undefined;
+    sourceId: string | undefined;
+    webSiteAddress: string | undefined;
     businessAddress: AddressDto;
-    shippingAddress: AddressDto;
+    serviceAddress: AddressDto;
 }
 
-export class CreateCustomerModelGenericResponse implements ICreateCustomerModelGenericResponse {
+export class CustomerModelGenericResponse implements ICustomerModelGenericResponse {
     httpStatusCode: number;
     readonly hasError: boolean;
     isSuccess: boolean;
-    entity: CreateCustomerModel;
+    entity: CustomerModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
 
-    constructor(data?: ICreateCustomerModelGenericResponse) {
+    constructor(data?: ICustomerModelGenericResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1064,7 +1080,7 @@ export class CreateCustomerModelGenericResponse implements ICreateCustomerModelG
             this.httpStatusCode = _data["httpStatusCode"];
             (<any>this).hasError = _data["hasError"];
             this.isSuccess = _data["isSuccess"];
-            this.entity = _data["entity"] ? CreateCustomerModel.fromJS(_data["entity"]) : <any>undefined;
+            this.entity = _data["entity"] ? CustomerModel.fromJS(_data["entity"]) : <any>undefined;
             if (Array.isArray(_data["errors"])) {
                 this.errors = [] as any;
                 for (let item of _data["errors"])
@@ -1074,9 +1090,9 @@ export class CreateCustomerModelGenericResponse implements ICreateCustomerModelG
         }
     }
 
-    static fromJS(data: any): CreateCustomerModelGenericResponse {
+    static fromJS(data: any): CustomerModelGenericResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateCustomerModelGenericResponse();
+        let result = new CustomerModelGenericResponse();
         result.init(data);
         return result;
     }
@@ -1096,30 +1112,33 @@ export class CreateCustomerModelGenericResponse implements ICreateCustomerModelG
         return data; 
     }
 
-    clone(): CreateCustomerModelGenericResponse {
+    clone(): CustomerModelGenericResponse {
         const json = this.toJSON();
-        let result = new CreateCustomerModelGenericResponse();
+        let result = new CustomerModelGenericResponse();
         result.init(json);
         return result;
     }
 }
 
-export interface ICreateCustomerModelGenericResponse {
+export interface ICustomerModelGenericResponse {
     httpStatusCode: number;
     hasError: boolean;
     isSuccess: boolean;
-    entity: CreateCustomerModel;
+    entity: CustomerModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
 }
 
 export class CustomerDetailModel implements ICustomerDetailModel {
     givenName: string | undefined;
+    title: string | undefined;
     middleName: string | undefined;
     suffix: string | undefined;
     familyName: string | undefined;
     fax: string | undefined;
     webSiteAddress: string | undefined;
+    alternatePhone: string | undefined;
+    sourceId: string | undefined;
     addresses: AddressDto[] | undefined;
     id: number;
     displayName: string | undefined;
@@ -1142,11 +1161,14 @@ export class CustomerDetailModel implements ICustomerDetailModel {
     init(_data?: any) {
         if (_data) {
             this.givenName = _data["givenName"];
+            this.title = _data["title"];
             this.middleName = _data["middleName"];
             this.suffix = _data["suffix"];
             this.familyName = _data["familyName"];
             this.fax = _data["fax"];
             this.webSiteAddress = _data["webSiteAddress"];
+            this.alternatePhone = _data["alternatePhone"];
+            this.sourceId = _data["sourceId"];
             if (Array.isArray(_data["addresses"])) {
                 this.addresses = [] as any;
                 for (let item of _data["addresses"])
@@ -1173,11 +1195,14 @@ export class CustomerDetailModel implements ICustomerDetailModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["givenName"] = this.givenName;
+        data["title"] = this.title;
         data["middleName"] = this.middleName;
         data["suffix"] = this.suffix;
         data["familyName"] = this.familyName;
         data["fax"] = this.fax;
         data["webSiteAddress"] = this.webSiteAddress;
+        data["alternatePhone"] = this.alternatePhone;
+        data["sourceId"] = this.sourceId;
         if (Array.isArray(this.addresses)) {
             data["addresses"] = [];
             for (let item of this.addresses)
@@ -1204,11 +1229,14 @@ export class CustomerDetailModel implements ICustomerDetailModel {
 
 export interface ICustomerDetailModel {
     givenName: string | undefined;
+    title: string | undefined;
     middleName: string | undefined;
     suffix: string | undefined;
     familyName: string | undefined;
     fax: string | undefined;
     webSiteAddress: string | undefined;
+    alternatePhone: string | undefined;
+    sourceId: string | undefined;
     addresses: AddressDto[] | undefined;
     id: number;
     displayName: string | undefined;

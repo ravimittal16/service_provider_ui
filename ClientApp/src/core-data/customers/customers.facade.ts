@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import {
   CustomerDto,
   CustomerDetailModel,
+  CustomerModel,
 } from "@shared/service-proxies/service-proxies";
 import { CustomerState } from "./customers.state";
 import * as customerActions from "./customers.actions";
@@ -28,6 +29,14 @@ export class CustomersFacade implements Facade {
 
   dispatch(action: Action) {
     this._store.dispatch(action);
+  }
+
+  saveUpdateCustomer(customerModel: CustomerModel) {
+    this.dispatch(
+      customerActions.processCreateEditCustomerAction({
+        customerModel: customerModel,
+      })
+    );
   }
 
   loadCustomers(companyId: number) {
