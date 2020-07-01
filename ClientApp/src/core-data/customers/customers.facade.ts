@@ -12,6 +12,7 @@ import * as customerActions from "./customers.actions";
 import {
   selectAllCustomers,
   selectEditedCustomerDetail,
+  selectCustomerErrors,
 } from "./customers.selectors";
 
 @Injectable({
@@ -20,11 +21,13 @@ import {
 export class CustomersFacade implements Facade {
   customers$: Observable<CustomerDto[]>;
   editedCustomerDetails$: Observable<CustomerDetailModel>;
+  errors$: Observable<string[]>;
   constructor(private _store: Store<CustomerState>) {
     this.customers$ = this._store.pipe(select(selectAllCustomers));
     this.editedCustomerDetails$ = this._store.pipe(
       select(selectEditedCustomerDetail)
     );
+    this.errors$ = this._store.pipe(select(selectCustomerErrors));
   }
 
   dispatch(action: Action) {

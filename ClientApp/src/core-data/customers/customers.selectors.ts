@@ -16,3 +16,8 @@ export const selectEditedCustomerDetail = createSelector(
   customerFeatureState,
   (state) => state.editedCustomerDetails
 );
+
+export const selectCustomerErrors = createSelector(
+  customerFeatureState,
+  (state) => state.errors
+);
