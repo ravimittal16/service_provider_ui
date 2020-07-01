@@ -10,7 +10,7 @@
 <form [formGroup]="customerFormGroup" (ngSubmit)="onCustomerSubmitted()">
 
   <div class="modal-body">
-    <app-error-view [errors$]="errors$"></app-error-view>
+    <app-error-view [errors$]="errors$" [observableDefined]="true"></app-error-view>
     <div class="row">
       <div class="col">
         <div class="form-row">
