@@ -6,15 +6,19 @@ import {
   CustomerDto,
 } from "@shared/service-proxies/service-proxies";
 import { Observable, of } from "rxjs";
-import { mergeMap, map, catchError } from "rxjs/operators";
+import { mergeMap, map, catchError, switchMap } from "rxjs/operators";
 import { take } from "lodash";
+import { BaseEffect } from "@core-data/base.effect";
+import { errors } from "@core-data/register/register.selectors";
 
 @Injectable()
-export class CustomerEffects {
+export class CustomerEffects extends BaseEffect {
   constructor(
     private customerService: CustomersServiceProxy,
     private actions$: Actions
-  ) {}
+  ) {
+    super();
+  }
 
   importCustomers$ = createEffect(() => {
     return this.actions$.pipe(
@@ -52,6 +56,7 @@ export class CustomerEffects {
       mergeMap((action) =>
         this.customerService.createUpdateCustomer(action.customerModel).pipe(
           map((res) => {
+            console.log(res);
             if (res.isSuccess) {
               return customerActions.createCustomerSuccessAction({
                 customerModelResponse: res,
@@ -61,6 +66,17 @@ export class CustomerEffects {
                 errors: res.errors,
               });
             }
+          }),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  customerActions.createCustomerErrorAction({
+                    errors: [error],
+                  })
+                );
+              })
+            );
           })
         )
       )

@@ -1,6 +1,12 @@
 import * as _ from "lodash";
 import { AppConsts } from "@shared/AppConsts";
-import { NgModule, APP_INITIALIZER, Injector, LOCALE_ID } from "@angular/core";
+import {
+  NgModule,
+  APP_INITIALIZER,
+  Injector,
+  LOCALE_ID,
+  ErrorHandler,
+} from "@angular/core";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
 import { RootRoutingModule } from "./root-routing.module";
@@ -17,6 +23,7 @@ import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
 import { environment } from "./environments/environment";
 import { NgbDate, NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CookieService } from "ngx-cookie-service";
+import { GlobalErrorHandler } from "@shared/infrastructure/GlobalErrorHandler";
 
 export function convertAbpLocaleToAngularLocale(locale: string): string {
   if (!AppConsts.localeMappings) {
@@ -102,6 +109,7 @@ export function appInitializerFactory(
   declarations: [RootComponent],
   providers: [
     CookieService,
+
     { provide: HTTP_INTERCEPTORS, useClass: HttpReqInterceptor, multi: true },
     { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },
     {

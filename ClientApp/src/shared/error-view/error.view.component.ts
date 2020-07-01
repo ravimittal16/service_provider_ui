@@ -1,15 +1,20 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-error-view",
   templateUrl: "./error.view.component.html",
-  styleUrls: ["./error.view.component.less"],
+  styleUrls: ["./error.view.component.scss"],
 })
 export class AppErrorViewComponent implements OnInit {
-  @Input() errors: string[];
-  constructor() {}
+  @Input() errors$: Observable<string[]>;
+  errors: string[] = [];
+  constructor(private _cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    console.log(this.errors);
+    this.errors$.subscribe((errors) => {
+      this.errors.push(...errors);
+      this._cdr.detectChanges();
+    });
   }
 }
