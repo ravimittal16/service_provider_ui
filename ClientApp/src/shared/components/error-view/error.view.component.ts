@@ -18,7 +18,9 @@ export class AppErrorViewComponent implements OnInit, OnDestroy {
   @Input() observableDefined: boolean = false;
   errors: string[] = [];
   private _sink = new SubSink();
+
   constructor(private _cdr: ChangeDetectorRef) {}
+
   ngOnDestroy(): void {
     this._sink.unsubscribe();
   }

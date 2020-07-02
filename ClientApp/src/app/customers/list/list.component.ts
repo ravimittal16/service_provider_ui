@@ -51,6 +51,7 @@ export class ListComponent implements OnInit {
       keyboard: false,
       backdrop: "static",
     });
+    this.customerFacade.onCustomerModalOpened();
     if (customer !== null) {
       this.customerFacade.loadEditedCustomerDetail(customer.id);
     }

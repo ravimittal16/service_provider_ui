@@ -5,7 +5,7 @@ import { AppLogoComponent } from "@shared/logo/logo.component";
 import { environment } from "../environments/environment";
 import { BlockDirective } from "./directives/block.directive";
 import { BusyDirective } from "./directives/busy.directive";
-import { AppErrorViewComponent } from "./error-view/error.view.component";
+
 import { CommonModule } from "@angular/common";
 import { API_BASE_URL } from "./service-proxies/service-proxies";
 import { LoginService } from "./services/login.service";
@@ -15,6 +15,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatIconModule } from "@angular/material/icon";
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from "@angular/material/core";
 import { GlobalErrorHandler } from "./infrastructure/GlobalErrorHandler";
+import { AppErrorViewComponent } from "./components/error-view/error.view.component";
 
 const directives = [BlockDirective, BusyDirective];
 const components = [AppErrorViewComponent];

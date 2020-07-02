@@ -42,6 +42,10 @@ export class CustomersFacade implements Facade {
     );
   }
 
+  onCustomerModalOpened() {
+    this.dispatch(customerActions.openCreateModalAction());
+  }
+
   loadCustomers(companyId: number) {
     this.dispatch(
       customerActions.loadCustomersAction({ companyId: companyId })

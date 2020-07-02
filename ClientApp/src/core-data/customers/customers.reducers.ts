@@ -39,8 +39,13 @@ const customerReducer = createReducer(
     (state, props) => ({
       ...state,
       editedCustomerDetails: null,
+      errors: [],
     })
   ),
+  on(customerActions.openCreateModalAction, (state, props) => ({
+    ...state,
+    errors: [],
+  })),
   on(customerActions.createCustomerErrorAction, (state, props) => ({
     ...state,
     errors: props.errors,
