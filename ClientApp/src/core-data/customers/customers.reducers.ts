@@ -19,6 +19,10 @@ export const initialState: CustomerState = adapter.getInitialState({
 
 const customerReducer = createReducer(
   initialState,
+  on(customerActions.customerUIStateAction, (state, props) => ({
+    ...state,
+    isBusy: props.isBusy,
+  })),
   on(customerActions.openCreateModalAction, (state) => ({
     ...state,
     prop: 1,
@@ -49,6 +53,10 @@ const customerReducer = createReducer(
   on(customerActions.createCustomerErrorAction, (state, props) => ({
     ...state,
     errors: props.errors,
+  })),
+  on(customerActions.batchActionExecutionCompleted, (state) => ({
+    ...state,
+    isBusy: false,
   }))
 );
 

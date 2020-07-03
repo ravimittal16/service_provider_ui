@@ -13,6 +13,7 @@ import {
   selectAllCustomers,
   selectEditedCustomerDetail,
   selectCustomerErrors,
+  selectCustomerUiState,
 } from "./customers.selectors";
 
 @Injectable({
@@ -22,12 +23,14 @@ export class CustomersFacade implements Facade {
   customers$: Observable<CustomerDto[]>;
   editedCustomerDetails$: Observable<CustomerDetailModel>;
   errors$: Observable<string[]>;
+  isBusy$: Observable<boolean>;
   constructor(private _store: Store<CustomerState>) {
     this.customers$ = this._store.pipe(select(selectAllCustomers));
     this.editedCustomerDetails$ = this._store.pipe(
       select(selectEditedCustomerDetail)
     );
     this.errors$ = this._store.pipe(select(selectCustomerErrors));
+    this.isBusy$ = this._store.pipe(select(selectCustomerUiState));
   }
 
   dispatch(action: Action) {
@@ -39,6 +42,13 @@ export class CustomersFacade implements Facade {
       customerActions.processCreateEditCustomerAction({
         customerModel: customerModel,
       })
+    );
+  }
+
+  deactivateCustomers(selectedIds: string[]) {
+    this.dispatch(customerActions.customerUIStateAction({ isBusy: true }));
+    this.dispatch(
+      customerActions.executeCustomerBatchAction({ selectedIds: selectedIds })
     );
   }
 

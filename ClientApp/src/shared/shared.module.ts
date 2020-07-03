@@ -17,12 +17,14 @@ import { MAT_RIPPLE_GLOBAL_OPTIONS } from "@angular/material/core";
 import { GlobalErrorHandler } from "./infrastructure/GlobalErrorHandler";
 import { AppErrorViewComponent } from "./components/error-view/error.view.component";
 
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+
 const directives = [BlockDirective, BusyDirective];
 const components = [AppErrorViewComponent];
 
 const matModules = [MatButtonModule, MatMenuModule, MatIconModule];
 @NgModule({
-  imports: [CommonModule, ...matModules],
+  imports: [CommonModule, NgbModule, ...matModules],
   declarations: [LocalizePipe, AppLogoComponent, ...directives, ...components],
   exports: [
     LocalizePipe,

@@ -5,11 +5,6 @@ import {
   CustomerDetailModel,
 } from "@shared/service-proxies/service-proxies";
 
-export const openCreateModalAction = createAction("[Customer] Open Modal");
-export const processCreateEditCustomerAction = createAction(
-  "[Customer] Open Create Sent",
-  props<{ customerModel: CustomerModel }>()
-);
 export const createCustomerSuccessAction = createAction(
   "[Customer] Create Customer Success",
   props<{ customerModelResponse: any }>()
@@ -22,7 +17,7 @@ export const createEditCustomerModalDismissedAction = createAction(
   "[Customer] Create/Edit Customer Modal Dismissed",
   props<{ dismissedResons: any }>()
 );
-export const createCustomerBusyStateAction = createAction(
+export const customerUIStateAction = createAction(
   "[Customer] Create Customer Modal Busy State",
   props<{ isBusy: boolean }>()
 );
@@ -48,6 +43,13 @@ export const importCustomerAction = createAction("[Customer] import started");
 // ==========================================================
 // EDIT CUSTOMER ACTIONS
 // ==========================================================
+export const openCreateModalAction = createAction("[Customer] Open Modal");
+
+export const processCreateEditCustomerAction = createAction(
+  "[Customer] Open Create Sent",
+  props<{ customerModel: CustomerModel }>()
+);
+
 export const loadEditedCustomerDetails = createAction(
   "[Customer] Load Customer Details",
   props<{ customerId: number }>()
@@ -60,4 +62,14 @@ export const clearPreviousEditedDetails = createAction(
 export const editedCustomerDetailsLoaded = createAction(
   "[Customer] Customer Details Loaded",
   props<{ details: CustomerDetailModel }>()
+);
+// ==========================================================
+// CUSTOMER BATCH OPERATIONS
+// ==========================================================
+export const executeCustomerBatchAction = createAction(
+  "[Customer] Batch Action Execution Starts",
+  props<{ selectedIds: string[] }>()
+);
+export const batchActionExecutionCompleted = createAction(
+  "[Customer] Batch Action Execution Completed"
 );

@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="modal-title">{{confirmationConfig.heading}}</h5>
+</div>
+<div class="modal-body">
+  <p>{{confirmationConfig.title}}</p>
+  <p *ngIf="confirmationConfig.subTitle !== ''">{{confirmationConfig.subTitle}}
+
+  </p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary"
+    (click)="activeModal.close(false)">{{confirmationConfig.cancelButtonText}}</button>
+  <button type="button" class="btn btn-danger"
+    (click)="activeModal.close(true)">{{confirmationConfig.okButtonText}}</button>
+</div>

@@ -26,28 +26,32 @@ import { ListComponent } from "../list/list.component";
         attr.aria-labelledby="{{ params.data.id }}"
       >
         <div class="bg-white">
-          <a class="dropdown-item" (click)="raiseClickEvent('edit')">Edit</a>
-          <a class="dropdown-item" (click)="raiseClickEvent('details')"
+          <a class="dropdown-item" (click)="raiseRowNodeClickEvent('edit')"
+            >Edit</a
+          >
+          <a class="dropdown-item" (click)="raiseRowNodeClickEvent('details')"
             >Show All Details</a
           >
-          <a class="dropdown-item" (click)="raiseClickEvent('createJob')"
+          <a class="dropdown-item" (click)="raiseRowNodeClickEvent('createJob')"
             >Create Job</a
           >
-          <a class="dropdown-item" (click)="raiseClickEvent('createEstimate')"
+          <a
+            class="dropdown-item"
+            (click)="raiseRowNodeClickEvent('createEstimate')"
             >Create Estimate</a
           >
-          <a class="dropdown-item" (click)="raiseClickEvent('report')"
+          <a class="dropdown-item" (click)="raiseRowNodeClickEvent('report')"
             >Generate Report</a
           >
           <div class="dropdown-divider"></div>
-          <a
+          <!-- <a
             class="dropdown-item text-danger"
-            (click)="raiseClickEvent('delete')"
+            (click)="raiseRowNodeClickEvent('delete')"
             >Delete customer</a
-          >
+          > -->
           <a
             class="dropdown-item text-danger"
-            (click)="raiseClickEvent('in-active')"
+            (click)="raiseRowNodeClickEvent('ínactive')"
             >Make in-active</a
           >
         </div>
@@ -64,7 +68,7 @@ export class CustomerActionsCellRenderer
   // handling click event for each menu item | triggerCustomerEvent
   // ==========================================================
   // TODO : REFACTORING REQUIRED
-  raiseClickEvent(
+  raiseRowNodeClickEvent(
     eventName:
       | "edit"
       | "details"
@@ -72,6 +76,7 @@ export class CustomerActionsCellRenderer
       | "createEstimate"
       | "report"
       | "delete"
+      | "ínactive"
   ): void {
     console.log(eventName);
     const listComponent = this.params.context as ListComponent;

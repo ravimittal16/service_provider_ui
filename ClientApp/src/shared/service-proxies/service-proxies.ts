@@ -526,6 +526,62 @@ export class CustomersServiceProxy {
         }
         return _observableOf<CustomerDto[]>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    deactiveCustomers(body: BatchActionRequestModel | undefined): Observable<BatchActionRequestModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/Customers/DeactiveCustomers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeactiveCustomers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeactiveCustomers(<any>response_);
+                } catch (e) {
+                    return <Observable<BatchActionRequestModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BatchActionRequestModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeactiveCustomers(response: HttpResponseBase): Observable<BatchActionRequestModelGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BatchActionRequestModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BatchActionRequestModelGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1391,6 +1447,147 @@ export interface ICustomerDto {
     mobile: string | undefined;
     primaryPhone: string | undefined;
     businessAddress: string | undefined;
+}
+
+export enum BatchActions {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
+export class BatchActionRequestModel implements IBatchActionRequestModel {
+    batchActionType: BatchActions;
+    selectedIds: string[];
+    entityType: EntityTypes;
+
+    constructor(data?: IBatchActionRequestModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.selectedIds = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.batchActionType = _data["batchActionType"];
+            if (Array.isArray(_data["selectedIds"])) {
+                this.selectedIds = [] as any;
+                for (let item of _data["selectedIds"])
+                    this.selectedIds.push(item);
+            }
+            this.entityType = _data["entityType"];
+        }
+    }
+
+    static fromJS(data: any): BatchActionRequestModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new BatchActionRequestModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["batchActionType"] = this.batchActionType;
+        if (Array.isArray(this.selectedIds)) {
+            data["selectedIds"] = [];
+            for (let item of this.selectedIds)
+                data["selectedIds"].push(item);
+        }
+        data["entityType"] = this.entityType;
+        return data; 
+    }
+
+    clone(): BatchActionRequestModel {
+        const json = this.toJSON();
+        let result = new BatchActionRequestModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBatchActionRequestModel {
+    batchActionType: BatchActions;
+    selectedIds: string[];
+    entityType: EntityTypes;
+}
+
+export class BatchActionRequestModelGenericResponse implements IBatchActionRequestModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: BatchActionRequestModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+
+    constructor(data?: IBatchActionRequestModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? BatchActionRequestModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+        }
+    }
+
+    static fromJS(data: any): BatchActionRequestModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BatchActionRequestModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        return data; 
+    }
+
+    clone(): BatchActionRequestModelGenericResponse {
+        const json = this.toJSON();
+        let result = new BatchActionRequestModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBatchActionRequestModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: BatchActionRequestModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
 }
 
 export class WeatherForecast implements IWeatherForecast {

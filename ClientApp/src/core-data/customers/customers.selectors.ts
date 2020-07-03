@@ -21,3 +21,8 @@ export const selectCustomerErrors = createSelector(
   customerFeatureState,
   (state) => state.errors
 );
+
+export const selectCustomerUiState = createSelector(
+  customerFeatureState,
+  (state) => state.isBusy
+);

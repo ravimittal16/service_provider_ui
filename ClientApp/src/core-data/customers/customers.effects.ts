@@ -3,13 +3,11 @@ import * as customerActions from "./customers.actions";
 import { Actions, ofType, createEffect } from "@ngrx/effects";
 import {
   CustomersServiceProxy,
-  CustomerDto,
+  BatchActionRequestModel,
 } from "@shared/service-proxies/service-proxies";
-import { Observable, of } from "rxjs";
+import { of } from "rxjs";
 import { mergeMap, map, catchError, switchMap } from "rxjs/operators";
-import { take } from "lodash";
 import { BaseEffect } from "@core-data/base.effect";
-import { errors } from "@core-data/register/register.selectors";
 
 @Injectable()
 export class CustomerEffects extends BaseEffect {
@@ -19,6 +17,30 @@ export class CustomerEffects extends BaseEffect {
   ) {
     super();
   }
+
+  deactivateCustomers$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.executeCustomerBatchAction),
+      /** An EMPTY observable only emits completion. Replace with your own observable stream */
+      mergeMap((action) => {
+        const _model = {
+          selectedIds: action.selectedIds,
+          batchActionType: 1,
+          entityType: 1,
+        } as BatchActionRequestModel;
+        return this.customerService.deactiveCustomers(_model).pipe(
+          switchMap((response) => {
+            if (response) {
+              return [
+                customerActions.batchActionExecutionCompleted(),
+                customerActions.loadCustomersAction({ companyId: 0 }),
+              ];
+            }
+          })
+        );
+      })
+    );
+  });
 
   importCustomers$ = createEffect(() => {
     return this.actions$.pipe(
