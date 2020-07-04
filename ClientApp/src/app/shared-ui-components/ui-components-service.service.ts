@@ -8,9 +8,7 @@ import { EntityTypes, AddressTypes } from "@shared/AppConsts";
   providedIn: "root",
 })
 export class UiComponentsServiceService {
-  constructor(private modalService: NgbModal) {
-    console.log("HELLO WOLD");
-  }
+  constructor(private modalService: NgbModal) {}
   openAddressModal(
     addressDto?: AddressDto,
     entityType?: EntityTypes,

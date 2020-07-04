@@ -8,14 +8,14 @@ import { NgbModal, NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { Observable, of } from "rxjs";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
-import { tap, map } from "rxjs/operators";
-import { Dictionary } from "@ngrx/entity";
+
 import { GridOptions, ColDef } from "ag-grid-community";
 import { CustomerDisplayNameLinkCellRenderer } from "../grid-cell-renderers/display-name.link.cell.renderer";
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.cell.renderer";
 import { Router } from "@angular/router";
 import { CustomerEditCreateModalComponent } from "../customer-edit-create-modal/customer-edit-create-modal.component";
+import { UiAlertsService } from "@app/shared-ui-components/ui.alerts.service";
 
 @Component({
   selector: "app-list",
@@ -27,15 +27,18 @@ export class ListComponent implements OnInit {
   closeResult = "";
   rowData: [] = [];
   customers$: Observable<CustomerDto[]>;
+  isBusy$: Observable<boolean>;
   gridOptions: GridOptions;
   selectedRecordsCount = 0;
   constructor(
     private modalService: NgbModal,
     private customerFacade: CustomersFacade,
     private _cdr: ChangeDetectorRef,
-    private _router: Router
+    private _router: Router,
+    private _alertsService: UiAlertsService
   ) {
     this.customers$ = customerFacade.customers$;
+    this.isBusy$ = customerFacade.isBusy$;
   }
 
   importCustomers(): void {
@@ -51,10 +54,54 @@ export class ListComponent implements OnInit {
       keyboard: false,
       backdrop: "static",
     });
+    this.customerFacade.onCustomerModalOpened();
     if (customer !== null) {
       this.customerFacade.loadEditedCustomerDetail(customer.id);
     }
     modalRef.componentInstance.selectedCustomer = customer;
+  }
+
+  processCustomerInactiveBulkAction(
+    selectedCount: number,
+    selectedIds: string[],
+    fromBatch: boolean = false
+  ) {
+    const _pluralize = selectedCount > 1 ? "customers" : "customer";
+    this._alertsService
+      .confirm(
+        "Confirmation",
+        `Are you sure you want to in-active the selected ${_pluralize}?`
+      )
+      .then((result) => {
+        if (result) {
+          let ids = selectedIds;
+          // ==========================================================
+          // getting all selected Ids from customer grid
+          // ==========================================================
+          if (fromBatch) {
+            const _selectedIds = this.gridOptions.api
+              .getSelectedNodes()
+              .map((x) => (x.data as CustomerDto).id.toString());
+            ids = _selectedIds;
+          }
+          this.customerFacade.deactivateCustomers(ids);
+        } else {
+          // ==========================================================
+          // deselectAll all rows on Confirmation Cancelled
+          // ==========================================================
+          if (fromBatch) this.gridOptions.api.deselectAll();
+        }
+      });
+  }
+
+  onBatchActionClicked(batchAction: "ínactive"): void {
+    if (batchAction === "ínactive") {
+      this.processCustomerInactiveBulkAction(
+        this.selectedRecordsCount,
+        null,
+        true
+      );
+    }
   }
 
   triggerCustomerEvent(
@@ -64,9 +111,13 @@ export class ListComponent implements OnInit {
       | "createJob"
       | "createEstimate"
       | "report"
-      | "delete",
+      | "delete"
+      | "ínactive",
     customer: CustomerDto
   ) {
+    if (eventName === "ínactive") {
+      this.processCustomerInactiveBulkAction(1, [customer.id.toString()]);
+    }
     if (eventName === "edit") {
       this._openCustomerModal(customer);
     }
@@ -98,13 +149,13 @@ export class ListComponent implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    {
-      resizable: false,
-      checkboxSelection: true,
-      width: 60,
-      headerCheckboxSelection: true,
-      pinned: true,
-    },
+    // {
+    //   resizable: false,
+    //   checkboxSelection: true,
+    //   width: 60,
+    //   headerCheckboxSelection: true,
+    //   pinned: true,
+    // },
     {
       headerName: "Actions",
       field: "",

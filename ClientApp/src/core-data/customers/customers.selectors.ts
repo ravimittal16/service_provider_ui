@@ -16,3 +16,13 @@ export const selectEditedCustomerDetail = createSelector(
   customerFeatureState,
   (state) => state.editedCustomerDetails
 );
+
+export const selectCustomerErrors = createSelector(
+  customerFeatureState,
+  (state) => state.errors
+);
+
+export const selectCustomerUiState = createSelector(
+  customerFeatureState,
+  (state) => state.isBusy
+);

@@ -3,18 +3,44 @@ import * as customerActions from "./customers.actions";
 import { Actions, ofType, createEffect } from "@ngrx/effects";
 import {
   CustomersServiceProxy,
-  CustomerDto,
+  BatchActionRequestModel,
 } from "@shared/service-proxies/service-proxies";
-import { Observable, of } from "rxjs";
-import { mergeMap, map, catchError } from "rxjs/operators";
-import { take } from "lodash";
+import { of } from "rxjs";
+import { mergeMap, map, catchError, switchMap } from "rxjs/operators";
+import { BaseEffect } from "@core-data/base.effect";
 
 @Injectable()
-export class CustomerEffects {
+export class CustomerEffects extends BaseEffect {
   constructor(
     private customerService: CustomersServiceProxy,
     private actions$: Actions
-  ) {}
+  ) {
+    super();
+  }
+
+  deactivateCustomers$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.executeCustomerBatchAction),
+      /** An EMPTY observable only emits completion. Replace with your own observable stream */
+      mergeMap((action) => {
+        const _model = {
+          selectedIds: action.selectedIds,
+          batchActionType: 1,
+          entityType: 1,
+        } as BatchActionRequestModel;
+        return this.customerService.deactiveCustomers(_model).pipe(
+          switchMap((response) => {
+            if (response) {
+              return [
+                customerActions.batchActionExecutionCompleted(),
+                customerActions.loadCustomersAction({ companyId: 0 }),
+              ];
+            }
+          })
+        );
+      })
+    );
+  });
 
   importCustomers$ = createEffect(() => {
     return this.actions$.pipe(
@@ -52,6 +78,7 @@ export class CustomerEffects {
       mergeMap((action) =>
         this.customerService.createUpdateCustomer(action.customerModel).pipe(
           map((res) => {
+            console.log(res);
             if (res.isSuccess) {
               return customerActions.createCustomerSuccessAction({
                 customerModelResponse: res,
@@ -61,6 +88,17 @@ export class CustomerEffects {
                 errors: res.errors,
               });
             }
+          }),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  customerActions.createCustomerErrorAction({
+                    errors: [error],
+                  })
+                );
+              })
+            );
           })
         )
       )

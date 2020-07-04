@@ -35,7 +35,7 @@ export class CustomerEditCreateModalComponent
   @Input() selectedCustomer?: CustomerDto;
   @ViewChild("titleInput") titleInput: ElementRef;
   @ViewChild("firstName") firstName: ElementRef;
-
+  errors$: Observable<string[]>;
   addresses: AddressDto[] = [];
   editedCustomerDetails$: Observable<CustomerDetailModel>;
   customerFormGroup: FormGroup;
@@ -50,6 +50,10 @@ export class CustomerEditCreateModalComponent
     private _cdr: ChangeDetectorRef
   ) {
     this.editedCustomerDetails$ = customerFacade.editedCustomerDetails$;
+    // ==========================================================
+    // errors could be updated from store and manually added here
+    // ==========================================================
+    this.errors$ = customerFacade.errors$;
   }
 
   isForNew = () => this.selectedCustomer === null;

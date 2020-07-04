@@ -65,12 +65,22 @@ export class HttpReqInterceptor implements HttpInterceptor {
     return this.blobToText(error.error).pipe(
       switchMap((json) => {
         var errorBody = json == "" || json == "null" ? {} : JSON.parse(json);
-        var errorResponse = new HttpResponse({
-          headers: error.headers,
-          status: error.status,
-          body: errorBody,
-        });
-        return throwError(error);
+        if (errorBody && errorBody["ErrorMessageClient"]) {
+          // ==========================================================
+          // means this will be a custom exception from the API | ServiceProviderException C#
+          // ==========================================================
+          var errorResponse = new HttpErrorResponse({
+            headers: error.headers,
+            status: error.status,
+            statusText: errorBody["ErrorMessageClient"],
+            error: new Blob([JSON.stringify(errorBody)], {
+              type: "application/json",
+            }),
+          });
+          return throwError(errorResponse.error);
+        } else {
+          return throwError(error.error);
+        }
       })
     );
   }

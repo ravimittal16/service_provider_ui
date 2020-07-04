@@ -41,6 +41,8 @@ export const selectExternalSignModel =
 export const selectAllCustomers = customersSelectors.selectAllCustomers;
 export const selectEditedCustomerDetail =
   customersSelectors.selectEditedCustomerDetail;
+export const selectCustomerErrors = customersSelectors.selectCustomerErrors;
+export const selectCustomerUiState = customersSelectors.selectCustomerUiState;
 // ==========================================================
 // LOGIN
 // ==========================================================
