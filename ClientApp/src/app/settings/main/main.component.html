@@ -51,9 +51,9 @@
             </div>
           </a>
           <ul class="nav collapse" id="productsLinks" data-parent="#navbarVerticalCollapse">
-            <li class="nav-item"><a class="nav-link" href="../email/inbox.html">List</a>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['products/list']">List</a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="../email/email-detail.html">Custom Pricing</a>
+            <li class="nav-item"><a class="nav-link" [routerLink]="['products/prdcts-cuspri']">Custom Pricing</a>
             </li>
           </ul>
         </li>
@@ -137,8 +137,6 @@
     </div>
   </nav>
   <div class="content">
-    <div class="card">
-      <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
   </div>
 </div>
