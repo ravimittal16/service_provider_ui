@@ -149,13 +149,13 @@ export class ListComponent implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    {
-      resizable: false,
-      checkboxSelection: true,
-      width: 60,
-      headerCheckboxSelection: true,
-      pinned: true,
-    },
+    // {
+    //   resizable: false,
+    //   checkboxSelection: true,
+    //   width: 60,
+    //   headerCheckboxSelection: true,
+    //   pinned: true,
+    // },
     {
       headerName: "Actions",
       field: "",
