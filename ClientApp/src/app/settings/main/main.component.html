@@ -43,12 +43,19 @@
             </div>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['cusflds']">
+        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#productsLinks" data-toggle="collapse"
+            role="button" aria-expanded="false" aria-controls="email">
             <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-wrench"></span></span><span class="nav-link-text"> Products & Services</span>
+                  class="fa fa-list"></span></span><span class="nav-link-text">Products & Services</span><span
+                class="badge badge-pill ml-2 badge-soft-success"></span>
             </div>
           </a>
+          <ul class="nav collapse" id="productsLinks" data-parent="#navbarVerticalCollapse">
+            <li class="nav-item"><a class="nav-link" href="../email/inbox.html">List</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="../email/email-detail.html">Custom Pricing</a>
+            </li>
+          </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['cusflds']">

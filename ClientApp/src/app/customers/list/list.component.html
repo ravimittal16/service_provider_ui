@@ -1,50 +1,26 @@
 <div class="card">
   <div class="card-body">
-    <h4>
-      <span>Customers</span>
-      <small>Hello World</small>
-    </h4>
+    <div class="row justify-content-between align-items-center">
+      <div class="col-md">
+        <h4>
+          <span>Customers</span>
+        </h4>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="addNewCustomerClick()"><span
+            class="fa fa-plus"></span> New
+          Customer</button>
+        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="importCustomers()"><span
+            class="fa fa-cloud-download"></span> Import</button>
+      </div>
+    </div>
+
   </div>
 </div>
 <div class="card mt-1">
   <div class="card-header p-b-p5">
     <div class="row no-gutters align-items-center">
-      <div class="col-md-6">
-        <div class="btn-group mr-3">
-          <div class="btn-group btn-group-sm" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-falcon-default" ngbDropdownToggle
-              [disabled]="selectedRecordsCount === 0 || (isBusy$ | async)">
-              Batch Actions
-              <span class="badge badge-soft-success badge-pill ml-1" *ngIf="selectedRecordsCount > 0">
-                {{selectedRecordsCount}}</span>
-            </button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <button ngbDropdownItem (click)="onBatchActionClicked('ínactive')">Make In-active</button>
-              <!-- <button ngbDropdownItem>
-                <span class="text-danger">Delete</span>
-              </button> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="float-right">
-          <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-sm btn-falcon-default" (click)="addNewCustomerClick()"
-              [disabled]="(isBusy$ | async)">
-              <span class="fa fa-plus"></span> New Customer
-            </button>
-            <div class="btn-group btn-group-sm" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-              <button class="btn btn-falcon-default dropdown-toggle-split" ngbDropdownToggle></button>
-              <div class="dropdown-menu" ngbDropdownMenu>
-                <button ngbDropdownItem (click)="importCustomers()">
-                  Import Customers
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
   <div class="card-body">
