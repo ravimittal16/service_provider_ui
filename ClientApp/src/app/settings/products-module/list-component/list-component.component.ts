@@ -1,5 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
+import { ProductssFacade } from "@core-data/products-store/products.facade";
+import { Observable } from "rxjs/internal/Observable";
+import { ProductDto } from "@shared/service-proxies/service-proxies";
+import { TrueFalseValueCellRenderer } from "@shared/grid-cell-renderers/true.false.cell.renderer";
+import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
+import { ProductNameCellRenderer } from "../grid-cell-renderers/product.name.cell.renderer";
 
 @Component({
   selector: "app-list-component",
@@ -8,10 +14,15 @@ import { GridOptions } from "ag-grid-community";
 })
 export class ListComponentComponent implements OnInit {
   gridOptions: GridOptions;
-  constructor() {}
+  products$: Observable<ProductDto[]>;
+  constructor(private _productsFacade: ProductssFacade) {
+    this.products$ = _productsFacade.products$;
+  }
 
   addNewProductClick() {}
-  importProducts() {}
+  importProducts() {
+    this._productsFacade.importCustomers();
+  }
   private _initGrid(): void {
     this.gridOptions = <GridOptions>{
       columnDefs: [
@@ -25,48 +36,47 @@ export class ListComponentComponent implements OnInit {
         },
         {
           headerName: "Product Name",
-          field: "displayName",
+          field: "name",
           sortable: true,
           filter: true,
           resizable: true,
           width: 200,
           pinned: true,
+          cellRenderer: "productNameCellRenderer",
         },
         {
           headerName: "Description",
-          field: "displayName",
+          field: "description",
           sortable: true,
           filter: true,
           resizable: true,
           width: 300,
-          pinned: true,
-        },
-        {
-          headerName: "Category",
-          field: "displayName",
-          sortable: true,
-          filter: true,
-          resizable: true,
-          width: 150,
-          pinned: true,
         },
         {
           headerName: "SKU",
-          field: "displayName",
+          field: "sku",
           sortable: true,
           filter: true,
           resizable: true,
           width: 150,
-          pinned: true,
         },
         {
-          headerName: "Price",
-          field: "displayName",
+          headerName: "Taxable",
+          field: "taxable",
           sortable: true,
           filter: true,
           resizable: true,
-          width: 100,
-          pinned: true,
+          width: 150,
+          cellRenderer: "trueFalseValueCellRenderer",
+        },
+        {
+          headerName: "Price",
+          field: "unitPrice",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 80,
+          cellRenderer: "currencyValueCellRenderer",
         },
       ],
       context: this,
@@ -74,7 +84,11 @@ export class ListComponentComponent implements OnInit {
       enableRangeSelection: true,
       suppressCellSelection: true,
       suppressRowClickSelection: true,
-
+      frameworkComponents: {
+        productNameCellRenderer: ProductNameCellRenderer,
+        trueFalseValueCellRenderer: TrueFalseValueCellRenderer,
+        currencyValueCellRenderer: CurrencyValueCellRenderer,
+      },
       onSelectionChanged: (params) => {
         if (params.api) {
         }
@@ -88,5 +102,6 @@ export class ListComponentComponent implements OnInit {
   }
   ngOnInit(): void {
     this._initGrid();
+    this._productsFacade.loadProducts();
   }
 }

@@ -12,6 +12,7 @@ import { CustomerStoreModule } from "./customers/customers-store.module";
 import { LoginStoreModule } from "./login/login-store.module";
 
 import { RegisterStoreModule } from "./register/register.store.module";
+import { ProductsStoreModule } from "./products-store/products.store.module";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { RegisterStoreModule } from "./register/register.store.module";
     CustomerStoreModule,
     LoginStoreModule,
     RegisterStoreModule,
+    ProductsStoreModule,
     StoreModule.forRoot([]),
     HttpClientModule,
     EffectsModule.forRoot([]),

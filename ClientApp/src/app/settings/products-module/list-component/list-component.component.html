@@ -24,7 +24,7 @@
   </div>
   <div class="card-body">
     <ag-grid-angular style="width: 100%; height: calc(100vh - 13.2rem);" class="ag-theme-alpine"
-      [gridOptions]="gridOptions">
+      [gridOptions]="gridOptions" [rowData]="products$ | async">
     </ag-grid-angular>
   </div>
 </div>
