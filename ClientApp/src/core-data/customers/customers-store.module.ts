@@ -4,16 +4,15 @@ import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../../environments/environment";
 import { CustomerEffects } from "./customers.effects";
-import { reducer } from "./customers.reducers";
+import { reducer, customerFeatureKey } from "./customers.reducers";
 import { CustomersFacade } from "./customers.facade";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
 import { NWTokenService } from "@shared/services/token.service";
-import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 
 @NgModule({
   imports: [
     ServiceProxyModule,
-    StoreModule.forFeature("customers", reducer),
+    StoreModule.forFeature(customerFeatureKey, reducer),
     EffectsModule.forFeature([CustomerEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],

@@ -1,8 +1,8 @@
 import { Observable } from "rxjs";
-import { Action } from "@ngrx/store";
-import { switchMap, map, mergeMap } from "rxjs/operators";
 
+import { switchMap } from "rxjs/operators";
 export abstract class BaseEffect {
+  static somethingWentWrongErrorMessage = "Something went wrong.";
   blobToText(blob): Observable<any> {
     return new Observable(function (observer) {
       if (!blob) {
@@ -31,7 +31,7 @@ export abstract class BaseEffect {
             });
           } else {
             return new Observable(function (observer) {
-              observer.next("Something went wrong");
+              observer.next(BaseEffect.somethingWentWrongErrorMessage);
               observer.complete();
             });
           }
@@ -39,7 +39,7 @@ export abstract class BaseEffect {
       );
     } else {
       return new Observable(function (observer) {
-        observer.next("Something went wrong");
+        observer.next(BaseEffect.somethingWentWrongErrorMessage);
         observer.complete();
       });
     }

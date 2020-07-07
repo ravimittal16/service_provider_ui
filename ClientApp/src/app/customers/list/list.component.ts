@@ -16,6 +16,7 @@ import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.
 import { Router } from "@angular/router";
 import { CustomerEditCreateModalComponent } from "../customer-edit-create-modal/customer-edit-create-modal.component";
 import { UiAlertsService } from "@app/shared-ui-components/ui.alerts.service";
+import { param } from "jquery";
 
 @Component({
   selector: "app-list",
@@ -145,6 +146,11 @@ export class ListComponent implements OnInit {
           this._cdr.detectChanges();
         }
       },
+      onGridReady: (params) => {
+        if (params.api) {
+          params.api.sizeColumnsToFit();
+        }
+      },
     };
   }
 
@@ -172,7 +178,7 @@ export class ListComponent implements OnInit {
       filter: true,
       resizable: true,
       cellRenderer: "customerDisplayNameLink",
-      width: 250,
+      width: 240,
       pinned: true,
     },
     {
@@ -204,6 +210,7 @@ export class ListComponent implements OnInit {
       sortable: true,
       filter: true,
       resizable: true,
+      width: 120,
     },
     {
       headerName: "Phone",
@@ -211,6 +218,7 @@ export class ListComponent implements OnInit {
       sortable: true,
       filter: true,
       resizable: true,
+      width: 120,
     },
     {
       headerName: "Business Address",

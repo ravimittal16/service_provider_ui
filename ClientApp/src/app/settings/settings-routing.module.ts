@@ -13,6 +13,13 @@ const routes: Routes = [
       { path: "company", component: CompanyComponent },
       { path: "branding", component: BrandingComponent },
       { path: "cusflds", component: CustomFieldsComponent },
+      {
+        path: "products",
+        loadChildren: () =>
+          import("./products-module/products-module.module").then(
+            (module) => module.ProductsModuleModule
+          ),
+      },
     ],
   },
 ];

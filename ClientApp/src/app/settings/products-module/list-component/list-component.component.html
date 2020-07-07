@@ -3,14 +3,14 @@
     <div class="row justify-content-between align-items-center">
       <div class="col-md">
         <h5>
-          <span>Customers</span>
+          <span>Products & Services</span>
         </h5>
       </div>
       <div class="col-auto">
-        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="addNewCustomerClick()"><span
+        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="addNewProductClick()"><span
             class="fa fa-plus"></span> New
-          Customer</button>
-        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="importCustomers()"><span
+          Product</button>
+        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="importProducts()"><span
             class="fa fa-cloud-download"></span> Import</button>
       </div>
     </div>
@@ -23,8 +23,8 @@
     </div>
   </div>
   <div class="card-body">
-    <ag-grid-angular style="width: 100%; height: calc(100vh - 12.5rem);" class="ag-theme-alpine"
-      [gridOptions]="gridOptions" [rowData]="customers$ | async">
+    <ag-grid-angular style="width: 100%; height: calc(100vh - 13.2rem);" class="ag-theme-alpine"
+      [gridOptions]="gridOptions" [rowData]="products$ | async">
     </ag-grid-angular>
   </div>
 </div>

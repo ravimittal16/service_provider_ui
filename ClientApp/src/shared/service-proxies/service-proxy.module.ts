@@ -10,6 +10,7 @@ import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
     ApiServiceProxies.AccountServiceProxy,
     ApiServiceProxies.WeatherForecastServiceProxy,
     ApiServiceProxies.CustomersServiceProxy,
+    ApiServiceProxies.ProductsServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: HttpReqInterceptor, multi: true },
   ],
 })

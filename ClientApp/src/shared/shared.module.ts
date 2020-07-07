@@ -10,32 +10,19 @@ import { CommonModule } from "@angular/common";
 import { API_BASE_URL } from "./service-proxies/service-proxies";
 import { LoginService } from "./services/login.service";
 
-import { MatButtonModule } from "@angular/material/button";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatIconModule } from "@angular/material/icon";
-import { MAT_RIPPLE_GLOBAL_OPTIONS } from "@angular/material/core";
 import { GlobalErrorHandler } from "./infrastructure/GlobalErrorHandler";
 import { AppErrorViewComponent } from "./components/error-view/error.view.component";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { CurrencySymbolPipe } from "./pipes/currency.symbol.pipe";
 
 const directives = [BlockDirective, BusyDirective];
-const components = [AppErrorViewComponent];
-
-const matModules = [MatButtonModule, MatMenuModule, MatIconModule];
+const components = [AppLogoComponent, AppErrorViewComponent];
+const _pipes = [LocalizePipe, CurrencySymbolPipe];
 @NgModule({
-  imports: [CommonModule, NgbModule, ...matModules],
-  declarations: [LocalizePipe, AppLogoComponent, ...directives, ...components],
-  exports: [
-    LocalizePipe,
-    AppLogoComponent,
-    ...directives,
-    ...components,
-    ...matModules,
-  ],
-  providers: [
-    { provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } },
-  ],
+  imports: [CommonModule, NgbModule],
+  declarations: [...directives, ...components, ..._pipes],
+  exports: [...directives, ...components, ..._pipes],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
