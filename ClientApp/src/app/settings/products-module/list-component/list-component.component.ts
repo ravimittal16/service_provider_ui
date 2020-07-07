@@ -6,6 +6,7 @@ import { ProductDto } from "@shared/service-proxies/service-proxies";
 import { TrueFalseValueCellRenderer } from "@shared/grid-cell-renderers/true.false.cell.renderer";
 import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
 import { ProductNameCellRenderer } from "../grid-cell-renderers/product.name.cell.renderer";
+import { ProductActionsCellRenderer } from "../grid-cell-renderers/product.action.cell.renderer";
 
 @Component({
   selector: "app-list-component",
@@ -33,6 +34,7 @@ export class ListComponentComponent implements OnInit {
           checkboxSelection: false,
           suppressSorting: true,
           pinned: true,
+          cellRenderer: "productActionsCellRenderer",
         },
         {
           headerName: "Product Name",
@@ -88,6 +90,7 @@ export class ListComponentComponent implements OnInit {
         productNameCellRenderer: ProductNameCellRenderer,
         trueFalseValueCellRenderer: TrueFalseValueCellRenderer,
         currencyValueCellRenderer: CurrencyValueCellRenderer,
+        productActionsCellRenderer: ProductActionsCellRenderer,
       },
       onSelectionChanged: (params) => {
         if (params.api) {
