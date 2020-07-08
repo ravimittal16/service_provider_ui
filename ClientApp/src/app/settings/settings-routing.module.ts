@@ -21,7 +21,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: "employees",
+        path: "users",
         loadChildren: () =>
           import("./manage-users-module/manage-users-module.module").then(
             (module) => module.ManageUsersModuleModule
