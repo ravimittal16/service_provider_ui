@@ -20,6 +20,13 @@ const routes: Routes = [
             (module) => module.ProductsModuleModule
           ),
       },
+      {
+        path: "employees",
+        loadChildren: () =>
+          import("./manage-users-module/manage-users-module.module").then(
+            (module) => module.ManageUsersModuleModule
+          ),
+      },
     ],
   },
 ];
