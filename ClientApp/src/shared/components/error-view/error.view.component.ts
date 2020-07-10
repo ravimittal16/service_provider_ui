@@ -26,7 +26,7 @@ export class AppErrorViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.observableDefined) {
+    if (this.observableDefined && this.errors$) {
       this._sink.add(
         this.errors$.subscribe((errors) => {
           this.errors.push(...errors);

@@ -1,1 +1,124 @@
-<p>add-edit-user-modal works!</p>
+<div class="modal-header">
+  <h5 class="modal-title">Create New User</h5>
+</div>
+<form [formGroup]="userFormGroup" (ngSubmit)="onFormSubmitted()">
+  <div class="modal-body">
+    <app-error-view [errors$]="errors$" [observableDefined]="true"></app-error-view>
+    <div class="row">
+      <div class="col">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>First Name*</label>
+            <input type="text" #firstName formControlName="firstName" class="form-control form-control-sm"
+              autocomplete="new-password" />
+          </div>
+          <div class="form-group col-md-6">
+            <label>Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control form-control-sm"
+              autocomplete="new-password" />
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label>Email*</label>
+          <input type="text" class="form-control form-control-sm" formControlName="email" autocomplete="new-password" />
+          <span class="help-text">
+            This will be used for all communications with user.
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Employee Number</label>
+            <input type="text" formControlName="employeeNumber" class="form-control form-control-sm"
+              autocomplete="new-password" />
+          </div>
+
+          <div class="form-group col-md-6">
+            <label>$ Hourly Rate</label>
+            <input type="number" formControlName="lastName" class="form-control form-control-sm"
+              autocomplete="new-password" />
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Phone</label>
+            <input type="text" formControlName="primaryPhone" mask="(000) 000-0000" class="form-control form-control-sm"
+              placeholder="(000) 000-0000" autocomplete="new-password" />
+          </div>
+          <div class="form-group col-md-6">
+            <label>Mobile</label>
+            <input type="text" formControlName="mobile" mask="(000) 000-0000" class="form-control form-control-sm"
+              placeholder="(000) 000-0000" autocomplete="new-password" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-row">
+          <div class="form-group col-md-2 width-title">
+            <label>Color</label>
+            <input type="text" class="form-control form-control-sm" [(colorPicker)]="selectedUserColor" readonly
+              [style.background]="selectedUserColor" autocomplete="new-password" />
+          </div>
+          <div class="form-group col-md-10 width-title">
+            <label>User Name</label>
+            <input type="text" formControlName="userName" class="form-control form-control-sm"
+              autocomplete="new-password" />
+            <span class="help-text">An user-name is required to log in to application.</span>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label>Role of the User</label>
+          <select class="form-control form-control-sm" [disabled]="userFormGroup.get('isAdministrator').value">
+            <option></option>
+            <option>Worker</option>
+            <option>Limited Worker</option>
+            <option>Dispatcher</option>
+            <option>Manager</option>
+          </select>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" formControlName="isAdministrator" type="checkbox" id="adminCheckbox" />
+          <label class="form-check-label" for="adminCheckbox">
+            Make administrator
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-warning mt-3 font-size-small" role="alert"
+      *ngIf="userFormGroup.get('isAdministrator').value">
+      Administrators have full permissions. Make this user a non-admin to adjust
+      permissions.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col pl-2" *ngIf="!isForNew()">
+      <div class="float-left">
+        <button class="btn btn-danger btn-sm mr-1 mb-1" type="button">
+          Make In-active
+        </button>
+      </div>
+    </div>
+    <div class="col pr-0">
+      <div class="float-right">
+        <button type="button" class="btn btn-outline-dark btn-sm mr-1 mb-1" (click)="activeModal.close('Close click')">
+          Cancel
+        </button>
+        <button class="btn btn-primary btn-sm mr-1 mb-1" type="submit">
+          <span *ngIf="isForNew()">Create</span>
+          <span *ngIf="!isForNew()">Update</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

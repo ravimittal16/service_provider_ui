@@ -51,6 +51,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
+    "ngx-color-picker": "^9.1.0",
     "ngx-cookie-service": "^3.0.4",
     "ngx-mask": "^9.1.2",
     "oidc-client": "^1.9.0",
