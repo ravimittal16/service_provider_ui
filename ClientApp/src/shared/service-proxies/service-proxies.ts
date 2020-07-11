@@ -707,6 +707,129 @@ export class ProductsServiceProxy {
 }
 
 @Injectable()
+export class UsersServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getAllUsers(): Observable<UserDto[]> {
+        let url_ = this.baseUrl + "/api/Users/GetAllUsers";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllUsers(<any>response_);
+                } catch (e) {
+                    return <Observable<UserDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllUsers(response: HttpResponseBase): Observable<UserDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(UserDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createUser(body: CreateUserModel | undefined): Observable<CreateUserModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/Users/CreateUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateUser(<any>response_);
+                } catch (e) {
+                    return <Observable<CreateUserModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CreateUserModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateUser(response: HttpResponseBase): Observable<CreateUserModelGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateUserModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateUserModelGenericResponse>(<any>null);
+    }
+}
+
+@Injectable()
 export class WeatherForecastServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1781,6 +1904,216 @@ export interface IProductDto {
     taxable: boolean | undefined;
     unitPrice: number | undefined;
     sku: string | undefined;
+}
+
+export class UserDto implements IUserDto {
+
+    constructor(data?: IUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): UserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+
+    clone(): UserDto {
+        const json = this.toJSON();
+        let result = new UserDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserDto {
+}
+
+export enum EmployeeTypes {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+}
+
+export class CreateUserModel implements ICreateUserModel {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    createLogin: boolean;
+    userName: string | undefined;
+    isAdministrator: boolean;
+    billRate: number;
+    mobile: string | undefined;
+    userColor: string | undefined;
+    primaryPhone: string | undefined;
+    email: string | undefined;
+    employeeNumber: string | undefined;
+    employeeType: EmployeeTypes;
+    joiningDate: moment.Moment | undefined;
+
+    constructor(data?: ICreateUserModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.createLogin = _data["createLogin"];
+            this.userName = _data["userName"];
+            this.isAdministrator = _data["isAdministrator"];
+            this.billRate = _data["billRate"];
+            this.mobile = _data["mobile"];
+            this.userColor = _data["userColor"];
+            this.primaryPhone = _data["primaryPhone"];
+            this.email = _data["email"];
+            this.employeeNumber = _data["employeeNumber"];
+            this.employeeType = _data["employeeType"];
+            this.joiningDate = _data["joiningDate"] ? moment(_data["joiningDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateUserModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateUserModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["createLogin"] = this.createLogin;
+        data["userName"] = this.userName;
+        data["isAdministrator"] = this.isAdministrator;
+        data["billRate"] = this.billRate;
+        data["mobile"] = this.mobile;
+        data["userColor"] = this.userColor;
+        data["primaryPhone"] = this.primaryPhone;
+        data["email"] = this.email;
+        data["employeeNumber"] = this.employeeNumber;
+        data["employeeType"] = this.employeeType;
+        data["joiningDate"] = this.joiningDate ? this.joiningDate.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): CreateUserModel {
+        const json = this.toJSON();
+        let result = new CreateUserModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateUserModel {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    createLogin: boolean;
+    userName: string | undefined;
+    isAdministrator: boolean;
+    billRate: number;
+    mobile: string | undefined;
+    userColor: string | undefined;
+    primaryPhone: string | undefined;
+    email: string | undefined;
+    employeeNumber: string | undefined;
+    employeeType: EmployeeTypes;
+    joiningDate: moment.Moment | undefined;
+}
+
+export class CreateUserModelGenericResponse implements ICreateUserModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: CreateUserModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+
+    constructor(data?: ICreateUserModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? CreateUserModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+        }
+    }
+
+    static fromJS(data: any): CreateUserModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateUserModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        return data; 
+    }
+
+    clone(): CreateUserModelGenericResponse {
+        const json = this.toJSON();
+        let result = new CreateUserModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateUserModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: CreateUserModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
 }
 
 export class WeatherForecast implements IWeatherForecast {

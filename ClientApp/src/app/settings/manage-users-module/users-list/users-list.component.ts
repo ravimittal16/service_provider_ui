@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { UiAlertsService } from "@app/shared-ui-components/ui.alerts.service";
 import { AddEditUserModalComponent } from "../add-edit-user-modal/add-edit-user-modal.component";
+import { UsersFacade } from "@core-data/users-store/users.facade";
 
 @Component({
   selector: "app-users-list",
@@ -16,6 +17,7 @@ export class UsersListComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
+    private _usersFacade: UsersFacade,
     private _cdr: ChangeDetectorRef,
     private _alertsService: UiAlertsService
   ) {}
@@ -34,6 +36,7 @@ export class UsersListComponent implements OnInit {
     //   this.customerFacade.loadEditedCustomerDetail(customer.id);
     // }
     modalRef.componentInstance.selectedUser = userDto;
+    this._usersFacade.onUserModalOpened();
   }
 
   addNewUserClicked(): void {

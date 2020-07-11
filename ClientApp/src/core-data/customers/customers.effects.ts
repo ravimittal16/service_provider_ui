@@ -78,7 +78,6 @@ export class CustomerEffects extends BaseEffect {
       mergeMap((action) =>
         this.customerService.createUpdateCustomer(action.customerModel).pipe(
           map((res) => {
-            console.log(res);
             if (res.isSuccess) {
               return customerActions.createCustomerSuccessAction({
                 customerModelResponse: res,

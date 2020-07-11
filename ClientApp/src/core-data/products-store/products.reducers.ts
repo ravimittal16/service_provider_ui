@@ -22,6 +22,7 @@ export const initialState: ProductsState = adapter.getInitialState({
   errors: [],
   success: false,
 });
+
 const productsFeatureReducer = createReducer(
   initialState,
   on(
