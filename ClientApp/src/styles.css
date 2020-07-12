@@ -53,6 +53,9 @@ code {
   margin-left: 5px;
 }
 
+.help-text span {
+  font-size: 75%;
+}
 
 
 .sidebar {

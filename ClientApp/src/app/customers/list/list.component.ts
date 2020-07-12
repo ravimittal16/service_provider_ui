@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from "@angular/core";
-import { NgbModal, NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { Observable, of } from "rxjs";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
@@ -16,7 +16,6 @@ import { CustomerActionsCellRenderer } from "../grid-cell-renderers/row.actions.
 import { Router } from "@angular/router";
 import { CustomerEditCreateModalComponent } from "../customer-edit-create-modal/customer-edit-create-modal.component";
 import { UiAlertsService } from "@app/shared-ui-components/ui.alerts.service";
-import { param } from "jquery";
 
 @Component({
   selector: "app-list",

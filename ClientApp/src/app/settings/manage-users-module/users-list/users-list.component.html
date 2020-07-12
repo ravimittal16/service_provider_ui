@@ -1,1 +1,28 @@
-<p>users-list works!</p>
+<div class="card">
+  <div class="card-body">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-md">
+        <h5>
+          <span>Manage Users</span>
+        </h5>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="addNewUserClicked()"><span
+            class="fa fa-plus"></span> New
+          User</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card mt-1">
+  <div class="card-header p-b-p5">
+    <div class="row no-gutters align-items-center">
+
+    </div>
+  </div>
+  <div class="card-body">
+    <ag-grid-angular style="width: 100%; height: calc(100vh - 13.2rem);" class="ag-theme-alpine"
+      [gridOptions]="gridOptions" [rowData]="users$ | async">
+    </ag-grid-angular>
+  </div>
+</div>

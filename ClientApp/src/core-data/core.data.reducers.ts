@@ -16,12 +16,19 @@ import * as fromAuthSelectors from "./login/login.selectors";
 import * as fromProductState from "./products-store/products.state";
 import * as fromProductReducers from "./products-store/products.reducers";
 import * as fromProductsStateSelectors from "./products-store/products.selectors";
+// ==========================================================
+// USERS STORE IMPORTS
+// ==========================================================
+import * as fromUsersState from "./users-store/users.state";
+import * as fromUsersReducers from "./users-store/users.redurcers";
+import * as fromUsersStateSelectors from "./users-store/users.selectors";
 
 export interface AppState {
   accountRegister: fromAccountRegister.AccountRegisterState;
   customers: customerStates.CustomerState;
   userAuth: loginStates.LoginState;
   products: fromProductState.ProductsState;
+  users: fromUsersState.UsersState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -29,6 +36,7 @@ export const reducers: ActionReducerMap<AppState> = {
   customers: fromCustomers.reducer,
   userAuth: fromLogin.loginReducer,
   products: fromProductReducers.reducer,
+  users: fromUsersReducers.reducer,
 };
 
 // ==========================================================
@@ -61,6 +69,13 @@ export const selectCustomerUiState =
 // PRODUCTS
 // ==========================================================
 export const selectAllProducts = fromProductsStateSelectors.selectAllProducts;
+// ==========================================================
+// USERS SELECTORS
+// ==========================================================
+export const selectAllUsers = fromUsersStateSelectors.selectAllUsers;
+export const usersBusyStateSelector =
+  fromUsersStateSelectors.usersBusyStateSelector;
+export const selectUsersStateErrors = fromUsersStateSelectors.selectErrors;
 // ==========================================================
 // LOGIN
 // ==========================================================

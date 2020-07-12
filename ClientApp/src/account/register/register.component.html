@@ -16,7 +16,7 @@
               <p class="fs--1 text-600 mb-0">Have an account? <a [routerLink]="['/account/login']">Login</a></p>
             </div>
           </div>
-          <app-error-view [errors]="errors$ | async"></app-error-view>
+          <app-error-view [errors$]="errors$" observableDefined="true"></app-error-view>
 
           <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.valid)">
             <div class="form-group"><input formControlName="fullName" class="form-control" autofocus="autofocus"

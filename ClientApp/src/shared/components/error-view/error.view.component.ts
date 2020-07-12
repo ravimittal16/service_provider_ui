@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
+import { distinctUntilChanged } from "rxjs/operators";
 
 @Component({
   selector: "app-error-view",
@@ -26,11 +27,14 @@ export class AppErrorViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.observableDefined) {
+    if (this.observableDefined && this.errors$) {
       this._sink.add(
-        this.errors$.subscribe((errors) => {
-          this.errors.push(...errors);
-          this._cdr.detectChanges();
+        this.errors$.pipe(distinctUntilChanged()).subscribe((errors) => {
+          if (errors) {
+            console.log(errors);
+            this.errors = [...errors];
+            this._cdr.detectChanges();
+          }
         })
       );
     }
