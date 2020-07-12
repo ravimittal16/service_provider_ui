@@ -1907,6 +1907,18 @@ export interface IProductDto {
 }
 
 export class UserDto implements IUserDto {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    employeeNumber: string | undefined;
+    userId: string | undefined;
+    employeeId: number;
+    email: string | undefined;
+    primaryPhone: string | undefined;
+    userColor: string | undefined;
+    mobile: string | undefined;
+    isAdministrator: string | undefined;
+    roleName: string | undefined;
+    readonly fullName: string | undefined;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -1918,6 +1930,20 @@ export class UserDto implements IUserDto {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.employeeNumber = _data["employeeNumber"];
+            this.userId = _data["userId"];
+            this.employeeId = _data["employeeId"];
+            this.email = _data["email"];
+            this.primaryPhone = _data["primaryPhone"];
+            this.userColor = _data["userColor"];
+            this.mobile = _data["mobile"];
+            this.isAdministrator = _data["isAdministrator"];
+            this.roleName = _data["roleName"];
+            (<any>this).fullName = _data["fullName"];
+        }
     }
 
     static fromJS(data: any): UserDto {
@@ -1929,6 +1955,18 @@ export class UserDto implements IUserDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["employeeNumber"] = this.employeeNumber;
+        data["userId"] = this.userId;
+        data["employeeId"] = this.employeeId;
+        data["email"] = this.email;
+        data["primaryPhone"] = this.primaryPhone;
+        data["userColor"] = this.userColor;
+        data["mobile"] = this.mobile;
+        data["isAdministrator"] = this.isAdministrator;
+        data["roleName"] = this.roleName;
+        data["fullName"] = this.fullName;
         return data; 
     }
 
@@ -1941,6 +1979,18 @@ export class UserDto implements IUserDto {
 }
 
 export interface IUserDto {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    employeeNumber: string | undefined;
+    userId: string | undefined;
+    employeeId: number;
+    email: string | undefined;
+    primaryPhone: string | undefined;
+    userColor: string | undefined;
+    mobile: string | undefined;
+    isAdministrator: string | undefined;
+    roleName: string | undefined;
+    fullName: string | undefined;
 }
 
 export enum EmployeeTypes {
@@ -1968,6 +2018,8 @@ export class CreateUserModel implements ICreateUserModel {
     employeeNumber: string | undefined;
     employeeType: EmployeeTypes;
     joiningDate: moment.Moment | undefined;
+    createdBy: string | undefined;
+    readonly roleName: string | undefined;
 
     constructor(data?: ICreateUserModel) {
         if (data) {
@@ -1993,6 +2045,8 @@ export class CreateUserModel implements ICreateUserModel {
             this.employeeNumber = _data["employeeNumber"];
             this.employeeType = _data["employeeType"];
             this.joiningDate = _data["joiningDate"] ? moment(_data["joiningDate"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            (<any>this).roleName = _data["roleName"];
         }
     }
 
@@ -2018,6 +2072,8 @@ export class CreateUserModel implements ICreateUserModel {
         data["employeeNumber"] = this.employeeNumber;
         data["employeeType"] = this.employeeType;
         data["joiningDate"] = this.joiningDate ? this.joiningDate.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["roleName"] = this.roleName;
         return data; 
     }
 
@@ -2043,6 +2099,8 @@ export interface ICreateUserModel {
     employeeNumber: string | undefined;
     employeeType: EmployeeTypes;
     joiningDate: moment.Moment | undefined;
+    createdBy: string | undefined;
+    roleName: string | undefined;
 }
 
 export class CreateUserModelGenericResponse implements ICreateUserModelGenericResponse {

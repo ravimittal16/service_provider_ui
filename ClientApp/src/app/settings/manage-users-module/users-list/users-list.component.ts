@@ -5,6 +5,9 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { UiAlertsService } from "@app/shared-ui-components/ui.alerts.service";
 import { AddEditUserModalComponent } from "../add-edit-user-modal/add-edit-user-modal.component";
 import { UsersFacade } from "@core-data/users-store/users.facade";
+import { UserDto } from "@shared/service-proxies/service-proxies";
+import { UsersActionsCellRenderer } from "../grid-cell-renderers/users.actions.cell.renderer";
+import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
 
 @Component({
   selector: "app-users-list",
@@ -20,7 +23,11 @@ export class UsersListComponent implements OnInit {
     private _usersFacade: UsersFacade,
     private _cdr: ChangeDetectorRef,
     private _alertsService: UiAlertsService
-  ) {}
+  ) {
+    this.users$ = _usersFacade.users$;
+  }
+
+  triggerGridRowAction(action: string, userData: UserDto): void {}
 
   // ==========================================================
   // opening user edit/add modal pop-up
@@ -39,9 +46,98 @@ export class UsersListComponent implements OnInit {
     this._usersFacade.onUserModalOpened();
   }
 
+  private _initGridOptions() {
+    this.gridOptions = <GridOptions>{
+      columnDefs: [
+        {
+          headerName: "Actions",
+          field: "",
+          width: 80,
+          checkboxSelection: false,
+          suppressSorting: true,
+          pinned: true,
+          cellRenderer: "usersActionsCellRenderer",
+        },
+        {
+          headerName: "Full Name",
+          field: "fullName",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 200,
+          pinned: true,
+        },
+
+        {
+          headerName: "Role",
+          field: "roleName",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 200,
+        },
+        {
+          headerName: "Hourly Rate",
+          field: "billRate",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 150,
+          cellRenderer: "currencyValueCellRenderer",
+        },
+        {
+          headerName: "Email",
+          field: "email",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 250,
+          cellRenderer: "trueFalseValueCellRenderer",
+        },
+        {
+          headerName: "Primary Phone",
+          field: "primaryPhone",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 150,
+        },
+        {
+          headerName: "Employee Number",
+          field: "employeeNumber",
+          sortable: true,
+          filter: true,
+          resizable: true,
+          width: 200,
+        },
+      ],
+      context: this,
+      rowSelection: "multiple",
+      enableRangeSelection: true,
+      suppressCellSelection: true,
+      suppressRowClickSelection: true,
+      frameworkComponents: {
+        usersActionsCellRenderer: UsersActionsCellRenderer,
+        currencyValueCellRenderer: CurrencyValueCellRenderer,
+      },
+      onSelectionChanged: (params) => {
+        if (params.api) {
+        }
+      },
+      onGridReady: (params) => {
+        if (params.api) {
+          //  params.api.sizeColumnsToFit();
+        }
+      },
+    };
+  }
+
   addNewUserClicked(): void {
     this._openUserModal(null);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._initGridOptions();
+    this._usersFacade.loadUsers();
+  }
 }

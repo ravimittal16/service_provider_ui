@@ -5,8 +5,8 @@ import { UserDto } from "@shared/service-proxies/service-proxies";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 export const usersFeatureKey = "__users";
 
-export function selectUserId(a: UserDto): string {
-  return "0".toString();
+export function selectUserId(user: UserDto): string {
+  return user.userId;
 }
 
 export const adapter: EntityAdapter<UserDto> = createEntityAdapter<UserDto>({

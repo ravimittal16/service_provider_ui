@@ -46,16 +46,18 @@ export class UsersEffects extends BaseEffect {
     return this.actions$.pipe(
       ofType(fromUserActions.loadUsersAction),
       withLatestFrom(this._store.select(fromUsersSelectors.selectAllUsers)),
-      filter(([action, users]) => users === null),
+      filter(([action, users]) => {
+        return users !== null;
+      }),
       concatMap(() =>
         this.usersDataService.getAllUsers().pipe(
-          map((response) =>
-            fromUserActions.usersLoadedAction({ users: response })
-          ),
+          map((response) => {
+            return fromUserActions.usersLoadedAction({ users: response });
+          }),
           catchError((error) => {
             return of(
               fromUserActions.userErrorsStateAction({
-                errors: ["Error while loading users.", error],
+                errors: ["Error while loading users."],
               })
             );
           })

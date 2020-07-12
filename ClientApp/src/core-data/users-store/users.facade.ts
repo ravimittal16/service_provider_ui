@@ -35,6 +35,11 @@ export class UsersFacade implements Facade {
     this.dispatch(fromUsersActions.createUserStartAction({ model: model }));
   }
 
+  loadUsers() {
+    this.dispatch(fromUsersActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(fromUsersActions.loadUsersAction());
+  }
+
   dispatch(action: Action) {
     this._store.dispatch(action);
   }
