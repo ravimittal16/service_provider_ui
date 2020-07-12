@@ -13,15 +13,21 @@ import { SharedModule } from "@shared/shared.module";
 import { ColorPickerModule } from "ngx-color-picker";
 import { UsersActionsCellRenderer } from "./grid-cell-renderers/users.actions.cell.renderer";
 import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
+import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 
 const routes: Routes = [{ path: "list", component: UsersListComponent }];
 const _gridCellRenderers = [
   UsersActionsCellRenderer,
   CurrencyValueCellRenderer,
+  EmailAddressLinkCellRenderer,
 ];
 
 @NgModule({
-  declarations: [UsersListComponent, AddEditUserModalComponent],
+  declarations: [
+    UsersListComponent,
+    AddEditUserModalComponent,
+    ..._gridCellRenderers,
+  ],
   imports: [
     CommonModule,
     SharedModule,
