@@ -47,6 +47,7 @@ export class AddEditUserModalComponent implements OnInit, OnDestroy {
     private _cdr: ChangeDetectorRef
   ) {
     this.isBusy$ = _usersFacade.isBusy$;
+    this.errors$ = _usersFacade.errors$;
   }
 
   isForNew = () => this.selectedUser === null;

@@ -1,5 +1,8 @@
 import { createAction, props } from "@ngrx/store";
-import { CreateUserModel } from "@shared/service-proxies/service-proxies";
+import {
+  CreateUserModel,
+  UserDto,
+} from "@shared/service-proxies/service-proxies";
 
 export const modalOpenedAction = createAction("[Users] Modal Opened");
 export const uiStateBusyAction = createAction(
@@ -14,7 +17,10 @@ export const userErrorsStateAction = createAction(
 // USERS LOAD ACTION
 // ==========================================================
 export const loadUsersAction = createAction("[Users] Load Users");
-export const usersLoaded = createAction("[Users] Loaded");
+export const usersLoadedAction = createAction(
+  "[Users] Loaded",
+  props<{ users: UserDto[] }>()
+);
 // ==========================================================
 // CREATE AND EDIT USER
 // ==========================================================

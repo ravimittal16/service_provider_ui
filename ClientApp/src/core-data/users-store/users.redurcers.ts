@@ -27,11 +27,19 @@ const usersReducer = createReducer(
     ...state,
     isBusy: props.isBusy,
   })),
+  on(fromUsersActions.userErrorsStateAction, (state, props) => ({
+    ...state,
+    isBusy: false,
+    errors: props.errors,
+  })),
   on(fromUsersActions.modalOpenedAction, (state) => ({
     ...state,
-    errors: null,
+    errors: [],
     isBusy: false,
-  }))
+  })),
+  on(fromUsersActions.usersLoadedAction, (state, props) =>
+    adapter.addMany(props.users, state)
+  )
 );
 
 export function reducer(state: UsersState | undefined, action: Action) {

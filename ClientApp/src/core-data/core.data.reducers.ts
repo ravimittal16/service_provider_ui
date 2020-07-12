@@ -75,6 +75,7 @@ export const selectAllProducts = fromProductsStateSelectors.selectAllProducts;
 export const selectAllUsers = fromUsersStateSelectors.selectAllUsers;
 export const usersBusyStateSelector =
   fromUsersStateSelectors.usersBusyStateSelector;
+export const selectUsersStateErrors = fromUsersStateSelectors.selectErrors;
 // ==========================================================
 // LOGIN
 // ==========================================================

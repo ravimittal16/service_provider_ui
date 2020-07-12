@@ -12,10 +12,12 @@ export const usersFeatureState = createFeatureSelector<UsersState>(
 
 const { selectIds, selectEntities, selectAll } = adapter.getSelectors();
 
-export const selectProductIds = selectIds;
-export const selectProductEntities = selectEntities;
+export const selectUserIds = selectIds;
+export const selectUserEntities = selectEntities;
 export const selectAllUsers = createSelector(usersFeatureState, selectAll);
 export const usersBusyStateSelector = createSelector(
   usersFeatureState,
   (s) => s.isBusy
 );
+
+export const selectErrors = createSelector(usersFeatureState, (s) => s.errors);

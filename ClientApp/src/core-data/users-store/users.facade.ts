@@ -9,6 +9,7 @@ import { Observable } from "rxjs";
 import { UsersState } from "./users.state";
 import * as fromUsersActions from "./users.actions";
 import * as fromUsersSelectors from "./users.selectors";
+import { tap } from "rxjs/operators";
 @Injectable({
   providedIn: "root",
 })
@@ -22,6 +23,7 @@ export class UsersFacade implements Facade {
     this.isBusy$ = this._store.pipe(
       select(fromUsersSelectors.usersBusyStateSelector)
     );
+    this.errors$ = this._store.pipe(select(fromUsersSelectors.selectErrors));
   }
 
   onUserModalOpened() {
