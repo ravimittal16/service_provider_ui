@@ -61,7 +61,7 @@ export class AddEditUserModalComponent implements OnInit, OnDestroy {
     } else {
       const _formModel = this.userFormGroup.getRawValue() as CreateUserModel;
       _formModel.userColor = this.selectedUserColor;
-      this._usersFacade.createUser(_formModel);
+      this._usersFacade.triggerCreateUserAction(_formModel);
     }
   }
 

@@ -30,7 +30,7 @@ export class UsersFacade implements Facade {
     this.dispatch(fromUsersActions.modalOpenedAction());
   }
 
-  createUser(model: CreateUserModel) {
+  triggerCreateUserAction(model: CreateUserModel) {
     this.dispatch(fromUsersActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(fromUsersActions.createUserStartAction({ model: model }));
   }
