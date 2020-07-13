@@ -133,6 +133,8 @@ export class ListComponent implements OnInit {
       rowSelection: "multiple",
       enableRangeSelection: true,
       suppressCellSelection: true,
+      pagination: true,
+      paginationPageSize: 50,
       suppressRowClickSelection: true,
       frameworkComponents: {
         customerDisplayNameLink: CustomerDisplayNameLinkCellRenderer,
