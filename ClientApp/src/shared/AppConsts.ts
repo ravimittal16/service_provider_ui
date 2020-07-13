@@ -9,6 +9,16 @@ export enum AddressTypes {
   LEGAL = 3,
   OTHER = 4,
 }
+export enum EmployeeTypes {
+  Owner, //SuperAdmin
+  Administrator, //Administrator
+  Manager, //Manager
+  LimitedContractor, //LimitedContractor
+  Contractor, //Contractor
+  Dispatcher, //Dispatcher
+  Employee, //Employee,
+  Customer, //ExternalUser
+}
 export class AppConsts {
   static remoteServiceBaseUrl: string = "http://localhost:2158";
   static appBaseUrl: string = "app/home";

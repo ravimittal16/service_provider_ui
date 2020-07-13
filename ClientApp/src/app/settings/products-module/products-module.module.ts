@@ -21,11 +21,11 @@ const routes: Routes = [
 
 const _gridCellRenderers = [
   TrueFalseValueCellRenderer,
-  CurrencyValueCellRenderer,
+
   ProductNameCellRenderer,
   ProductActionsCellRenderer,
 ];
-
+const sharedRenderers = [CurrencyValueCellRenderer];
 @NgModule({
   declarations: [
     ListComponentComponent,
@@ -36,7 +36,7 @@ const _gridCellRenderers = [
     CommonModule,
     SharedModule,
     NgxMaskModule.forRoot(),
-    AgGridModule.withComponents([..._gridCellRenderers]),
+    AgGridModule.withComponents([..._gridCellRenderers, ...sharedRenderers]),
     FormsModule,
     ReactiveFormsModule,
     NgbModule,

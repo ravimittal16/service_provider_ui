@@ -124,6 +124,7 @@ export class UsersListComponent implements OnInit {
       rowSelection: "multiple",
       enableRangeSelection: true,
       suppressCellSelection: true,
+      pagination: true,
       suppressRowClickSelection: true,
       frameworkComponents: {
         usersActionsCellRenderer: UsersActionsCellRenderer,
@@ -136,7 +137,7 @@ export class UsersListComponent implements OnInit {
       },
       onGridReady: (params) => {
         if (params.api) {
-          //  params.api.sizeColumnsToFit();
+          params.api.sizeColumnsToFit();
         }
       },
     };
