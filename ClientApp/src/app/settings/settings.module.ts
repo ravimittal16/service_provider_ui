@@ -7,7 +7,10 @@ import { MainComponent } from "./main/main.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { BrandingComponent } from "./branding/branding.component";
 import { CustomFieldsComponent } from "./custom-fields/custom-fields.component";
-import { SharedModule } from "@shared/shared.module";
+
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BusinessHoursCardComponent } from './business-hours-card/business-hours-card.component';
+import { TaxSettingsCardComponent } from './tax-settings-card/tax-settings-card.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,15 @@ import { SharedModule } from "@shared/shared.module";
     MainComponent,
     BrandingComponent,
     CustomFieldsComponent,
+    BusinessHoursCardComponent,
+    TaxSettingsCardComponent,
   ],
-  imports: [CommonModule, SettingsRoutingModule, NgbModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SettingsRoutingModule,
+    NgbModule,
+  ],
 })
 export class SettingsModule {}

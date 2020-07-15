@@ -1,12 +1,23 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-company",
   templateUrl: "./company.component.html",
   styleUrls: ["./company.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyComponent implements OnInit {
-  constructor() {}
+  companyFormGroup: FormGroup;
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _Cdr: ChangeDetectorRef
+  ) {}
 
   disconnectAccount(): void {}
 

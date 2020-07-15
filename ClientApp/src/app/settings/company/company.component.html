@@ -1,37 +1,214 @@
-<div class="row no-gutters">
-  <div class="col-xxl-8 pr-xxl-2 mb-3">
-    <div class="card mb-3">
-      <div class="bg-holder d-none d-lg-block bg-card">
+<form>
+  <div class="row no-gutters">
+    <div class="col-xxl-8 pr-xxl-2 mb-3">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h3 class="mb-0">Company Settings</h3>
+              <div class="mt-4 p-2">
+
+                <div class="form-row">
+                  <div class="form-group flex-fill">
+                    <label>Company Name</label>
+                    <input type="text" #firstName formControlName="givenName" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>Phone Number</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>Website URL</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>Email</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <h5 class="text-muted">Company Address</h5>
+                </div>
+                <div class="form-row">
+                  <div class="form-group flex-fill">
+                    <label>Street 1</label>
+                    <input type="text" #firstName formControlName="givenName" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group flex-fill">
+                    <label>Street 2</label>
+                    <input type="text" #firstName formControlName="givenName" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>City</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>State</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>Postal</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group flex-fill">
+                      <label>Country</label>
+                      <input type="text" #firstName formControlName="givenName" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-lg-8">
-            <h3 class="mb-0">Get started with your free trial</h3>
-            <p class="mt-2">Premium team - 5 Seats. Free for 30 days, cancel at any time. <br />$6.25 / seat month after
-              a trial</p>
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Regional Settings</h5>
+        </div>
+        <div class="card-body bg-light">
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label>Country</label>
+                <input type="text" #firstName formControlName="givenName" class="form-control" />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label>Time Zone</label>
+                <input type="text" #firstName formControlName="givenName" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label>Date Format</label>
+                <input type="text" #firstName formControlName="givenName" class="form-control" />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label>Time Format</label>
+                <input type="text" #firstName formControlName="givenName" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="form-row mt-2">
+            <div class="col">
+              <label>First day of the week</label>
+              <div class="mr-2">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rSunday" value="0">
+                  <label class="form-check-label" for="rSunday">Sunday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rMonday" value="1">
+                  <label class="form-check-label" for="rMonday">Monday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rTuesday" value="2">
+                  <label class="form-check-label" for="rTuesday">Tuesday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rWednesday" value="3">
+                  <label class="form-check-label" for="rWednesday">Wednesday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rThursday" value="4">
+                  <label class="form-check-label" for="rThursday">Thurday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rFriday" value="5">
+                  <label class="form-check-label" for="rFriday">Friday</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rSaturday" value="6">
+                  <label class="form-check-label" for="rSaturday">Saturday</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row justify-content-between align-items-center">
+            <div class="col-sm-auto">
+              <h5 class="mb-1 mb-md-0">Tax Settings</h5>
+            </div>
+            <div class="col-sm-auto fs--1">
+              <a class="text-sans-serif ml-2 ml-sm-3" data-toggle="modal" style="cursor: pointer;">
+                <i class="fa fa-plus"></i> Add New Tax Rate
+              </a></div>
+          </div>
+
+        </div>
+        <div class="card-body bg-light">
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label>Tax ID Name (e.g. GST)</label>
+                <input type="text" #firstName formControlName="givenName" class="form-control" />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label>Tax ID Number</label>
+                <input type="text" #firstName formControlName="givenName" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-3 bg-soft-success">
+        <div class="card-body">
+          <div class="row justify-content-between align-items-center">
+            <div class="col-md">
+              <h5 class="mb-2 mb-md-0">
+                <span class="text-danger">unsaved changes</span>
+              </h5>
+            </div>
+            <div class="col-auto"><button class="btn btn-success mr-1 mb-1 btn-sm mr-2">Update Settings</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-lg-6 col-xxl-4 pl-xxl-2 mb-3">
-    <div class="card mb-3 h-100">
-      <div class="card-header">
-        <h5 class="mb-0">Danger Zone</h5>
+    <div class="col-lg-6 col-xxl-4 pl-xxl-2 mb-3">
+      <div class="card mb-3 h-50" style="max-height: 220px;">
+        <div class="card-header">
+          <h5 class="mb-0 text-danger">Danger Zone</h5>
+        </div>
+        <div class="card-body bg-soft-danger">
+          <h5 class="fs-0 text-danger">Delete this account</h5>
+          <p class="fs--1">Once you delete a account, there is no going back. Please be certain.</p><a
+            class="btn btn-falcon-danger d-block" (click)="disconnectAccount()">Disconnect from Quickbooks </a>
+        </div>
       </div>
-      <div class="card-body bg-light">
-        <h5 class="fs-0">Delete this account</h5>
-        <p class="fs--1">Once you delete a account, there is no going back. Please be certain.</p><a
-          class="btn btn-falcon-danger d-block" (click)="disconnectAccount()">Disconnect from Quickbooks </a>
-      </div>
+      <app-business-hours-card></app-business-hours-card>
     </div>
   </div>
-</div>
-<!-- <div class="media mb-4 mt-6"><span class="fa fa-stack mr-2 ml-n1"><i class="fa fa-circle fa-stack-2x text-500"></i><i
-      class="fa-inverse fa-stack-1x text-primary fas fa-folder-plus" data-fa-transform="shrink-2"></i></span>
-  <div class="media-body">
-    <h5 class="mb-0 text-primary position-relative"><span class="bg-200 pr-3">Others</span><span
-        class="border position-absolute absolute-vertical-center w-100 z-index--1 l-0"></span></h5>
-    <p class="mb-0">Get more awesome cards for showing your different types of content..</p>
-  </div>
-</div> -->
+</form>
