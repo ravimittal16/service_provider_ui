@@ -9,8 +9,9 @@ import { BrandingComponent } from "./branding/branding.component";
 import { CustomFieldsComponent } from "./custom-fields/custom-fields.component";
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BusinessHoursCardComponent } from './business-hours-card/business-hours-card.component';
-import { TaxSettingsCardComponent } from './tax-settings-card/tax-settings-card.component';
+import { BusinessHoursCardComponent } from "./business-hours-card/business-hours-card.component";
+import { TaxSettingsCardComponent } from "./tax-settings-card/tax-settings-card.component";
+import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TaxSettingsCardComponent } from './tax-settings-card/tax-settings-card.
     ReactiveFormsModule,
     SettingsRoutingModule,
     NgbModule,
+    SharedUiComponentsModule,
   ],
 })
 export class SettingsModule {}

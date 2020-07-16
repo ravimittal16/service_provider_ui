@@ -20,6 +20,12 @@ export class CompanyComponent implements OnInit {
   ) {}
 
   disconnectAccount(): void {}
-
-  ngOnInit(): void {}
+  private _initFormGroup() {
+    this.companyFormGroup = this._formBuilder.group({
+      givenName: [""],
+    });
+  }
+  ngOnInit(): void {
+    this._initFormGroup();
+  }
 }
