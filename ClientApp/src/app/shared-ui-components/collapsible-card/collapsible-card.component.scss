@@ -1,5 +1,9 @@
-.card-header .collapse {
+.header-collapsed {
   border-radius: calc(0.375rem - 0px) calc(0.375rem - 0px) calc(0.375rem - 0px) calc(0.375rem - 0px);
+}
+
+.rotate {
+  transition: .3s transform ease-in-out;
 }
 
 .card-header .fa {

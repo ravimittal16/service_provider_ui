@@ -34,6 +34,7 @@
     "@ngrx/store-devtools": "^9.1.2",
     "@nguniversal/module-map-ngfactory-loader": "8.0.0-rc.1",
     "@nrwl/nx": "^7.8.7",
+    "@types/bootstrap": "^4.5.0",
     "@types/jquery": "^3.3.32",
     "@types/lodash": "^4.14.149",
     "@types/moment": "^2.13.0",
