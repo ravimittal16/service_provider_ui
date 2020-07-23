@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { Observable } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -8,6 +8,7 @@ import { UsersFacade } from "@core-data/users-store/users.facade";
 import { UserDto } from "@shared/service-proxies/service-proxies";
 import { UsersActionsCellRenderer } from "../grid-cell-renderers/users.actions.cell.renderer";
 import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
+import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
 
 @Component({
   selector: "app-users-list",
@@ -15,9 +16,10 @@ import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.
   styleUrls: ["./users-list.component.scss"],
 })
 export class UsersListComponent implements OnInit {
+  @ViewChild("searchBox") searchBox: HTMLInputElement;
   gridOptions: GridOptions;
   users$: Observable<any[]>;
-
+  searchContent: string;
   constructor(
     private modalService: NgbModal,
     private _usersFacade: UsersFacade,
@@ -27,7 +29,14 @@ export class UsersListComponent implements OnInit {
     this.users$ = _usersFacade.users$;
   }
 
-  triggerGridRowAction(action: string, userData: UserDto): void {}
+  triggerGridRowAction(
+    action: "edit" | "details" | "createJob" | "report" | "ínactive",
+    userData: UserDto
+  ): void {
+    if (action === "edit") {
+      this._openUserModal(userData);
+    }
+  }
 
   // ==========================================================
   // opening user edit/add modal pop-up
@@ -82,7 +91,7 @@ export class UsersListComponent implements OnInit {
           sortable: true,
           filter: true,
           resizable: true,
-          width: 150,
+          width: 130,
           cellRenderer: "currencyValueCellRenderer",
         },
         {
@@ -92,7 +101,7 @@ export class UsersListComponent implements OnInit {
           filter: true,
           resizable: true,
           width: 250,
-          cellRenderer: "trueFalseValueCellRenderer",
+          cellRenderer: "emailAddressLinkCellRenderer",
         },
         {
           headerName: "Primary Phone",
@@ -115,10 +124,12 @@ export class UsersListComponent implements OnInit {
       rowSelection: "multiple",
       enableRangeSelection: true,
       suppressCellSelection: true,
+      pagination: true,
       suppressRowClickSelection: true,
       frameworkComponents: {
         usersActionsCellRenderer: UsersActionsCellRenderer,
         currencyValueCellRenderer: CurrencyValueCellRenderer,
+        emailAddressLinkCellRenderer: EmailAddressLinkCellRenderer,
       },
       onSelectionChanged: (params) => {
         if (params.api) {
@@ -126,7 +137,7 @@ export class UsersListComponent implements OnInit {
       },
       onGridReady: (params) => {
         if (params.api) {
-          //  params.api.sizeColumnsToFit();
+          params.api.sizeColumnsToFit();
         }
       },
     };

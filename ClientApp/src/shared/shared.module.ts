@@ -15,14 +15,30 @@ import { AppErrorViewComponent } from "./components/error-view/error.view.compon
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CurrencySymbolPipe } from "./pipes/currency.symbol.pipe";
+import { EmailAddressLinkCellRenderer } from "./grid-cell-renderers/email.address.cell.renderer";
+import { CurrencyValueCellRenderer } from "./grid-cell-renderers/currency.value.cell.renderer";
 
-const directives = [BlockDirective, BusyDirective];
-const components = [AppLogoComponent, AppErrorViewComponent];
-const _pipes = [LocalizePipe, CurrencySymbolPipe];
+const sharedDirectives = [BlockDirective, BusyDirective];
+const sharedComponents = [AppLogoComponent, AppErrorViewComponent];
+const sharedPipes = [LocalizePipe, CurrencySymbolPipe];
+const sharedRenderers = [
+  EmailAddressLinkCellRenderer,
+  CurrencyValueCellRenderer,
+];
 @NgModule({
   imports: [CommonModule, NgbModule],
-  declarations: [...directives, ...components, ..._pipes],
-  exports: [...directives, ...components, ..._pipes],
+  declarations: [
+    ...sharedDirectives,
+    ...sharedComponents,
+    ...sharedPipes,
+    ...sharedRenderers,
+  ],
+  exports: [
+    ...sharedDirectives,
+    ...sharedComponents,
+    ...sharedPipes,
+    ...sharedRenderers,
+  ],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

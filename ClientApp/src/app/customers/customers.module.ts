@@ -19,9 +19,10 @@ import { NgxMaskModule, IConfig } from "ngx-mask";
 
 const cellRenderers = [
   CustomerDisplayNameLinkCellRenderer,
-  EmailAddressLinkCellRenderer,
   CustomerActionsCellRenderer,
 ];
+
+const sharedRenderers = [EmailAddressLinkCellRenderer];
 
 const _routeComponents = [ListComponent, CustomerDetailComponent];
 @NgModule({
@@ -34,7 +35,7 @@ const _routeComponents = [ListComponent, CustomerDetailComponent];
     CommonModule,
     SharedModule,
     NgxMaskModule.forRoot(),
-    AgGridModule.withComponents([...cellRenderers]),
+    AgGridModule.withComponents([...cellRenderers, ...sharedRenderers]),
     FormsModule,
     ReactiveFormsModule,
     NgbModule,

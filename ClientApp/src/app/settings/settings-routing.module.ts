@@ -23,7 +23,7 @@ const routes: Routes = [
       {
         path: "users",
         loadChildren: () =>
-          import("./manage-users-module/manage-users-module.module").then(
+          import("./manage-users-module/manage-users-module").then(
             (module) => module.ManageUsersModuleModule
           ),
       },

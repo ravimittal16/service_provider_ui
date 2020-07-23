@@ -1,0 +1,26 @@
+.form-group {
+  margin-bottom: .2rem;
+}
+
+.width-title {
+  flex: 0 0 18.666667%;
+  max-width: 18.666667%;
+}
+
+.width-name {
+  flex: 0 0 40.666667%;
+  max-width: 40.666667%;
+}
+
+.card-header .collapse {
+  border-radius: calc(0.375rem - 0px) calc(0.375rem - 0px) calc(0.375rem - 0px) calc(0.375rem - 0px);
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+
+}

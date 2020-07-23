@@ -1918,6 +1918,7 @@ export class UserDto implements IUserDto {
     mobile: string | undefined;
     isAdministrator: string | undefined;
     roleName: string | undefined;
+    billRate: number;
     readonly fullName: string | undefined;
 
     constructor(data?: IUserDto) {
@@ -1942,6 +1943,7 @@ export class UserDto implements IUserDto {
             this.mobile = _data["mobile"];
             this.isAdministrator = _data["isAdministrator"];
             this.roleName = _data["roleName"];
+            this.billRate = _data["billRate"];
             (<any>this).fullName = _data["fullName"];
         }
     }
@@ -1966,6 +1968,7 @@ export class UserDto implements IUserDto {
         data["mobile"] = this.mobile;
         data["isAdministrator"] = this.isAdministrator;
         data["roleName"] = this.roleName;
+        data["billRate"] = this.billRate;
         data["fullName"] = this.fullName;
         return data; 
     }
@@ -1990,6 +1993,7 @@ export interface IUserDto {
     mobile: string | undefined;
     isAdministrator: string | undefined;
     roleName: string | undefined;
+    billRate: number;
     fullName: string | undefined;
 }
 

@@ -1,0 +1,80 @@
+<app-collapsible-card #collapsibleCompponent>
+  <div class="header">
+    <div class="row">
+      <div class="col-sm">
+        <h5 class="mb-1 mb-md-0">Tax Settings</h5>
+      </div>
+      <div class="col-sm fs--1">
+        <div class="d-flex justify-content-end">
+          <a class="text-sans-serif ml-2 ml-sm-3" data-toggle="modal" style="cursor: pointer;"
+            (click)="addNewTaxClicked()">
+            <i class="fa fa-plus"></i> Add New Tax Rate
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body bg-light card-content">
+    <form [formGroup]="taxesFormGroup">
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group flex-fill">
+            <label>Tax ID Name (e.g. GST)</label>
+            <input type="text" class="form-control" formControlName="taxIdName" maxlength="100" />
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group flex-fill">
+            <label>Tax ID Number</label>
+            <input type="text" class="form-control" formControlName="taxIdNumber" maxlength="100" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="fs-1 text-500">Taxes</h6>
+        </div>
+      </div>
+      <div class="form-row" formArrayName="taxes" *ngFor="let _ of taxes.controls; index as i">
+        <ng-container [formGroupName]="i">
+          <div class="col-1">
+            <div>
+              <label>Default</label>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input class="custom-control-input" [id]="i" type="radio" formControlName="isDefault"
+                  name="isDefault" />
+                <label class="custom-control-label" [for]="i">&nbsp;</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group flex-fill">
+              <label>Tax Name</label>
+              <input type="text" class="form-control form-control-sm" formControlName="taxName" maxlength="100" />
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group flex-fill">
+              <label>Tax Rate%</label>
+              <input type="number" class="form-control form-control-sm" formControlName="taxRate" maxlength="100" />
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="form-group flex-fill">
+              <label>Description</label>
+              <input type="text" class="form-control form-control-sm" formControlName="taxDescription"
+                maxlength="500" />
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="rm-btn-mar-t">
+              <button class="btn btn-outline-danger btn-sm mr-1 mb-1" type="button" (click)="onRemoveTaxClicked(i)">
+                <span class="fa fa-trash ml-1" data-fa-transform="shrink-3"></span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </form>
+  </div>
+</app-collapsible-card>
