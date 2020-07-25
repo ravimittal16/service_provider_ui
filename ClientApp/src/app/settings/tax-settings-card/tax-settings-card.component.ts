@@ -13,6 +13,7 @@ export class TaxSettingsCardComponent implements OnInit {
   collapsibleCompponent: CollapsibleCardComponent;
   taxesFormGroup: FormGroup;
   taxes: FormArray;
+  _defaultTaxId: string;
   constructor(private _formBuilder: FormBuilder) {}
 
   addNewTaxClicked(): void {
@@ -21,11 +22,27 @@ export class TaxSettingsCardComponent implements OnInit {
     if (this.collapsibleCompponent && !this.collapsibleCompponent.isExpanded) {
       this.collapsibleCompponent.expandCollapsePanel();
     }
-    console.log(this.taxes.value);
+    setTimeout(() => {
+      if (this.taxes.length === 1) {
+        const _firstGroup = this.taxes.controls[0];
+        if (_firstGroup) {
+          const _id = _firstGroup.get("id").value;
+          _firstGroup.get("defaultTaxId").patchValue(_id);
+        }
+      }
+    }, 10);
   }
 
   onRemoveTaxClicked(index: number) {
     console.log(index);
+  }
+
+  onDefaultTaxClicked(index: number) {
+    const _group = this.taxes[index] as FormGroup;
+    if (_group) {
+      this._defaultTaxId = _group.get("id").value;
+      console.log(this._defaultTaxId);
+    }
   }
 
   createTaxFormItem(): FormGroup {
@@ -36,7 +53,7 @@ export class TaxSettingsCardComponent implements OnInit {
       taxRate: [0, [Validators.required]],
       taxDescription: [""],
       isActive: [false],
-      isDefault: [false],
+      defaultTaxId: [""],
       isSaved: [false],
     });
   }
