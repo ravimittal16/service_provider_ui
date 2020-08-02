@@ -51,7 +51,6 @@ export class TaxSettingsCardComponent implements OnInit {
     const _group = this.taxes[index] as FormGroup;
     if (_group) {
       this._defaultTaxId = _group.get("id").value;
-      console.log(this._defaultTaxId);
     }
   }
 
