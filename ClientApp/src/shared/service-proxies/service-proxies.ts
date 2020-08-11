@@ -295,7 +295,7 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
-export class ApiServiceProxy {
+export class CompanyServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -308,8 +308,8 @@ export class ApiServiceProxy {
     /**
      * @return Success
      */
-    company(): Observable<CompanyDetailsModel> {
-        let url_ = this.baseUrl + "/api/company";
+    getCompanyDetails(): Observable<CompanyDetailsModel> {
+        let url_ = this.baseUrl + "/api/company/GetCompanyDetails";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -321,11 +321,11 @@ export class ApiServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCompany(response_);
+            return this.processGetCompanyDetails(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCompany(<any>response_);
+                    return this.processGetCompanyDetails(<any>response_);
                 } catch (e) {
                     return <Observable<CompanyDetailsModel>><any>_observableThrow(e);
                 }
@@ -334,7 +334,7 @@ export class ApiServiceProxy {
         }));
     }
 
-    protected processCompany(response: HttpResponseBase): Observable<CompanyDetailsModel> {
+    protected processGetCompanyDetails(response: HttpResponseBase): Observable<CompanyDetailsModel> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

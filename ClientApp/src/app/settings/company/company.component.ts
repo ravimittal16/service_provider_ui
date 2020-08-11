@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { TaxSettingsCardComponent } from "../tax-settings-card/tax-settings-card.component";
+import { CompanyFacade } from "@core-data/company-store/company.facade";
 
 @Component({
   selector: "app-company",
@@ -21,7 +22,8 @@ export class CompanyComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _Cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _copmanyFacade: CompanyFacade
   ) {}
 
   disconnectAccount(): void {}
@@ -32,6 +34,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this._initFormGroup();
+    this._copmanyFacade.loadCompanyDetails();
   }
   ngAfterViewInit(): void {
     console.log(this.taxesComponent);

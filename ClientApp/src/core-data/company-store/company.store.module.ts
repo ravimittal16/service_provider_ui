@@ -4,11 +4,16 @@ import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../../environments/environment";
 import { CompanyFacade } from "./company.facade";
+import {
+  reducer,
+  customerFeatureKey,
+} from "@core-data/customers/customers.reducers";
+import { CompanyStoreEffects } from "./company.effects";
 
 @NgModule({
   imports: [
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
+    StoreModule.forFeature(customerFeatureKey, reducer),
+    EffectsModule.forFeature([CompanyStoreEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
   providers: [CompanyFacade],
