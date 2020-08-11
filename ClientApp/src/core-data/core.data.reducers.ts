@@ -22,6 +22,11 @@ import * as fromProductsStateSelectors from "./products-store/products.selectors
 import * as fromUsersState from "./users-store/users.state";
 import * as fromUsersReducers from "./users-store/users.redurcers";
 import * as fromUsersStateSelectors from "./users-store/users.selectors";
+// ==========================================================
+// companySTORE company// ==========================================================
+import * as fromCompanyState from "./company-store/company.state";
+import * as fromCompanyReducers from "./company-store/company.reducers";
+import * as fromCompanyStateSelectors from "./company-store/company.selectors";
 
 export interface AppState {
   accountRegister: fromAccountRegister.AccountRegisterState;
@@ -29,6 +34,7 @@ export interface AppState {
   userAuth: loginStates.LoginState;
   products: fromProductState.ProductsState;
   users: fromUsersState.UsersState;
+  company: fromCompanyState.CompanyState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -37,6 +43,7 @@ export const reducers: ActionReducerMap<AppState> = {
   userAuth: fromLogin.loginReducer,
   products: fromProductReducers.reducer,
   users: fromUsersReducers.reducer,
+  company: fromCompanyReducers.reducer,
 };
 
 // ==========================================================
@@ -82,3 +89,12 @@ export const selectUsersStateErrors = fromUsersStateSelectors.selectErrors;
 export const isAuthenticated = fromAuthSelectors.isAuthenticated;
 export const authToken = fromAuthSelectors.accessToken;
 export const isBusyLogin = fromAuthSelectors.isBusy;
+// ==========================================================
+// COPMANY SELECTORS
+// ==========================================================
+export const copmanyStateErrors = fromCompanyStateSelectors.selectErrors;
+export const copmanyDetails = fromCompanyStateSelectors.selectCompanyDetails;
+export const copmanyBusinessHoursDetails =
+  fromCompanyStateSelectors.companyBusinessHoursSelector;
+export const isBusyStateCompany =
+  fromCompanyStateSelectors.copmanyBusyStateSelector;

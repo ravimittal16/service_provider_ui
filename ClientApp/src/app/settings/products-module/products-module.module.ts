@@ -40,7 +40,6 @@ const sharedRenderers = [CurrencyValueCellRenderer];
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    CoreDataModule,
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],

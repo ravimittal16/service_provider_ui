@@ -295,6 +295,69 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
+export class CompanyServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getCompanyDetails(): Observable<CompanyDetailsModel> {
+        let url_ = this.baseUrl + "/api/company/GetCompanyDetails";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCompanyDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCompanyDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<CompanyDetailsModel>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CompanyDetailsModel>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCompanyDetails(response: HttpResponseBase): Observable<CompanyDetailsModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyDetailsModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CompanyDetailsModel>(<any>null);
+    }
+}
+
+@Injectable()
 export class CustomersServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1155,6 +1218,150 @@ export interface IRegisterModelGenericResponse {
     entity: RegisterModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+}
+
+export enum Weekdays {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+}
+
+export class CompanyBusinessHourModel implements ICompanyBusinessHourModel {
+    businessHourId: number;
+    dayOfWeek: Weekdays;
+    startTime: moment.Moment | undefined;
+    finishTime: moment.Moment | undefined;
+    isClosed: boolean | undefined;
+    readonly dayName: string | undefined;
+
+    constructor(data?: ICompanyBusinessHourModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.businessHourId = _data["businessHourId"];
+            this.dayOfWeek = _data["dayOfWeek"];
+            this.startTime = _data["startTime"] ? moment(_data["startTime"].toString()) : <any>undefined;
+            this.finishTime = _data["finishTime"] ? moment(_data["finishTime"].toString()) : <any>undefined;
+            this.isClosed = _data["isClosed"];
+            (<any>this).dayName = _data["dayName"];
+        }
+    }
+
+    static fromJS(data: any): CompanyBusinessHourModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyBusinessHourModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["businessHourId"] = this.businessHourId;
+        data["dayOfWeek"] = this.dayOfWeek;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["finishTime"] = this.finishTime ? this.finishTime.toISOString() : <any>undefined;
+        data["isClosed"] = this.isClosed;
+        data["dayName"] = this.dayName;
+        return data; 
+    }
+
+    clone(): CompanyBusinessHourModel {
+        const json = this.toJSON();
+        let result = new CompanyBusinessHourModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompanyBusinessHourModel {
+    businessHourId: number;
+    dayOfWeek: Weekdays;
+    startTime: moment.Moment | undefined;
+    finishTime: moment.Moment | undefined;
+    isClosed: boolean | undefined;
+    dayName: string | undefined;
+}
+
+export class CompanyDetailsModel implements ICompanyDetailsModel {
+    companyName: string | undefined;
+    country: string | undefined;
+    email: string | undefined;
+    webAddr: string | undefined;
+    primaryPhone: string | undefined;
+    businessHourModels: CompanyBusinessHourModel[] | undefined;
+
+    constructor(data?: ICompanyDetailsModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyName = _data["companyName"];
+            this.country = _data["country"];
+            this.email = _data["email"];
+            this.webAddr = _data["webAddr"];
+            this.primaryPhone = _data["primaryPhone"];
+            if (Array.isArray(_data["businessHourModels"])) {
+                this.businessHourModels = [] as any;
+                for (let item of _data["businessHourModels"])
+                    this.businessHourModels.push(CompanyBusinessHourModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CompanyDetailsModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyDetailsModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyName"] = this.companyName;
+        data["country"] = this.country;
+        data["email"] = this.email;
+        data["webAddr"] = this.webAddr;
+        data["primaryPhone"] = this.primaryPhone;
+        if (Array.isArray(this.businessHourModels)) {
+            data["businessHourModels"] = [];
+            for (let item of this.businessHourModels)
+                data["businessHourModels"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CompanyDetailsModel {
+        const json = this.toJSON();
+        let result = new CompanyDetailsModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompanyDetailsModel {
+    companyName: string | undefined;
+    country: string | undefined;
+    email: string | undefined;
+    webAddr: string | undefined;
+    primaryPhone: string | undefined;
+    businessHourModels: CompanyBusinessHourModel[] | undefined;
 }
 
 export enum PropertyTypes {

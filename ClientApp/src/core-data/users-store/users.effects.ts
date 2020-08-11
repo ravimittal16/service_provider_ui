@@ -27,21 +27,6 @@ export class UsersEffects extends BaseEffect {
     super();
   }
 
-  // onFetchUsers$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //       ofType(fromUserActions.loadUsersAction),
-  //       withLatestFrom(this._store.select(fromUsersSelectors.selectAllUsers)),
-  //       filter()
-  //       operator(() =>
-  //         apiSource.pipe(
-  //           map(data => fromUserActions.loadUsersAction({ data })),
-  //           withLatestFrom(this.)
-  //           catchError(error => of(fromUserActions.loadUsersAction({ error }))))
-  //           withLatestFrom(this.)
-  //         ),
-  //   );
-  // });
-
   onFetchUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromUserActions.loadUsersAction),

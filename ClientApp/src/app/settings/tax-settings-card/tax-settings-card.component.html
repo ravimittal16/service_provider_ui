@@ -46,7 +46,12 @@
       </div>
       <div class="row">
         <div class="col">
-          <h6 class="fs-1 text-500">Taxes</h6>
+          <h6 class="fs-1 text-500">
+            Taxes
+            <span *ngIf="taxes && taxes.controls.length > 0"
+              >({{ taxes.length }})</span
+            >
+          </h6>
         </div>
       </div>
       <div
@@ -112,10 +117,7 @@
                 type="button"
                 (click)="onRemoveTaxClicked(i)"
               >
-                <span
-                  class="fa fa-trash ml-1"
-                  data-fa-transform="shrink-3"
-                ></span>
+                <span class="fa fa-trash" data-fa-transform="shrink-3"></span>
               </button>
             </div>
           </div>

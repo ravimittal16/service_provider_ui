@@ -1,5 +1,4 @@
 import {
-  ProductDto,
   UserDto,
   CreateUserModel,
 } from "@shared/service-proxies/service-proxies";

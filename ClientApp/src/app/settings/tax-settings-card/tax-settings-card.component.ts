@@ -34,14 +34,23 @@ export class TaxSettingsCardComponent implements OnInit {
   }
 
   onRemoveTaxClicked(index: number) {
-    console.log(index);
+    const formGroup = this.taxes.controls[index];
+    if (formGroup) {
+      const isSaved = formGroup.get("isSaved").value as boolean;
+      if (isSaved) {
+        // ==========================================================
+        // From database
+        // ==========================================================
+      } else {
+        this.taxes.controls.splice(index, 1);
+      }
+    }
   }
 
   onDefaultTaxClicked(index: number) {
     const _group = this.taxes[index] as FormGroup;
     if (_group) {
       this._defaultTaxId = _group.get("id").value;
-      console.log(this._defaultTaxId);
     }
   }
 
