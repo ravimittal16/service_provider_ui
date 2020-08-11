@@ -4,7 +4,7 @@ import { CompanyState } from "./company.state";
 import * as fromCompanyActions from "./company.actions";
 import { createReducer, Action, on } from "@ngrx/store";
 
-export const copamnyStoreFeatureKey = "__company";
+export const companyStoreFeatureKey = "__company";
 
 export function selectCompanyId(a: CompanyDetailsModel): string {
   return a.companyName.toString();

@@ -1,9 +1,10 @@
 import { Facade } from "@core-data/iFacade";
-import { Action, Store } from "@ngrx/store";
+import { Action, Store, select } from "@ngrx/store";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { CompanyState } from "./company.state";
 import * as fromCompanyActions from "./company.actions";
+import * as fromCompanySelectors from "./company.selectors";
 import { CompanyDetailsModel } from "@shared/service-proxies/service-proxies";
 
 @Injectable({
@@ -13,10 +14,13 @@ export class CompanyFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   copmanyDetails$: Observable<CompanyDetailsModel>;
-  constructor(private _store: Store<CompanyState>) {}
+  constructor(private _store: Store<CompanyState>) {
+    this.copmanyDetails$ = this._store.pipe(
+      select(fromCompanySelectors.selectCompanyDetails)
+    );
+  }
 
   loadCompanyDetails() {
-    console.log("HELLO WORLD");
     this.dispatch(fromCompanyActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(fromCompanyActions.loadCompanyDetailsAction());
   }

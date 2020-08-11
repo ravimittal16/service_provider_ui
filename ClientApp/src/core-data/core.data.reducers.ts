@@ -93,7 +93,7 @@ export const isBusyLogin = fromAuthSelectors.isBusy;
 // COPMANY SELECTORS
 // ==========================================================
 export const copmanyStateErrors = fromCompanyStateSelectors.selectErrors;
-export const copmanyDetails = fromCompanyStateSelectors.companyDetailsSelector;
+export const copmanyDetails = fromCompanyStateSelectors.selectCompanyDetails;
 export const copmanyBusinessHoursDetails =
   fromCompanyStateSelectors.companyBusinessHoursSelector;
 export const isBusyStateCompany =
