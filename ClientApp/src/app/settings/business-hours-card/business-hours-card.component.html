@@ -1,9 +1,13 @@
-<div class="card mb-3 h-75" style="max-height: 440px;overflow: auto;">
-  <div class="card-header">
+<div class="card mb-3 h-75" style="max-height: 430px;overflow: auto;">
+  <div class="card-header d-flex flex-between-center py-2">
     <h5 class="mb-0">Business Hours</h5>
+    <a class="btn btn-sm btn-link pr-0 fs--1" (click)="enableEditMode()">
+      <span class="fa fa-pencil" *ngIf="!editModeEnabled"></span>
+      <span class="fa fa-close" *ngIf="editModeEnabled"></span>
+    </a>
   </div>
   <div class="card-body bg-light">
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" *ngIf="!editModeEnabled">
       <li class="list-group-item" *ngFor="let item of businessHours$ | async">
         <div class="d-flex justify-content-between">
           <div>
@@ -12,7 +16,7 @@
           <div>
             <span *ngIf="item.isClosed">Closed</span>
             <span *ngIf="!item.isClosed">
-              <span>{{item.startTime | date:'h:mm a'}}</span> <span>--</span>
+              <span>{{item.startTime | date:'h:mm a'}}</span> <span class="pl-1 pr-1">-</span>
               <span>{{item.finishTime | date:'h:mm a'}}</span>
             </span>
           </div>

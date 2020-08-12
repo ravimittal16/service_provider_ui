@@ -18,5 +18,9 @@ export class BusinessHoursCardComponent implements OnInit {
     this.businessHours$ = this._copmanyFacade.businessHours$;
   }
 
+  enableEditMode() {
+    this.editModeEnabled = !this.editModeEnabled;
+  }
+
   ngOnInit(): void {}
 }
