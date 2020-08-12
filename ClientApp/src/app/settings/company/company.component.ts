@@ -14,6 +14,7 @@ import { CompanyDetailsModel } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 import { withLatestFrom, distinctUntilChanged } from "rxjs/operators";
+import { GenericValidator } from "@shared/helpers/GenericValidator";
 
 @Component({
   selector: "app-company",
@@ -26,6 +27,7 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   companyFormGroup: FormGroup;
   companyDetails$: Observable<CompanyDetailsModel>;
   private _subs = new SubSink();
+  private _validator: GenericValidator;
   constructor(
     private _formBuilder: FormBuilder,
     private _cdr: ChangeDetectorRef,
@@ -40,12 +42,15 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.companyFormGroup = this._formBuilder.group({
       companyName: ["", [Validators.required]],
       primaryPhone: [""],
+      email: ["", [Validators.required]],
+      webAddr: [""],
     });
+    this._validator = new GenericValidator(this.companyFormGroup);
   }
 
   private _bindCompanyData(details: CompanyDetailsModel) {
-    const __props = Object.keys(details);
-    console.log(__props);
+    console.log(details);
+    this._validator.patchValues(details);
   }
 
   ngOnDestroy(): void {

@@ -5,7 +5,10 @@ import { Observable } from "rxjs";
 import { CompanyState } from "./company.state";
 import * as fromCompanyActions from "./company.actions";
 import * as fromCompanySelectors from "./company.selectors";
-import { CompanyDetailsModel } from "@shared/service-proxies/service-proxies";
+import {
+  CompanyDetailsModel,
+  CompanyBusinessHourModel,
+} from "@shared/service-proxies/service-proxies";
 
 @Injectable({
   providedIn: "root",
@@ -14,9 +17,13 @@ export class CompanyFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   copmanyDetails$: Observable<CompanyDetailsModel>;
+  businessHours$: Observable<CompanyBusinessHourModel[]>;
   constructor(private _store: Store<CompanyState>) {
     this.copmanyDetails$ = this._store.pipe(
       select(fromCompanySelectors.selectCompanyDetails)
+    );
+    this.businessHours$ = this._store.pipe(
+      select(fromCompanySelectors.companyBusinessHoursSelector)
     );
   }
 

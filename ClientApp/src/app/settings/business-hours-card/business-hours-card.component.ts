@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { CompanyFacade } from "@core-data/company-store/company.facade";
+import { CompanyBusinessHourModel } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
 
 @Component({
-  selector: 'app-business-hours-card',
-  templateUrl: './business-hours-card.component.html',
-  styleUrls: ['./business-hours-card.component.scss']
+  selector: "app-business-hours-card",
+  templateUrl: "./business-hours-card.component.html",
+  styleUrls: ["./business-hours-card.component.scss"],
 })
 export class BusinessHoursCardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  businessHours$: Observable<CompanyBusinessHourModel[]>;
+  editModeEnabled = false;
+  constructor(
+    private _cdr: ChangeDetectorRef,
+    private _copmanyFacade: CompanyFacade
+  ) {
+    this.businessHours$ = this._copmanyFacade.businessHours$;
   }
 
+  ngOnInit(): void {}
 }
