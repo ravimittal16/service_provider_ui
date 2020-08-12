@@ -34,7 +34,23 @@ export class GenericValidator {
   //     validationRuleName2: 'Validation Message.'
   // }
   private validationMessages: { [key: string]: { [key: string]: string } };
-  constructor() {}
+  constructor(public formGroup: FormGroup = null) {}
+
+  patchValue(fieldName: string, value: any, raiseEvent: boolean = false): void {
+    const __field = this.formGroup.get(fieldName);
+    if (__field) {
+      __field.patchValue(value, { onlySelf: true, emitEvent: raiseEvent });
+    }
+  }
+
+  patchValues(data: any): void {
+    const __props = Object.keys(data);
+    if (this.formGroup) {
+      __props.forEach((key, _index) => {
+        this.patchValue(key, data[key]);
+      });
+    }
+  }
 
   initilizeFormValitorMessages(_validationMappings: {
     [key: string]: IFormFieldProps;

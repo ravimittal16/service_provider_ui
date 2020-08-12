@@ -1230,140 +1230,6 @@ export enum Weekdays {
     _6 = 6,
 }
 
-export class CompanyBusinessHourModel implements ICompanyBusinessHourModel {
-    businessHourId: number;
-    dayOfWeek: Weekdays;
-    startTime: moment.Moment | undefined;
-    finishTime: moment.Moment | undefined;
-    isClosed: boolean | undefined;
-    readonly dayName: string | undefined;
-
-    constructor(data?: ICompanyBusinessHourModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.businessHourId = _data["businessHourId"];
-            this.dayOfWeek = _data["dayOfWeek"];
-            this.startTime = _data["startTime"] ? moment(_data["startTime"].toString()) : <any>undefined;
-            this.finishTime = _data["finishTime"] ? moment(_data["finishTime"].toString()) : <any>undefined;
-            this.isClosed = _data["isClosed"];
-            (<any>this).dayName = _data["dayName"];
-        }
-    }
-
-    static fromJS(data: any): CompanyBusinessHourModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new CompanyBusinessHourModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["businessHourId"] = this.businessHourId;
-        data["dayOfWeek"] = this.dayOfWeek;
-        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
-        data["finishTime"] = this.finishTime ? this.finishTime.toISOString() : <any>undefined;
-        data["isClosed"] = this.isClosed;
-        data["dayName"] = this.dayName;
-        return data; 
-    }
-
-    clone(): CompanyBusinessHourModel {
-        const json = this.toJSON();
-        let result = new CompanyBusinessHourModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICompanyBusinessHourModel {
-    businessHourId: number;
-    dayOfWeek: Weekdays;
-    startTime: moment.Moment | undefined;
-    finishTime: moment.Moment | undefined;
-    isClosed: boolean | undefined;
-    dayName: string | undefined;
-}
-
-export class CompanyDetailsModel implements ICompanyDetailsModel {
-    companyName: string | undefined;
-    country: string | undefined;
-    email: string | undefined;
-    webAddr: string | undefined;
-    primaryPhone: string | undefined;
-    businessHourModels: CompanyBusinessHourModel[] | undefined;
-
-    constructor(data?: ICompanyDetailsModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.companyName = _data["companyName"];
-            this.country = _data["country"];
-            this.email = _data["email"];
-            this.webAddr = _data["webAddr"];
-            this.primaryPhone = _data["primaryPhone"];
-            if (Array.isArray(_data["businessHourModels"])) {
-                this.businessHourModels = [] as any;
-                for (let item of _data["businessHourModels"])
-                    this.businessHourModels.push(CompanyBusinessHourModel.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): CompanyDetailsModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new CompanyDetailsModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["companyName"] = this.companyName;
-        data["country"] = this.country;
-        data["email"] = this.email;
-        data["webAddr"] = this.webAddr;
-        data["primaryPhone"] = this.primaryPhone;
-        if (Array.isArray(this.businessHourModels)) {
-            data["businessHourModels"] = [];
-            for (let item of this.businessHourModels)
-                data["businessHourModels"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): CompanyDetailsModel {
-        const json = this.toJSON();
-        let result = new CompanyDetailsModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICompanyDetailsModel {
-    companyName: string | undefined;
-    country: string | undefined;
-    email: string | undefined;
-    webAddr: string | undefined;
-    primaryPhone: string | undefined;
-    businessHourModels: CompanyBusinessHourModel[] | undefined;
-}
-
 export enum PropertyTypes {
     _0 = 0,
     _1 = 1,
@@ -1457,6 +1323,156 @@ export interface IAddressDto {
     longitude: number | undefined;
     isPrimary: boolean | undefined;
     formattedAddress: string | undefined;
+}
+
+export class CompanyBusinessHourModel implements ICompanyBusinessHourModel {
+    businessHourId: number;
+    dayOfWeek: Weekdays;
+    startTime: moment.Moment | undefined;
+    finishTime: moment.Moment | undefined;
+    isClosed: boolean | undefined;
+    readonly dayName: string | undefined;
+
+    constructor(data?: ICompanyBusinessHourModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.businessHourId = _data["businessHourId"];
+            this.dayOfWeek = _data["dayOfWeek"];
+            this.startTime = _data["startTime"] ? moment(_data["startTime"].toString()) : <any>undefined;
+            this.finishTime = _data["finishTime"] ? moment(_data["finishTime"].toString()) : <any>undefined;
+            this.isClosed = _data["isClosed"];
+            (<any>this).dayName = _data["dayName"];
+        }
+    }
+
+    static fromJS(data: any): CompanyBusinessHourModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyBusinessHourModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["businessHourId"] = this.businessHourId;
+        data["dayOfWeek"] = this.dayOfWeek;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["finishTime"] = this.finishTime ? this.finishTime.toISOString() : <any>undefined;
+        data["isClosed"] = this.isClosed;
+        data["dayName"] = this.dayName;
+        return data; 
+    }
+
+    clone(): CompanyBusinessHourModel {
+        const json = this.toJSON();
+        let result = new CompanyBusinessHourModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompanyBusinessHourModel {
+    businessHourId: number;
+    dayOfWeek: Weekdays;
+    startTime: moment.Moment | undefined;
+    finishTime: moment.Moment | undefined;
+    isClosed: boolean | undefined;
+    dayName: string | undefined;
+}
+
+export class CompanyDetailsModel implements ICompanyDetailsModel {
+    companyName: string | undefined;
+    country: string | undefined;
+    email: string | undefined;
+    webAddr: string | undefined;
+    primaryPhone: string | undefined;
+    firstDayOfWeek: Weekdays;
+    compAddresses: AddressDto[] | undefined;
+    businessHourModels: CompanyBusinessHourModel[] | undefined;
+
+    constructor(data?: ICompanyDetailsModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyName = _data["companyName"];
+            this.country = _data["country"];
+            this.email = _data["email"];
+            this.webAddr = _data["webAddr"];
+            this.primaryPhone = _data["primaryPhone"];
+            this.firstDayOfWeek = _data["firstDayOfWeek"];
+            if (Array.isArray(_data["compAddresses"])) {
+                this.compAddresses = [] as any;
+                for (let item of _data["compAddresses"])
+                    this.compAddresses.push(AddressDto.fromJS(item));
+            }
+            if (Array.isArray(_data["businessHourModels"])) {
+                this.businessHourModels = [] as any;
+                for (let item of _data["businessHourModels"])
+                    this.businessHourModels.push(CompanyBusinessHourModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CompanyDetailsModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyDetailsModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyName"] = this.companyName;
+        data["country"] = this.country;
+        data["email"] = this.email;
+        data["webAddr"] = this.webAddr;
+        data["primaryPhone"] = this.primaryPhone;
+        data["firstDayOfWeek"] = this.firstDayOfWeek;
+        if (Array.isArray(this.compAddresses)) {
+            data["compAddresses"] = [];
+            for (let item of this.compAddresses)
+                data["compAddresses"].push(item.toJSON());
+        }
+        if (Array.isArray(this.businessHourModels)) {
+            data["businessHourModels"] = [];
+            for (let item of this.businessHourModels)
+                data["businessHourModels"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CompanyDetailsModel {
+        const json = this.toJSON();
+        let result = new CompanyDetailsModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompanyDetailsModel {
+    companyName: string | undefined;
+    country: string | undefined;
+    email: string | undefined;
+    webAddr: string | undefined;
+    primaryPhone: string | undefined;
+    firstDayOfWeek: Weekdays;
+    compAddresses: AddressDto[] | undefined;
+    businessHourModels: CompanyBusinessHourModel[] | undefined;
 }
 
 export class CustomerModel implements ICustomerModel {

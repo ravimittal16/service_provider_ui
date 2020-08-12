@@ -6,9 +6,7 @@ import * as fromCompanySelectors from "./company.selectors";
 import { CompanyServiceProxy } from "@shared/service-proxies/service-proxies";
 import {
   switchMap,
-  mergeMap,
   catchError,
-  exhaustMap,
   withLatestFrom,
   concatMap,
   filter,

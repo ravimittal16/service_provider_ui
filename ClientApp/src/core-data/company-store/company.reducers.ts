@@ -18,6 +18,7 @@ export const adapter: EntityAdapter<CompanyDetailsModel> = createEntityAdapter<
 export const initialState: CompanyState = adapter.getInitialState({
   businessHours: null,
   copmanyDetails: null,
+  companyAddresses: null,
   isBusy: false,
   errors: [],
   success: false,
@@ -35,6 +36,7 @@ const companyFeatureReducer = createReducer(
       ...state,
       copmanyDetails: props.details,
       businessHours: props.details.businessHourModels,
+      companyAddresses: props.details.compAddresses,
       isBusy: false,
       errors: [],
     })

@@ -1,8 +1,23 @@
-<div class="card mb-3 h-75" style="max-height: 420px;">
+<div class="card mb-3 h-75" style="max-height: 440px;overflow: auto;">
   <div class="card-header">
     <h5 class="mb-0">Business Hours</h5>
   </div>
   <div class="card-body bg-light">
-    BODY
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let item of businessHours$ | async">
+        <div class="d-flex justify-content-between">
+          <div>
+            <span class="isclosed-{{item.isClosed}}">{{item.dayName}}</span>
+          </div>
+          <div>
+            <span *ngIf="item.isClosed">Closed</span>
+            <span *ngIf="!item.isClosed">
+              <span>{{item.startTime | date:'h:mm a'}}</span> <span>--</span>
+              <span>{{item.finishTime | date:'h:mm a'}}</span>
+            </span>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
