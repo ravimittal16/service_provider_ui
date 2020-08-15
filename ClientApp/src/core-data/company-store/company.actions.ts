@@ -1,5 +1,8 @@
 import { createAction, props } from "@ngrx/store";
-import { CompanyDetailsModel } from "@shared/service-proxies/service-proxies";
+import {
+  CompanyDetailsModel,
+  CommonDataModel,
+} from "@shared/service-proxies/service-proxies";
 
 export const loadCompanyDetailsAction = createAction(
   "[Company] Load Copmany Details"
@@ -15,4 +18,10 @@ export const uiStateBusyAction = createAction(
 export const errorsStateAction = createAction(
   "[Company] On Errors",
   props<{ errors: string[] }>()
+);
+export const loadCommonDataAction = createAction("[Company] Load Common Data");
+
+export const commonDataLoadedAction = createAction(
+  "[Company] Common Data Loaded",
+  props<{ commonData: CommonDataModel }>()
 );

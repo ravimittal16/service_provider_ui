@@ -107,7 +107,6 @@ export class CustomerEditCreateModalComponent
       if (businessAddress.length > 0) {
         var _ba = Object.assign({}, businessAddress[0]);
         _ba.propertyType = +AddressTypes.SERVICE;
-        _ba.propertyName = "Service Address";
         this.addresses.push(_ba);
         this._cdr.detectChanges();
       }

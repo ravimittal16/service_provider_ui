@@ -36,6 +36,7 @@
             "styles": [
               "src/theme/theme.scss",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/choices.js/public/assets/styles/choices.min.css",
               "src/styles.css",
               "src/custom-styles.scss"
             ],
@@ -44,6 +45,7 @@
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/abp-web-resources/Abp/Framework/scripts/abp.js",
               "src/theme/theme/js/config.navbar-vertical.js",
+              "node_modules/choices.js/public/assets/scripts/choices.min.js",
               "src/theme/theme/js/Utils.js",
               "src/theme/theme/js/navbar.js"
             ]
