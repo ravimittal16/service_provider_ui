@@ -25,3 +25,8 @@ export const selectErrors = createSelector(
   companyFeatureState,
   (s) => s.errors
 );
+
+export const selectCommonData = createSelector(
+  companyFeatureState,
+  (s) => s.commonData
+);

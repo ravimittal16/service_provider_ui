@@ -31,7 +31,7 @@ export class CompanyStoreEffects extends BaseEffect {
         this._store.select(fromCompanySelectors.selectCompanyDetails)
       ),
       filter(([action, details]) => {
-        return details === null;
+        return Object.keys(details).length === 0;
       }),
       concatMap((action) =>
         this.companyService.getCompanyDetails().pipe(
@@ -53,6 +53,26 @@ export class CompanyStoreEffects extends BaseEffect {
                 );
               })
             );
+          })
+        )
+      )
+    );
+  });
+  loadCommonData$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromCompanyActions.loadCommonDataAction),
+      withLatestFrom(this._store.select(fromCompanySelectors.selectCommonData)),
+      filter(([action, commonData]) => {
+        return Object.keys(commonData).length === 0;
+      }),
+      concatMap((action) =>
+        this.companyService.getApplicationData().pipe(
+          switchMap((response) => {
+            return [
+              fromCompanyActions.commonDataLoadedAction({
+                commonData: response,
+              }),
+            ];
           })
         )
       )

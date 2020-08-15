@@ -355,6 +355,57 @@ export class CompanyServiceProxy {
         }
         return _observableOf<CompanyDetailsModel>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getApplicationData(): Observable<CommonDataModel> {
+        let url_ = this.baseUrl + "/api/company/GetApplicationData";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApplicationData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApplicationData(<any>response_);
+                } catch (e) {
+                    return <Observable<CommonDataModel>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CommonDataModel>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetApplicationData(response: HttpResponseBase): Observable<CommonDataModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CommonDataModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CommonDataModel>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1236,11 +1287,12 @@ export enum PropertyTypes {
     _2 = 2,
     _3 = 3,
     _4 = 4,
+    _5 = 5,
 }
 
 export class AddressDto implements IAddressDto {
     propertyType: PropertyTypes;
-    propertyName: string | undefined;
+    readonly propertyName: string | undefined;
     addressLine1: string | undefined;
     addressLine2: string | undefined;
     city: string | undefined;
@@ -1264,7 +1316,7 @@ export class AddressDto implements IAddressDto {
     init(_data?: any) {
         if (_data) {
             this.propertyType = _data["propertyType"];
-            this.propertyName = _data["propertyName"];
+            (<any>this).propertyName = _data["propertyName"];
             this.addressLine1 = _data["addressLine1"];
             this.addressLine2 = _data["addressLine2"];
             this.city = _data["city"];
@@ -1473,6 +1525,224 @@ export interface ICompanyDetailsModel {
     firstDayOfWeek: Weekdays;
     compAddresses: AddressDto[] | undefined;
     businessHourModels: CompanyBusinessHourModel[] | undefined;
+}
+
+export class LookupValueModel implements ILookupValueModel {
+    lookUpValueId: number;
+    keyName: string | undefined;
+    value: string | undefined;
+
+    constructor(data?: ILookupValueModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lookUpValueId = _data["lookUpValueId"];
+            this.keyName = _data["keyName"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): LookupValueModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new LookupValueModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lookUpValueId"] = this.lookUpValueId;
+        data["keyName"] = this.keyName;
+        data["value"] = this.value;
+        return data; 
+    }
+
+    clone(): LookupValueModel {
+        const json = this.toJSON();
+        let result = new LookupValueModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILookupValueModel {
+    lookUpValueId: number;
+    keyName: string | undefined;
+    value: string | undefined;
+}
+
+export class CountryModel implements ICountryModel {
+    countryId: number;
+    countryName: string | undefined;
+    countryCode: string | undefined;
+    readonly formattedValue: string | undefined;
+
+    constructor(data?: ICountryModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.countryId = _data["countryId"];
+            this.countryName = _data["countryName"];
+            this.countryCode = _data["countryCode"];
+            (<any>this).formattedValue = _data["formattedValue"];
+        }
+    }
+
+    static fromJS(data: any): CountryModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CountryModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["countryId"] = this.countryId;
+        data["countryName"] = this.countryName;
+        data["countryCode"] = this.countryCode;
+        data["formattedValue"] = this.formattedValue;
+        return data; 
+    }
+
+    clone(): CountryModel {
+        const json = this.toJSON();
+        let result = new CountryModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICountryModel {
+    countryId: number;
+    countryName: string | undefined;
+    countryCode: string | undefined;
+    formattedValue: string | undefined;
+}
+
+export class TimezoneModel implements ITimezoneModel {
+
+    constructor(data?: ITimezoneModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): TimezoneModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimezoneModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+
+    clone(): TimezoneModel {
+        const json = this.toJSON();
+        let result = new TimezoneModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimezoneModel {
+}
+
+export class CommonDataModel implements ICommonDataModel {
+    lookupValues: LookupValueModel[] | undefined;
+    countries: CountryModel[] | undefined;
+    timeZones: TimezoneModel[] | undefined;
+
+    constructor(data?: ICommonDataModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["lookupValues"])) {
+                this.lookupValues = [] as any;
+                for (let item of _data["lookupValues"])
+                    this.lookupValues.push(LookupValueModel.fromJS(item));
+            }
+            if (Array.isArray(_data["countries"])) {
+                this.countries = [] as any;
+                for (let item of _data["countries"])
+                    this.countries.push(CountryModel.fromJS(item));
+            }
+            if (Array.isArray(_data["timeZones"])) {
+                this.timeZones = [] as any;
+                for (let item of _data["timeZones"])
+                    this.timeZones.push(TimezoneModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CommonDataModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CommonDataModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.lookupValues)) {
+            data["lookupValues"] = [];
+            for (let item of this.lookupValues)
+                data["lookupValues"].push(item.toJSON());
+        }
+        if (Array.isArray(this.countries)) {
+            data["countries"] = [];
+            for (let item of this.countries)
+                data["countries"].push(item.toJSON());
+        }
+        if (Array.isArray(this.timeZones)) {
+            data["timeZones"] = [];
+            for (let item of this.timeZones)
+                data["timeZones"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CommonDataModel {
+        const json = this.toJSON();
+        let result = new CommonDataModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICommonDataModel {
+    lookupValues: LookupValueModel[] | undefined;
+    countries: CountryModel[] | undefined;
+    timeZones: TimezoneModel[] | undefined;
 }
 
 export class CustomerModel implements ICustomerModel {

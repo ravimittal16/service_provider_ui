@@ -33,7 +33,6 @@ const sharedRenderers = [EmailAddressLinkCellRenderer];
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    CoreDataModule,
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],

@@ -27,10 +27,15 @@ export class CompanyFacade implements Facade {
     );
   }
 
+  loadApplicationData() {
+    this.dispatch(fromCompanyActions.loadCommonDataAction());
+  }
+
   loadCompanyDetails() {
     this.dispatch(fromCompanyActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(fromCompanyActions.loadCompanyDetailsAction());
   }
+
   dispatch(action: Action) {
     this._store.dispatch(action);
   }
