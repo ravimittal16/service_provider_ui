@@ -57,6 +57,15 @@ const companyFeatureReducer = createReducer(
       isBusy: false,
       errors: [],
     })
+  ),
+  on(
+    fromCompanyActions.commonDataLoadedAction,
+    (state: CompanyState, props) => ({
+      ...state,
+      countries: props.commonData?.countries,
+      lookupValues: props.commonData?.lookupValues,
+      timezones: props.commonData?.timeZones,
+    })
   )
 );
 
