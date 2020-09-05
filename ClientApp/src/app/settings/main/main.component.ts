@@ -8,7 +8,7 @@ import { CompanyFacade } from "@core-data/company-store/company.facade";
   styleUrls: ["./main.component.scss"],
 })
 export class MainComponent implements OnInit {
-  constructor(private _router: Router, private _copmanyFacade: CompanyFacade) {}
+  constructor(private _router: Router, private _companyFacade: CompanyFacade) {}
 
   goToRoute(routeName: string): void {
     if (routeName) {
@@ -16,6 +16,9 @@ export class MainComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this._copmanyFacade.loadApplicationData();
+    // ==========================================================
+    // LOADING COMMON DATA
+    // ==========================================================
+    this._companyFacade.loadApplicationData();
   }
 }

@@ -8,6 +8,7 @@ import * as fromCompanySelectors from "./company.selectors";
 import {
   CompanyDetailsModel,
   CompanyBusinessHourModel,
+  CommonDataModel,
 } from "@shared/service-proxies/service-proxies";
 
 @Injectable({
@@ -17,6 +18,7 @@ export class CompanyFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   copmanyDetails$: Observable<CompanyDetailsModel>;
+  commonData$: Observable<CommonDataModel>;
   businessHours$: Observable<CompanyBusinessHourModel[]>;
   constructor(private _store: Store<CompanyState>) {
     this.copmanyDetails$ = this._store.pipe(
@@ -24,6 +26,9 @@ export class CompanyFacade implements Facade {
     );
     this.businessHours$ = this._store.pipe(
       select(fromCompanySelectors.companyBusinessHoursSelector)
+    );
+    this.commonData$ = this._store.pipe(
+      select(fromCompanySelectors.selectCommonData)
     );
   }
 

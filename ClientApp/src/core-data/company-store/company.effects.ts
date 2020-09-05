@@ -58,6 +58,7 @@ export class CompanyStoreEffects extends BaseEffect {
       )
     );
   });
+
   loadCommonData$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromCompanyActions.loadCommonDataAction),

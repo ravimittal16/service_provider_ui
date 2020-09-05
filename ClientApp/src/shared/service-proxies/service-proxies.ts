@@ -1531,6 +1531,7 @@ export class LookupValueModel implements ILookupValueModel {
     lookUpValueId: number;
     keyName: string | undefined;
     value: string | undefined;
+    type: string | undefined;
 
     constructor(data?: ILookupValueModel) {
         if (data) {
@@ -1546,6 +1547,7 @@ export class LookupValueModel implements ILookupValueModel {
             this.lookUpValueId = _data["lookUpValueId"];
             this.keyName = _data["keyName"];
             this.value = _data["value"];
+            this.type = _data["type"];
         }
     }
 
@@ -1561,6 +1563,7 @@ export class LookupValueModel implements ILookupValueModel {
         data["lookUpValueId"] = this.lookUpValueId;
         data["keyName"] = this.keyName;
         data["value"] = this.value;
+        data["type"] = this.type;
         return data; 
     }
 
@@ -1576,6 +1579,7 @@ export interface ILookupValueModel {
     lookUpValueId: number;
     keyName: string | undefined;
     value: string | undefined;
+    type: string | undefined;
 }
 
 export class CountryModel implements ICountryModel {
