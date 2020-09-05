@@ -40,45 +40,33 @@
                 <div class="mt-3">
                   <h5 class="text-muted">Company Address ({{companyAddresses?.length}})</h5>
                 </div>
-                <div class="form-row">
-                  <div class="col">
-                    <div class="form-group flex-fill">
-                      <label>Street 1</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="col">
-                    <div class="form-group flex-fill">
-                      <label>Street 2</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="col">
-                    <div class="form-group flex-fill">
-                      <label>City</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group flex-fill">
-                      <label>State</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group flex-fill">
-                      <label>Postal</label>
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group flex-fill">
-                      <label>Country</label>
-                      <select type="text" class="form-control"></select>
+                <div class="card mt-2" *ngFor="let add of companyAddresses; let i = index; trackBy:addressTrackByFn">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <span>
+                          <h5 class="fs-0">
+                            <span class="text-500"> {{ add.propertyName }}</span>
+                            &nbsp;<span *ngIf="add.propertyType === 1"
+                              class="badge badge-pill badge-soft-primary">Business</span>
+                            <span *ngIf="add.propertyType === 0"
+                              class="badge badge-pill badge-soft-warning">Service</span>
+                            <span *ngIf="add.propertyType === 4"
+                              class="badge badge-pill badge-soft-info">Communication</span>
+                          </h5>
+                          <h5 class="fs-1">
+                            {{add.formattedAddress}}
+                            <a *ngIf="add.latitude && add.longitude" class="text-primary">
+                              <i class="fa fa-map-marker"></i>
+                            </a>
+                          </h5>
+                        </span>
+                      </div>
+                      <div class="col-md-1">
+                        <button class="btn btn-falcon-default btn-sm ml-2" type="button">
+                          <span class="fa fa-pencil"></span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

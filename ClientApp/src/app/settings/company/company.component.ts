@@ -71,6 +71,10 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
     this._validator = new GenericValidator(this.companyFormGroup);
   }
 
+  addressTrackByFn(index: number, address: AddressDto) {
+    return index;
+  }
+
   private _bindCompanyData(details: CompanyDetailsModel) {
     this._validator.patchValues(details);
     this.companyAddresses = details.compAddresses;
