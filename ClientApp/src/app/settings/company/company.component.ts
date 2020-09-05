@@ -10,10 +10,15 @@ import {
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { TaxSettingsCardComponent } from "../tax-settings-card/tax-settings-card.component";
 import { CompanyFacade } from "@core-data/company-store/company.facade";
-import { CompanyDetailsModel } from "@shared/service-proxies/service-proxies";
+import {
+  CompanyDetailsModel,
+  AddressDto,
+  CommonDataModel,
+  LookupValueModel,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
-import { withLatestFrom, distinctUntilChanged } from "rxjs/operators";
+import { withLatestFrom, distinctUntilChanged, tap } from "rxjs/operators";
 import { GenericValidator } from "@shared/helpers/GenericValidator";
 
 @Component({
@@ -26,6 +31,10 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("taxesComponent") taxesComponent: TaxSettingsCardComponent;
   companyFormGroup: FormGroup;
   companyDetails$: Observable<CompanyDetailsModel>;
+  commonData$: Observable<CommonDataModel>;
+  commonData: CommonDataModel;
+  companyAddresses: AddressDto[];
+  dateFormats: LookupValueModel[];
   private _subs = new SubSink();
   private _validator: GenericValidator;
   constructor(
@@ -34,6 +43,7 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
     private _copmanyFacade: CompanyFacade
   ) {
     this.companyDetails$ = _copmanyFacade.copmanyDetails$;
+    this.commonData$ = _copmanyFacade.commonData$;
   }
 
   disconnectAccount(): void {}
@@ -49,8 +59,8 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private _bindCompanyData(details: CompanyDetailsModel) {
-    console.log(details);
     this._validator.patchValues(details);
+    this.companyAddresses = details.compAddresses;
   }
 
   ngOnDestroy(): void {
@@ -69,6 +79,18 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
               this._bindCompanyData(details);
             }
           })
+      );
+      this._subs.add(
+        this.commonData$
+          .pipe(
+            tap((data) => {
+              this.commonData = data;
+              this.dateFormats = data.lookupValues?.filter(
+                (x) => x.type === "DateFormat"
+              );
+            })
+          )
+          .subscribe()
       );
     }
   }

@@ -34,9 +34,9 @@
               }
             ],
             "styles": [
-              "src/theme/theme.scss",
-              "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/choices.js/public/assets/styles/choices.min.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "src/theme/theme.scss",
               "src/styles.css",
               "src/custom-styles.scss"
             ],

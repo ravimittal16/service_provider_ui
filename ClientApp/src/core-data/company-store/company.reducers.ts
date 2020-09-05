@@ -62,6 +62,7 @@ const companyFeatureReducer = createReducer(
     fromCompanyActions.commonDataLoadedAction,
     (state: CompanyState, props) => ({
       ...state,
+      commonData: props.commonData,
       countries: props.commonData?.countries,
       lookupValues: props.commonData?.lookupValues,
       timezones: props.commonData?.timeZones,
