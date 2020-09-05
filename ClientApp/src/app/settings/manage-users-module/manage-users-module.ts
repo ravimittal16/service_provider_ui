@@ -14,12 +14,15 @@ import { ColorPickerModule } from "ngx-color-picker";
 import { UsersActionsCellRenderer } from "./grid-cell-renderers/users.actions.cell.renderer";
 import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
 import { EmailAddressLinkCellRenderer } from "@shared/grid-cell-renderers/email.address.cell.renderer";
+import { AddEditUserModalComponent } from "./add-edit-user-modal/add-edit-user-modal.component";
 
 const routes: Routes = [{ path: "list", component: UsersListComponent }];
-const components = [UsersListComponent];
+const components = [UsersListComponent, AddEditUserModalComponent];
 const cellRenderers = [UsersActionsCellRenderer];
-
-const sharedRenderers = [EmailAddressLinkCellRenderer];
+const sharedRenderers = [
+  EmailAddressLinkCellRenderer,
+  CurrencyValueCellRenderer,
+];
 
 @NgModule({
   declarations: [...cellRenderers, ...components],

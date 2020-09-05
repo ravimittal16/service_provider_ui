@@ -101,9 +101,10 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Country</label>
-                  <select type="text" class="form-control js-choice" choices="">
-                    <option value="">Select organizer...</option>
-                    <option *ngFor="let country of commonData?.countries" [value]="country.countryId">
+                  <select class="form-control js-choice" formControlName="country" choices=""
+                    (change)="onCountryChanged()">
+                    <option value="">Select Country...</option>
+                    <option *ngFor="let country of commonData?.countries" [value]="country.countryCode">
                       {{country.formattedValue}}
                     </option>
                   </select>
@@ -112,7 +113,13 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Time Zone</label>
-                  <input type="text" class="form-control" />
+                  <select class="form-control js-choice" formControlName="timeZoneStandardName" choices=""
+                    [isObservableList]="true">
+                    <option value="">Select Tiemzone...</option>
+                    <option *ngFor="let format of timezones$ | async" [value]="format.name">
+                      {{format.value}}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -120,10 +127,10 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Date Format</label>
-                  <select type="text" class="form-control js-choice" choices="">
+                  <select class="form-control js-choice" formControlName="dateFormat" choices="">
                     <option value="">Select Date format...</option>
-                    <option *ngFor="let country of dateFormats" [value]="country.value">
-                      {{country.keyName}}
+                    <option *ngFor="let format of dateFormats" [value]="format.value">
+                      {{format.keyName}}
                     </option>
                   </select>
                 </div>
@@ -131,7 +138,10 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Time Format</label>
-                  <input type="text" class="form-control" />
+                  <select class="form-control js-choice" formControlName="timeFormat">
+                    <option value="12">12 Hours Format (e.g. 1:00 AM\PM)</option>
+                    <option value="24">24 Hours Format (e.g. 17:00)</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -140,31 +150,38 @@
                 <label>First day of the week</label>
                 <div class="mr-2">
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rSunday" value="0" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rSunday" [value]="0"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rSunday">Sunday</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rMonday" value="1" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rMonday" [value]="1"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rMonday">Monday</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rTuesday" value="2" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rTuesday" [value]="2"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rTuesday">Tuesday</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rWednesday" value="3" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rWednesday" [value]="3"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rWednesday">Wednesday</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rThursday" value="4" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rThursday" [value]="4"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rThursday">Thurday</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rFriday" value="5" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rFriday" [value]="5"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rFriday">Friday</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rSaturday" value="6" />
+                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="rSaturday" [value]="6"
+                      formControlName="firstDayOfWeek" />
                     <label class="form-check-label" for="rSaturday">Saturday</label>
                   </div>
                 </div>

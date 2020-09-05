@@ -1,4 +1,4 @@
-import { Directive, OnInit, ElementRef } from "@angular/core";
+import { Directive, OnInit, ElementRef, Input } from "@angular/core";
 import Choices from "choices.js";
 
 @Directive({
@@ -6,7 +6,7 @@ import Choices from "choices.js";
 })
 export class InputSelectorDirectiveDirective implements OnInit {
   private __maxIntervalCheckCount = 30;
-
+  @Input() isObservableList: boolean = false;
   constructor(private el: ElementRef) {}
 
   ngOnInit(): void {

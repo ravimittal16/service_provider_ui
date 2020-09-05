@@ -34,7 +34,7 @@ const sharedRenderers = [CurrencyValueCellRenderer];
   ],
   imports: [
     CommonModule,
-    SharedModule,
+
     NgxMaskModule.forRoot(),
     AgGridModule.withComponents([..._gridCellRenderers, ...sharedRenderers]),
     FormsModule,

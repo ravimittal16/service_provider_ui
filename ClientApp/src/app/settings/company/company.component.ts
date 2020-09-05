@@ -15,10 +15,16 @@ import {
   AddressDto,
   CommonDataModel,
   LookupValueModel,
+  TimezoneModel,
 } from "@shared/service-proxies/service-proxies";
-import { Observable } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { SubSink } from "subsink";
-import { withLatestFrom, distinctUntilChanged, tap } from "rxjs/operators";
+import {
+  withLatestFrom,
+  distinctUntilChanged,
+  tap,
+  switchMap,
+} from "rxjs/operators";
 import { GenericValidator } from "@shared/helpers/GenericValidator";
 
 @Component({
@@ -32,6 +38,8 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   companyFormGroup: FormGroup;
   companyDetails$: Observable<CompanyDetailsModel>;
   commonData$: Observable<CommonDataModel>;
+  private readonly refreshTimezones$ = new BehaviorSubject(undefined);
+  timezones$: Observable<TimezoneModel[]>;
   commonData: CommonDataModel;
   companyAddresses: AddressDto[];
   dateFormats: LookupValueModel[];
@@ -53,7 +61,12 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
       companyName: ["", [Validators.required]],
       primaryPhone: [""],
       email: ["", [Validators.required]],
+      timeZoneStandardName: [""],
+      firstDayOfWeek: [1],
       webAddr: [""],
+      country: [""],
+      dateFormat: [""],
+      timeFormat: [""],
     });
     this._validator = new GenericValidator(this.companyFormGroup);
   }
@@ -61,6 +74,19 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   private _bindCompanyData(details: CompanyDetailsModel) {
     this._validator.patchValues(details);
     this.companyAddresses = details.compAddresses;
+  }
+
+  onCountryChanged(): void {
+    // this.refreshTimezones$.next(undefined);
+  }
+
+  private refreshTimezones(firstTime: boolean): void {
+    this.timezones$ = this.refreshTimezones$.pipe(
+      switchMap(() => {
+        let _countryCode = this.companyFormGroup.get("country").value;
+        return this._copmanyFacade.getCountryTimezones(_countryCode);
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -76,6 +102,7 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
           .pipe(distinctUntilChanged())
           .subscribe((details) => {
             if (details) {
+              console.log(details);
               this._bindCompanyData(details);
             }
           })
@@ -93,6 +120,7 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe()
       );
     }
+    this.refreshTimezones(true);
   }
 
   ngAfterViewInit(): void {}

@@ -9,6 +9,8 @@ import {
   CompanyDetailsModel,
   CompanyBusinessHourModel,
   CommonDataModel,
+  CompanyServiceProxy,
+  TimezoneModel,
 } from "@shared/service-proxies/service-proxies";
 
 @Injectable({
@@ -20,7 +22,11 @@ export class CompanyFacade implements Facade {
   copmanyDetails$: Observable<CompanyDetailsModel>;
   commonData$: Observable<CommonDataModel>;
   businessHours$: Observable<CompanyBusinessHourModel[]>;
-  constructor(private _store: Store<CompanyState>) {
+
+  constructor(
+    private _store: Store<CompanyState>,
+    private companyService: CompanyServiceProxy
+  ) {
     this.copmanyDetails$ = this._store.pipe(
       select(fromCompanySelectors.selectCompanyDetails)
     );
@@ -39,6 +45,10 @@ export class CompanyFacade implements Facade {
   loadCompanyDetails() {
     this.dispatch(fromCompanyActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(fromCompanyActions.loadCompanyDetailsAction());
+  }
+
+  getCountryTimezones(countryCode: string): Observable<TimezoneModel[]> {
+    return this.companyService.getTimezonesList(countryCode);
   }
 
   dispatch(action: Action) {
