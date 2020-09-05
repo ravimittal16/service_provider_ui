@@ -406,6 +406,64 @@ export class CompanyServiceProxy {
         }
         return _observableOf<CommonDataModel>(<any>null);
     }
+
+    /**
+     * @param countryCode (optional) 
+     * @return Success
+     */
+    getTimezonesList(countryCode: string | null | undefined): Observable<TimezoneModel[]> {
+        let url_ = this.baseUrl + "/api/company/GetTimezonesList?";
+        if (countryCode !== undefined && countryCode !== null)
+            url_ += "countryCode=" + encodeURIComponent("" + countryCode) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimezonesList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimezonesList(<any>response_);
+                } catch (e) {
+                    return <Observable<TimezoneModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TimezoneModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTimezonesList(response: HttpResponseBase): Observable<TimezoneModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(TimezoneModel.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TimezoneModel[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1447,6 +1505,9 @@ export class CompanyDetailsModel implements ICompanyDetailsModel {
     webAddr: string | undefined;
     primaryPhone: string | undefined;
     firstDayOfWeek: Weekdays;
+    dateFormat: string | undefined;
+    timeFormat: string | undefined;
+    timeZoneStandardName: string | undefined;
     compAddresses: AddressDto[] | undefined;
     businessHourModels: CompanyBusinessHourModel[] | undefined;
 
@@ -1467,6 +1528,9 @@ export class CompanyDetailsModel implements ICompanyDetailsModel {
             this.webAddr = _data["webAddr"];
             this.primaryPhone = _data["primaryPhone"];
             this.firstDayOfWeek = _data["firstDayOfWeek"];
+            this.dateFormat = _data["dateFormat"];
+            this.timeFormat = _data["timeFormat"];
+            this.timeZoneStandardName = _data["timeZoneStandardName"];
             if (Array.isArray(_data["compAddresses"])) {
                 this.compAddresses = [] as any;
                 for (let item of _data["compAddresses"])
@@ -1495,6 +1559,9 @@ export class CompanyDetailsModel implements ICompanyDetailsModel {
         data["webAddr"] = this.webAddr;
         data["primaryPhone"] = this.primaryPhone;
         data["firstDayOfWeek"] = this.firstDayOfWeek;
+        data["dateFormat"] = this.dateFormat;
+        data["timeFormat"] = this.timeFormat;
+        data["timeZoneStandardName"] = this.timeZoneStandardName;
         if (Array.isArray(this.compAddresses)) {
             data["compAddresses"] = [];
             for (let item of this.compAddresses)
@@ -1523,6 +1590,9 @@ export interface ICompanyDetailsModel {
     webAddr: string | undefined;
     primaryPhone: string | undefined;
     firstDayOfWeek: Weekdays;
+    dateFormat: string | undefined;
+    timeFormat: string | undefined;
+    timeZoneStandardName: string | undefined;
     compAddresses: AddressDto[] | undefined;
     businessHourModels: CompanyBusinessHourModel[] | undefined;
 }
@@ -1638,6 +1708,8 @@ export interface ICountryModel {
 }
 
 export class TimezoneModel implements ITimezoneModel {
+    name: string | undefined;
+    value: string | undefined;
 
     constructor(data?: ITimezoneModel) {
         if (data) {
@@ -1649,6 +1721,10 @@ export class TimezoneModel implements ITimezoneModel {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.value = _data["value"];
+        }
     }
 
     static fromJS(data: any): TimezoneModel {
@@ -1660,6 +1736,8 @@ export class TimezoneModel implements ITimezoneModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["value"] = this.value;
         return data; 
     }
 
@@ -1672,6 +1750,8 @@ export class TimezoneModel implements ITimezoneModel {
 }
 
 export interface ITimezoneModel {
+    name: string | undefined;
+    value: string | undefined;
 }
 
 export class CommonDataModel implements ICommonDataModel {

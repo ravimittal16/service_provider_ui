@@ -14,6 +14,7 @@ import { TaxSettingsCardComponent } from "./tax-settings-card/tax-settings-card.
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 import { CoreDataModule } from "@core-data/core.data.module";
 import { CompanyStoreModule } from "@core-data/company-store/company.store.module";
+import { SharedModule } from "@shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { CompanyStoreModule } from "@core-data/company-store/company.store.modul
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     SettingsRoutingModule,
     CoreDataModule,
