@@ -6,12 +6,8 @@
       </div>
       <div class="col-sm fs--1">
         <div class="d-flex justify-content-end">
-          <a
-            class="text-sans-serif ml-2 ml-sm-3"
-            data-toggle="modal"
-            style="cursor: pointer;"
-            (click)="addNewTaxClicked()"
-          >
+          <a class="text-sans-serif ml-2 ml-sm-3" data-toggle="modal" style="cursor: pointer;"
+            (click)="addNewTaxClicked()">
             <i class="fa fa-plus"></i> Add New Tax Rate
           </a>
         </div>
@@ -24,23 +20,13 @@
         <div class="col">
           <div class="form-group flex-fill">
             <label>Tax ID Name (e.g. GST)</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="taxIdName"
-              maxlength="100"
-            />
+            <input type="text" class="form-control" formControlName="taxIdName" maxlength="100" />
           </div>
         </div>
         <div class="col">
           <div class="form-group flex-fill">
             <label>Tax ID Number</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="taxIdNumber"
-              maxlength="100"
-            />
+            <input type="text" class="form-control" formControlName="taxIdNumber" maxlength="100" />
           </div>
         </div>
       </div>
@@ -48,75 +34,44 @@
         <div class="col">
           <h6 class="fs-1 text-500">
             Taxes
-            <span *ngIf="taxes && taxes.controls.length > 0"
-              >({{ taxes.length }})</span
-            >
+            <span *ngIf="taxes && taxes.controls.length > 0">({{ taxes.length }})</span>
           </h6>
         </div>
       </div>
-      <div
-        class="form-row"
-        formArrayName="taxes"
-        *ngFor="let _ of taxes.controls; index as i"
-      >
+      <div class="form-row" formArrayName="taxes" *ngFor="let _ of taxes.controls; index as i">
         <ng-container [formGroupName]="i">
           <div class="col-1">
             <div>
               <label *ngIf="i === 0">Default</label>
               <div class="custom-control custom-radio custom-control-inline">
-                <input
-                  class="custom-control-input"
-                  [id]="i"
-                  type="radio"
-                  formControlName="defaultTaxId"
-                  [value]="taxes.controls[i].get('id').value"
-                  (click)="onDefaultTaxClicked(i)"
-                  name="defaultTaxId"
-                />
-                <label class="custom-control-label" [for]="i">&nbsp;</label>
+                <input class="custom-control-input" id="tax__{{i}}" type="radio" formControlName="defaultTaxId"
+                  [value]="taxes.controls[i].get('id').value" (click)="onDefaultTaxClicked(i)" name="defaultTaxId" />
+                <label class="custom-control-label" for="tax__{{i}}">&nbsp;</label>
               </div>
             </div>
           </div>
           <div class="col-3">
             <div class="form-group flex-fill">
               <label *ngIf="i === 0">Tax Name</label>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                formControlName="taxName"
-                maxlength="100"
-              />
+              <input type="text" class="form-control form-control-sm" formControlName="taxName" maxlength="100" />
             </div>
           </div>
           <div class="col-2">
             <div class="form-group flex-fill">
               <label *ngIf="i === 0">Tax Rate%</label>
-              <input
-                type="number"
-                class="form-control form-control-sm"
-                formControlName="taxRate"
-                maxlength="100"
-              />
+              <input type="number" class="form-control form-control-sm" formControlName="taxRate" maxlength="100" />
             </div>
           </div>
           <div class="col-5">
             <div class="form-group flex-fill">
               <label *ngIf="i === 0">Description</label>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                formControlName="taxDescription"
-                maxlength="500"
-              />
+              <input type="text" class="form-control form-control-sm" formControlName="taxDescription"
+                maxlength="500" />
             </div>
           </div>
           <div class="col-1">
             <div [ngClass]="{ 'rm-btn-mar-t': i === 0 }">
-              <button
-                class="btn btn-outline-danger btn-sm mr-1 mb-1"
-                type="button"
-                (click)="onRemoveTaxClicked(i)"
-              >
+              <button class="btn btn-outline-danger btn-sm mr-1 mb-1" type="button" (click)="onRemoveTaxClicked(i)">
                 <span class="fa fa-trash" data-fa-transform="shrink-3"></span>
               </button>
             </div>

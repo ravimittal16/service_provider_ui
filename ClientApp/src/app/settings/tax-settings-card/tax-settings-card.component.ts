@@ -17,20 +17,25 @@ export class TaxSettingsCardComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) {}
 
   addNewTaxClicked(): void {
-    this.taxes = this.taxesFormGroup.get("taxes") as FormArray;
-    this.taxes.push(this.createTaxFormItem());
-    if (this.collapsibleCompponent && !this.collapsibleCompponent.isExpanded) {
-      this.collapsibleCompponent.expandCollapsePanel();
-    }
-    setTimeout(() => {
-      if (this.taxes.length === 1) {
-        const _firstGroup = this.taxes.controls[0];
-        if (_firstGroup) {
-          const _id = _firstGroup.get("id").value;
-          _firstGroup.get("defaultTaxId").patchValue(_id);
-        }
+    if (this.taxes.controls.length < 5) {
+      this.taxes = this.taxesFormGroup.get("taxes") as FormArray;
+      this.taxes.push(this.createTaxFormItem());
+      if (
+        this.collapsibleCompponent &&
+        !this.collapsibleCompponent.isExpanded
+      ) {
+        this.collapsibleCompponent.expandCollapsePanel();
       }
-    }, 10);
+      setTimeout(() => {
+        if (this.taxes.length === 1) {
+          const _firstGroup = this.taxes.controls[0];
+          if (_firstGroup) {
+            const _id = _firstGroup.get("id").value;
+            _firstGroup.get("defaultTaxId").patchValue(_id);
+          }
+        }
+      }, 10);
+    }
   }
 
   onRemoveTaxClicked(index: number) {
