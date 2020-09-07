@@ -1,3 +1,5 @@
+import { Weekdays } from "./service-proxies/service-proxies";
+
 export enum EntityTypes {
   CUSTOMER = 1,
   ADDRESS = 2,
@@ -18,6 +20,15 @@ export enum EmployeeTypes {
   Dispatcher, //Dispatcher
   Employee, //Employee,
   Customer, //ExternalUser
+}
+export enum WEEKDAYS {
+  SUNDAY,
+  MONDAY,
+  TUESDAY,
+  WEDNESDAY,
+  THURSDAY,
+  FRIDAY,
+  SATURDAY,
 }
 export class AppConsts {
   static remoteServiceBaseUrl: string = "http://localhost:2158";
@@ -41,4 +52,14 @@ export class AppConsts {
   static readonly authorization = {
     encryptedAuthTokenName: "enc_auth_token",
   };
+
+  static readonly WeekDays = [
+    { dayName: "Sunday", dayCode: WEEKDAYS.SUNDAY },
+    { dayName: "Monday", dayCode: WEEKDAYS.MONDAY },
+    { dayName: "Tuesday", dayCode: WEEKDAYS.TUESDAY },
+    { dayName: "Wednesday", dayCode: WEEKDAYS.WEDNESDAY },
+    { dayName: "Thursday", dayCode: WEEKDAYS.THURSDAY },
+    { dayName: "Friday", dayCode: WEEKDAYS.FRIDAY },
+    { dayName: "Saturday", dayCode: WEEKDAYS.SATURDAY },
+  ];
 }

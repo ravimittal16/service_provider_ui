@@ -26,6 +26,7 @@ import {
   switchMap,
 } from "rxjs/operators";
 import { GenericValidator } from "@shared/helpers/GenericValidator";
+import { AppConsts } from "@shared/AppConsts";
 
 @Component({
   selector: "app-company",
@@ -45,6 +46,7 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   dateFormats: LookupValueModel[];
   private _subs = new SubSink();
   private _validator: GenericValidator;
+  weekdays = AppConsts.WeekDays;
   constructor(
     private _formBuilder: FormBuilder,
     private _cdr: ChangeDetectorRef,
@@ -78,6 +80,10 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
   private _bindCompanyData(details: CompanyDetailsModel) {
     this._validator.patchValues(details);
     this.companyAddresses = details.compAddresses;
+  }
+
+  updateCompanySettings() {
+    console.log(this.companyFormGroup.getRawValue());
   }
 
   onCountryChanged(): void {
