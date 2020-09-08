@@ -16,6 +16,11 @@
   </div>
   <div class="card-body bg-light card-content">
     <form [formGroup]="taxesFormGroup">
+      <div class="row">
+        <div class="col">
+          <app-error-view [errors$]="errors$" [observableDefined]="true"></app-error-view>
+        </div>
+      </div>
       <div class="form-row">
         <div class="col">
           <div class="form-group flex-fill">
@@ -52,13 +57,13 @@
           </div>
           <div class="col-3">
             <div class="form-group flex-fill">
-              <label *ngIf="i === 0">Tax Name</label>
+              <label *ngIf="i === 0">Tax Name*</label>
               <input type="text" class="form-control form-control-sm" formControlName="taxName" maxlength="100" />
             </div>
           </div>
           <div class="col-2">
             <div class="form-group flex-fill">
-              <label *ngIf="i === 0">Tax Rate%</label>
+              <label *ngIf="i === 0">Tax Rate%*</label>
               <input type="number" class="form-control form-control-sm" formControlName="taxRate" maxlength="100" />
             </div>
           </div>

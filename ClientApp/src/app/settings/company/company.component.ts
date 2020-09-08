@@ -82,8 +82,19 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.companyAddresses = details.compAddresses;
   }
 
+  private __processUpdateCompanySettings() {}
+
   updateCompanySettings() {
-    console.log(this.companyFormGroup.getRawValue());
+    if (this.taxesComponent) {
+      this.taxesComponent.isValidTaxRatesForms().then((__taxFormResponse) => {
+        console.log(__taxFormResponse);
+        if (__taxFormResponse.isValid) {
+          this.__processUpdateCompanySettings();
+        } else {
+          this.taxesComponent.showInvalidStateMessage();
+        }
+      });
+    }
   }
 
   onCountryChanged(): void {

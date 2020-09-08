@@ -1,4 +1,4 @@
-<div class="card mb-3 h-75" style="max-height: 430px;overflow: auto;">
+<div class="card mb-3 h-75" style="max-height: 400px;overflow: auto;">
   <div class="card-header d-flex flex-between-center py-2">
     <h5 class="mb-0">Business Hours</h5>
     <a class="btn btn-sm btn-link pr-0 fs--1" (click)="enableEditMode()">
@@ -7,7 +7,7 @@
     </a>
   </div>
   <div class="card-body bg-light">
-    <ul class="list-group list-group-flush" *ngIf="!editModeEnabled">
+    <ul class="list-group list-group-flush list-font-size" *ngIf="!editModeEnabled">
       <li class="list-group-item" *ngFor="let item of businessHours$ | async">
         <div class="d-flex justify-content-between">
           <div>
