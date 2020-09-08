@@ -37,9 +37,9 @@ export class AddEditUserModalComponent implements OnInit, OnDestroy {
   @Input() selectedUser: any;
   selectedUserColor: string = "#1e62c9";
   isAdministrator = false;
-  private _subs = new SubSink();
   validationMessages: { [key: string]: string } = {};
-  validator = new GenericValidator();
+  private _subs = new SubSink();
+  private __validator = new GenericValidator();
   constructor(
     public activeModal: NgbActiveModal,
     private _formBuilder: FormBuilder,
@@ -54,7 +54,7 @@ export class AddEditUserModalComponent implements OnInit, OnDestroy {
 
   onFormSubmitted(): void {
     if (this.userFormGroup.invalid) {
-      this.validationMessages = this.validator.processMessages(
+      this.validationMessages = this.__validator.processMessages(
         this.userFormGroup
       );
       this._cdr.detectChanges();
@@ -98,7 +98,7 @@ export class AddEditUserModalComponent implements OnInit, OnDestroy {
       joiningDate: [],
       isAdministrator: [false],
     });
-    this.validator.initilizeFormValitorMessages({
+    this.__validator.initilizeFormValitorMessages({
       firstName: {
         fieldName: "First Name",
         validationProps: [
@@ -134,7 +134,7 @@ export class AddEditUserModalComponent implements OnInit, OnDestroy {
 
     this.userFormGroup.statusChanges.pipe(debounceTime(300)).subscribe((s) => {
       if (s && s === "INVALID") {
-        this.validationMessages = this.validator.processMessages(
+        this.validationMessages = this.__validator.processMessages(
           this.userFormGroup
         );
       } else {
