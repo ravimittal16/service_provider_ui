@@ -408,6 +408,62 @@ export class CompanyServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateCompany(body: CompanyDetailsModel | undefined): Observable<CompanyDetailsModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/company/UpdateCompany";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateCompany(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateCompany(<any>response_);
+                } catch (e) {
+                    return <Observable<CompanyDetailsModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CompanyDetailsModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateCompany(response: HttpResponseBase): Observable<CompanyDetailsModelGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyDetailsModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CompanyDetailsModelGenericResponse>(<any>null);
+    }
+
+    /**
      * @param countryCode (optional) 
      * @return Success
      */
@@ -1498,6 +1554,69 @@ export interface ICompanyBusinessHourModel {
     dayName: string | undefined;
 }
 
+export class TaxRateModel implements ITaxRateModel {
+    taxRateId: number;
+    rateValue: number | undefined;
+    name: string | undefined;
+    description: string | undefined;
+    isDefault: boolean;
+    taxCodeId: number | undefined;
+
+    constructor(data?: ITaxRateModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.taxRateId = _data["taxRateId"];
+            this.rateValue = _data["rateValue"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+            this.isDefault = _data["isDefault"];
+            this.taxCodeId = _data["taxCodeId"];
+        }
+    }
+
+    static fromJS(data: any): TaxRateModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaxRateModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taxRateId"] = this.taxRateId;
+        data["rateValue"] = this.rateValue;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        data["isDefault"] = this.isDefault;
+        data["taxCodeId"] = this.taxCodeId;
+        return data; 
+    }
+
+    clone(): TaxRateModel {
+        const json = this.toJSON();
+        let result = new TaxRateModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITaxRateModel {
+    taxRateId: number;
+    rateValue: number | undefined;
+    name: string | undefined;
+    description: string | undefined;
+    isDefault: boolean;
+    taxCodeId: number | undefined;
+}
+
 export class CompanyDetailsModel implements ICompanyDetailsModel {
     companyName: string | undefined;
     country: string | undefined;
@@ -1510,6 +1629,7 @@ export class CompanyDetailsModel implements ICompanyDetailsModel {
     timeZoneStandardName: string | undefined;
     compAddresses: AddressDto[] | undefined;
     businessHourModels: CompanyBusinessHourModel[] | undefined;
+    taxRates: TaxRateModel[] | undefined;
 
     constructor(data?: ICompanyDetailsModel) {
         if (data) {
@@ -1540,6 +1660,11 @@ export class CompanyDetailsModel implements ICompanyDetailsModel {
                 this.businessHourModels = [] as any;
                 for (let item of _data["businessHourModels"])
                     this.businessHourModels.push(CompanyBusinessHourModel.fromJS(item));
+            }
+            if (Array.isArray(_data["taxRates"])) {
+                this.taxRates = [] as any;
+                for (let item of _data["taxRates"])
+                    this.taxRates.push(TaxRateModel.fromJS(item));
             }
         }
     }
@@ -1572,6 +1697,11 @@ export class CompanyDetailsModel implements ICompanyDetailsModel {
             for (let item of this.businessHourModels)
                 data["businessHourModels"].push(item.toJSON());
         }
+        if (Array.isArray(this.taxRates)) {
+            data["taxRates"] = [];
+            for (let item of this.taxRates)
+                data["taxRates"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -1595,6 +1725,7 @@ export interface ICompanyDetailsModel {
     timeZoneStandardName: string | undefined;
     compAddresses: AddressDto[] | undefined;
     businessHourModels: CompanyBusinessHourModel[] | undefined;
+    taxRates: TaxRateModel[] | undefined;
 }
 
 export class LookupValueModel implements ILookupValueModel {
@@ -1827,6 +1958,77 @@ export interface ICommonDataModel {
     lookupValues: LookupValueModel[] | undefined;
     countries: CountryModel[] | undefined;
     timeZones: TimezoneModel[] | undefined;
+}
+
+export class CompanyDetailsModelGenericResponse implements ICompanyDetailsModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: CompanyDetailsModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+
+    constructor(data?: ICompanyDetailsModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? CompanyDetailsModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+        }
+    }
+
+    static fromJS(data: any): CompanyDetailsModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyDetailsModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        return data; 
+    }
+
+    clone(): CompanyDetailsModelGenericResponse {
+        const json = this.toJSON();
+        let result = new CompanyDetailsModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompanyDetailsModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: CompanyDetailsModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
 }
 
 export class CustomerModel implements ICustomerModel {
@@ -2138,6 +2340,7 @@ export enum EntityTypes {
     _9 = 9,
     _10 = 10,
     _11 = 11,
+    _12 = 12,
     __1 = -1,
 }
 
