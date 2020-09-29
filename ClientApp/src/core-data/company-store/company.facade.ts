@@ -11,6 +11,7 @@ import {
   CommonDataModel,
   CompanyServiceProxy,
   TimezoneModel,
+  CompanyDetailsModelGenericResponse,
 } from "@shared/service-proxies/service-proxies";
 
 @Injectable({
@@ -36,6 +37,12 @@ export class CompanyFacade implements Facade {
     this.commonData$ = this._store.pipe(
       select(fromCompanySelectors.selectCommonData)
     );
+  }
+
+  updateCompanyDetails(
+    details: CompanyDetailsModel
+  ): Observable<CompanyDetailsModelGenericResponse> {
+    return this.companyService.updateCompany(details);
   }
 
   loadApplicationData() {

@@ -10,6 +10,7 @@ import { Guid } from "guid-typescript";
 import { CollapsibleCardComponent } from "@app/shared-ui-components/collapsible-card/collapsible-card.component";
 
 import { Observable, from, of, BehaviorSubject } from "rxjs";
+import { TaxRateModel } from "@shared/service-proxies/service-proxies";
 
 @Component({
   selector: "app-tax-settings-card",
@@ -45,6 +46,15 @@ export class TaxSettingsCardComponent implements OnInit {
     if (this.collapsibleCompponent && !this.collapsibleCompponent.isExpanded) {
       this.collapsibleCompponent.expandCollapsePanel();
     }
+  }
+
+  getAllTaxes(): TaxRateModel[] {
+    const _array = this.taxesFormGroup.get("taxes") as FormArray;
+    const _items = _array.controls.map(
+      (grp: FormGroup) => grp.getRawValue() as TaxRateModel
+    );
+    console.log(_items);
+    return _items;
   }
 
   addNewTaxClicked(): void {
@@ -122,13 +132,14 @@ export class TaxSettingsCardComponent implements OnInit {
     const _id = Guid.create().toString();
     return this._formBuilder.group({
       id: [_id],
-      taxName: ["", [Validators.required]],
-      taxRate: [0, [Validators.required]],
-      taxDescription: [""],
+      name: ["", [Validators.required]],
+      rateValue: [0, [Validators.required]],
+      description: [""],
       isActive: [false],
       defaultTaxId: [""],
       isSaved: [false],
       isDefault: [false],
+      taxRateId: [0],
     });
   }
 

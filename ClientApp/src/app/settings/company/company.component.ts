@@ -82,12 +82,20 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.companyAddresses = details.compAddresses;
   }
 
-  private __processUpdateCompanySettings() {}
+  private __processUpdateCompanySettings() {
+    const model = this.companyFormGroup.getRawValue();
+    //model.taxRates = this.taxesComponent.ge;
+    this._copmanyFacade.updateCompanyDetails(model).subscribe((response) => {
+      if (response.isSuccess) {
+        console.log(response);
+      }
+    });
+  }
 
   updateCompanySettings() {
     if (this.taxesComponent) {
+      this.taxesComponent.getAllTaxes();
       this.taxesComponent.isValidTaxRatesForms().then((__taxFormResponse) => {
-        console.log(__taxFormResponse);
         if (__taxFormResponse.isValid) {
           this.__processUpdateCompanySettings();
         } else {
@@ -123,7 +131,6 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
           .pipe(distinctUntilChanged())
           .subscribe((details) => {
             if (details) {
-              console.log(details);
               this._bindCompanyData(details);
             }
           })
