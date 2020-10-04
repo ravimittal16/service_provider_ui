@@ -1,3 +1,37 @@
-<div class="card-body">
-  CUSTOM FIELDS
+<div class="card">
+  <div class="card-body">
+    <h4 class="text-700">Custom Fields</h4>
+    <p class="mt-2 text-500">Use custom fields to track information specific to your orgnization.</p>
+    <div class="row">
+      <div class="col">
+        <app-error-view [errors$]="errors$" [observableDefined]="true"></app-error-view>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
+        <form [formGroup]="customFieldDetailGroup">
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group flex-fill">
+                <label for="staticEmail2" class="sr-only">Entity Type</label>
+                <select class="form-control" aria-placeholder="" placeholder="Select entity type"
+                  (change)="onEntityTypeSelected()" formControlName="entityType">
+                  <option value="">Select Type</option>
+                  <option value="3">Customer</option>
+                  <option value="5">User</option>
+                  <option value="6">Product</option>
+                  <option value="7">Estimate</option>
+                  <option value="13">Job</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <button class="btn btn-outline-success btn-sm" type="button" (click)="addNewCustomTypeClicked()">
+            <span class="fa fa-plus"></span> Add new custom type
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
