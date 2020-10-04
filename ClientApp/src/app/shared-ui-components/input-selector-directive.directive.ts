@@ -19,7 +19,7 @@ export class InputSelectorDirectiveDirective implements OnInit {
           if (__length > 1) {
             const __cho = new Choices(this.el.nativeElement, {
               placeholder: true,
-              removeItemButton: true,
+              removeItemButton: false,
             });
           }
           clearInterval(__interval);

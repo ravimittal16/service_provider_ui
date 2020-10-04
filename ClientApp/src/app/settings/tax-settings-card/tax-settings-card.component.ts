@@ -11,6 +11,7 @@ import { CollapsibleCardComponent } from "@app/shared-ui-components/collapsible-
 
 import { Observable, from, of, BehaviorSubject } from "rxjs";
 import { TaxRateModel } from "@shared/service-proxies/service-proxies";
+import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 
 @Component({
   selector: "app-tax-settings-card",
@@ -23,11 +24,11 @@ export class TaxSettingsCardComponent implements OnInit {
   taxesFormGroup: FormGroup;
   taxes: FormArray;
   _defaultTaxId: string;
-  private errorsSubject = new BehaviorSubject<string[]>([]);
+  private __errorRenderer = new ErrorRenderer();
   errors$: Observable<string[]>;
   isStateValid = true;
   constructor(private _formBuilder: FormBuilder) {
-    this.errors$ = this.errorsSubject.asObservable();
+    this.errors$ = this.__errorRenderer.errors$;
   }
 
   private __getField(fieldName: string): AbstractControl {
@@ -36,7 +37,7 @@ export class TaxSettingsCardComponent implements OnInit {
 
   showInvalidStateMessage() {
     this.isStateValid = false;
-    this.errorsSubject.next([
+    this.__errorRenderer.addError([
       "Please make sure all tax-rates has been defined.",
     ]);
     this.__expandTaxContainer();
@@ -53,7 +54,6 @@ export class TaxSettingsCardComponent implements OnInit {
     const _items = _array.controls.map(
       (grp: FormGroup) => grp.getRawValue() as TaxRateModel
     );
-    console.log(_items);
     return _items;
   }
 
@@ -62,6 +62,9 @@ export class TaxSettingsCardComponent implements OnInit {
       this.taxes = this.__getField("taxes") as FormArray;
       this.taxes.push(this.createTaxFormItem());
       this.__expandTaxContainer();
+      if (this.taxes.controls.length === 1) {
+        this.onDefaultTaxClicked(0);
+      }
       setTimeout(() => {
         if (this.taxes.length === 1) {
           const _firstGroup = this.taxes.controls[0];
@@ -79,7 +82,7 @@ export class TaxSettingsCardComponent implements OnInit {
     errors: any[];
     formData?: any;
   }> {
-    this.errorsSubject.next(null);
+    this.__errorRenderer.clearErrors();
     return new Promise((resolve, reject) => {
       const __array = this.__getField("taxes") as FormArray;
       if (__array.controls.length > 0) {
@@ -98,7 +101,7 @@ export class TaxSettingsCardComponent implements OnInit {
   }
 
   onRemoveTaxClicked(index: number) {
-    this.errorsSubject.next(null);
+    this.__errorRenderer.clearErrors();
     const formGroup = this.taxes.controls[index];
     if (formGroup) {
       const isSaved = formGroup.get("isSaved").value as boolean;
@@ -117,13 +120,20 @@ export class TaxSettingsCardComponent implements OnInit {
     const _group = __array.controls[index] as FormGroup;
     if (_group) {
       this._defaultTaxId = _group.get("id").value;
-      for (let __i = 0; __i < __array.controls.length; __i++) {
-        const __isDefault =
-          _group.get("id").value === __array.controls[__i].get("id").value;
-        __array.controls[__i]
+      if (__array.controls.length === 1) {
+        __array.controls[0]
           .get("defaultTaxId")
           .patchValue(_group.get("id").value);
-        __array.controls[__i].get("isDefault").patchValue(__isDefault);
+        __array.controls[0].get("isDefault").patchValue(true);
+      } else {
+        for (let __i = 0; __i < __array.controls.length; __i++) {
+          const __isDefault =
+            _group.get("id").value === __array.controls[__i].get("id").value;
+          __array.controls[__i]
+            .get("defaultTaxId")
+            .patchValue(_group.get("id").value);
+          __array.controls[__i].get("isDefault").patchValue(__isDefault);
+        }
       }
     }
   }

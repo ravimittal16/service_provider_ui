@@ -84,7 +84,7 @@ export class CompanyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private __processUpdateCompanySettings() {
     const model = this.companyFormGroup.getRawValue();
-    //model.taxRates = this.taxesComponent.ge;
+    model.taxRates = this.taxesComponent.getAllTaxes();
     this._copmanyFacade.updateCompanyDetails(model).subscribe((response) => {
       if (response.isSuccess) {
         console.log(response);

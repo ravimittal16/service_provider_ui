@@ -13,6 +13,7 @@ export const rountingComponents = [HomeComponent];
         path: "",
         component: AppComponent,
         children: [
+          { path: "home", component: HomeComponent },
           {
             path: "main",
             loadChildren: () =>
@@ -20,7 +21,6 @@ export const rountingComponents = [HomeComponent];
                 (m) => m.DashboardModule
               ),
           },
-          { path: "home", component: HomeComponent },
           {
             path: "customers",
             loadChildren: () =>
