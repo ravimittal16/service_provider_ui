@@ -29,6 +29,11 @@ export const rountingComponents = [HomeComponent];
               ),
           },
           {
+            path: "jobs",
+            loadChildren: () =>
+              import("./jobs/jobs.module").then((x) => x.JobsModule),
+          },
+          {
             path: "settings",
             loadChildren: () =>
               import("./settings/settings.module").then(
