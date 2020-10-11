@@ -1,0 +1,69 @@
+<div class="modal-header">
+  <h5 class="modal-title">Create Job</h5>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="jobFormGroup">
+  <div class="modal-body">
+    <app-error-view
+      [errors$]="errors$"
+      [observableDefined]="true"
+    ></app-error-view>
+    <div class="form-row">
+      <div class="col-8">
+        <div class="form-group flex-fill">
+          <label>Title</label>
+          <input
+            type="text"
+            #titleInput
+            formControlName="title"
+            class="form-control form-control-sm"
+            autofocus=""
+          />
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group flex-fill">
+          <label>Job #</label>
+          <input
+            type="text"
+            formControlName="jobNumber"
+            class="form-control form-control-sm"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-group flex-fill">
+      <label>Service Type</label>
+      <select
+        formControlName="title"
+        class="form-control form-control-sm"
+      ></select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col pr-0">
+      <div class="float-right">
+        <button
+          type="button"
+          class="btn btn-outline-dark btn-sm mr-1 mb-1"
+          (click)="activeModal.close('Close click')"
+        >
+          Cancel
+        </button>
+        <button class="btn btn-primary btn-sm mr-1 mb-1" type="submit">
+          <span>Create</span>
+        </button>
+        <button class="btn btn-primary btn-sm mr-1 mb-1" type="submit">
+          <span>Create & Edit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

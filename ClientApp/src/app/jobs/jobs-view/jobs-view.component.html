@@ -14,7 +14,11 @@
     <h5 class="mb-0">Jobs</h5>
   </div>
   <div class="col-auto">
-    <button class="mr-2 btn btn-falcon-default btn-sm">Save</button>
-    <button class="btn btn-falcon-primary btn-sm">Make your event live</button>
+    <button class="mr-2 btn btn-falcon-default btn-sm">
+      <span class="fa fa-refresh"></span>
+    </button>
+    <button class="btn btn-falcon-primary btn-sm" (click)="createNewJobClicked()">
+      <span class="fa fa-plus"></span> Create New Job
+    </button>
   </div>
 </div>
