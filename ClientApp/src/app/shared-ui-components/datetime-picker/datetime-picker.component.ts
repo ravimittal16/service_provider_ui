@@ -9,7 +9,7 @@ import {
   Renderer2,
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateStruct, NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
 
 import * as moment from "moment";
 
@@ -37,7 +37,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
 
   renderTimeSelector = false;
   onlyTimeSelector = false;
-  selectedDate: NgbDateStruct | any;
+  selectedValue: NgbDateStruct | NgbTimeStruct;
   constructor(private _renderer: Renderer2, private _elementRef: ElementRef) {}
 
   onChange: (_: any) => {};
@@ -48,14 +48,17 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     if (moment.isDate(obj)) {
       const __elValue = obj as Date;
       if (this.selectorType === "date") {
-        this.selectedDate = {
+        this.selectedValue = {
           year: __elValue.getFullYear(),
           month: __elValue.getMonth() + 1,
           day: __elValue.getDate(),
         } as NgbDateStruct;
       }
       if (this.selectorType === "time") {
-        console.log(obj);
+        this.selectedValue = {
+          hour: __elValue.getHours(),
+          minute: __elValue.getMinutes(),
+        } as NgbTimeStruct;
       }
 
       this._renderer.setProperty(
@@ -82,6 +85,17 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     );
   }
 
+  onTimeSelectionChanged($event: NgbTimeStruct): void {
+    setTimeout(() => {
+      const __combineWith = this.combinedWithDate
+        ? this.combinedWithDate
+        : new Date();
+      __combineWith.setHours($event.hour);
+      __combineWith.setMinutes($event.minute);
+      this.onChange(__combineWith);
+    }, 10);
+  }
+
   onDateSelect(event: NgbDateStruct): void {
     if (event) {
       const __newDate = new Date(
@@ -102,6 +116,5 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   ngOnInit(): void {
     this.renderTimeSelector = this.selectorType !== "date";
     this.onlyTimeSelector = this.selectorType === "time";
-    console.log(this);
   }
 }
