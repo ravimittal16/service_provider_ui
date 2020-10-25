@@ -15,13 +15,13 @@
       [errors$]="errors$"
       [observableDefined]="true"
     ></app-error-view>
-    <div class="mt-2">
+    <div>
       <h5 class="modal-title text-400 fs-0">Job Information</h5>
     </div>
     <div class="form-row">
       <div class="col-8">
         <div class="form-group flex-fill">
-          <label>Title</label>
+          <label>Job Title*</label>
           <input
             type="text"
             #titleInput
@@ -45,15 +45,15 @@
     <div class="form-group flex-fill">
       <label>Service Type</label>
       <select
-        formControlName="title"
+        formControlName="serviceTypeId"
         class="form-control form-control-sm"
       ></select>
     </div>
     <div class="form-group flex-fill">
       <label>Description</label>
       <textarea
-        formControlName="title"
-        rows="3"
+        formControlName="jobDescription"
+        rows="4"
         class="form-control form-control-sm"
       ></textarea>
     </div>
@@ -65,7 +65,7 @@
         <div class="form-group flex-fill">
           <label>Customer*</label>
           <select
-            formControlName="title"
+            formControlName="customerId"
             class="form-control form-control-sm"
           ></select>
         </div>
@@ -89,6 +89,62 @@
     <div class="mt-2">
       <h5 class="modal-title text-400 fs-0">Schedule (optional)</h5>
     </div>
+    <div class="form-group flex-fill">
+      <label>Assign To</label>
+      <select
+        formControlName="assignedTo"
+        class="form-control form-control-sm"
+      ></select>
+    </div>
+    <div class="form-row">
+      <div class="col-3">
+        <div class="form-group flex-fill">
+          <app-datetime-picker
+            selectorType="date"
+            formControlName="jobStartDate"
+            title="Start Date"
+            (onChanged)="onStartDateChanged($event)"
+          ></app-datetime-picker>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="top-margin-4">
+          <label class="sr-only">Start Date</label>
+          <!-- <ngb-timepicker
+            formControlName="jobStartTime"
+            [spinners]="false"
+            [meridian]="true"
+            [size]="'small'"
+          ></ngb-timepicker> -->
+
+          <app-datetime-picker
+            selectorType="time"
+            formControlName="jobStartTime"
+            [showTitle]="false"
+          ></app-datetime-picker>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-group flex-fill">
+          <app-datetime-picker
+            selectorType="date"
+            formControlName="jobEndDate"
+            title="Finish Date"
+          ></app-datetime-picker>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="top-margin-4">
+          <label class="sr-only">Start Date</label>
+          <ngb-timepicker
+            formControlName="jobEndTime"
+            [spinners]="false"
+            [meridian]="true"
+            [size]="'small'"
+          ></ngb-timepicker>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <div class="col pr-0">
@@ -100,10 +156,18 @@
         >
           Cancel
         </button>
-        <button class="btn btn-primary btn-sm mr-1 mb-1" type="submit">
+        <button
+          class="btn btn-primary btn-sm mr-1 mb-1"
+          type="submit"
+          (click)="onFormSubmitted(false)"
+        >
           <span>Create</span>
         </button>
-        <button class="btn btn-primary btn-sm mr-1 mb-1" type="submit">
+        <button
+          class="btn btn-primary btn-sm mr-1 mb-1"
+          type="submit"
+          (click)="onFormSubmitted(true)"
+        >
           <span>Create & Edit</span>
         </button>
       </div>
