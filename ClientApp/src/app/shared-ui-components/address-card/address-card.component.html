@@ -1,0 +1,46 @@
+<div class="card-body">
+  <div class="row">
+    <div class="col">
+      <span>
+        <h6>
+          <span class="text-500"> {{ address.propertyName }}</span>
+          &nbsp;<span
+            *ngIf="address.propertyType === 1"
+            class="badge badge-pill badge-soft-primary"
+            >Business</span
+          >
+          <span
+            *ngIf="address.propertyType === 0"
+            class="badge badge-pill badge-soft-warning"
+            >Service</span
+          >
+          <span
+            *ngIf="address.propertyType === 4"
+            class="badge badge-pill badge-soft-info"
+            >Communication</span
+          >
+        </h6>
+        <h5 class="fs-0">
+          {{ address.formattedAddress }}
+          <a
+            *ngIf="address.latitude && address.longitude"
+            class="text-primary"
+            (click)="onMapMarkerClicked()"
+          >
+            <i class="fa fa-map-marker"></i>
+          </a>
+        </h5>
+      </span>
+    </div>
+    <div class="col-md-1">
+      <button
+        class="btn btn-falcon-default btn-sm ml-2"
+        type="button"
+        *ngIf="allowEdit"
+        (click)="onEditButtonClicked()"
+      >
+        <span class="fa fa-pencil"></span>
+      </button>
+    </div>
+  </div>
+</div>
