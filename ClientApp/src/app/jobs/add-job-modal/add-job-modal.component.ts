@@ -49,6 +49,10 @@ export class AddJobModalComponent implements OnInit {
     });
   }
 
+  getFieldValue(fieldName: string) {
+    return this.jobFormGroup.get(fieldName).value;
+  }
+
   onStartDateChanged(newDate: Date) {}
 
   ngAfterViewInit(): void {

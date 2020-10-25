@@ -110,17 +110,11 @@
       <div class="col-3">
         <div class="top-margin-4">
           <label class="sr-only">Start Date</label>
-          <!-- <ngb-timepicker
-            formControlName="jobStartTime"
-            [spinners]="false"
-            [meridian]="true"
-            [size]="'small'"
-          ></ngb-timepicker> -->
-
           <app-datetime-picker
             selectorType="time"
             formControlName="jobStartTime"
             [showTitle]="false"
+            [combinedWithDate]="getFieldValue('jobStartDate')"
           ></app-datetime-picker>
         </div>
       </div>

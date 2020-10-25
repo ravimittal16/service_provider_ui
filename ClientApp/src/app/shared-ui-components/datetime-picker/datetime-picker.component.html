@@ -7,7 +7,7 @@
     placeholder="yyyy-mm-dd"
     ngbDatepicker
     (dateSelect)="onDateSelect($event)"
-    [(ngModel)]="selectedDate"
+    [(ngModel)]="selectedValue"
     #picker="ngbDatepicker"
   />
   <div class="input-group-append">
@@ -23,7 +23,8 @@
 <!-- this will render the timepicker -->
 <ngb-timepicker
   *ngIf="onlyTimeSelector"
-  [(ngModel)]="selectedDate"
+  [(ngModel)]="selectedValue"
+  (ngModelChange)="onTimeSelectionChanged($event)"
   [spinners]="false"
   [meridian]="true"
   [size]="'small'"
