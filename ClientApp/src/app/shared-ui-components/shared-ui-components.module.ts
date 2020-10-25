@@ -8,20 +8,20 @@ import { UiAlertsService } from "./ui.alerts.service";
 import { CollapsibleCardComponent } from "./collapsible-card/collapsible-card.component";
 import { InputSelectorComponentComponent } from "./input-selector-component/input-selector-component.component";
 import { InputSelectorDirectiveDirective } from "./input-selector-directive.directive";
+import { AddressCardComponent } from "./address-card/address-card.component";
+
+const __exportableComponents = [
+  CollapsibleCardComponent,
+  InputSelectorComponentComponent,
+  InputSelectorDirectiveDirective,
+  AddressModalComponent,
+  AddressCardComponent,
+];
 
 @NgModule({
-  declarations: [
-    AddressModalComponent,
-    CollapsibleCardComponent,
-    InputSelectorComponentComponent,
-    InputSelectorDirectiveDirective,
-  ],
+  declarations: [...__exportableComponents],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
   providers: [UiComponentsServiceService, UiAlertsService],
-  exports: [
-    CollapsibleCardComponent,
-    InputSelectorComponentComponent,
-    InputSelectorDirectiveDirective,
-  ],
+  exports: [...__exportableComponents],
 })
 export class SharedUiComponentsModule {}

@@ -11,7 +11,12 @@
                   <div class="col">
                     <div class="form-group flex-fill">
                       <label>Company Name</label>
-                      <input type="text" formControlName="companyName" class="form-control" autofocus />
+                      <input
+                        type="text"
+                        formControlName="companyName"
+                        class="form-control"
+                        autofocus
+                      />
                       <!-- <div class="invalid-feedback" *ngIf="validationMessages.firstName">
                         {{ validationMessages.firstName }}
                       </div> -->
@@ -22,13 +27,21 @@
                   <div class="col">
                     <div class="form-group flex-fill">
                       <label>Phone Number</label>
-                      <input type="text" formControlName="primaryPhone" class="form-control" />
+                      <input
+                        type="text"
+                        formControlName="primaryPhone"
+                        class="form-control"
+                      />
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group flex-fill">
                       <label>Website URL</label>
-                      <input type="text" formControlName="webAddr" class="form-control" />
+                      <input
+                        type="text"
+                        formControlName="webAddr"
+                        class="form-control"
+                      />
                     </div>
                   </div>
                 </div>
@@ -36,42 +49,31 @@
                   <div class="col">
                     <div class="form-group flex-fill">
                       <label>Email</label>
-                      <input type="text" formControlName="email" class="form-control" />
+                      <input
+                        type="text"
+                        formControlName="email"
+                        class="form-control"
+                      />
                     </div>
                   </div>
                 </div>
                 <div class="mt-3">
-                  <h5 class="text-muted">Company Address ({{companyAddresses?.length}})</h5>
+                  <h5 class="text-muted">
+                    Company Address ({{ companyAddresses?.length }})
+                  </h5>
                 </div>
-                <div class="card mt-2" *ngFor="let add of companyAddresses; let i = index; trackBy:addressTrackByFn">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <span>
-                          <h5 class="fs-0">
-                            <span class="text-500"> {{ add.propertyName }}</span>
-                            &nbsp;<span *ngIf="add.propertyType === 1"
-                              class="badge badge-pill badge-soft-primary">Business</span>
-                            <span *ngIf="add.propertyType === 0"
-                              class="badge badge-pill badge-soft-warning">Service</span>
-                            <span *ngIf="add.propertyType === 4"
-                              class="badge badge-pill badge-soft-info">Communication</span>
-                          </h5>
-                          <h5 class="fs-1">
-                            {{add.formattedAddress}}
-                            <a *ngIf="add.latitude && add.longitude" class="text-primary">
-                              <i class="fa fa-map-marker"></i>
-                            </a>
-                          </h5>
-                        </span>
-                      </div>
-                      <div class="col-md-1">
-                        <button class="btn btn-falcon-default btn-sm ml-2" type="button">
-                          <span class="fa fa-pencil"></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <div
+                  class="card mt-2"
+                  *ngFor="
+                    let add of companyAddresses;
+                    let i = index;
+                    trackBy: addressTrackByFn
+                  "
+                >
+                  <app-address-card
+                    [address]="add"
+                    [allowEdit]="true"
+                  ></app-address-card>
                 </div>
               </div>
             </div>
@@ -92,11 +94,18 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Country</label>
-                  <select class="form-control js-choice" formControlName="country" choices=""
-                    (change)="onCountryChanged()">
+                  <select
+                    class="form-control js-choice"
+                    formControlName="country"
+                    choices=""
+                    (change)="onCountryChanged()"
+                  >
                     <option value="">Select Country...</option>
-                    <option *ngFor="let country of commonData?.countries" [value]="country.countryCode">
-                      {{country.formattedValue}}
+                    <option
+                      *ngFor="let country of commonData?.countries"
+                      [value]="country.countryCode"
+                    >
+                      {{ country.formattedValue }}
                     </option>
                   </select>
                 </div>
@@ -104,11 +113,18 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Time Zone</label>
-                  <select class="form-control js-choice" formControlName="timeZoneStandardName" choices=""
-                    [isObservableList]="true">
+                  <select
+                    class="form-control js-choice"
+                    formControlName="timeZoneStandardName"
+                    choices=""
+                    [isObservableList]="true"
+                  >
                     <option value="">Select Tiemzone...</option>
-                    <option *ngFor="let format of timezones$ | async" [value]="format.name">
-                      {{format.value}}
+                    <option
+                      *ngFor="let format of timezones$ | async"
+                      [value]="format.name"
+                    >
+                      {{ format.value }}
                     </option>
                   </select>
                 </div>
@@ -118,10 +134,17 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Date Format</label>
-                  <select class="form-control js-choice" formControlName="dateFormat" choices="">
+                  <select
+                    class="form-control js-choice"
+                    formControlName="dateFormat"
+                    choices=""
+                  >
                     <option value="">Select Date format...</option>
-                    <option *ngFor="let format of dateFormats" [value]="format.value">
-                      {{format.keyName}}
+                    <option
+                      *ngFor="let format of dateFormats"
+                      [value]="format.value"
+                    >
+                      {{ format.keyName }}
                     </option>
                   </select>
                 </div>
@@ -129,7 +152,10 @@
               <div class="col">
                 <div class="form-group flex-fill">
                   <label>Time Format</label>
-                  <select class="form-control js-choice" formControlName="timeFormat">
+                  <select
+                    class="form-control js-choice"
+                    formControlName="timeFormat"
+                  >
                     <option value="12">12 Hour Format (e.g. 5:00 PM)</option>
                     <option value="24">24 Hour Format (e.g. 17:00)</option>
                   </select>
@@ -140,10 +166,23 @@
               <div class="col">
                 <label>First day of the week</label>
                 <div class="mr-2">
-                  <div class="form-check form-check-inline" *ngFor="let day of weekdays;">
-                    <input class="form-check-input" type="radio" name="firstDayOfWeek" id="day__{{day.dayCode}}"
-                      [value]="day.dayCode" formControlName="firstDayOfWeek" />
-                    <label class="form-check-label" for="day__{{day.dayCode}}">{{day.dayName}}</label>
+                  <div
+                    class="form-check form-check-inline"
+                    *ngFor="let day of weekdays"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="firstDayOfWeek"
+                      id="day__{{ day.dayCode }}"
+                      [value]="day.dayCode"
+                      formControlName="firstDayOfWeek"
+                    />
+                    <label
+                      class="form-check-label"
+                      for="day__{{ day.dayCode }}"
+                      >{{ day.dayName }}</label
+                    >
                   </div>
                 </div>
               </div>
@@ -163,7 +202,10 @@
               </h5>
             </div>
             <div class="col-auto">
-              <button class="btn btn-success mr-1 mb-1 btn-sm mr-2" (click)="updateCompanySettings()">
+              <button
+                class="btn btn-success mr-1 mb-1 btn-sm mr-2"
+                (click)="updateCompanySettings()"
+              >
                 Update Settings
               </button>
             </div>
@@ -172,7 +214,7 @@
       </div>
     </div>
     <div class="col-lg-4 col-xxl-4 pl-xxl-2 mb-3">
-      <div class="card mb-3 h-50" style="max-height: 220px;">
+      <div class="card mb-3 h-50" style="max-height: 220px">
         <div class="card-header">
           <h5 class="mb-0 text-danger">Danger Zone</h5>
         </div>
@@ -182,7 +224,8 @@
             Once you delete a account, there is no going back. Please be
             certain.
           </p>
-          <a class="btn btn-falcon-danger d-block" (click)="disconnectAccount()">Disconnect from Quickbooks
+          <a class="btn btn-falcon-danger d-block" (click)="disconnectAccount()"
+            >Disconnect from Quickbooks
           </a>
         </div>
       </div>
