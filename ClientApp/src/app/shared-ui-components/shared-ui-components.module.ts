@@ -9,6 +9,7 @@ import { CollapsibleCardComponent } from "./collapsible-card/collapsible-card.co
 import { InputSelectorComponentComponent } from "./input-selector-component/input-selector-component.component";
 import { InputSelectorDirectiveDirective } from "./input-selector-directive.directive";
 import { AddressCardComponent } from "./address-card/address-card.component";
+import { DatetimePickerComponent } from "./datetime-picker/datetime-picker.component";
 
 const __exportableComponents = [
   CollapsibleCardComponent,
@@ -16,6 +17,7 @@ const __exportableComponents = [
   InputSelectorDirectiveDirective,
   AddressModalComponent,
   AddressCardComponent,
+  DatetimePickerComponent,
 ];
 
 @NgModule({
