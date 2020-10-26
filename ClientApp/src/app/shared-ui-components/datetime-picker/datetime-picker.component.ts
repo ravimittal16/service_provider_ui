@@ -29,6 +29,8 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() selectorType: "date" | "time" | "datetime" = "date";
   @Input() title: string = "";
   @Input() showTitle: boolean = true;
+  @Input() allowClear: boolean = true;
+
   // ==========================================================
   // combinedWithDate will work only with time | this will combine the date&time
   // ==========================================================
@@ -69,6 +71,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+  clearDate(): void {
+    this.selectedValue = null;
+    this.onChange(null);
+  }
+
   registerOnChange(fn: any): void {
     this.onChange = (value) => fn(value);
   }
@@ -90,9 +97,11 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
       const __combineWith = this.combinedWithDate
         ? this.combinedWithDate
         : new Date();
-      __combineWith.setHours($event.hour);
-      __combineWith.setMinutes($event.minute);
-      this.onChange(__combineWith);
+      if (__combineWith) {
+        __combineWith.setHours($event.hour);
+        __combineWith.setMinutes($event.minute);
+        this.onChange(__combineWith);
+      }
     }, 10);
   }
 

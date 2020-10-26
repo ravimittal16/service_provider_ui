@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
@@ -8,7 +9,12 @@ import {
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
+import {
+  GenericValidator,
+  ValidationTypes,
+} from "@shared/helpers/GenericValidator";
 import { Observable } from "rxjs";
+import { SubSink } from "subsink";
 @Component({
   selector: "app-add-job-modal",
   templateUrl: "./add-job-modal.component.html",
@@ -21,31 +27,61 @@ export class AddJobModalComponent implements OnInit {
   @ViewChild("titleInput") titleInput: ElementRef;
   jobFormGroup: FormGroup;
   scheduleStart: Date;
+  validationMessages: { [key: string]: string } = {};
+  private _subs = new SubSink();
+  private __validator = new GenericValidator();
   constructor(
     public activeModal: NgbActiveModal,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _cdr: ChangeDetectorRef
   ) {
     this.errors$ = this.__errorHandler.errors$;
   }
 
   onFormSubmitted(editAfterSave: boolean): void {
     const __model = this.jobFormGroup.getRawValue();
-    console.log(__model);
+    this.validationMessages = {};
+    if (this.jobFormGroup.invalid) {
+      this.validationMessages = this.__validator.processMessages(
+        this.jobFormGroup
+      );
+      console.log(this.validationMessages);
+      this._cdr.detectChanges();
+    } else {
+    }
   }
 
   private __buildForm(): void {
     const __now = new Date();
     this.jobFormGroup = this._formBuilder.group({
-      title: ["", [Validators.required]],
+      jobTitle: ["", [Validators.required]],
       jobNumber: [""],
-      jobDescription: [""],
-      serviceTypeId: [0, [Validators.required]],
-      customerId: [0, [Validators.required]],
+      jobDescription: ["", [Validators.maxLength(1000)]],
+      serviceTypeId: [null, [Validators.required]],
+      customerId: [null, [Validators.required]],
       assignedTo: [0],
       jobStartDate: [__now],
       jobStartTime: [__now],
-      jobEndDate: [__now],
-      jobEndTime: [__now],
+      jobEndDate: [null],
+      jobEndTime: [null],
+      internalNotes: [],
+    });
+    this.__validator.initilizeFormValitorMessages({
+      jobTitle: {
+        fieldName: "Job Title",
+        validationProps: [
+          { validatorType: ValidationTypes.Required },
+          { validatorType: ValidationTypes.MaxLength, withValue: 100 },
+        ],
+      },
+      serviceTypeId: {
+        fieldName: "Service Type",
+        validationProps: [{ validatorType: ValidationTypes.Required }],
+      },
+      customerId: {
+        fieldName: "Customer",
+        validationProps: [{ validatorType: ValidationTypes.Required }],
+      },
     });
   }
 

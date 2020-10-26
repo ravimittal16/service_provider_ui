@@ -15,59 +15,18 @@
       [errors$]="errors$"
       [observableDefined]="true"
     ></app-error-view>
-    <div>
-      <h5 class="modal-title text-400 fs-0">Job Information</h5>
-    </div>
-    <div class="form-row">
-      <div class="col-8">
-        <div class="form-group flex-fill">
-          <label>Job Title*</label>
-          <input
-            type="text"
-            #titleInput
-            formControlName="title"
-            class="form-control form-control-sm"
-            autofocus=""
-          />
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="form-group flex-fill">
-          <label>Job #</label>
-          <input
-            type="text"
-            formControlName="jobNumber"
-            class="form-control form-control-sm"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="form-group flex-fill">
-      <label>Service Type</label>
-      <select
-        formControlName="serviceTypeId"
-        class="form-control form-control-sm"
-      ></select>
-    </div>
-    <div class="form-group flex-fill">
-      <label>Description</label>
-      <textarea
-        formControlName="jobDescription"
-        rows="4"
-        class="form-control form-control-sm"
-      ></textarea>
-    </div>
-    <div class="mt-2">
-      <h5 class="modal-title text-400 fs-0">Customer</h5>
-    </div>
     <div class="form-row">
       <div class="col-8">
         <div class="form-group flex-fill">
           <label>Customer*</label>
           <select
             formControlName="customerId"
+            [ngClass]="{ 'is-invalid': validationMessages.customerId }"
             class="form-control form-control-sm"
           ></select>
+          <div class="invalid-feedback" *ngIf="validationMessages.customerId">
+            {{ validationMessages.customerId }}
+          </div>
         </div>
       </div>
       <div class="col-1">
@@ -86,56 +45,153 @@
         </div>
       </div>
     </div>
-    <div class="mt-2">
-      <h5 class="modal-title text-400 fs-0">Schedule (optional)</h5>
-    </div>
-    <div class="form-group flex-fill">
-      <label>Assign To</label>
-      <select
-        formControlName="assignedTo"
-        class="form-control form-control-sm"
-      ></select>
+    <div>
+      <h5 class="modal-title text-400 fs-0">Job Information</h5>
     </div>
     <div class="form-row">
-      <div class="col-3">
+      <div class="col-8">
         <div class="form-group flex-fill">
-          <app-datetime-picker
-            selectorType="date"
-            formControlName="jobStartDate"
-            title="Start Date"
-            (onChanged)="onStartDateChanged($event)"
-          ></app-datetime-picker>
+          <label>Job Title*</label>
+          <input
+            type="text"
+            #titleInput
+            formControlName="jobTitle"
+            class="form-control form-control-sm"
+            [ngClass]="{ 'is-invalid': validationMessages.jobTitle }"
+            autofocus=""
+          />
+          <div class="invalid-feedback" *ngIf="validationMessages.jobTitle">
+            {{ validationMessages.jobTitle }}
+          </div>
         </div>
       </div>
-      <div class="col-3">
-        <div class="top-margin-4">
-          <label class="sr-only">Start Date</label>
-          <app-datetime-picker
-            selectorType="time"
-            formControlName="jobStartTime"
-            [showTitle]="false"
-            [combinedWithDate]="getFieldValue('jobStartDate')"
-          ></app-datetime-picker>
-        </div>
-      </div>
-      <div class="col-3">
+      <div class="col-4">
         <div class="form-group flex-fill">
-          <app-datetime-picker
-            selectorType="date"
-            formControlName="jobEndDate"
-            title="Finish Date"
-          ></app-datetime-picker>
+          <label>Job #</label>
+          <input
+            type="text"
+            formControlName="jobNumber"
+            class="form-control form-control-sm"
+          />
+          <small class="form-text text-muted">
+            Auto populated if left blank.</small
+          >
         </div>
       </div>
-      <div class="col-3">
-        <div class="top-margin-4">
-          <label class="sr-only">Start Date</label>
-          <ngb-timepicker
-            formControlName="jobEndTime"
-            [spinners]="false"
-            [meridian]="true"
-            [size]="'small'"
-          ></ngb-timepicker>
+    </div>
+    <div class="form-group flex-fill">
+      <label>Service Type</label>
+      <select
+        formControlName="serviceTypeId"
+        [ngClass]="{ 'is-invalid': validationMessages.serviceTypeId }"
+        class="form-control form-control-sm"
+      ></select>
+      <div class="invalid-feedback" *ngIf="validationMessages.serviceTypeId">
+        {{ validationMessages.serviceTypeId }}
+      </div>
+    </div>
+    <div class="form-group flex-fill">
+      <label>Description</label>
+      <textarea
+        formControlName="jobDescription"
+        rows="4"
+        class="form-control form-control-sm"
+      ></textarea>
+    </div>
+
+    <div class="mt-2">
+      <h5 class="modal-title text-400 fs-0">
+        <a
+          class="form-section-link"
+          data-toggle="collapse"
+          href="#schedulePanel"
+          role="button"
+          aria-expanded="false"
+          aria-controls="schedulePanel"
+        >
+          Schedule (optional)
+        </a>
+      </h5>
+    </div>
+    <div class="collapse" id="schedulePanel">
+      <div class="form-group flex-fill">
+        <label>Assign To</label>
+        <select
+          formControlName="assignedTo"
+          class="form-control form-control-sm"
+        ></select>
+      </div>
+      <div class="form-row">
+        <div class="col-3">
+          <div class="form-group flex-fill">
+            <app-datetime-picker
+              selectorType="date"
+              formControlName="jobStartDate"
+              title="Start Date"
+              (onChanged)="onStartDateChanged($event)"
+            ></app-datetime-picker>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="top-margin-4">
+            <label class="sr-only">Start Date</label>
+            <app-datetime-picker
+              selectorType="time"
+              formControlName="jobStartTime"
+              [showTitle]="false"
+              [combinedWithDate]="getFieldValue('jobStartDate')"
+            ></app-datetime-picker>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group flex-fill">
+            <app-datetime-picker
+              selectorType="date"
+              formControlName="jobEndDate"
+              title="End Date (Optional)"
+            ></app-datetime-picker>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="top-margin-4">
+            <label class="sr-only">Start Time</label>
+            <app-datetime-picker
+              selectorType="time"
+              formControlName="jobEndTime"
+              [showTitle]="false"
+              [combinedWithDate]="getFieldValue('jobEndDate')"
+            ></app-datetime-picker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-2">
+      <h5 class="modal-title text-400 fs-0">
+        <a
+          class="form-section-link"
+          data-toggle="collapse"
+          href="#internalNotesPanel"
+          role="button"
+          aria-expanded="false"
+          aria-controls="internalNotesPanel"
+        >
+          Internal Notes (optional)
+        </a>
+      </h5>
+    </div>
+    <div class="form-row collapse" id="internalNotesPanel">
+      <div class="col">
+        <div class="form-group flex-fill">
+          <label>Internal Notes</label>
+          <textarea
+            formControlName="internalNotes"
+            rows="4"
+            class="form-control form-control-sm"
+          ></textarea>
+          <small class="form-text text-muted">
+            For internal use only. These notes will not included in any email or
+            pdf.</small
+          >
         </div>
       </div>
     </div>

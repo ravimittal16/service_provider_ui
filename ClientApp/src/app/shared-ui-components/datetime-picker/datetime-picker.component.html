@@ -12,6 +12,14 @@
   />
   <div class="input-group-append">
     <button
+      class="btn btn-outline-danger btn-sm"
+      *ngIf="allowClear"
+      (click)="clearDate()"
+      type="button"
+    >
+      <i class="fa fa-trash"></i>
+    </button>
+    <button
       class="btn btn-outline-secondary btn-sm"
       (click)="picker.toggle()"
       type="button"
