@@ -21,9 +21,7 @@ export class ProductsStoreEffects extends BaseEffect {
       mergeMap((action) =>
         this.productsService.importProducts().pipe(
           map((response) => {
-            if (response.length > 0 && response[0].isSuccess)
-              //return customerActions.loadCustomersAction({ companyId: 0 });
-              return null;
+            if (response.length > 0 && response[0].isSuccess) return null;
           })
         )
       )

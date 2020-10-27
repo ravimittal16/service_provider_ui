@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+
 import { JobsKanbanViewComponent } from "./jobs-kanban-view/jobs-kanban-view.component";
 import { JobsMainComponent } from "./jobs-main/jobs.main.component";
 import { JobsMapViewComponent } from "./jobs-map-view/jobs-map-view.component";
