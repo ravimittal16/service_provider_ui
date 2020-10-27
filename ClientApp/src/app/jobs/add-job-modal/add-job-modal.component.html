@@ -19,11 +19,34 @@
       <div class="col-8">
         <div class="form-group flex-fill">
           <label>Customer*</label>
-          <select
-            formControlName="customerId"
-            [ngClass]="{ 'is-invalid': validationMessages.customerId }"
+          <input
+            id="typeahead-prevent-manual-entry"
+            #titleInput
+            type="text"
             class="form-control form-control-sm"
-          ></select>
+            [ngClass]="{ 'is-invalid': validationMessages.customerId }"
+            formControlName="customerId"
+            [ngbTypeahead]="searchCustomer"
+            [inputFormatter]="formatter"
+            [resultFormatter]="formatter"
+            [editable]="false"
+          />
+          <!-- <select
+            formControlName="customerId"
+            choices=""
+            [ngClass]="{ 'is-invalid': validationMessages.customerId }"
+            (change)="onCustomerSelectionChanged()"
+            class="form-control form-control-sm"
+          >
+            <option value="">Select Customer</option>
+            <option *ngFor="let customer of activeCustomers$ | async"
+              [value]="customer.id"
+            >
+              {{ customer.displayName }}
+              <span *ngIf="customer.companyName"> -</span>
+              {{ customer.companyName }}
+            </option>
+          </select> -->
           <div class="invalid-feedback" *ngIf="validationMessages.customerId">
             {{ validationMessages.customerId }}
           </div>
@@ -54,7 +77,6 @@
           <label>Job Title*</label>
           <input
             type="text"
-            #titleInput
             formControlName="jobTitle"
             class="form-control form-control-sm"
             [ngClass]="{ 'is-invalid': validationMessages.jobTitle }"
@@ -83,10 +105,10 @@
       <label>Service Type</label>
       <select
         formControlName="serviceTypeId"
-        choices=""
         [ngClass]="{ 'is-invalid': validationMessages.serviceTypeId }"
         class="form-control form-control-sm"
       >
+        <option value="">Select Service Type</option>
         <option
           *ngFor="let product of servicesOnly$ | async"
           [value]="product.productId"

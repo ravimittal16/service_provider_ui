@@ -6,12 +6,22 @@ import {
   BatchActionRequestModel,
 } from "@shared/service-proxies/service-proxies";
 import { of } from "rxjs";
-import { mergeMap, map, catchError, switchMap } from "rxjs/operators";
+import {
+  mergeMap,
+  map,
+  catchError,
+  switchMap,
+  withLatestFrom,
+  filter,
+} from "rxjs/operators";
 import { BaseEffect } from "@core-data/base.effect";
-
+import { CustomerState } from "./customers.state";
+import { Store } from "@ngrx/store";
+import * as customerStateSelectors from "./customers.selectors";
 @Injectable()
 export class CustomerEffects extends BaseEffect {
   constructor(
+    private _store: Store<CustomerState>,
     private customerService: CustomersServiceProxy,
     private actions$: Actions
   ) {
@@ -107,6 +117,12 @@ export class CustomerEffects extends BaseEffect {
   customers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(customerActions.loadCustomersAction),
+      withLatestFrom(
+        this._store.select(customerStateSelectors.selectAllCustomers)
+      ),
+      filter(([action, commonData]) => {
+        return Object.keys(commonData).length === 0;
+      }),
       mergeMap((action) =>
         this.customerService.getAllCustomers().pipe(
           map((data) => {
