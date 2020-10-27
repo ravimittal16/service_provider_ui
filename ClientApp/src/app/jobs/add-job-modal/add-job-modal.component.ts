@@ -7,13 +7,17 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import {
   GenericValidator,
   ValidationTypes,
 } from "@shared/helpers/GenericValidator";
+import { ProductDto } from "@shared/service-proxies/service-proxies";
+
 import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 import { SubSink } from "subsink";
 @Component({
   selector: "app-add-job-modal",
@@ -30,10 +34,12 @@ export class AddJobModalComponent implements OnInit {
   validationMessages: { [key: string]: string } = {};
   private _subs = new SubSink();
   private __validator = new GenericValidator();
+  servicesOnly$: Observable<ProductDto[]>;
   constructor(
     public activeModal: NgbActiveModal,
     private _formBuilder: FormBuilder,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _productFacade: ProductsFacade
   ) {
     this.errors$ = this.__errorHandler.errors$;
   }
@@ -100,5 +106,8 @@ export class AddJobModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.__buildForm();
+    this.servicesOnly$ = this._productFacade.servicesOnly$.pipe(
+      tap((x) => console.log(x))
+    );
   }
 }

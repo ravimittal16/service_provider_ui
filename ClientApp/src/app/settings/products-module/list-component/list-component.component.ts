@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
-import { ProductssFacade } from "@core-data/products-store/products.facade";
+import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { Observable } from "rxjs/internal/Observable";
 import { ProductDto } from "@shared/service-proxies/service-proxies";
 import { TrueFalseValueCellRenderer } from "@shared/grid-cell-renderers/true.false.cell.renderer";
@@ -16,13 +16,13 @@ import { ProductActionsCellRenderer } from "../grid-cell-renderers/product.actio
 export class ListComponentComponent implements OnInit {
   gridOptions: GridOptions;
   products$: Observable<ProductDto[]>;
-  constructor(private _productsFacade: ProductssFacade) {
+  constructor(private _productsFacade: ProductsFacade) {
     this.products$ = _productsFacade.products$;
   }
 
   addNewProductClick() {}
   importProducts() {
-    this._productsFacade.importCustomers();
+    this._productsFacade.importProducts();
   }
   private _initGrid(): void {
     this.gridOptions = <GridOptions>{

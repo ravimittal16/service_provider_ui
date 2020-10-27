@@ -6,7 +6,7 @@ import { NgxMaskModule } from "ngx-mask";
 import { AgGridModule } from "ag-grid-angular";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { CoreDataModule } from "@core-data/core.data.module";
+
 import { RouterModule, Routes } from "@angular/router";
 
 import { SharedModule } from "@shared/shared.module";

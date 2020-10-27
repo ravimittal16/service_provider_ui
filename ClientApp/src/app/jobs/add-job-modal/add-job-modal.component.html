@@ -83,9 +83,17 @@
       <label>Service Type</label>
       <select
         formControlName="serviceTypeId"
+        choices=""
         [ngClass]="{ 'is-invalid': validationMessages.serviceTypeId }"
         class="form-control form-control-sm"
-      ></select>
+      >
+        <option
+          *ngFor="let product of servicesOnly$ | async"
+          [value]="product.productId"
+        >
+          {{ product.name }}
+        </option>
+      </select>
       <div class="invalid-feedback" *ngIf="validationMessages.serviceTypeId">
         {{ validationMessages.serviceTypeId }}
       </div>

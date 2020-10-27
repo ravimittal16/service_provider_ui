@@ -4,7 +4,7 @@ import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 import * as productsActions from "./products.actions";
 import { on, Action, createReducer } from "@ngrx/store";
 
-export const productsStoreFeatureKey = "__products";
+export const productsStoreFeatureKey = "products";
 
 export function selectProductId(a: ProductDto): string {
   return a.productId.toString();

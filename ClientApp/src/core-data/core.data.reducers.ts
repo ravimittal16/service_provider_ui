@@ -76,6 +76,7 @@ export const selectCustomerUiState =
 // PRODUCTS
 // ==========================================================
 export const selectAllProducts = fromProductsStateSelectors.selectAllProducts;
+export const selectAllServices = fromProductsStateSelectors.selectAllServices;
 // ==========================================================
 // USERS SELECTORS
 // ==========================================================
