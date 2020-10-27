@@ -9,28 +9,33 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { CustomerState } from "./customers.state";
 import * as customerActions from "./customers.actions";
-import {
-  selectAllCustomers,
-  selectEditedCustomerDetail,
-  selectCustomerErrors,
-  selectCustomerUiState,
-} from "./customers.selectors";
+import * as customerStateSelectors from "./customers.selectors";
 
 @Injectable({
   providedIn: "root",
 })
 export class CustomersFacade implements Facade {
   customers$: Observable<CustomerDto[]>;
+  activeCustomers$: Observable<CustomerDto[]>;
   editedCustomerDetails$: Observable<CustomerDetailModel>;
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   constructor(private _store: Store<CustomerState>) {
-    this.customers$ = this._store.pipe(select(selectAllCustomers));
-    this.editedCustomerDetails$ = this._store.pipe(
-      select(selectEditedCustomerDetail)
+    this.customers$ = this._store.pipe(
+      select(customerStateSelectors.selectAllCustomers)
     );
-    this.errors$ = this._store.pipe(select(selectCustomerErrors));
-    this.isBusy$ = this._store.pipe(select(selectCustomerUiState));
+    this.activeCustomers$ = this._store.pipe(
+      select(customerStateSelectors.selectAllActiveCustomers)
+    );
+    this.editedCustomerDetails$ = this._store.pipe(
+      select(customerStateSelectors.selectEditedCustomerDetail)
+    );
+    this.errors$ = this._store.pipe(
+      select(customerStateSelectors.selectCustomerErrors)
+    );
+    this.isBusy$ = this._store.pipe(
+      select(customerStateSelectors.selectCustomerUiState)
+    );
   }
 
   dispatch(action: Action) {

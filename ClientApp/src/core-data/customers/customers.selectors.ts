@@ -14,6 +14,12 @@ export const selectAllCustomers = createSelector(
   fromCustomerReducers.selectAllCustomers
 );
 
+//TODO: NEED TO WORK ORDER THAT | FILTER ONLY ACTIVE CUSTOMERS
+export const selectAllActiveCustomers = createSelector(
+  selectAllCustomers,
+  (customers) => customers.filter((x) => x.id !== 0)
+);
+
 export const selectEditedCustomerDetail = createSelector(
   customerFeatureState,
   (state) => state.editedCustomerDetails
