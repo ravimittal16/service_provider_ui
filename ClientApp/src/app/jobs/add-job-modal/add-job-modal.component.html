@@ -17,40 +17,11 @@
     ></app-error-view>
     <div class="form-row">
       <div class="col-8">
-        <div class="form-group flex-fill">
-          <label>Customer*</label>
-          <input
-            id="typeahead-prevent-manual-entry"
-            #titleInput
-            type="text"
-            class="form-control form-control-sm"
-            [ngClass]="{ 'is-invalid': validationMessages.customerId }"
-            formControlName="customerId"
-            [ngbTypeahead]="searchCustomer"
-            [inputFormatter]="formatter"
-            [resultFormatter]="formatter"
-            [editable]="false"
-          />
-          <!-- <select
-            formControlName="customerId"
-            choices=""
-            [ngClass]="{ 'is-invalid': validationMessages.customerId }"
-            (change)="onCustomerSelectionChanged()"
-            class="form-control form-control-sm"
-          >
-            <option value="">Select Customer</option>
-            <option *ngFor="let customer of activeCustomers$ | async"
-              [value]="customer.id"
-            >
-              {{ customer.displayName }}
-              <span *ngIf="customer.companyName"> -</span>
-              {{ customer.companyName }}
-            </option>
-          </select> -->
-          <div class="invalid-feedback" *ngIf="validationMessages.customerId">
-            {{ validationMessages.customerId }}
-          </div>
-        </div>
+        <app-customer-selector-input
+          formControlName="customerId"
+          label="'Select Customer'"
+          [validationMessages]="validationMessages"
+        ></app-customer-selector-input>
       </div>
       <div class="col-1">
         <div class="d-flex justify-content-center mt-4">
@@ -60,7 +31,10 @@
       <div class="col-3">
         <div class="form-group flex-fill">
           <div class="d-flex align-items-end">
-            <button class="btn btn-falcon-default btn-block mt-4 btn-sm">
+            <button
+              class="btn btn-falcon-default btn-block mt-4 btn-sm"
+              tabindex="-1"
+            >
               <i class="fa fa-plus"></i>
               Create New
             </button>
@@ -77,6 +51,7 @@
           <label>Job Title*</label>
           <input
             type="text"
+            #titleInput
             formControlName="jobTitle"
             class="form-control form-control-sm"
             [ngClass]="{ 'is-invalid': validationMessages.jobTitle }"

@@ -1,0 +1,19 @@
+<div class="form-group flex-fill">
+  <label>Customer*</label>
+  <input
+    id="typeahead-prevent-manual-entry"
+    #titleInput
+    type="text"
+    class="form-control form-control-sm"
+    [(ngModel)]="value"
+    [ngClass]="{ 'is-invalid': validationMessages.customerId }"
+    [ngbTypeahead]="searchCustomer"
+    [inputFormatter]="customerSearchFormatter"
+    [resultFormatter]="customerSearchFormatter"
+    [editable]="false"
+    (selectItem)="onCustomerSelectionChanged()"
+  />
+  <div class="invalid-feedback" *ngIf="validationMessages.customerId">
+    {{ validationMessages.customerId }}
+  </div>
+</div>
