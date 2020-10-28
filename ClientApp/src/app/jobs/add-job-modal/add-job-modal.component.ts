@@ -47,6 +47,7 @@ export class AddJobModalComponent implements OnInit {
   private __validator = new GenericValidator();
   servicesOnly$: Observable<ProductDto[]>;
   activeCustomers: CustomerDto[];
+
   constructor(
     public activeModal: NgbActiveModal,
     private _formBuilder: FormBuilder,
@@ -59,6 +60,7 @@ export class AddJobModalComponent implements OnInit {
 
   onFormSubmitted(editAfterSave: boolean): void {
     const __model = this.jobFormGroup.getRawValue();
+    console.log(__model);
     this.validationMessages = {};
     if (this.jobFormGroup.invalid) {
       this.validationMessages = this.__validator.processMessages(
@@ -70,8 +72,20 @@ export class AddJobModalComponent implements OnInit {
     }
   }
 
-  onCustomerSelectionChanged(): void {
+  onCustomerSelectionChanged(customer: CustomerDto): void {
+    console.log(customer);
     //TODO: Show Address Selection Modal
+  }
+
+  onServiceTypeChanged(product: ProductDto): void {}
+
+  onScheduleLaterCheckChange(): void {
+    const __scheduleLater = this.jobFormGroup.get("scheduleLater")
+      .value as boolean;
+    this.jobFormGroup.get("jobStartDate").enable();
+    if (__scheduleLater) {
+      this.jobFormGroup.get("jobStartDate").disable();
+    }
   }
 
   private __buildForm(): void {
@@ -80,9 +94,10 @@ export class AddJobModalComponent implements OnInit {
       jobTitle: ["", [Validators.required]],
       jobNumber: [""],
       jobDescription: ["", [Validators.maxLength(1000)]],
-      serviceTypeId: [null, [Validators.required]],
+      serviceType: [null, [Validators.required]],
       customerId: [null, [Validators.required]],
       assignedTo: [0],
+      scheduleLater: [false],
       jobStartDate: [__now],
       jobStartTime: [__now],
       jobEndDate: [null],
@@ -97,7 +112,7 @@ export class AddJobModalComponent implements OnInit {
           { validatorType: ValidationTypes.MaxLength, withValue: 100 },
         ],
       },
-      serviceTypeId: {
+      serviceType: {
         fieldName: "Service Type",
         validationProps: [{ validatorType: ValidationTypes.Required }],
       },
@@ -107,22 +122,6 @@ export class AddJobModalComponent implements OnInit {
       },
     });
   }
-  // customerSearchFormatter = (state: CustomerDto) =>
-  //   `${state.displayName} ${state.companyName ? "- " + state.companyName : ""}`;
-
-  // searchCustomer = (text$: Observable<string>) =>
-  //   text$.pipe(
-  //     debounceTime(200),
-  //     distinctUntilChanged(),
-  //     filter((term) => term.length >= 2),
-  //     map((term) =>
-  //       this.activeCustomers
-  //         .filter((customer) =>
-  //           new RegExp(term, "mi").test(customer.displayName)
-  //         )
-  //         .slice(0, 10)
-  //     )
-  //   );
 
   getFieldValue(fieldName: string) {
     return this.jobFormGroup.get(fieldName).value;

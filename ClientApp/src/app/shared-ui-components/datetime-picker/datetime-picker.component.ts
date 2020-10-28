@@ -30,7 +30,7 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() title: string = "";
   @Input() showTitle: boolean = true;
   @Input() allowClear: boolean = true;
-
+  isDisabled = false;
   // ==========================================================
   // combinedWithDate will work only with time | this will combine the date&time
   // ==========================================================
@@ -85,6 +85,8 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
+    console.log(isDisabled);
+    this.isDisabled = isDisabled;
     this._renderer.setProperty(
       this._elementRef.nativeElement,
       "disabled",

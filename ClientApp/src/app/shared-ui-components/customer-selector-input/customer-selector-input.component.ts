@@ -1,15 +1,18 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   forwardRef,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   Renderer2,
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
+
 import { Observable } from "rxjs";
 import {
   debounceTime,
@@ -35,7 +38,12 @@ export class CustomerSelectorInputComponent
   implements OnInit, ControlValueAccessor, OnDestroy {
   @Input() lable: string = "Select Customer";
   @Input() validationMessages: { [key: string]: string } = {};
-  public value: any;
+  @Input() validationMessagesKey: string = "";
+  @Output() onSelectionChanged: EventEmitter<CustomerDto> = new EventEmitter<
+    CustomerDto
+  >();
+  public value: CustomerDto;
+  isDisabled = false;
   activeCustomers: CustomerDto[];
   private _subs = new SubSink();
   constructor(
@@ -51,6 +59,9 @@ export class CustomerSelectorInputComponent
   onCustomerSelectionChanged(): void {
     setTimeout(() => {
       this.onChange(this.value);
+      if (this.onSelectionChanged) {
+        this.onSelectionChanged.emit(this.value);
+      }
     });
   }
 
@@ -72,14 +83,12 @@ export class CustomerSelectorInputComponent
     );
 
   writeValue(obj: any): void {
-    console.log(obj);
     if (this._elementRef.nativeElement) {
       this._renderer.setProperty(this._elementRef.nativeElement, "value", obj);
     }
   }
   registerOnChange(fn: any): void {
     this.onChange = (value) => {
-      console.log(value);
       return fn(value);
     };
   }
