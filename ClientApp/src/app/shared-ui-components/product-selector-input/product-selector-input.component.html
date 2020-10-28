@@ -1,1 +1,22 @@
-<p>product-selector-input works!</p>
+<div class="form-group flex-fill">
+  <label>{{ label }}</label>
+  <input
+    id="typeahead-prevent-manual-entry"
+    #titleInput
+    type="text"
+    class="form-control form-control-sm"
+    [(ngModel)]="value"
+    [ngClass]="{ 'is-invalid': validationMessages[validationMessagesKey] }"
+    [ngbTypeahead]="searchProduct"
+    [inputFormatter]="searchResultFormatter"
+    [resultFormatter]="searchResultFormatter"
+    [editable]="false"
+    (selectItem)="onSelectionChange()"
+  />
+  <div
+    class="invalid-feedback"
+    *ngIf="validationMessages[validationMessagesKey]"
+  >
+    {{ validationMessages[validationMessagesKey] }}
+  </div>
+</div>

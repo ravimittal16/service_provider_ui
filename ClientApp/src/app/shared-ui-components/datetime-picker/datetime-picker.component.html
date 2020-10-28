@@ -7,6 +7,7 @@
     placeholder="yyyy-mm-dd"
     ngbDatepicker
     (dateSelect)="onDateSelect($event)"
+    [disabled]="isDisabled"
     [(ngModel)]="selectedValue"
     #picker="ngbDatepicker"
   />
@@ -14,6 +15,7 @@
     <button
       class="btn btn-outline-danger btn-sm"
       *ngIf="allowClear"
+      [disabled]="isDisabled"
       (click)="clearDate()"
       type="button"
     >
@@ -22,6 +24,7 @@
     <button
       class="btn btn-outline-secondary btn-sm"
       (click)="picker.toggle()"
+      [disabled]="isDisabled"
       type="button"
     >
       <i class="fa fa-calendar"></i>

@@ -6,14 +6,17 @@
     type="text"
     class="form-control form-control-sm"
     [(ngModel)]="value"
-    [ngClass]="{ 'is-invalid': validationMessages.customerId }"
+    [ngClass]="{ 'is-invalid': validationMessages[validationMessagesKey] }"
     [ngbTypeahead]="searchCustomer"
     [inputFormatter]="customerSearchFormatter"
     [resultFormatter]="customerSearchFormatter"
     [editable]="false"
     (selectItem)="onCustomerSelectionChanged()"
   />
-  <div class="invalid-feedback" *ngIf="validationMessages.customerId">
-    {{ validationMessages.customerId }}
+  <div
+    class="invalid-feedback"
+    *ngIf="validationMessages[validationMessagesKey]"
+  >
+    {{ validationMessages[validationMessagesKey] }}
   </div>
 </div>

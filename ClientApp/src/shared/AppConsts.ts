@@ -31,7 +31,7 @@ export enum WEEKDAYS {
   SATURDAY,
 }
 export class AppConsts {
-  static remoteServiceBaseUrl: string = "http://localhost:2158";
+  static remoteServiceBaseUrl: string = "http://localhost:2159";
   static appBaseUrl: string = "app/home";
   static appBaseHref: string = "/"; // returns angular's base-href parameter value if used during the publish
 
