@@ -18,11 +18,11 @@
     <div class="form-row">
       <div class="col-8">
         <app-customer-selector-input
-          formControlName="customerId"
+          formControlName="customer"
           label="'Select Customer'"
           (onSelectionChanged)="onCustomerSelectionChanged($event)"
           [validationMessages]="validationMessages"
-          validationMessagesKey="customerId"
+          validationMessagesKey="customer"
         ></app-customer-selector-input>
       </div>
       <div class="col-1">
@@ -64,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <div class="form-group flex-fill">
           <label>Job #</label>
           <input
@@ -76,6 +76,17 @@
             Auto populated if left blank.</small
           >
         </div>
+      </div>
+      <div class="form-group col-1 width-title">
+        <label>Color</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          [(colorPicker)]="selectedJobColor"
+          readonly
+          [style.background]="selectedJobColor"
+          autocomplete="new-password"
+        />
       </div>
     </div>
     <div class="form-group flex-fill">
@@ -123,7 +134,7 @@
           <div class="form-group flex-fill">
             <app-datetime-picker
               selectorType="date"
-              formControlName="jobStartDate"
+              formControlName="startDate"
               title="Start Date"
               (onChanged)="onStartDateChanged($event)"
             ></app-datetime-picker>
@@ -134,9 +145,9 @@
             <label class="sr-only">Start Date</label>
             <app-datetime-picker
               selectorType="time"
-              formControlName="jobStartTime"
+              formControlName="startTime"
               [showTitle]="false"
-              [combinedWithDate]="getFieldValue('jobStartDate')"
+              [combinedWithDate]="getFieldValue('startDate')"
             ></app-datetime-picker>
           </div>
         </div>
@@ -144,7 +155,7 @@
           <div class="form-group flex-fill">
             <app-datetime-picker
               selectorType="date"
-              formControlName="jobEndDate"
+              formControlName="endDate"
               title="End Date (Optional)"
             ></app-datetime-picker>
           </div>
@@ -154,9 +165,9 @@
             <label class="sr-only">Start Time</label>
             <app-datetime-picker
               selectorType="time"
-              formControlName="jobEndTime"
+              formControlName="endTime"
               [showTitle]="false"
-              [combinedWithDate]="getFieldValue('jobEndDate')"
+              [combinedWithDate]="getFieldValue('endDate')"
             ></app-datetime-picker>
           </div>
         </div>
@@ -212,6 +223,7 @@
           type="button"
           class="btn btn-outline-dark btn-sm mr-1 mb-1"
           (click)="activeModal.close('Close click')"
+          [disabled]="isBusy"
         >
           Cancel
         </button>
@@ -219,6 +231,7 @@
           class="btn btn-primary btn-sm mr-1 mb-1"
           type="submit"
           (click)="onFormSubmitted(false)"
+          [disabled]="isBusy"
         >
           <span>Create</span>
         </button>
@@ -226,6 +239,7 @@
           class="btn btn-primary btn-sm mr-1 mb-1"
           type="submit"
           (click)="onFormSubmitted(true)"
+          [disabled]="isBusy"
         >
           <span>Create & Edit</span>
         </button>

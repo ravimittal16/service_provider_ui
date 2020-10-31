@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { CustomerStoreModule } from "@core-data/customers/customers-store.module";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -17,19 +16,16 @@ import {
   ValidationTypes,
 } from "@shared/helpers/GenericValidator";
 import {
+  CreateJobModel,
   CustomerDto,
   ProductDto,
 } from "@shared/service-proxies/service-proxies";
 
 import { Observable } from "rxjs";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  tap,
-} from "rxjs/operators";
+import { finalize } from "rxjs/operators";
+
 import { SubSink } from "subsink";
+import { JobsDataService } from "../jobs.data.service";
 @Component({
   selector: "app-add-job-modal",
   templateUrl: "./add-job-modal.component.html",
@@ -47,11 +43,13 @@ export class AddJobModalComponent implements OnInit {
   private __validator = new GenericValidator();
   servicesOnly$: Observable<ProductDto[]>;
   activeCustomers: CustomerDto[];
-
+  selectedJobColor: string = "#1e62c9";
+  isBusy = false;
   constructor(
     public activeModal: NgbActiveModal,
     private _formBuilder: FormBuilder,
     private _cdr: ChangeDetectorRef,
+    private _jobsDataService: JobsDataService,
     private _productFacade: ProductsFacade,
     private _customerFacade: CustomersFacade
   ) {
@@ -59,16 +57,26 @@ export class AddJobModalComponent implements OnInit {
   }
 
   onFormSubmitted(editAfterSave: boolean): void {
-    const __model = this.jobFormGroup.getRawValue();
-    console.log(__model);
+    const __model = this.jobFormGroup.getRawValue() as CreateJobModel;
+    __model.jobColor = this.selectedJobColor;
     this.validationMessages = {};
     if (this.jobFormGroup.invalid) {
       this.validationMessages = this.__validator.processMessages(
         this.jobFormGroup
       );
-      console.log(this.validationMessages);
       this._cdr.detectChanges();
     } else {
+      this.isBusy = true;
+      this._jobsDataService
+        .createJob(__model)
+        .pipe(
+          finalize(() => {
+            this.isBusy = false;
+          })
+        )
+        .subscribe((response) => {
+          console.log(response);
+        });
     }
   }
 
@@ -82,9 +90,15 @@ export class AddJobModalComponent implements OnInit {
   onScheduleLaterCheckChange(): void {
     const __scheduleLater = this.jobFormGroup.get("scheduleLater")
       .value as boolean;
-    this.jobFormGroup.get("jobStartDate").enable();
+    this.jobFormGroup.get("startDate").enable();
+    this.jobFormGroup.get("startTime").enable();
+    this.jobFormGroup.get("endDate").enable();
+    this.jobFormGroup.get("endTime").enable();
     if (__scheduleLater) {
-      this.jobFormGroup.get("jobStartDate").disable();
+      this.jobFormGroup.get("startDate").disable();
+      this.jobFormGroup.get("startTime").disable();
+      this.jobFormGroup.get("endDate").disable();
+      this.jobFormGroup.get("endTime").disable();
     }
   }
 
@@ -93,15 +107,16 @@ export class AddJobModalComponent implements OnInit {
     this.jobFormGroup = this._formBuilder.group({
       jobTitle: ["", [Validators.required]],
       jobNumber: [""],
+      jobColor: [""],
       jobDescription: ["", [Validators.maxLength(1000)]],
       serviceType: [null, [Validators.required]],
-      customerId: [null, [Validators.required]],
+      customer: [null, [Validators.required]],
       assignedTo: [0],
       scheduleLater: [false],
-      jobStartDate: [__now],
-      jobStartTime: [__now],
-      jobEndDate: [null],
-      jobEndTime: [null],
+      startDate: [__now],
+      startTime: [__now],
+      endDate: [null],
+      endTime: [null],
       internalNotes: [],
     });
     this.__validator.initilizeFormValitorMessages({
@@ -116,7 +131,7 @@ export class AddJobModalComponent implements OnInit {
         fieldName: "Service Type",
         validationProps: [{ validatorType: ValidationTypes.Required }],
       },
-      customerId: {
+      customer: {
         fieldName: "Customer",
         validationProps: [{ validatorType: ValidationTypes.Required }],
       },
