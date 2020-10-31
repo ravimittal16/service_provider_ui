@@ -7,8 +7,10 @@ import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-co
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { SharedModule } from "@shared/shared.module";
+import { ColorPickerModule } from "ngx-color-picker";
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { JobsDataService } from "./jobs.data.service";
+import { JobsModalService } from "./jobs.modal.service";
 import { JobsRoutingModule, routeComponents } from "./jobs.routing.module";
 
 const __modalComponents = [AddJobModalComponent];
@@ -21,11 +23,12 @@ const __modalComponents = [AddJobModalComponent];
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    ColorPickerModule,
     NgbModule,
     JobsRoutingModule,
     SharedUiComponentsModule,
   ],
   exports: [],
-  providers: [JobsDataService],
+  providers: [JobsDataService, JobsModalService],
 })
 export class JobsModule {}

@@ -1,18 +1,17 @@
 import { Injectable } from "@angular/core";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
+
+import {
+  CreateJobModel,
+  CreateJobModelGenericResponse,
+  JobsServiceProxy,
+} from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs/internal/Observable";
 
 @Injectable()
 export class JobsDataService {
-  constructor(private modalService: NgbModal) {}
+  constructor(private _jobServiceProxy: JobsServiceProxy) {}
 
-  openCreateJobModal(): NgbModalRef {
-    const modalRef = this.modalService.open(AddJobModalComponent, {
-      size: "lg",
-      keyboard: false,
-      backdrop: "static",
-    });
-
-    return modalRef;
+  createJob(model: CreateJobModel): Observable<CreateJobModelGenericResponse> {
+    return this._jobServiceProxy.createJob(model);
   }
 }

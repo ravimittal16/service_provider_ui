@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { JobsDataService } from "../jobs.data.service";
+import { JobsModalService } from "../jobs.modal.service";
 
 @Component({
   selector: "app-jobs-view",
@@ -10,12 +11,12 @@ import { JobsDataService } from "../jobs.data.service";
 })
 export class JobsViewComponent implements OnInit {
   constructor(
-    private jobDataService: JobsDataService,
+    private _jobsModalService: JobsModalService,
     private _customerFacade: CustomersFacade,
     private _productsFacade: ProductsFacade
   ) {}
   createNewJobClicked(): void {
-    const _result = this.jobDataService.openCreateJobModal();
+    const _result = this._jobsModalService.openCreateJobModal();
   }
   ngOnInit(): void {
     this._customerFacade.loadCustomers(1);
