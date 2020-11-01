@@ -828,7 +828,7 @@ export class JobsServiceProxy {
      * @return Success
      */
     createJob(body: CreateJobModel | undefined): Observable<CreateJobModelGenericResponse> {
-        let url_ = this.baseUrl + "/api/jobs/CreateJob";
+        let url_ = this.baseUrl + "/api/Jobs/CreateJob";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -2755,172 +2755,6 @@ export interface IProductDto {
     sku: string | undefined;
 }
 
-export class CreateJobModel implements ICreateJobModel {
-    customer: CustomerDto;
-    jobTitle: string | undefined;
-    serviceType: ProductDto;
-    jobNumber: string | undefined;
-    readonly jobNumberDefined: boolean;
-    jobDescription: string | undefined;
-    internalNotes: string | undefined;
-    assignedTo: string | undefined;
-    startDate: moment.Moment | undefined;
-    startTime: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    endTime: moment.Moment | undefined;
-    scheduleLater: boolean;
-    jobColor: string | undefined;
-
-    constructor(data?: ICreateJobModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
-            this.jobTitle = _data["jobTitle"];
-            this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
-            this.jobNumber = _data["jobNumber"];
-            (<any>this).jobNumberDefined = _data["jobNumberDefined"];
-            this.jobDescription = _data["jobDescription"];
-            this.internalNotes = _data["internalNotes"];
-            this.assignedTo = _data["assignedTo"];
-            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
-            this.startTime = _data["startTime"] ? moment(_data["startTime"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
-            this.endTime = _data["endTime"] ? moment(_data["endTime"].toString()) : <any>undefined;
-            this.scheduleLater = _data["scheduleLater"];
-            this.jobColor = _data["jobColor"];
-        }
-    }
-
-    static fromJS(data: any): CreateJobModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateJobModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        data["jobTitle"] = this.jobTitle;
-        data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
-        data["jobNumber"] = this.jobNumber;
-        data["jobNumberDefined"] = this.jobNumberDefined;
-        data["jobDescription"] = this.jobDescription;
-        data["internalNotes"] = this.internalNotes;
-        data["assignedTo"] = this.assignedTo;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["endTime"] = this.endTime ? this.endTime.toISOString() : <any>undefined;
-        data["scheduleLater"] = this.scheduleLater;
-        data["jobColor"] = this.jobColor;
-        return data; 
-    }
-
-    clone(): CreateJobModel {
-        const json = this.toJSON();
-        let result = new CreateJobModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateJobModel {
-    customer: CustomerDto;
-    jobTitle: string | undefined;
-    serviceType: ProductDto;
-    jobNumber: string | undefined;
-    jobNumberDefined: boolean;
-    jobDescription: string | undefined;
-    internalNotes: string | undefined;
-    assignedTo: string | undefined;
-    startDate: moment.Moment | undefined;
-    startTime: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    endTime: moment.Moment | undefined;
-    scheduleLater: boolean;
-    jobColor: string | undefined;
-}
-
-export class CreateJobModelGenericResponse implements ICreateJobModelGenericResponse {
-    httpStatusCode: number;
-    readonly hasError: boolean;
-    isSuccess: boolean;
-    entity: CreateJobModel;
-    errors: string[] | undefined;
-    errorType: ErrorTypes;
-
-    constructor(data?: ICreateJobModelGenericResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.httpStatusCode = _data["httpStatusCode"];
-            (<any>this).hasError = _data["hasError"];
-            this.isSuccess = _data["isSuccess"];
-            this.entity = _data["entity"] ? CreateJobModel.fromJS(_data["entity"]) : <any>undefined;
-            if (Array.isArray(_data["errors"])) {
-                this.errors = [] as any;
-                for (let item of _data["errors"])
-                    this.errors.push(item);
-            }
-            this.errorType = _data["errorType"];
-        }
-    }
-
-    static fromJS(data: any): CreateJobModelGenericResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateJobModelGenericResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["httpStatusCode"] = this.httpStatusCode;
-        data["hasError"] = this.hasError;
-        data["isSuccess"] = this.isSuccess;
-        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
-        if (Array.isArray(this.errors)) {
-            data["errors"] = [];
-            for (let item of this.errors)
-                data["errors"].push(item);
-        }
-        data["errorType"] = this.errorType;
-        return data; 
-    }
-
-    clone(): CreateJobModelGenericResponse {
-        const json = this.toJSON();
-        let result = new CreateJobModelGenericResponse();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateJobModelGenericResponse {
-    httpStatusCode: number;
-    hasError: boolean;
-    isSuccess: boolean;
-    entity: CreateJobModel;
-    errors: string[] | undefined;
-    errorType: ErrorTypes;
-}
-
 export class UserDto implements IUserDto {
     firstName: string | undefined;
     lastName: string | undefined;
@@ -3010,6 +2844,184 @@ export interface IUserDto {
     roleName: string | undefined;
     billRate: number;
     fullName: string | undefined;
+}
+
+export class CreateJobModel implements ICreateJobModel {
+    customer: CustomerDto;
+    jobTitle: string | undefined;
+    serviceType: ProductDto;
+    jobNumber: string | undefined;
+    readonly jobNumberDefined: boolean;
+    jobDescription: string | undefined;
+    internalNotes: string | undefined;
+    assignedTo: UserDto;
+    startDate: moment.Moment | undefined;
+    startTime: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    endTime: moment.Moment | undefined;
+    scheduleLater: boolean;
+    jobColor: string | undefined;
+    projectId: number;
+    parentJobId: number;
+    jobId: number;
+
+    constructor(data?: ICreateJobModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
+            this.jobTitle = _data["jobTitle"];
+            this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
+            this.jobNumber = _data["jobNumber"];
+            (<any>this).jobNumberDefined = _data["jobNumberDefined"];
+            this.jobDescription = _data["jobDescription"];
+            this.internalNotes = _data["internalNotes"];
+            this.assignedTo = _data["assignedTo"] ? UserDto.fromJS(_data["assignedTo"]) : <any>undefined;
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.startTime = _data["startTime"] ? moment(_data["startTime"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.endTime = _data["endTime"] ? moment(_data["endTime"].toString()) : <any>undefined;
+            this.scheduleLater = _data["scheduleLater"];
+            this.jobColor = _data["jobColor"];
+            this.projectId = _data["projectId"];
+            this.parentJobId = _data["parentJobId"];
+            this.jobId = _data["jobId"];
+        }
+    }
+
+    static fromJS(data: any): CreateJobModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateJobModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["jobTitle"] = this.jobTitle;
+        data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
+        data["jobNumber"] = this.jobNumber;
+        data["jobNumberDefined"] = this.jobNumberDefined;
+        data["jobDescription"] = this.jobDescription;
+        data["internalNotes"] = this.internalNotes;
+        data["assignedTo"] = this.assignedTo ? this.assignedTo.toJSON() : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["endTime"] = this.endTime ? this.endTime.toISOString() : <any>undefined;
+        data["scheduleLater"] = this.scheduleLater;
+        data["jobColor"] = this.jobColor;
+        data["projectId"] = this.projectId;
+        data["parentJobId"] = this.parentJobId;
+        data["jobId"] = this.jobId;
+        return data; 
+    }
+
+    clone(): CreateJobModel {
+        const json = this.toJSON();
+        let result = new CreateJobModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateJobModel {
+    customer: CustomerDto;
+    jobTitle: string | undefined;
+    serviceType: ProductDto;
+    jobNumber: string | undefined;
+    jobNumberDefined: boolean;
+    jobDescription: string | undefined;
+    internalNotes: string | undefined;
+    assignedTo: UserDto;
+    startDate: moment.Moment | undefined;
+    startTime: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    endTime: moment.Moment | undefined;
+    scheduleLater: boolean;
+    jobColor: string | undefined;
+    projectId: number;
+    parentJobId: number;
+    jobId: number;
+}
+
+export class CreateJobModelGenericResponse implements ICreateJobModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: CreateJobModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+
+    constructor(data?: ICreateJobModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? CreateJobModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+        }
+    }
+
+    static fromJS(data: any): CreateJobModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateJobModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        return data; 
+    }
+
+    clone(): CreateJobModelGenericResponse {
+        const json = this.toJSON();
+        let result = new CreateJobModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateJobModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: CreateJobModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
 }
 
 export enum EmployeeTypes {

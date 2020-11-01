@@ -37,7 +37,7 @@ export class TaxSettingsCardComponent implements OnInit {
 
   showInvalidStateMessage() {
     this.isStateValid = false;
-    this.__errorRenderer.addError([
+    this.__errorRenderer.notifyError([
       "Please make sure all tax-rates has been defined.",
     ]);
     this.__expandTaxContainer();

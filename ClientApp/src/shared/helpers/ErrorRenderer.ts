@@ -3,13 +3,16 @@ import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 
 export class ErrorRenderer {
   private errorsSubject = new BehaviorSubject<string[]>([]);
+  genericErrors: {
+    generalError: "Error while executing this operation.";
+  };
   errors$: Observable<string[]>;
 
   constructor() {
     this.errors$ = this.errorsSubject.asObservable();
   }
 
-  addError(error: string | string[]) {
+  notifyError(error: string | string[]) {
     if (typeof error === "string") {
       this.errorsSubject.next([error]);
     } else {
