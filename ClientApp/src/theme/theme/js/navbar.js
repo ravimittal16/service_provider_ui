@@ -126,20 +126,20 @@ window.utils.$document.ready(() => {
     setNavbarWidth();
 
     // Refresh owlCarousel
-    const $owlCarousel = $(Selector.OWL_CAROUSEL);
-    if ($owlCarousel.length) {
-      $owlCarousel.owlCarousel("refresh");
-    }
+    // const $owlCarousel = $(Selector.OWL_CAROUSEL);
+    // if ($owlCarousel.length) {
+    //   $owlCarousel.owlCarousel("refresh");
+    // }
 
     // Refresh Echarts
-    const $echarts = document.querySelectorAll(Selector.ECHART_RESPONSIVE);
-    if (!!$echarts.length) {
-      $.each($echarts, (item, value) => {
-        if (!!$(value).data("echart-responsive")) {
-          window.echarts.init(value).resize();
-        }
-      });
-    }
+    // const $echarts = document.querySelectorAll(Selector.ECHART_RESPONSIVE);
+    // if (!!$echarts.length) {
+    //   $.each($echarts, (item, value) => {
+    //     if (!!$(value).data("echart-responsive")) {
+    //       window.echarts.init(value).resize();
+    //     }
+    //   });
+    // }
   });
 
   // Set navbar top width on window resize

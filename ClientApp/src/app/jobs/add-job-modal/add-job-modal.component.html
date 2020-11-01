@@ -18,6 +18,7 @@
     <div class="form-row">
       <div class="col-8">
         <app-customer-selector-input
+          #customerSelector
           formControlName="customer"
           label="'Select Customer'"
           (onSelectionChanged)="onCustomerSelectionChanged($event)"
@@ -53,7 +54,6 @@
           <label>Job Title*</label>
           <input
             type="text"
-            #titleInput
             formControlName="jobTitle"
             class="form-control form-control-sm"
             [ngClass]="{ 'is-invalid': validationMessages.jobTitle }"
@@ -67,14 +67,20 @@
       <div class="col-3">
         <div class="form-group flex-fill">
           <label>Job #</label>
-          <input
-            type="text"
-            formControlName="jobNumber"
-            class="form-control form-control-sm"
-          />
-          <small class="form-text text-muted">
-            Auto populated if left blank.</small
-          >
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">SPJ</span>
+            </div>
+            <input
+              type="text"
+              formControlName="jobNumber"
+              class="form-control form-control-sm"
+            />
+            <small class="form-text text-muted">
+              <i class="fa fa-info-circle text-info"></i> Auto populated if left
+              blank.</small
+            >
+          </div>
         </div>
       </div>
       <div class="form-group col-1 width-title">
@@ -209,8 +215,8 @@
             class="form-control form-control-sm"
           ></textarea>
           <small class="form-text text-muted">
-            For internal use only. These notes will not included in any email or
-            pdf.</small
+            <i class="fa fa-info-circle text-info"></i> For internal use only.
+            These notes will not included in any email or pdf.</small
           >
         </div>
       </div>

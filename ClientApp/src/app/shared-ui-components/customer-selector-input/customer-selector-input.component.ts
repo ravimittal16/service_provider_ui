@@ -12,6 +12,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
+import { Guid } from "guid-typescript";
 
 import { Observable } from "rxjs";
 import {
@@ -43,6 +44,7 @@ export class CustomerSelectorInputComponent
     CustomerDto
   >();
   public value: CustomerDto;
+  elementId: string;
   isDisabled = false;
   activeCustomers: CustomerDto[];
   private _subs = new SubSink();
@@ -105,11 +107,21 @@ export class CustomerSelectorInputComponent
     }
   }
 
+  setFocus(): void {
+    if (this.elementId) {
+      const __el = document.getElementById(this.elementId);
+      setTimeout(() => {
+        __el.focus();
+      });
+    }
+  }
+
   ngOnDestroy(): void {
     this._subs.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.elementId = Guid.create().toString();
     this._subs.add(
       this._customerFacade.activeCustomers$.subscribe((x) => {
         if (x) {

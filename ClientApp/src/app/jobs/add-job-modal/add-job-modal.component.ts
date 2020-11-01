@@ -2,11 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { CustomerSelectorInputComponent } from "@app/shared-ui-components/customer-selector-input/customer-selector-input.component";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -32,19 +33,20 @@ import { JobsDataService } from "../jobs.data.service";
   styleUrls: ["./add-job-modal.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddJobModalComponent implements OnInit {
+export class AddJobModalComponent implements OnInit, OnDestroy {
+  @ViewChild("customerSelector")
+  customerSelector: CustomerSelectorInputComponent;
   errors$: Observable<string[]>;
-  private __errorHandler = new ErrorRenderer();
-  @ViewChild("titleInput") titleInput: ElementRef;
   jobFormGroup: FormGroup;
   scheduleStart: Date;
   validationMessages: { [key: string]: string } = {};
-  private _subs = new SubSink();
-  private __validator = new GenericValidator();
   servicesOnly$: Observable<ProductDto[]>;
   activeCustomers: CustomerDto[];
   selectedJobColor: string = "#1e62c9";
   isBusy = false;
+  private __errorHandler = new ErrorRenderer();
+  private __subs = new SubSink();
+  private __validator = new GenericValidator();
   constructor(
     public activeModal: NgbActiveModal,
     private _formBuilder: FormBuilder,
@@ -72,10 +74,23 @@ export class AddJobModalComponent implements OnInit {
         .pipe(
           finalize(() => {
             this.isBusy = false;
+            this._cdr.detectChanges();
           })
         )
         .subscribe((response) => {
-          console.log(response);
+          if (response.isSuccess) {
+            if (editAfterSave) {
+              //TODO : Redirect to Edit Job Page
+            }
+          } else {
+            if (response.errors && response.errors.length > 0) {
+              this.__errorHandler.notifyError(response.errors);
+            } else {
+              this.__errorHandler.notifyError(
+                this.__errorHandler.genericErrors.generalError
+              );
+            }
+          }
         });
     }
   }
@@ -111,7 +126,7 @@ export class AddJobModalComponent implements OnInit {
       jobDescription: ["", [Validators.maxLength(1000)]],
       serviceType: [null, [Validators.required]],
       customer: [null, [Validators.required]],
-      assignedTo: [0],
+      assignedTo: [null],
       scheduleLater: [false],
       startDate: [__now],
       startTime: [__now],
@@ -145,19 +160,24 @@ export class AddJobModalComponent implements OnInit {
   onStartDateChanged(newDate: Date) {}
 
   ngAfterViewInit(): void {
-    var _focusElement = this.titleInput;
-    setTimeout(() => {
-      _focusElement.nativeElement.focus();
-    });
+    if (this.customerSelector) {
+      this.customerSelector.setFocus();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.__subs.unsubscribe();
   }
 
   ngOnInit(): void {
     this.__buildForm();
     this.servicesOnly$ = this._productFacade.servicesOnly$;
-    this._customerFacade.activeCustomers$.subscribe((x) => {
-      if (x) {
-        this.activeCustomers = x;
-      }
-    });
+    this.__subs.add(
+      this._customerFacade.activeCustomers$.subscribe((x) => {
+        if (x) {
+          this.activeCustomers = x;
+        }
+      })
+    );
   }
 }
