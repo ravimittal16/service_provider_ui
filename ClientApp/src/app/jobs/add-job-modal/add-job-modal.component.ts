@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AddressCardComponent } from "@app/shared-ui-components/address-card/address-card.component";
 import { CustomerSelectorInputComponent } from "@app/shared-ui-components/customer-selector-input/customer-selector-input.component";
 import { SharedDataService } from "@app/shared-ui-components/shared.data.service";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
@@ -40,6 +41,7 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
   @ViewChild("customerSelector")
   customerSelector: CustomerSelectorInputComponent;
   @ViewChild("jobTitle") jobTitle: ElementRef;
+  @ViewChild("addressCard") addressCard: AddressCardComponent;
   errors$: Observable<string[]>;
   jobFormGroup: FormGroup;
   scheduleStart: Date;
@@ -67,6 +69,9 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
   onFormSubmitted(editAfterSave: boolean): void {
     const __model = this.jobFormGroup.getRawValue() as CreateJobModel;
     __model.jobColor = this.selectedJobColor;
+    if (this.selectedAddress) {
+      __model.jobAddress = this.selectedAddress;
+    }
     this.validationMessages = {};
     if (this.jobFormGroup.invalid) {
       this.validationMessages = this.__validator.processMessages(
@@ -106,9 +111,11 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
       .showCustomerAddressModal(customer)
       .then((selectedAddress: AddressDto) => {
         this.selectedAddress = selectedAddress;
+        this.selectedAddress.propertyType = 0;
         this._cdr.detectChanges();
         setTimeout(() => {
           if (this.jobTitle) {
+            this.addressCard.updatePropertyName("Service Address");
             this.jobTitle.nativeElement.focus();
           }
         }, 100);

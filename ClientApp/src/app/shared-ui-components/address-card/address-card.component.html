@@ -7,7 +7,9 @@
     >
       <span>
         <h6>
-          <span class="text-500"> {{ address.propertyName }}</span>
+          <span class="text-500" #propertyName>
+            {{ address.propertyName }}</span
+          >
           &nbsp;<span
             *ngIf="address.propertyType === 1"
             class="badge badge-pill badge-soft-primary"

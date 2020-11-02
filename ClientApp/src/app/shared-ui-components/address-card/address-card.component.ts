@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { AddressDto } from "@shared/service-proxies/service-proxies";
 
 @Component({
@@ -10,6 +18,7 @@ export class AddressCardComponent implements OnInit {
   @Input() allowEdit: boolean = false;
   @Input() allowUseThisAddress: boolean = false;
   @Input() isLastAddress: boolean = false;
+  @ViewChild("propertyName") propertyName: ElementRef;
   @Output() onAddressSelected: EventEmitter<AddressDto> = new EventEmitter<
     AddressDto
   >();
@@ -20,6 +29,12 @@ export class AddressCardComponent implements OnInit {
       this.onAddressSelected.emit(this.address);
     }
   }
+
+  updatePropertyName(propertyName: string): void {
+    (this.propertyName
+      .nativeElement as HTMLSpanElement).innerText = propertyName;
+  }
+
   onEditButtonClicked(): void {}
   onMapMarkerClicked(): void {}
 
