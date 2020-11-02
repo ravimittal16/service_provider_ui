@@ -45,6 +45,17 @@
         </div>
       </div>
     </div>
+    <div class="row mt-1" *ngIf="this.selectedAddress">
+      <div class="col">
+        <div class="card">
+          <app-address-card
+            [address]="this.selectedAddress"
+            [allowEdit]="false"
+            [allowUseThisAddress]="false"
+          ></app-address-card>
+        </div>
+      </div>
+    </div>
     <div class="mt-2">
       <h5 class="modal-title text-400 fs-0">Job Information</h5>
     </div>
@@ -54,6 +65,7 @@
           <label>Job Title*</label>
           <input
             type="text"
+            #jobTitle
             formControlName="jobTitle"
             class="form-control form-control-sm"
             [ngClass]="{ 'is-invalid': validationMessages.jobTitle }"

@@ -1,9 +1,21 @@
 <div class="modal-header">{{ modalHeader }}</div>
 <div class="modal-body">
   <div>
-    <div class="card mt-2" *ngFor="let add of customerAddresses; let i = index">
-      <app-address-card [address]="add" [allowEdit]="false"></app-address-card>
+    <div
+      class="card mt-2"
+      *ngFor="let add of customerAddresses; let i = index; let last = last"
+    >
+      <app-address-card
+        [isLastAddress]="last"
+        [address]="add"
+        [allowEdit]="false"
+        [allowUseThisAddress]="true"
+        (onAddressSelected)="onAddressSelected($event)"
+      ></app-address-card>
     </div>
+    <small class="text-500">
+      <i>click to select</i>
+    </small>
   </div>
 </div>
 <div class="modal-footer">
