@@ -97,7 +97,11 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
 
   onCustomerSelectionChanged(customer: CustomerDto): void {
     console.log(customer);
-    //TODO: Show Address Selection Modal
+    this._jobsDataService
+      .getCustomerAddresses(customer.id)
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
 
   onServiceTypeChanged(product: ProductDto): void {}
