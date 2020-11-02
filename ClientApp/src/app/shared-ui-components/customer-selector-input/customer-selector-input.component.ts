@@ -64,7 +64,13 @@ export class CustomerSelectorInputComponent
       if (this.onSelectionChanged) {
         this.onSelectionChanged.emit(this.value);
       }
-    });
+    }, 100);
+  }
+
+  openSelectAddressClicked(): void {
+    if (this.value) {
+      this.onSelectionChanged.emit(this.value);
+    }
   }
 
   customerSearchFormatter = (state: CustomerDto) =>

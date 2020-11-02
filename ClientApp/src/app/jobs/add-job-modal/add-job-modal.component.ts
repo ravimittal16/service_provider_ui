@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CustomerSelectorInputComponent } from "@app/shared-ui-components/customer-selector-input/customer-selector-input.component";
+import { SharedDataService } from "@app/shared-ui-components/shared.data.service";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -17,6 +18,7 @@ import {
   ValidationTypes,
 } from "@shared/helpers/GenericValidator";
 import {
+  AddressDto,
   CreateJobModel,
   CustomerDto,
   ProductDto,
@@ -49,6 +51,7 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
   private __validator = new GenericValidator();
   constructor(
     public activeModal: NgbActiveModal,
+    private _sharedDataService: SharedDataService,
     private _formBuilder: FormBuilder,
     private _cdr: ChangeDetectorRef,
     private _jobsDataService: JobsDataService,
@@ -96,11 +99,10 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
   }
 
   onCustomerSelectionChanged(customer: CustomerDto): void {
-    console.log(customer);
-    this._jobsDataService
-      .getCustomerAddresses(customer.id)
-      .subscribe((response) => {
-        console.log(response);
+    this._sharedDataService
+      .showCustomerAddressModal(customer)
+      .then((selectedAddress: AddressDto) => {
+        console.log(selectedAddress);
       });
   }
 

@@ -1,9 +1,15 @@
-<div class="modal-header">Address</div>
-<div class="modal-body"></div>
+<div class="modal-header">{{ modalHeader }}</div>
+<div class="modal-body">
+  <div>
+    <div class="card mt-2" *ngFor="let add of customerAddresses; let i = index">
+      <app-address-card [address]="add" [allowEdit]="false"></app-address-card>
+    </div>
+  </div>
+</div>
 <div class="modal-footer">
   <button
     type="button"
-    class="btn btn-danger"
+    class="btn btn-danger btn-sm"
     (click)="activeModal.close(true)"
   >
     Close

@@ -1,9 +1,13 @@
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { AppConfirmationModalComponent } from "@app/shared-ui-components/confirmation-modal/confirmation.modal.component";
-import { Injectable } from "@angular/core";
-
+import { Injectable, TemplateRef } from "@angular/core";
+export enum AlertType {
+  Alert = 1,
+  Toast = 2,
+}
 @Injectable()
 export class UiAlertsService {
+  toasts: any[] = [];
   constructor(private modalService: NgbModal) {}
 
   confirm(
@@ -29,10 +33,22 @@ export class UiAlertsService {
     return <Promise<boolean>>modalRef.result;
   }
 
+  private show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ textOrTpl, ...options });
+  }
+
+  private remove(toast) {
+    this.toasts = this.toasts.filter((t) => t !== toast);
+  }
+
   alert(): any {}
   warning(): any {}
   showError(): any {}
-  showSuccess(): any {}
+  showSuccess(
+    heading: string,
+    title: string,
+    alertType: AlertType = AlertType.Alert
+  ): any {}
 }
 export interface IConfirmationDialogConfig {
   title: string;
