@@ -30,6 +30,10 @@ export class CustomerAddressSelectorModalComponent
     private __customerServiceProxy: CustomersServiceProxy
   ) {}
 
+  onAddressSelected(address: AddressDto): void {
+    this.activeModal.close(address);
+  }
+
   ngOnInit(): void {
     let __customerId = 0;
     if (typeof this.customerId === "number") {
