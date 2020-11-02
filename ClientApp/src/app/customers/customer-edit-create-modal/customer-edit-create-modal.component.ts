@@ -18,7 +18,7 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
 
-import { UiComponentsServiceService } from "@app/shared-ui-components/ui-components-service.service";
+import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
 import { EntityTypes, AddressTypes } from "@shared/AppConsts";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
@@ -46,7 +46,7 @@ export class CustomerEditCreateModalComponent
     public activeModal: NgbActiveModal,
     private _formBuilder: FormBuilder,
     private customerFacade: CustomersFacade,
-    private componentsService: UiComponentsServiceService,
+    private componentsService: UiComponentsService,
     private _cdr: ChangeDetectorRef
   ) {
     this.editedCustomerDetails$ = customerFacade.editedCustomerDetails$;

@@ -7,7 +7,7 @@ import { EntityTypes, AddressTypes } from "@shared/AppConsts";
 @Injectable({
   providedIn: "root",
 })
-export class UiComponentsServiceService {
+export class UiComponentsService {
   constructor(private modalService: NgbModal) {}
   openAddressModal(
     addressDto?: AddressDto,

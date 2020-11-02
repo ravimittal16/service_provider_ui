@@ -2908,6 +2908,7 @@ export interface IUserDto {
 
 export class CreateJobModel implements ICreateJobModel {
     customer: CustomerDto;
+    jobAddress: AddressDto;
     jobTitle: string | undefined;
     serviceType: ProductDto;
     jobNumber: string | undefined;
@@ -2937,6 +2938,7 @@ export class CreateJobModel implements ICreateJobModel {
     init(_data?: any) {
         if (_data) {
             this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
+            this.jobAddress = _data["jobAddress"] ? AddressDto.fromJS(_data["jobAddress"]) : <any>undefined;
             this.jobTitle = _data["jobTitle"];
             this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
             this.jobNumber = _data["jobNumber"];
@@ -2966,6 +2968,7 @@ export class CreateJobModel implements ICreateJobModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["jobAddress"] = this.jobAddress ? this.jobAddress.toJSON() : <any>undefined;
         data["jobTitle"] = this.jobTitle;
         data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
         data["jobNumber"] = this.jobNumber;
@@ -2995,6 +2998,7 @@ export class CreateJobModel implements ICreateJobModel {
 
 export interface ICreateJobModel {
     customer: CustomerDto;
+    jobAddress: AddressDto;
     jobTitle: string | undefined;
     serviceType: ProductDto;
     jobNumber: string | undefined;

@@ -1,17 +1,38 @@
 <div class="form-group flex-fill">
   <label>Customer*</label>
-  <input
-    [id]="elementId"
-    type="text"
-    class="form-control form-control-sm"
-    [(ngModel)]="value"
-    [ngClass]="{ 'is-invalid': validationMessages[validationMessagesKey] }"
-    [ngbTypeahead]="searchCustomer"
-    [inputFormatter]="customerSearchFormatter"
-    [resultFormatter]="customerSearchFormatter"
-    [editable]="false"
-    (selectItem)="onCustomerSelectionChanged()"
-  />
+  <div class="input-group input-group-sm">
+    <input
+      [id]="elementId"
+      type="text"
+      class="form-control form-control-sm"
+      [(ngModel)]="value"
+      [ngClass]="{ 'is-invalid': validationMessages[validationMessagesKey] }"
+      [ngbTypeahead]="searchCustomer"
+      [inputFormatter]="customerSearchFormatter"
+      [resultFormatter]="customerSearchFormatter"
+      [editable]="false"
+      (selectItem)="onCustomerSelectionChanged()"
+    />
+    <div class="input-group-append" id="button-addon4">
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        type="button"
+        placement="top"
+        ngbTooltip="select from list"
+      >
+        <i class="fa fa-list"></i>
+      </button>
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        type="button"
+        placement="top"
+        ngbTooltip="select service address"
+        (click)="openSelectAddressClicked()"
+      >
+        <i class="fa fa-map-marker"></i>
+      </button>
+    </div>
+  </div>
   <div
     class="invalid-feedback"
     *ngIf="validationMessages[validationMessagesKey]"
