@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -38,6 +39,7 @@ import { JobsDataService } from "../jobs.data.service";
 export class AddJobModalComponent implements OnInit, OnDestroy {
   @ViewChild("customerSelector")
   customerSelector: CustomerSelectorInputComponent;
+  @ViewChild("jobTitle") jobTitle: ElementRef;
   errors$: Observable<string[]>;
   jobFormGroup: FormGroup;
   scheduleStart: Date;
@@ -45,6 +47,7 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
   servicesOnly$: Observable<ProductDto[]>;
   activeCustomers: CustomerDto[];
   selectedJobColor: string = "#1e62c9";
+  selectedAddress: AddressDto;
   isBusy = false;
   private __errorHandler = new ErrorRenderer();
   private __subs = new SubSink();
@@ -102,7 +105,13 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
     this._sharedDataService
       .showCustomerAddressModal(customer)
       .then((selectedAddress: AddressDto) => {
-        console.log(selectedAddress);
+        this.selectedAddress = selectedAddress;
+        this._cdr.detectChanges();
+        setTimeout(() => {
+          if (this.jobTitle) {
+            this.jobTitle.nativeElement.focus();
+          }
+        }, 100);
       });
   }
 
