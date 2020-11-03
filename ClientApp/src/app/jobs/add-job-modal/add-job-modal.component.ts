@@ -25,6 +25,7 @@ import {
   CustomerDto,
   ProductDto,
 } from "@shared/service-proxies/service-proxies";
+import { ToastService } from "@shared/services/toast.service";
 
 import { Observable } from "rxjs";
 import { finalize } from "rxjs/operators";
@@ -61,7 +62,8 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
     private _cdr: ChangeDetectorRef,
     private _jobsDataService: JobsDataService,
     private _productFacade: ProductsFacade,
-    private _customerFacade: CustomersFacade
+    private _customerFacade: CustomersFacade,
+    private _toastService: ToastService
   ) {
     this.errors$ = this.__errorHandler.errors$;
   }
@@ -90,6 +92,11 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
         )
         .subscribe((response) => {
           if (response.isSuccess) {
+            this._toastService.showSuccess(
+              "Job created",
+              "Job has been created successfully"
+            );
+            this.activeModal.close(response);
             if (editAfterSave) {
               //TODO : Redirect to Edit Job Page
             }
@@ -122,7 +129,11 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  onServiceTypeChanged(product: ProductDto): void {}
+  onServiceTypeChanged(product: ProductDto): void {
+    if (product) {
+      this.jobFormGroup.get("jobDescription").patchValue(product.description);
+    }
+  }
 
   onScheduleLaterCheckChange(): void {
     const __scheduleLater = this.jobFormGroup.get("scheduleLater")
