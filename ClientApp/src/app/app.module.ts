@@ -11,6 +11,7 @@ import { CommonModule } from "@angular/common";
 import { SharedModule } from "@shared/shared.module";
 import { TopNavMenuComponent } from "./top-nav-menu/top-nav-menu.component";
 import { CoreDataModule } from "@core-data/core.data.module";
+import { ToastService } from "@shared/services/toast.service";
 
 const _components = [
   NavMenuComponent,
@@ -28,6 +29,6 @@ const _components = [
     CoreDataModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [ToastService],
 })
 export class AppModule {}

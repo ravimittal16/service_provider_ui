@@ -17,9 +17,15 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CurrencySymbolPipe } from "./pipes/currency.symbol.pipe";
 import { EmailAddressLinkCellRenderer } from "./grid-cell-renderers/email.address.cell.renderer";
 import { CurrencyValueCellRenderer } from "./grid-cell-renderers/currency.value.cell.renderer";
+import { ToastsGlobalComponent } from "./components/toasts-global/toasts-global.component";
+import { ToastService } from "./services/toast.service";
 
 const sharedDirectives = [BlockDirective, BusyDirective];
-const sharedComponents = [AppLogoComponent, AppErrorViewComponent];
+const sharedComponents = [
+  AppLogoComponent,
+  AppErrorViewComponent,
+  ToastsGlobalComponent,
+];
 const sharedPipes = [LocalizePipe, CurrencySymbolPipe];
 const sharedRenderers = [
   EmailAddressLinkCellRenderer,
@@ -52,6 +58,7 @@ export class SharedModule {
         { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
         NWTokenService,
         LoginService,
+        ToastService,
       ],
     };
   }

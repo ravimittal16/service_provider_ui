@@ -7,7 +7,6 @@ export enum AlertType {
 }
 @Injectable()
 export class UiAlertsService {
-  toasts: any[] = [];
   constructor(private modalService: NgbModal) {}
 
   confirm(
@@ -31,14 +30,6 @@ export class UiAlertsService {
     });
     modalRef.componentInstance.confirmationConfig = _confirmation;
     return <Promise<boolean>>modalRef.result;
-  }
-
-  private show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
-    this.toasts.push({ textOrTpl, ...options });
-  }
-
-  private remove(toast) {
-    this.toasts = this.toasts.filter((t) => t !== toast);
   }
 
   alert(): any {}
