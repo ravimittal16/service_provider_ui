@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { CustomersFacade } from "@core-data/customers/customers.facade";
+import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
+import { JobDto } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
 import { JobsDataService } from "../jobs.data.service";
 import { JobsModalService } from "../jobs.modal.service";
 
@@ -10,16 +13,27 @@ import { JobsModalService } from "../jobs.modal.service";
   styleUrls: ["./jobs-view.component.scss"],
 })
 export class JobsViewComponent implements OnInit {
+  hasFiltersApplied = true;
+  jobs$: Observable<JobDto[]>;
   constructor(
     private _jobsModalService: JobsModalService,
     private _customerFacade: CustomersFacade,
-    private _productsFacade: ProductsFacade
-  ) {}
+    private _productsFacade: ProductsFacade,
+    private _jobsFacade: JobsFacade
+  ) {
+    this.jobs$ = _jobsFacade.jobs$;
+  }
+
+  clearFilters(): void {
+    this.hasFiltersApplied = false;
+  }
+
   createNewJobClicked(): void {
     const _result = this._jobsModalService.openCreateJobModal();
   }
   ngOnInit(): void {
     this._customerFacade.loadCustomers(1);
     this._productsFacade.loadProducts();
+    this._jobsFacade.loadJobs();
   }
 }

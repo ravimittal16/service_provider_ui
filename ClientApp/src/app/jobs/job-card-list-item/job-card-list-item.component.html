@@ -1,0 +1,33 @@
+<div class="card" [ngClass]="{ 'mt-1': !isFirstItem }">
+  <div class="card-body">
+    <h6 class="mb-0 pb-0">
+      <a>#{{ job.heading }}</a>
+    </h6>
+    <div class="text-500 description">
+      <small>
+        {{ job.description }}
+      </small>
+    </div>
+    <div>
+      <small class="mr-2">
+        <strong class="mr-1">Customer: </strong>
+        <a>
+          <span>{{ job.customer?.displayName }}</span>
+        </a>
+        <span class="ml-2 fs-0" [ngbTooltip]="job.jobAddress?.formattedAddress">
+          <i class="fa fa-map-marker"></i>
+        </span>
+      </small>
+      <small class="mr-2">
+        <strong class="mr-1">Assigned To: </strong>
+        <span>Ravi Mittal</span>
+      </small>
+      <span class="mr-2">
+        <small class="mr-1"> <strong> Status: </strong> </small>
+        <div class="badge badge-pill badge-soft-success">
+          <small>Completed</small>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>

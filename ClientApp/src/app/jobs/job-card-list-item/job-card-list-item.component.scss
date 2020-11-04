@@ -1,0 +1,15 @@
+.card{
+    cursor: pointer;
+}
+.description{
+    line-height: 1;
+}
+.card:hover{
+    background-color: rgba(255, 254, 220, 0.5);
+}
+.card-body {
+    padding: 1rem;
+    a {
+        color:#2c7be5;
+    }
+}

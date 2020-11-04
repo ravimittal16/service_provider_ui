@@ -1,19 +1,24 @@
-<!-- <div class="card">
-  <div class="card-body">
-    <div class="justify-content-between align-items-center row">
-      <div class="col-md">HELLO</div>
-      <div class="col-auto">
-        <button class="mr-2 btn btn-falcon-default btn-sm">Save</button>
-        <button class="btn btn-falcon-primary btn-sm">Make your event live</button>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div class="bg-100 rounded-soft px-card py-2 mt-2 mb-3 no-gutters row">
   <div class="d-flex align-items-center col">
     <h5 class="mb-0">Jobs</h5>
   </div>
   <div class="col-auto">
+    <button
+      *ngIf="hasFiltersApplied"
+      (click)="clearFilters()"
+      class="mr-2 btn btn-falcon-default btn-sm"
+    >
+      <span class="fa fa-trash"></span>
+    </button>
+    <button
+      class="mr-2 btn btn-sm"
+      [ngClass]="{
+        'btn-info': hasFiltersApplied,
+        'btn-falcon-default': !hasFiltersApplied
+      }"
+    >
+      <span class="fa fa-filter"></span>
+    </button>
     <button class="mr-2 btn btn-falcon-default btn-sm">
       <span class="fa fa-refresh"></span>
     </button>
@@ -23,5 +28,15 @@
     >
       <span class="fa fa-plus"></span> Create New Job
     </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div *ngFor="let job of this.jobs$ | async; let first = first">
+      <app-job-card-list-item
+        [job]="job"
+        [isFirstItem]="first"
+      ></app-job-card-list-item>
+    </div>
   </div>
 </div>

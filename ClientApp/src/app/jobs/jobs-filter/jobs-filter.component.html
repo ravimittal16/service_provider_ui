@@ -1,0 +1,29 @@
+<div class="bg-300 rounded-soft px-card py-2 mt-1 no-gutters row">
+  <form class="form-inline">
+    <div class="form-group form-group-sm mx-sm-3">
+      <label for="inputPassword2" class="sr-only">Customer</label>
+      <select id="inputPassword2" class="form-control form-control-sm">
+        <option>Small select</option>
+      </select>
+    </div>
+    <div class="form-group form-group-sm mx-sm-3">
+      <label for="inputPassword2" class="mr-1">Job Status</label>
+      <select id="inputPassword2" class="form-control form-control-sm">
+        <option>Small select</option>
+      </select>
+    </div>
+    <div class="form-group form-group-sm mx-sm-3">
+      <label for="inputPassword2" class="mr-1">Service Type</label>
+      <select id="inputPassword2" class="form-control form-control-sm">
+        <option>Small select</option>
+      </select>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-secondary btn-sm"
+      (click)="applyFilters()"
+    >
+      Apply Filters
+    </button>
+  </form>
+</div>

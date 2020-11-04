@@ -938,6 +938,66 @@ export class JobsServiceProxy {
         }
         return _observableOf<CreateJobModelGenericResponse>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getJobs(body: JobFilterModel | undefined): Observable<JobDto[]> {
+        let url_ = this.baseUrl + "/api/Jobs/GetJobs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetJobs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetJobs(<any>response_);
+                } catch (e) {
+                    return <Observable<JobDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetJobs(response: HttpResponseBase): Observable<JobDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(JobDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2470,6 +2530,7 @@ export enum EntityTypes {
     _11 = 11,
     _12 = 12,
     _13 = 13,
+    _14 = 14,
     __1 = -1,
 }
 
@@ -3086,6 +3147,173 @@ export interface ICreateJobModelGenericResponse {
     entity: CreateJobModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+}
+
+export enum JobStatuses {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+    _8 = 8,
+    _9 = 9,
+}
+
+export class JobFilterModel implements IJobFilterModel {
+    status: JobStatuses;
+
+    constructor(data?: IJobFilterModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): JobFilterModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFilterModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        return data; 
+    }
+
+    clone(): JobFilterModel {
+        const json = this.toJSON();
+        let result = new JobFilterModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFilterModel {
+    status: JobStatuses;
+}
+
+export class JobDto implements IJobDto {
+    customer: CustomerDto;
+    jobAddress: AddressDto;
+    title: string | undefined;
+    serviceType: ProductDto;
+    prefix: string | undefined;
+    jobNumber: string | undefined;
+    sequence: number;
+    readonly fullJobNumber: string | undefined;
+    readonly heading: string | undefined;
+    readonly jobNumberDefined: boolean;
+    description: string | undefined;
+    internalNotes: string | undefined;
+    assignedTo: UserDto;
+    scheduleLater: boolean;
+    jobColor: string | undefined;
+    projectId: number | undefined;
+    parentJobId: number | undefined;
+    jobId: number;
+
+    constructor(data?: IJobDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
+            this.jobAddress = _data["jobAddress"] ? AddressDto.fromJS(_data["jobAddress"]) : <any>undefined;
+            this.title = _data["title"];
+            this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
+            this.prefix = _data["prefix"];
+            this.jobNumber = _data["jobNumber"];
+            this.sequence = _data["sequence"];
+            (<any>this).fullJobNumber = _data["fullJobNumber"];
+            (<any>this).heading = _data["heading"];
+            (<any>this).jobNumberDefined = _data["jobNumberDefined"];
+            this.description = _data["description"];
+            this.internalNotes = _data["internalNotes"];
+            this.assignedTo = _data["assignedTo"] ? UserDto.fromJS(_data["assignedTo"]) : <any>undefined;
+            this.scheduleLater = _data["scheduleLater"];
+            this.jobColor = _data["jobColor"];
+            this.projectId = _data["projectId"];
+            this.parentJobId = _data["parentJobId"];
+            this.jobId = _data["jobId"];
+        }
+    }
+
+    static fromJS(data: any): JobDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["jobAddress"] = this.jobAddress ? this.jobAddress.toJSON() : <any>undefined;
+        data["title"] = this.title;
+        data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
+        data["prefix"] = this.prefix;
+        data["jobNumber"] = this.jobNumber;
+        data["sequence"] = this.sequence;
+        data["fullJobNumber"] = this.fullJobNumber;
+        data["heading"] = this.heading;
+        data["jobNumberDefined"] = this.jobNumberDefined;
+        data["description"] = this.description;
+        data["internalNotes"] = this.internalNotes;
+        data["assignedTo"] = this.assignedTo ? this.assignedTo.toJSON() : <any>undefined;
+        data["scheduleLater"] = this.scheduleLater;
+        data["jobColor"] = this.jobColor;
+        data["projectId"] = this.projectId;
+        data["parentJobId"] = this.parentJobId;
+        data["jobId"] = this.jobId;
+        return data; 
+    }
+
+    clone(): JobDto {
+        const json = this.toJSON();
+        let result = new JobDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobDto {
+    customer: CustomerDto;
+    jobAddress: AddressDto;
+    title: string | undefined;
+    serviceType: ProductDto;
+    prefix: string | undefined;
+    jobNumber: string | undefined;
+    sequence: number;
+    fullJobNumber: string | undefined;
+    heading: string | undefined;
+    jobNumberDefined: boolean;
+    description: string | undefined;
+    internalNotes: string | undefined;
+    assignedTo: UserDto;
+    scheduleLater: boolean;
+    jobColor: string | undefined;
+    projectId: number | undefined;
+    parentJobId: number | undefined;
+    jobId: number;
 }
 
 export enum EmployeeTypes {

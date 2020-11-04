@@ -1,8 +1,10 @@
 import { BaseState } from "@core-data/base.state";
 import { Dictionary } from "@ngrx/entity";
+import {
+  JobDto,
+  JobFilterModel,
+} from "@shared/service-proxies/service-proxies";
 
-export class JobsDto {
-  jobId: number;
+export class JobsState extends BaseState<JobDto> {
+  filtersModel: JobFilterModel;
 }
-
-export class JobsState extends BaseState<JobsDto> {}

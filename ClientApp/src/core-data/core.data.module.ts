@@ -15,6 +15,7 @@ import { RegisterStoreModule } from "./register/register.store.module";
 import { ProductsStoreModule } from "./products-store/products.store.module";
 import { UsersStoreModule } from "./users-store/users.store.module";
 import { CompanyStoreModule } from "./company-store/company.store.module";
+import { JobsStoreModule } from "./jobs-store/jobs.store.module";
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { CompanyStoreModule } from "./company-store/company.store.module";
     ProductsStoreModule,
     UsersStoreModule,
     CompanyStoreModule,
+    JobsStoreModule,
     HttpClientModule,
     StoreModule.forRoot([]),
     EffectsModule.forRoot([]),
