@@ -27,6 +27,12 @@ import * as fromUsersStateSelectors from "./users-store/users.selectors";
 import * as fromCompanyState from "./company-store/company.state";
 import * as fromCompanyReducers from "./company-store/company.reducers";
 import * as fromCompanyStateSelectors from "./company-store/company.selectors";
+// ==========================================================
+// JOBS STORE IMPORTS
+// ==========================================================
+import * as fromJobsState from "./jobs-store/jobs.state";
+import * as fromJobsReducers from "./jobs-store/jobs.reducers";
+import * as fromJobsSelectors from "./jobs-store/jobs.selectors";
 
 export interface AppState {
   accountRegister: fromAccountRegister.AccountRegisterState;
@@ -35,6 +41,7 @@ export interface AppState {
   products: fromProductState.ProductsState;
   users: fromUsersState.UsersState;
   company: fromCompanyState.CompanyState;
+  jobs: fromJobsState.JobsState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -44,7 +51,14 @@ export const reducers: ActionReducerMap<AppState> = {
   products: fromProductReducers.reducer,
   users: fromUsersReducers.reducer,
   company: fromCompanyReducers.reducer,
+  jobs: fromJobsReducers.reducer,
 };
+// ==========================================================
+// JOBS SELECTORS
+// ==========================================================
+
+export const selectAllJobs = fromJobsSelectors.selectAllJobs;
+export const selectJobsFilter = fromJobsSelectors.selectJobsFilter;
 
 // ==========================================================
 // REGISTRATION

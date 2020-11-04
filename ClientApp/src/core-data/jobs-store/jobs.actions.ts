@@ -1,10 +1,19 @@
 import { createAction, props } from "@ngrx/store";
-import { JobsDto } from "./jobs.state";
+import {
+  JobDto,
+  JobFilterModel,
+} from "@shared/service-proxies/service-proxies";
+
 export const loadJobsAction = createAction(
   "[Jobs] Load Jobs action",
-  props<{}>()
+  props<{ filters: JobFilterModel }>()
 );
 export const jobsLoadedAction = createAction(
   "[Jobs] Loaded action",
-  props<{ items: JobsDto[] }>()
+  props<{ items: JobDto[] }>()
+);
+export const jobsUpdateFiltersAction = createAction("[Jobs] Filter updated");
+export const jobsLoadedErrorAction = createAction(
+  "[Jobs] loaded completed success.",
+  props<{ errors: string[] }>()
 );
