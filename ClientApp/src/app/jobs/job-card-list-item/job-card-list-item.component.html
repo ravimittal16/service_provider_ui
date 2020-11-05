@@ -1,8 +1,17 @@
-<div class="card" [ngClass]="{ 'mt-1': !isFirstItem }">
+<div
+  class="card"
+  [ngClass]="{ 'mt-1': !isFirstItem }"
+  [ngStyle]="{ 'border-left-color': job?.jobColor }"
+>
   <div class="card-body">
-    <h6 class="mb-0 pb-0">
-      <a>#{{ job.heading }}</a>
-    </h6>
+    <span>
+      <h6 class="mb-0 pb-0">
+        <a data-toggle="modal" data-target="#exampleModalRight"
+          >#{{ job.fullJobNumber }}</a
+        >
+        <span class="ml-1">{{ job.title }}</span>
+      </h6>
+    </span>
     <div class="text-500 description">
       <small>
         {{ job.description }}
@@ -11,7 +20,7 @@
     <div>
       <small class="mr-2">
         <strong class="mr-1">Customer: </strong>
-        <a>
+        <a ngbTooltip="Get more details for {{ job.customer?.displayName }}">
           <span>{{ job.customer?.displayName }}</span>
         </a>
         <span class="ml-2 fs-0" [ngbTooltip]="job.jobAddress?.formattedAddress">
@@ -28,6 +37,43 @@
           <small>Completed</small>
         </div>
       </span>
+    </div>
+  </div>
+</div>
+<div
+  class="modal modal-fixed-right fade"
+  id="exampleModalRight"
+  tabindex="-1"
+  aria-labelledby="exampleModalRightLabel"
+  style="display: none"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-vertical" role="document">
+    <div class="modal-content border-0 min-vh-100">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalRightLabel">
+          #{{ job.fullJobNumber }}
+        </h5>
+        <button
+          class="close"
+          type="button"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span class="font-weight-light" aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body py-5 text-center">
+        <img
+          class="img-fluid"
+          src="../assets/img/illustrations/modal-right.png"
+          alt=""
+        />
+        <p class="mt-4">
+          Place your list, image, form and other content into the modal right.
+        </p>
+        <button class="btn btn-primary">Get Started</button>
+      </div>
     </div>
   </div>
 </div>
