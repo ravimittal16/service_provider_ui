@@ -1,3 +1,33 @@
 <div class="content">
   <router-outlet></router-outlet>
 </div>
+<div
+  class="modal modal-fixed-right fade"
+  id="exampleModalRight"
+  tabindex="-1"
+  aria-labelledby="exampleModalRightLabel"
+  style="display: none"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-vertical"
+    role="document"
+    *ngIf="selectedJob"
+  >
+    <div class="modal-content border-0 min-vh-100">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalRightLabel">
+          #{{ selectedJob?.fullJobNumber }}
+        </h5>
+        <button class="close" type="button" (click)="hideModal()">
+          <span class="font-weight-light" aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span>
+          {{ selectedJob?.title }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
