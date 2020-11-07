@@ -40,8 +40,12 @@ export class JobsMainComponent implements OnInit, OnDestroy {
     this._renderer.addClass(this._backdropEl, "modal-backdrop");
     this._renderer.addClass(this._backdropEl, "fade");
     this._renderer.addClass(this._backdropEl, "show");
+
     this._renderer.appendChild(document.body, this._backdropEl);
     setTimeout(() => {
+      this._renderer.listen(_modelEl, "click", (event) => {
+        this.hideModal();
+      });
       this._renderer.removeAttribute(_modelEl, "aria-hidden");
       this._renderer.setStyle(_modelEl, "display", "block");
       this._renderer.setStyle(_modelEl, "padding-right", "17px");

@@ -1,45 +1,71 @@
 <div>
-  <nav class="navbar navbar-vertical navbar-expand-xl navbar-light navbar-card" style="top:58px;">
-    <div class="collapse navbar-collapse perfect-scrollbar scrollbar bg-soft-secondary"
-      style="height: calc(100vh - 4.2rem);">
+  <nav
+    class="navbar navbar-vertical navbar-expand-xl navbar-light navbar-card"
+    style="top: 58px"
+  >
+    <div
+      class="collapse navbar-collapse perfect-scrollbar scrollbar bg-soft-secondary"
+      style="height: calc(100vh - 4.2rem)"
+    >
       <ul class="navbar-nav flex-column">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['company']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-home"></span></span><span class="nav-link-text"> Company Settings</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fa fa-home"></span></span
+              ><span class="nav-link-text"> Company Settings</span>
             </div>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['branding']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-film"></span></span><span class="nav-link-text"> Branding</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fa fa-film"></span></span
+              ><span class="nav-link-text"> Branding</span>
             </div>
           </a>
         </li>
-        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#productsLinks" data-toggle="collapse"
-            role="button" aria-expanded="false" aria-controls="email">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-list"></span></span><span class="nav-link-text">Products & Services</span><span
-                class="badge badge-pill ml-2 badge-soft-success"></span>
+        <li class="nav-item">
+          <a
+            class="nav-link dropdown-indicator"
+            href="#productsLinks"
+            data-toggle="collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="email"
+          >
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fa fa-list"></span></span
+              ><span class="nav-link-text">Products & Services</span
+              ><span class="badge badge-pill ml-2 badge-soft-success"></span>
             </div>
           </a>
-          <ul class="nav collapse" id="productsLinks" data-parent="#navbarVerticalCollapse">
-            <li class="nav-item"><a class="nav-link" [routerLink]="['products/list']">List</a>
+          <ul
+            class="nav collapse"
+            id="productsLinks"
+            data-parent="#navbarVerticalCollapse"
+          >
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['products/list']">List</a>
             </li>
-            <li class="nav-item"><a class="nav-link" [routerLink]="['products/prdcts-cuspri']">Custom Pricing</a>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['products/prdcts-cuspri']"
+                >Custom Pricing</a
+              >
             </li>
           </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['cusflds']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-list-alt"></span></span><span class="nav-link-text"> Custom Fields</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"
+                ><span class="fa fa-list-alt"></span></span
+              ><span class="nav-link-text"> Custom Fields</span>
             </div>
           </a>
           <a class="nav-link" [routerLink]="['main/dashboard']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-gear"></span></span><span class="nav-link-text"> Configurations</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fa fa-gear"></span></span
+              ><span class="nav-link-text"> Configurations</span>
             </div>
           </a>
         </li>
@@ -54,21 +80,26 @@
 
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['main/dashboard']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-money"></span></span><span class="nav-link-text"> Expense Tracking</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"
+                ><span class="fa fa-money"></span></span
+              ><span class="nav-link-text"> Expense Tracking</span>
             </div>
           </a>
           <a class="nav-link" [routerLink]="['main/dashboard']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-hdd-o"></span></span><span class="nav-link-text"> Equipment Tracking</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"
+                ><span class="fa fa-hdd-o"></span></span
+              ><span class="nav-link-text"> Equipment Tracking</span>
             </div>
           </a>
           <a class="nav-link" [routerLink]="['main/dashboard']">
-            <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                  class="fa fa-flask"></span></span><span class="nav-link-text"> Chemical Tracking</span>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"
+                ><span class="fa fa-flask"></span></span
+              ><span class="nav-link-text"> Chemical Tracking</span>
             </div>
           </a>
-
         </li>
         <li>
           <div class="navbar-vertical-divider">
@@ -78,14 +109,16 @@
         <li class="nav-item">
           <h6>Jobs</h6>
         </li>
-        <a class="nav-link" [routerLink]="['main/dashboard']">
-          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                class="fa fa-flask"></span></span><span class="nav-link-text"> Job Configurations</span>
+        <a class="nav-link" [routerLink]="['job-configurations']">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            ><span class="nav-link-text"> Job Configurations</span>
           </div>
         </a>
         <a class="nav-link" [routerLink]="['main/dashboard']">
-          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                class="fa fa-flask"></span></span><span class="nav-link-text"> Job Forms</span>
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            ><span class="nav-link-text"> Job Forms</span>
           </div>
         </a>
         <li>
@@ -97,19 +130,22 @@
           <h6>Team Management</h6>
         </li>
         <a class="nav-link" [routerLink]="['users/list']">
-          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                class="fa fa-flask"></span></span><span class="nav-link-text"> Manage Users</span>
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            ><span class="nav-link-text"> Manage Users</span>
           </div>
         </a>
         <a class="nav-link" [routerLink]="['main/dashboard']">
-          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                class="fa fa-flask"></span></span><span class="nav-link-text"> Manage Teams</span>
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            ><span class="nav-link-text"> Manage Teams</span>
           </div>
         </a>
 
         <a class="nav-link" [routerLink]="['main/dashboard']">
-          <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                class="fa fa-flask"></span></span><span class="nav-link-text"> Access Management</span>
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            ><span class="nav-link-text"> Access Management</span>
           </div>
         </a>
       </ul>

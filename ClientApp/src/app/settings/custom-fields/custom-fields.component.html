@@ -1,35 +1,51 @@
 <div class="card">
   <div class="card-body">
-    <h4 class="text-700">Custom Fields</h4>
-    <p class="mt-2 text-500">Use custom fields to track information specific to your orgnization.</p>
+    <h5 class="text-700">Custom Fields</h5>
+    <p class="mt-2 text-500">
+      Use custom fields to track information specific to your orgnization.
+    </p>
     <div class="row">
       <div class="col">
-        <app-error-view [errors$]="errors$" [observableDefined]="true"></app-error-view>
+        <app-error-view
+          [errors$]="errors$"
+          [observableDefined]="true"
+        ></app-error-view>
       </div>
     </div>
-    <div class="row mt-4">
+    <div class="row mt-3">
       <div class="col">
         <form [formGroup]="customFieldDetailGroup">
           <div class="form-row">
             <div class="col">
-              <div class="form-group flex-fill">
+              <div class="form-group form-group-sm flex-fill">
                 <label for="staticEmail2" class="sr-only">Entity Type</label>
-                <select class="form-control" aria-placeholder="" placeholder="Select entity type"
-                  (change)="onEntityTypeSelected()" formControlName="entityType">
+                <select
+                  class="form-control form-control-sm"
+                  aria-placeholder=""
+                  placeholder="Select entity type"
+                  (change)="onEntityTypeSelected()"
+                  formControlName="entityType"
+                >
                   <option value="">Select Type</option>
                   <option value="3">Customer</option>
-                  <option value="5">User</option>
-                  <option value="6">Product</option>
+                  <option value="15">Employee</option>
                   <option value="7">Estimate</option>
                   <option value="13">Job</option>
+                  <option value="6">Product</option>
+                  <option value="5">User</option>
                 </select>
               </div>
             </div>
-
+            <div class="col">
+              <button
+                class="btn btn-falcon-success btn-sm"
+                type="button"
+                (click)="addNewCustomTypeClicked()"
+              >
+                <span class="fa fa-plus"></span> Add new custom type
+              </button>
+            </div>
           </div>
-          <button class="btn btn-outline-success btn-sm" type="button" (click)="addNewCustomTypeClicked()">
-            <span class="fa fa-plus"></span> Add new custom type
-          </button>
         </form>
       </div>
     </div>

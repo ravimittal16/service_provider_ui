@@ -2878,6 +2878,7 @@ export interface IProductDto {
 
 export class UserDto implements IUserDto {
     firstName: string | undefined;
+    displayName: string | undefined;
     lastName: string | undefined;
     employeeNumber: string | undefined;
     userId: string | undefined;
@@ -2903,6 +2904,7 @@ export class UserDto implements IUserDto {
     init(_data?: any) {
         if (_data) {
             this.firstName = _data["firstName"];
+            this.displayName = _data["displayName"];
             this.lastName = _data["lastName"];
             this.employeeNumber = _data["employeeNumber"];
             this.userId = _data["userId"];
@@ -2928,6 +2930,7 @@ export class UserDto implements IUserDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["firstName"] = this.firstName;
+        data["displayName"] = this.displayName;
         data["lastName"] = this.lastName;
         data["employeeNumber"] = this.employeeNumber;
         data["userId"] = this.userId;
@@ -2953,6 +2956,7 @@ export class UserDto implements IUserDto {
 
 export interface IUserDto {
     firstName: string | undefined;
+    displayName: string | undefined;
     lastName: string | undefined;
     employeeNumber: string | undefined;
     userId: string | undefined;
@@ -3159,7 +3163,7 @@ export enum JobStatuses {
     _6 = 6,
     _7 = 7,
     _8 = 8,
-    _9 = 9,
+    __1 = -1,
 }
 
 export class JobFilterModel implements IJobFilterModel {
@@ -3205,6 +3209,80 @@ export interface IJobFilterModel {
     status: JobStatuses;
 }
 
+export enum EmployeeTypes {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+}
+
+export class EmployeeDto implements IEmployeeDto {
+    title: string | undefined;
+    givenName: string | undefined;
+    displayName: string | undefined;
+    email: string | undefined;
+    employeeType: EmployeeTypes;
+    employeeId: number;
+
+    constructor(data?: IEmployeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.givenName = _data["givenName"];
+            this.displayName = _data["displayName"];
+            this.email = _data["email"];
+            this.employeeType = _data["employeeType"];
+            this.employeeId = _data["employeeId"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["givenName"] = this.givenName;
+        data["displayName"] = this.displayName;
+        data["email"] = this.email;
+        data["employeeType"] = this.employeeType;
+        data["employeeId"] = this.employeeId;
+        return data; 
+    }
+
+    clone(): EmployeeDto {
+        const json = this.toJSON();
+        let result = new EmployeeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEmployeeDto {
+    title: string | undefined;
+    givenName: string | undefined;
+    displayName: string | undefined;
+    email: string | undefined;
+    employeeType: EmployeeTypes;
+    employeeId: number;
+}
+
 export class JobDto implements IJobDto {
     customer: CustomerDto;
     jobAddress: AddressDto;
@@ -3218,12 +3296,16 @@ export class JobDto implements IJobDto {
     readonly jobNumberDefined: boolean;
     description: string | undefined;
     internalNotes: string | undefined;
-    assignedTo: UserDto;
+    assignedTo: EmployeeDto;
+    readonly isUnassigned: boolean;
     scheduleLater: boolean;
     jobColor: string | undefined;
     projectId: number | undefined;
     parentJobId: number | undefined;
     jobId: number;
+    createdBy: UserDto;
+    jobStatus: JobStatuses;
+    readonly jobStatusText: string | undefined;
 
     constructor(data?: IJobDto) {
         if (data) {
@@ -3248,12 +3330,16 @@ export class JobDto implements IJobDto {
             (<any>this).jobNumberDefined = _data["jobNumberDefined"];
             this.description = _data["description"];
             this.internalNotes = _data["internalNotes"];
-            this.assignedTo = _data["assignedTo"] ? UserDto.fromJS(_data["assignedTo"]) : <any>undefined;
+            this.assignedTo = _data["assignedTo"] ? EmployeeDto.fromJS(_data["assignedTo"]) : <any>undefined;
+            (<any>this).isUnassigned = _data["isUnassigned"];
             this.scheduleLater = _data["scheduleLater"];
             this.jobColor = _data["jobColor"];
             this.projectId = _data["projectId"];
             this.parentJobId = _data["parentJobId"];
             this.jobId = _data["jobId"];
+            this.createdBy = _data["createdBy"] ? UserDto.fromJS(_data["createdBy"]) : <any>undefined;
+            this.jobStatus = _data["jobStatus"];
+            (<any>this).jobStatusText = _data["jobStatusText"];
         }
     }
 
@@ -3279,11 +3365,15 @@ export class JobDto implements IJobDto {
         data["description"] = this.description;
         data["internalNotes"] = this.internalNotes;
         data["assignedTo"] = this.assignedTo ? this.assignedTo.toJSON() : <any>undefined;
+        data["isUnassigned"] = this.isUnassigned;
         data["scheduleLater"] = this.scheduleLater;
         data["jobColor"] = this.jobColor;
         data["projectId"] = this.projectId;
         data["parentJobId"] = this.parentJobId;
         data["jobId"] = this.jobId;
+        data["createdBy"] = this.createdBy ? this.createdBy.toJSON() : <any>undefined;
+        data["jobStatus"] = this.jobStatus;
+        data["jobStatusText"] = this.jobStatusText;
         return data; 
     }
 
@@ -3308,23 +3398,16 @@ export interface IJobDto {
     jobNumberDefined: boolean;
     description: string | undefined;
     internalNotes: string | undefined;
-    assignedTo: UserDto;
+    assignedTo: EmployeeDto;
+    isUnassigned: boolean;
     scheduleLater: boolean;
     jobColor: string | undefined;
     projectId: number | undefined;
     parentJobId: number | undefined;
     jobId: number;
-}
-
-export enum EmployeeTypes {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-    _4 = 4,
-    _5 = 5,
-    _6 = 6,
-    _7 = 7,
+    createdBy: UserDto;
+    jobStatus: JobStatuses;
+    jobStatusText: string | undefined;
 }
 
 export class CreateUserModel implements ICreateUserModel {
