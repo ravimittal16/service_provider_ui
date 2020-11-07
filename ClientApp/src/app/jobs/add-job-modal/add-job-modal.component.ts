@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { AddressCardComponent } from "@app/shared-ui-components/address-card/address-card.component";
 import { CustomerSelectorInputComponent } from "@app/shared-ui-components/customer-selector-input/customer-selector-input.component";
 import { SharedDataService } from "@app/shared-ui-components/shared.data.service";
@@ -56,6 +57,7 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
   private __subs = new SubSink();
   private __validator = new GenericValidator();
   constructor(
+    private _router: Router,
     public activeModal: NgbActiveModal,
     private _sharedDataService: SharedDataService,
     private _formBuilder: FormBuilder,
@@ -96,9 +98,18 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
               "Job created",
               "Job has been created successfully"
             );
-            this.activeModal.close(response);
-            if (editAfterSave) {
-              //TODO : Redirect to Edit Job Page
+            this.activeModal.close({
+              response: response,
+              reload: !editAfterSave,
+            });
+            if (editAfterSave && response.entity && response.entity.jobId) {
+              // ==========================================================
+              // Redirecting user to edit job page
+              // ==========================================================
+              this._router.navigate([
+                "app/jobs/editJob",
+                response.entity.jobId,
+              ]);
             }
           } else {
             if (response.errors && response.errors.length > 0) {

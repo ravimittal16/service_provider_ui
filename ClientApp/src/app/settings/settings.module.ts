@@ -14,6 +14,7 @@ import { TaxSettingsCardComponent } from "./tax-settings-card/tax-settings-card.
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
 import { SharedModule } from "@shared/shared.module";
+import { JobConfigurationsComponent } from "./job-configurations/job-configurations.component";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SharedModule } from "@shared/shared.module";
     CustomFieldsComponent,
     BusinessHoursCardComponent,
     TaxSettingsCardComponent,
+    JobConfigurationsComponent,
   ],
   imports: [
     CommonModule,

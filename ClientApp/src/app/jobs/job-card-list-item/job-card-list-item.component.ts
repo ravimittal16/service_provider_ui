@@ -15,7 +15,23 @@ export class JobCardListItemComponent implements OnInit {
     private _router: Router,
     private _jobsModalService: JobsModalService
   ) {}
-
+  onActionClicked(
+    actionType:
+      | "edit"
+      | "assign"
+      | "addItem"
+      | "copy"
+      | "cancel"
+      | "markAsCompleted"
+      | "delete"
+  ) {
+    if (actionType === "edit") {
+      this._onJobEditClicked();
+    }
+  }
+  private _onJobEditClicked() {
+    this._router.navigate(["app/jobs/editJob", this.job.jobId]);
+  }
   onJobTitleClicked(): void {
     // this._router.navigate(["app/jobs/editJob", this.job.jobId]);
     this._jobsModalService.openJobDetailModal(true, this.job);

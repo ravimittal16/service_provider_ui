@@ -30,6 +30,11 @@ export class JobsViewComponent implements OnInit {
 
   createNewJobClicked(): void {
     const _result = this._jobsModalService.openCreateJobModal();
+    _result.result.then((modalRes) => {
+      if (modalRes && modalRes.reload) {
+        this._jobsFacade.loadJobs();
+      }
+    });
   }
   ngOnInit(): void {
     this._customerFacade.loadCustomers(1);
