@@ -24,9 +24,98 @@
         </button>
       </div>
       <div class="modal-body">
-        <span>
-          {{ selectedJob?.title }}
+        <h5 class="text-400">
+          Job details
+          <div
+            class="badge badge-pill badge-soft-{{
+              selectedJob.jobStatusText?.toLowerCase().replace(' ', '-')
+            }}"
+          >
+            {{ selectedJob.jobStatusText }}
+          </div>
+        </h5>
+        <p class="m-0">
+          <span class="job-title">
+            {{ selectedJob?.title }}
+          </span>
+        </p>
+        <p class="text-500">
+          <small> <i>Created By : Ravi Mittal</i> </small>
+        </p>
+        <span
+          class="badge badge-pill badge-soft-danger"
+          *ngIf="selectedJob?.isUnassigned"
+        >
+          Unassigned
         </span>
+
+        <div class="mt-3">
+          <h6 class="text-600">Description</h6>
+          <p>
+            <span class="fs--1">
+              {{ selectedJob?.description }}
+            </span>
+          </p>
+        </div>
+        <div *ngIf="hasPermissionsForInternalNotes">
+          <a
+            class="btn btn-link btn-sm pl-0"
+            (click)="showInternalNotes = !showInternalNotes"
+            ><span *ngIf="showInternalNotes">Hide</span>
+            <span *ngIf="!showInternalNotes">Show</span> internal notes</a
+          >
+          <div class="mt-2" *ngIf="showInternalNotes">
+            <h6 class="text-600">Internal Notes</h6>
+            <p>
+              <span class="fs--1">
+                {{ selectedJob?.internalNotes }}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <h6 class="text-600">Service Address</h6>
+          <address class="fs--1">
+            {{ selectedJob?.jobAddress?.addressLine1 }}<br />
+            {{ selectedJob?.jobAddress?.city }},
+            {{ selectedJob?.jobAddress?.countrySubDivisionCode }}
+            <strong>{{ selectedJob?.jobAddress?.postalCode }}</strong
+            ><br />
+            USA<br />
+            <a class="btn btn-link btn-sm pl-0 fs--1">view map</a>
+          </address>
+        </div>
+        <div class="mt-2">
+          <h6 class="text-600">Customer Details</h6>
+          <div class="fs--1">
+            <p>
+              Display Name :
+              <span class="font-weight-light">{{
+                selectedJob.customer?.displayName
+              }}</span>
+            </p>
+            <p>
+              Company :
+              <span class="font-weight-light">{{
+                selectedJob.customer?.companyName
+              }}</span>
+            </p>
+            <p>
+              Name :
+              <span class="font-weight-light">{{
+                selectedJob.customer?.fullName
+              }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm btn-falcon-primary" (click)="moreDetails()">
+          More details
+        </button>
+        <button class="btn btn-sm btn-falcon-default" (click)="hideModal()">
+          Close
+        </button>
       </div>
     </div>
   </div>
