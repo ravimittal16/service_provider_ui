@@ -19,6 +19,12 @@
     }
 }
 
+
+.tooltipTemplate p{
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
 .badge-soft-open{
     color: #867200;
     background-color: #f6eccc;
@@ -53,8 +59,4 @@
 }
 .tooltip-inner{
     max-width: 500px;
-}
-.tooltipTemplate p{
-    margin-bottom: 0px;
-    padding-bottom: 0px;
 }
