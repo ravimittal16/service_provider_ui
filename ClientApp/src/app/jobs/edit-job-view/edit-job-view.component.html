@@ -1,4 +1,8 @@
-<div class="card" *ngIf="details">
+<div
+  class="card details-border"
+  *ngIf="details"
+  [ngStyle]="{ 'border-left-color': details?.jobColor }"
+>
   <div class="card-body">
     <div class="row">
       <div class="col">
@@ -12,9 +16,6 @@
       <div class="col">
         <h6 class="text-500 font-weight-light">
           {{ details.description }}
-          <a>
-            <i class="fa fa-pencil"></i>
-          </a>
         </h6>
       </div>
     </div>
@@ -49,15 +50,8 @@
     </div>
   </div>
 </div>
-<div class="card mt-2">
-  <div class="card-header">
-    <div class="row align-items-center">
-      <div class="col">
-        <h5 class="mb-0">Customer details</h5>
-      </div>
-    </div>
-  </div>
-  <div class="card-body bg-light border-top">
+<div class="card bg-light mt-2">
+  <div class="card-body">
     <div class="row">
       <div class="col-lg col-xxl-4">
         <h6 class="font-weight-semi-bold ls mb-3 text-uppercase">
@@ -176,13 +170,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="card-footer border-top text-right">
-    <a class="btn btn-falcon-default btn-sm" href="#!"
-      ><span class="fa fa-dollar-sign fs--2 mr-1"></span>Refund</a
-    ><a class="btn btn-falcon-default btn-sm ml-2" href="#!"
-      ><span class="fa fa-check fs--2 mr-1"></span>Save changes</a
-    >
   </div>
 </div>
 <div class="row no-gutters mt-2">
