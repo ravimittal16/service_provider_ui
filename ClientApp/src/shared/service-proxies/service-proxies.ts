@@ -998,6 +998,62 @@ export class JobsServiceProxy {
         }
         return _observableOf<JobDto[]>(<any>null);
     }
+
+    /**
+     * @param jobId (optional) 
+     * @return Success
+     */
+    getJobDetails(jobId: number | undefined): Observable<JobDetailsDto> {
+        let url_ = this.baseUrl + "/api/Jobs/GetJobDetails?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetJobDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetJobDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<JobDetailsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobDetailsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetJobDetails(response: HttpResponseBase): Observable<JobDetailsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobDetailsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobDetailsDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2531,6 +2587,7 @@ export enum EntityTypes {
     _12 = 12,
     _13 = 13,
     _14 = 14,
+    _15 = 15,
     __1 = -1,
 }
 
@@ -3408,6 +3465,228 @@ export interface IJobDto {
     createdBy: UserDto;
     jobStatus: JobStatuses;
     jobStatusText: string | undefined;
+}
+
+export class JobLineItemDto implements IJobLineItemDto {
+    productId: number;
+    product: ProductDto;
+    taxable: boolean;
+    quantity: number;
+    price: number;
+    markup: number | undefined;
+    displayOrder: number | undefined;
+    discountValue: number | undefined;
+    discountType: number | undefined;
+    description: string | undefined;
+
+    constructor(data?: IJobLineItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.productId = _data["productId"];
+            this.product = _data["product"] ? ProductDto.fromJS(_data["product"]) : <any>undefined;
+            this.taxable = _data["taxable"];
+            this.quantity = _data["quantity"];
+            this.price = _data["price"];
+            this.markup = _data["markup"];
+            this.displayOrder = _data["displayOrder"];
+            this.discountValue = _data["discountValue"];
+            this.discountType = _data["discountType"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): JobLineItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobLineItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["productId"] = this.productId;
+        data["product"] = this.product ? this.product.toJSON() : <any>undefined;
+        data["taxable"] = this.taxable;
+        data["quantity"] = this.quantity;
+        data["price"] = this.price;
+        data["markup"] = this.markup;
+        data["displayOrder"] = this.displayOrder;
+        data["discountValue"] = this.discountValue;
+        data["discountType"] = this.discountType;
+        data["description"] = this.description;
+        return data; 
+    }
+
+    clone(): JobLineItemDto {
+        const json = this.toJSON();
+        let result = new JobLineItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobLineItemDto {
+    productId: number;
+    product: ProductDto;
+    taxable: boolean;
+    quantity: number;
+    price: number;
+    markup: number | undefined;
+    displayOrder: number | undefined;
+    discountValue: number | undefined;
+    discountType: number | undefined;
+    description: string | undefined;
+}
+
+export class JobDetailsDto implements IJobDetailsDto {
+    customer: CustomerDto;
+    jobAddress: AddressDto;
+    title: string | undefined;
+    serviceType: ProductDto;
+    prefix: string | undefined;
+    jobNumber: string | undefined;
+    sequence: number;
+    readonly fullJobNumber: string | undefined;
+    readonly heading: string | undefined;
+    readonly jobNumberDefined: boolean;
+    description: string | undefined;
+    internalNotes: string | undefined;
+    assignedTo: EmployeeDto;
+    readonly isUnassigned: boolean;
+    scheduleLater: boolean;
+    jobColor: string | undefined;
+    projectId: number | undefined;
+    parentJobId: number | undefined;
+    jobId: number;
+    createdBy: UserDto;
+    jobStatus: JobStatuses;
+    readonly jobStatusText: string | undefined;
+    createDate: moment.Moment | undefined;
+    lineItems: JobLineItemDto[] | undefined;
+
+    constructor(data?: IJobDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.customer = _data["customer"] ? CustomerDto.fromJS(_data["customer"]) : <any>undefined;
+            this.jobAddress = _data["jobAddress"] ? AddressDto.fromJS(_data["jobAddress"]) : <any>undefined;
+            this.title = _data["title"];
+            this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
+            this.prefix = _data["prefix"];
+            this.jobNumber = _data["jobNumber"];
+            this.sequence = _data["sequence"];
+            (<any>this).fullJobNumber = _data["fullJobNumber"];
+            (<any>this).heading = _data["heading"];
+            (<any>this).jobNumberDefined = _data["jobNumberDefined"];
+            this.description = _data["description"];
+            this.internalNotes = _data["internalNotes"];
+            this.assignedTo = _data["assignedTo"] ? EmployeeDto.fromJS(_data["assignedTo"]) : <any>undefined;
+            (<any>this).isUnassigned = _data["isUnassigned"];
+            this.scheduleLater = _data["scheduleLater"];
+            this.jobColor = _data["jobColor"];
+            this.projectId = _data["projectId"];
+            this.parentJobId = _data["parentJobId"];
+            this.jobId = _data["jobId"];
+            this.createdBy = _data["createdBy"] ? UserDto.fromJS(_data["createdBy"]) : <any>undefined;
+            this.jobStatus = _data["jobStatus"];
+            (<any>this).jobStatusText = _data["jobStatusText"];
+            this.createDate = _data["createDate"] ? moment(_data["createDate"].toString()) : <any>undefined;
+            if (Array.isArray(_data["lineItems"])) {
+                this.lineItems = [] as any;
+                for (let item of _data["lineItems"])
+                    this.lineItems.push(JobLineItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): JobDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["jobAddress"] = this.jobAddress ? this.jobAddress.toJSON() : <any>undefined;
+        data["title"] = this.title;
+        data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
+        data["prefix"] = this.prefix;
+        data["jobNumber"] = this.jobNumber;
+        data["sequence"] = this.sequence;
+        data["fullJobNumber"] = this.fullJobNumber;
+        data["heading"] = this.heading;
+        data["jobNumberDefined"] = this.jobNumberDefined;
+        data["description"] = this.description;
+        data["internalNotes"] = this.internalNotes;
+        data["assignedTo"] = this.assignedTo ? this.assignedTo.toJSON() : <any>undefined;
+        data["isUnassigned"] = this.isUnassigned;
+        data["scheduleLater"] = this.scheduleLater;
+        data["jobColor"] = this.jobColor;
+        data["projectId"] = this.projectId;
+        data["parentJobId"] = this.parentJobId;
+        data["jobId"] = this.jobId;
+        data["createdBy"] = this.createdBy ? this.createdBy.toJSON() : <any>undefined;
+        data["jobStatus"] = this.jobStatus;
+        data["jobStatusText"] = this.jobStatusText;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        if (Array.isArray(this.lineItems)) {
+            data["lineItems"] = [];
+            for (let item of this.lineItems)
+                data["lineItems"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): JobDetailsDto {
+        const json = this.toJSON();
+        let result = new JobDetailsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobDetailsDto {
+    customer: CustomerDto;
+    jobAddress: AddressDto;
+    title: string | undefined;
+    serviceType: ProductDto;
+    prefix: string | undefined;
+    jobNumber: string | undefined;
+    sequence: number;
+    fullJobNumber: string | undefined;
+    heading: string | undefined;
+    jobNumberDefined: boolean;
+    description: string | undefined;
+    internalNotes: string | undefined;
+    assignedTo: EmployeeDto;
+    isUnassigned: boolean;
+    scheduleLater: boolean;
+    jobColor: string | undefined;
+    projectId: number | undefined;
+    parentJobId: number | undefined;
+    jobId: number;
+    createdBy: UserDto;
+    jobStatus: JobStatuses;
+    jobStatusText: string | undefined;
+    createDate: moment.Moment | undefined;
+    lineItems: JobLineItemDto[] | undefined;
 }
 
 export class CreateUserModel implements ICreateUserModel {

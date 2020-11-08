@@ -20,6 +20,29 @@ export class JobsEffects extends BaseEffect {
     super();
   }
 
+  fetchJobDetails$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(jobsActions.fetchJobDetailsAction),
+      mergeMap((action) =>
+        this.jobsServiceProxy.getJobDetails(action.jobId).pipe(
+          map((data) =>
+            jobsActions.fetchJobDetailsCompletedAction({
+              jobId: action.jobId,
+              details: data,
+            })
+          ),
+          catchError((error) => {
+            return of(
+              jobsActions.jobsLoadedErrorAction({
+                errors: ["Error while loading job details.", error],
+              })
+            );
+          })
+        )
+      )
+    );
+  });
+
   loadJobs$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(jobsActions.loadJobsAction),
@@ -30,7 +53,7 @@ export class JobsEffects extends BaseEffect {
             catchError((error) => {
               return of(
                 jobsActions.jobsLoadedErrorAction({
-                  errors: ["Error while loading customers.", error],
+                  errors: ["Error while loading jobs.", error],
                 })
               );
             })
