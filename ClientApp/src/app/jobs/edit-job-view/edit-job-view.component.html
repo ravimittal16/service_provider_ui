@@ -1,1 +1,227 @@
-<p>edit-job-view works!</p>
+<div class="card" *ngIf="details">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <h5 class="mb-2">
+          #{{ details?.fullJobNumber }} -
+          <span class="text-500">{{ details?.title }}</span>
+        </h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h6 class="text-500 font-weight-light">
+          {{ details.description }}
+          <a>
+            <i class="fa fa-pencil"></i>
+          </a>
+        </h6>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <a class="btn btn-falcon-primary btn-sm" href="#!"
+          ><span class="fa fa-plus fs--2 mr-1"></span>Add note</a
+        >
+        <a class="btn btn-falcon-success btn-sm ml-1"
+          ><span class="fa fa-check fs--2 mr-1"></span>Mark as completed</a
+        >
+        <a class="btn btn-falcon-default btn-sm ml-1"
+          ><span class="fa fa-pencil fs--2 mr-1"></span>Edit</a
+        >
+        <button
+          class="btn btn-falcon-default btn-sm dropdown-toggle ml-1 dropdown-caret-none"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          More actions <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Create Similar Job</a
+          ><a class="dropdown-item" href="#">Report</a
+          ><a class="dropdown-item" href="#">Archive</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item text-danger" href="#">Delete user</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card mt-2">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="mb-0">Customer details</h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-body bg-light border-top">
+    <div class="row">
+      <div class="col-lg col-xxl-4">
+        <h6 class="font-weight-semi-bold ls mb-3 text-uppercase">
+          Job Information
+        </h6>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">ID</p>
+          </div>
+          <div class="col">#{{ details?.fullJobNumber }}</div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Created</p>
+          </div>
+          <div class="col">
+            {{ details?.createDate | date: "dd/MM/yyyy hh:mm aa" }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Customer Email</p>
+          </div>
+          <div class="col">
+            <a href="mailto:tony@gmail.com">tony@gmail.com</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Assigned To</p>
+          </div>
+          <div class="col">
+            <p class="text-400 mb-1">{{ details?.assignedTo?.displayName }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Status</p>
+          </div>
+          <div class="col">
+            <div
+              class="mb-1 badge badge-pill badge-soft-{{
+                details?.jobStatusText?.toLowerCase().replace(' ', '-')
+              }}"
+            >
+              {{ details?.jobStatusText }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg col-xxl-4 mt-4 mt-lg-0">
+        <h6 class="font-weight-semi-bold ls mb-3 text-uppercase">
+          Service Information
+        </h6>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Send email to</p>
+          </div>
+          <div class="col">
+            <a href="mailto:tony@gmail.com">tony@gmail.com</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Address</p>
+          </div>
+          <div class="col">
+            <p class="mb-1">
+              {{ details?.jobAddress?.addressLine1 }} <br />{{
+                details?.jobAddress?.city
+              }}, {{ details?.jobAddress?.countrySubDivisionCode }}
+              {{ details?.jobAddress?.postalCode }}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Phone number</p>
+          </div>
+          <div class="col"><a href="tel:+12025550110">+1-202-555-0110</a></div>
+        </div>
+      </div>
+      <div class="col-lg col-xxl-4 mt-4 mt-lg-0">
+        <h6 class="font-weight-semi-bold ls mb-3 text-uppercase">
+          Billing Information
+        </h6>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Send email to</p>
+          </div>
+          <div class="col">
+            <a href="mailto:tony@gmail.com">tony@gmail.com</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Address</p>
+          </div>
+          <div class="col">
+            <p class="mb-1">8962 Lafayette St. <br />Oswego, NY 13126</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-1">Phone number</p>
+          </div>
+          <div class="col"><a href="tel:+12025550110">+1-202-555-0110</a></div>
+        </div>
+        <div class="row">
+          <div class="col-5 col-sm-4">
+            <p class="font-weight-semi-bold mb-0">Invoice prefix</p>
+          </div>
+          <div class="col">
+            <p class="font-weight-semi-bold mb-0">7C23435</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer border-top text-right">
+    <a class="btn btn-falcon-default btn-sm" href="#!"
+      ><span class="fa fa-dollar-sign fs--2 mr-1"></span>Refund</a
+    ><a class="btn btn-falcon-default btn-sm ml-2" href="#!"
+      ><span class="fa fa-check fs--2 mr-1"></span>Save changes</a
+    >
+  </div>
+</div>
+<div class="row no-gutters mt-2">
+  <div class="col-9 pr-xl-2">
+    <div class="card">
+      <div class="card-body">
+        <ul ngbNav #nav="ngbNav" class="nav-tabs">
+          <li ngbNavItem>
+            <a ngbNavLink>Job details</a>
+            <ng-template ngbNavContent>First content</ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Job Visits</a>
+            <ng-template ngbNavContent>First content</ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Items</a>
+            <ng-template ngbNavContent>Second content</ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Job Forms</a>
+            <ng-template ngbNavContent>Second content</ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Attachments</a>
+            <ng-template ngbNavContent>Second content</ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Expenses</a>
+            <ng-template ngbNavContent>Second content</ng-template>
+          </li>
+        </ul>
+        <div class="p-2" [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="card">
+      <div class="card-body">HELLO</div>
+    </div>
+  </div>
+</div>

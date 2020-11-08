@@ -20,10 +20,26 @@ export const initialState: JobsState = adapter.getInitialState({
   success: false,
   items: [],
   filtersModel: null,
+  jobDetailsContainer: {},
+  selectedJobId: 0,
+  selectedJobDetails: null,
 });
 
 const jobsStoreReducer = createReducer(
   initialState,
+  on(jobsAction.fetchJobDetailsCompletedAction, (state, props) => {
+    const __conainer = { ...state.jobDetailsContainer };
+    __conainer[props.jobId] = props.details;
+    return {
+      ...state,
+      jobDetailsContainer: __conainer,
+      isBusy: false,
+      selectedJobDetails: props.details,
+    };
+  }),
+  on(jobsAction.setSelectedJobIdAction, (state, props) => {
+    return { ...state, selectedJobId: props.jobId };
+  }),
   on(jobsAction.jobsLoadedAction, (state, props) => {
     const __state = adapter.addMany(props.items, state);
     return {

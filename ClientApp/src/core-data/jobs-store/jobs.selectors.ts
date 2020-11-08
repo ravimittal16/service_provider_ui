@@ -19,3 +19,8 @@ export const selectJobsFilter = createSelector(
   jobsFeatureState,
   (state: JobsState) => state.filtersModel
 );
+
+export const selectJobDetails = createSelector(
+  jobsFeatureState,
+  (state: JobsState) => state.selectedJobDetails
+);
