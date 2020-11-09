@@ -1,0 +1,56 @@
+<div>
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-end">
+        <button
+          class="btn btn-falcon-default btn-sm"
+          (click)="addLineItemClicked(false)"
+        >
+          <i class="fa fa-plus"></i> Add Item from List
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <table
+        class="table table-bordered table-striped table-condensed items-table"
+      >
+        <thead>
+          <th>Product/Service</th>
+          <th style="width: 150px; max-width: 150px">Quantity</th>
+          <th style="width: 150px; max-width: 150px">Unit Price</th>
+          <th style="width: 150px; max-width: 150px">Total Price</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of lineItems">
+            <td>
+              {{ item?.product?.name }}
+            </td>
+            <td>
+              {{ item?.quantity }}
+            </td>
+            <td>
+              {{ item?.price | currency }}
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="4">
+              <div class="d-flex justify-content-start">
+                <button
+                  class="btn btn-falcon-default btn-sm"
+                  (click)="addLineItemClicked(true)"
+                >
+                  <i class="fa fa-plus"></i> Add Item
+                </button>
+              </div>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

@@ -10,13 +10,18 @@ import { SharedModule } from "@shared/shared.module";
 import { ColorPickerModule } from "ngx-color-picker";
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { JobCardListItemComponent } from "./job-card-list-item/job-card-list-item.component";
+import { JobItemsListViewComponent } from "./job-items-list-view/job-items-list-view.component";
 import { JobsFilterComponent } from "./jobs-filter/jobs-filter.component";
 import { JobsDataService } from "./jobs.data.service";
 import { JobsModalService } from "./jobs.modal.service";
 import { JobsRoutingModule, routeComponents } from "./jobs.routing.module";
 
 const __modalComponents = [AddJobModalComponent];
-const __moduleComponents = [JobsFilterComponent, JobCardListItemComponent];
+const __moduleComponents = [
+  JobsFilterComponent,
+  JobCardListItemComponent,
+  JobItemsListViewComponent,
+];
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],
   imports: [
