@@ -1,17 +1,31 @@
 <div class="bg-100 rounded-soft px-card py-2 mt-2 mb-3 no-gutters row">
-  <div class="d-flex align-items-center col">
+  <div class="d-flex align-items-center col-auto">
     <h5 class="mb-0">Jobs</h5>
+  </div>
+  <div class="col ml-3">
+    <form class="form-inline search-box">
+      <input
+        type="search"
+        placeholder="Search Job..."
+        aria-label="Search"
+        class="form-control rounded-pill search-input"
+        style="padding-left: 2.2rem"
+      /><span
+        class="position-absolute fa fa-search text-400 search-box-icon"
+      ></span>
+    </form>
   </div>
   <div class="col-auto">
     <button
       *ngIf="hasFiltersApplied"
       (click)="clearFilters()"
-      class="mr-2 btn btn-falcon-default btn-sm"
+      class="mr-2 btn btn-falcon-danger btn-sm"
     >
       <span class="fa fa-trash"></span>
     </button>
     <button
       class="mr-2 btn btn-sm"
+      (click)="applyFilters()"
       [ngClass]="{
         'btn-info': hasFiltersApplied,
         'btn-falcon-default': !hasFiltersApplied
@@ -23,7 +37,7 @@
       <span class="fa fa-refresh"></span>
     </button>
     <button
-      class="mr-2 btn btn-falcon-default btn-sm"
+      class="mr-2 btn btn-falcon-primary btn-sm"
       (click)="createNewJobClicked()"
     >
       <span class="fa fa-plus"></span> Create New Job

@@ -3347,7 +3347,6 @@ export class JobDto implements IJobDto {
     serviceType: ProductDto;
     prefix: string | undefined;
     jobNumber: string | undefined;
-    sequence: number;
     readonly fullJobNumber: string | undefined;
     readonly heading: string | undefined;
     readonly jobNumberDefined: boolean;
@@ -3357,8 +3356,6 @@ export class JobDto implements IJobDto {
     readonly isUnassigned: boolean;
     scheduleLater: boolean;
     jobColor: string | undefined;
-    projectId: number | undefined;
-    parentJobId: number | undefined;
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
@@ -3381,7 +3378,6 @@ export class JobDto implements IJobDto {
             this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
             this.prefix = _data["prefix"];
             this.jobNumber = _data["jobNumber"];
-            this.sequence = _data["sequence"];
             (<any>this).fullJobNumber = _data["fullJobNumber"];
             (<any>this).heading = _data["heading"];
             (<any>this).jobNumberDefined = _data["jobNumberDefined"];
@@ -3391,8 +3387,6 @@ export class JobDto implements IJobDto {
             (<any>this).isUnassigned = _data["isUnassigned"];
             this.scheduleLater = _data["scheduleLater"];
             this.jobColor = _data["jobColor"];
-            this.projectId = _data["projectId"];
-            this.parentJobId = _data["parentJobId"];
             this.jobId = _data["jobId"];
             this.createdBy = _data["createdBy"] ? UserDto.fromJS(_data["createdBy"]) : <any>undefined;
             this.jobStatus = _data["jobStatus"];
@@ -3415,7 +3409,6 @@ export class JobDto implements IJobDto {
         data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
         data["prefix"] = this.prefix;
         data["jobNumber"] = this.jobNumber;
-        data["sequence"] = this.sequence;
         data["fullJobNumber"] = this.fullJobNumber;
         data["heading"] = this.heading;
         data["jobNumberDefined"] = this.jobNumberDefined;
@@ -3425,8 +3418,6 @@ export class JobDto implements IJobDto {
         data["isUnassigned"] = this.isUnassigned;
         data["scheduleLater"] = this.scheduleLater;
         data["jobColor"] = this.jobColor;
-        data["projectId"] = this.projectId;
-        data["parentJobId"] = this.parentJobId;
         data["jobId"] = this.jobId;
         data["createdBy"] = this.createdBy ? this.createdBy.toJSON() : <any>undefined;
         data["jobStatus"] = this.jobStatus;
@@ -3449,7 +3440,6 @@ export interface IJobDto {
     serviceType: ProductDto;
     prefix: string | undefined;
     jobNumber: string | undefined;
-    sequence: number;
     fullJobNumber: string | undefined;
     heading: string | undefined;
     jobNumberDefined: boolean;
@@ -3459,8 +3449,6 @@ export interface IJobDto {
     isUnassigned: boolean;
     scheduleLater: boolean;
     jobColor: string | undefined;
-    projectId: number | undefined;
-    parentJobId: number | undefined;
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
@@ -3468,6 +3456,7 @@ export interface IJobDto {
 }
 
 export class JobLineItemDto implements IJobLineItemDto {
+    itemId: number;
     productId: number;
     product: ProductDto;
     taxable: boolean;
@@ -3490,6 +3479,7 @@ export class JobLineItemDto implements IJobLineItemDto {
 
     init(_data?: any) {
         if (_data) {
+            this.itemId = _data["itemId"];
             this.productId = _data["productId"];
             this.product = _data["product"] ? ProductDto.fromJS(_data["product"]) : <any>undefined;
             this.taxable = _data["taxable"];
@@ -3512,6 +3502,7 @@ export class JobLineItemDto implements IJobLineItemDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["itemId"] = this.itemId;
         data["productId"] = this.productId;
         data["product"] = this.product ? this.product.toJSON() : <any>undefined;
         data["taxable"] = this.taxable;
@@ -3534,6 +3525,7 @@ export class JobLineItemDto implements IJobLineItemDto {
 }
 
 export interface IJobLineItemDto {
+    itemId: number;
     productId: number;
     product: ProductDto;
     taxable: boolean;
@@ -3553,7 +3545,6 @@ export class JobDetailsDto implements IJobDetailsDto {
     serviceType: ProductDto;
     prefix: string | undefined;
     jobNumber: string | undefined;
-    sequence: number;
     readonly fullJobNumber: string | undefined;
     readonly heading: string | undefined;
     readonly jobNumberDefined: boolean;
@@ -3563,8 +3554,6 @@ export class JobDetailsDto implements IJobDetailsDto {
     readonly isUnassigned: boolean;
     scheduleLater: boolean;
     jobColor: string | undefined;
-    projectId: number | undefined;
-    parentJobId: number | undefined;
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
@@ -3589,7 +3578,6 @@ export class JobDetailsDto implements IJobDetailsDto {
             this.serviceType = _data["serviceType"] ? ProductDto.fromJS(_data["serviceType"]) : <any>undefined;
             this.prefix = _data["prefix"];
             this.jobNumber = _data["jobNumber"];
-            this.sequence = _data["sequence"];
             (<any>this).fullJobNumber = _data["fullJobNumber"];
             (<any>this).heading = _data["heading"];
             (<any>this).jobNumberDefined = _data["jobNumberDefined"];
@@ -3599,8 +3587,6 @@ export class JobDetailsDto implements IJobDetailsDto {
             (<any>this).isUnassigned = _data["isUnassigned"];
             this.scheduleLater = _data["scheduleLater"];
             this.jobColor = _data["jobColor"];
-            this.projectId = _data["projectId"];
-            this.parentJobId = _data["parentJobId"];
             this.jobId = _data["jobId"];
             this.createdBy = _data["createdBy"] ? UserDto.fromJS(_data["createdBy"]) : <any>undefined;
             this.jobStatus = _data["jobStatus"];
@@ -3629,7 +3615,6 @@ export class JobDetailsDto implements IJobDetailsDto {
         data["serviceType"] = this.serviceType ? this.serviceType.toJSON() : <any>undefined;
         data["prefix"] = this.prefix;
         data["jobNumber"] = this.jobNumber;
-        data["sequence"] = this.sequence;
         data["fullJobNumber"] = this.fullJobNumber;
         data["heading"] = this.heading;
         data["jobNumberDefined"] = this.jobNumberDefined;
@@ -3639,8 +3624,6 @@ export class JobDetailsDto implements IJobDetailsDto {
         data["isUnassigned"] = this.isUnassigned;
         data["scheduleLater"] = this.scheduleLater;
         data["jobColor"] = this.jobColor;
-        data["projectId"] = this.projectId;
-        data["parentJobId"] = this.parentJobId;
         data["jobId"] = this.jobId;
         data["createdBy"] = this.createdBy ? this.createdBy.toJSON() : <any>undefined;
         data["jobStatus"] = this.jobStatus;
@@ -3669,7 +3652,6 @@ export interface IJobDetailsDto {
     serviceType: ProductDto;
     prefix: string | undefined;
     jobNumber: string | undefined;
-    sequence: number;
     fullJobNumber: string | undefined;
     heading: string | undefined;
     jobNumberDefined: boolean;
@@ -3679,8 +3661,6 @@ export interface IJobDetailsDto {
     isUnassigned: boolean;
     scheduleLater: boolean;
     jobColor: string | undefined;
-    projectId: number | undefined;
-    parentJobId: number | undefined;
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;

@@ -28,6 +28,10 @@ export class JobsViewComponent implements OnInit {
     this.hasFiltersApplied = false;
   }
 
+  applyFilters(): void {
+    this.hasFiltersApplied = true;
+  }
+
   createNewJobClicked(): void {
     const _result = this._jobsModalService.openCreateJobModal();
     _result.result.then((modalRes) => {
