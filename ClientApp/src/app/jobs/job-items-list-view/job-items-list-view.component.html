@@ -14,7 +14,7 @@
           class="btn btn-falcon-primary btn-sm"
           (click)="addLineItemClicked(false)"
         >
-          <i class="fa fa-plus"></i> Add Item from List
+          <i class="fa fa-plus"></i> Add product from List
         </button>
       </div>
     </div>
@@ -31,8 +31,13 @@
             <th>Product/Service</th>
             <th style="width: 150px; max-width: 150px">Quantity</th>
             <th style="width: 150px; max-width: 150px">Unit Price</th>
+            <th style="width: 100px; max-width: 100px" class="text-center">
+              Taxable
+            </th>
             <th style="width: 150px; max-width: 150px">Total Price</th>
-            <th style="width: 150px; max-width: 150px">Actions</th>
+            <th style="width: 100px; max-width: 100px" class="text-center">
+              Actions
+            </th>
           </thead>
           <tbody>
             <tr
@@ -45,6 +50,8 @@
                     <app-product-selector-input
                       formControlName="product"
                       [showLabel]="false"
+                      [id]="i"
+                      [setAutoFocus]="true"
                       [onlyServices]="false"
                       (onSelectionChanged)="onItemSelectionChanged($event, i)"
                     ></app-product-selector-input>
@@ -52,6 +59,7 @@
                   <div class="form-group">
                     <textarea
                       rows="3"
+                      [id]="'description' + i"
                       placeholder="product description..."
                       class="form-control form-control-sm"
                       formControlName="description"
@@ -77,10 +85,54 @@
                   />
                 </div>
               </td>
+              <td class="text-center">
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="taxableCheckbox"
+                    formControlName="taxable"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="taxableCheckbox"
+                  ></label>
+                </div>
+              </td>
               <td></td>
-              <td>
+              <td class="text-center">
                 <div>
-                  <button class="btn btn-sm btn-falcon-danger">
+                  <ng-template #popContent>
+                    <div class="row">
+                      <div class="col-auto">
+                        <button
+                          class="btn btn-sm btn-falcon-success"
+                          (click)="deleteItem(i, null, true)"
+                        >
+                          Yes
+                        </button>
+                      </div>
+                      <div class="col-auto">
+                        <button
+                          class="btn btn-sm btn-falcon-danger"
+                          (click)="confirmationPopover.close()"
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <ng-template #popTitle>Are you sure?</ng-template>
+                  <button
+                    triggers="manual"
+                    class="btn btn-sm btn-falcon-danger"
+                    #confirmationPopover="ngbPopover"
+                    [autoClose]="true"
+                    [closeDelay]="3000"
+                    [ngbPopover]="popContent"
+                    [popoverTitle]="popTitle"
+                    (click)="deleteItem(i, confirmationPopover, false)"
+                  >
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
@@ -89,13 +141,13 @@
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="5">
+              <th colspan="6">
                 <div class="d-flex justify-content-start">
                   <button
                     class="btn btn-falcon-primary btn-sm"
                     (click)="addLineItemClicked(true)"
                   >
-                    <i class="fa fa-plus"></i> Add Item
+                    <i class="fa fa-plus"></i> Add product
                   </button>
                 </div>
               </th>

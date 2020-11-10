@@ -2871,6 +2871,7 @@ export class ProductDto implements IProductDto {
     taxable: boolean | undefined;
     unitPrice: number | undefined;
     sku: string | undefined;
+    readonly isServiceType: boolean;
 
     constructor(data?: IProductDto) {
         if (data) {
@@ -2891,6 +2892,7 @@ export class ProductDto implements IProductDto {
             this.taxable = _data["taxable"];
             this.unitPrice = _data["unitPrice"];
             this.sku = _data["sku"];
+            (<any>this).isServiceType = _data["isServiceType"];
         }
     }
 
@@ -2911,6 +2913,7 @@ export class ProductDto implements IProductDto {
         data["taxable"] = this.taxable;
         data["unitPrice"] = this.unitPrice;
         data["sku"] = this.sku;
+        data["isServiceType"] = this.isServiceType;
         return data; 
     }
 
@@ -2931,6 +2934,7 @@ export interface IProductDto {
     taxable: boolean | undefined;
     unitPrice: number | undefined;
     sku: string | undefined;
+    isServiceType: boolean;
 }
 
 export class UserDto implements IUserDto {

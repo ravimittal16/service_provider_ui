@@ -14,6 +14,7 @@ import {
   ProductDto,
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { NgbPopover } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -33,10 +34,11 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {}
 
-  private _addGroup(item?: JobLineItemDto, i: number = 0) {
-    console.log(item?.product?.name);
+  private _addGroup(item?: JobLineItemDto) {
+    const _id = item ? item?.itemId.toString() : Guid.create().toString();
+    console.log(_id);
     const __group = this._fb.group({
-      id: [i],
+      id: [_id],
       itemId: [item?.itemId || 0],
       productId: [item?.productId],
       product: [item?.product, [Validators.required]],
@@ -45,6 +47,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
       price: [item?.price, [Validators.required]],
       markup: [item?.markup],
       description: [item?.description],
+      isServiceType: [item?.product?.isServiceType],
     });
     this.controlsArray.push(__group);
   }
@@ -53,8 +56,15 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     if (this.initialItems && this.initialItems.length > 0) {
       for (let i = 0; i < this.initialItems.length; i++) {
         const __item = this.initialItems[i];
-        this._addGroup(__item, i);
+        this._addGroup(__item);
       }
+    }
+  }
+
+  private _setFocusToDescription(index: number) {
+    const _descriptionEL = document.getElementById(`description${index}`);
+    if (_descriptionEL) {
+      _descriptionEL.focus();
     }
   }
 
@@ -62,6 +72,8 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     const _formGroup = this.controlsArray.controls[index] as FormGroup;
     _formGroup.get("quantity").patchValue(1);
     _formGroup.get("price").patchValue(product.unitPrice);
+    _formGroup.get("description").patchValue(product.description);
+    this._setFocusToDescription(index);
   }
 
   get controlsArray(): FormArray {
@@ -79,6 +91,26 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   addLineItemClicked(fromTable: boolean): void {
     if (fromTable) {
       this._addGroup();
+    }
+  }
+
+  deleteItem(
+    index: number,
+    confirmationPopover: NgbPopover,
+    isFinalConfirmation: boolean
+  ) {
+    const _formGroup = this.controlsArray.controls[index] as FormGroup;
+    if (_formGroup) {
+      const _itemId = _formGroup.get("itemId").value;
+      if (_itemId === 0) {
+        this.controlsArray.controls.splice(index, 1);
+      } else {
+        if (!isFinalConfirmation) {
+          confirmationPopover.open();
+        } else {
+          console.log("Delete");
+        }
+      }
     }
   }
 

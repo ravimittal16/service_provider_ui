@@ -27,6 +27,10 @@ export class EditJobViewComponent implements OnInit {
     }
   }
 
+  addNoteClicked() {}
+
+  markAsCompleted() {}
+
   ngOnInit(): void {
     this._sub.add(
       this._route.params.subscribe((routeParams: Params) => {
@@ -34,7 +38,6 @@ export class EditJobViewComponent implements OnInit {
         this._loadJobDetails();
       }),
       this._jobsStoreFacade.selectedJobDetails$.subscribe((details) => {
-        console.log(details);
         if (details) {
           this.details = details;
         }

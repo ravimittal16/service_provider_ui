@@ -12,6 +12,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { ProductDto } from "@shared/service-proxies/service-proxies";
+import { Guid } from "guid-typescript";
 import { Observable } from "rxjs";
 import {
   debounceTime,
@@ -40,6 +41,7 @@ export class ProductSelectorInputComponent
   @Input() validationMessagesKey: string = "";
   @Input() filterServiceTypeOnly: boolean = true;
   @Input() showLabel: boolean = true;
+  @Input() setAutoFocus: boolean = false;
   // ==========================================================
   // default this will show only services, pass [onlyServices]="false" if you want all products
   // ==========================================================
@@ -47,7 +49,7 @@ export class ProductSelectorInputComponent
   @Output() onSelectionChanged: EventEmitter<ProductDto> = new EventEmitter<
     ProductDto
   >();
-
+  id: string;
   public value: ProductDto;
   products: ProductDto[];
   private _subs = new SubSink();
@@ -135,7 +137,20 @@ export class ProductSelectorInputComponent
     }
   }
 
+  setFocus(): void {
+    setTimeout(() => {
+      if (this.setAutoFocus) {
+        const _inputEl = document.getElementById(this.id);
+        if (_inputEl) {
+          _inputEl.focus();
+        }
+      }
+    });
+  }
+
   ngOnInit(): void {
+    this.id = Guid.create().toString();
     this._subcribeToProducts();
+    this.setFocus();
   }
 }
