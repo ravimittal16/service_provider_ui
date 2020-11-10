@@ -11,7 +11,7 @@
     <div class="col">
       <div class="d-flex justify-content-end">
         <button
-          class="btn btn-falcon-default btn-sm"
+          class="btn btn-falcon-primary btn-sm"
           (click)="addLineItemClicked(false)"
         >
           <i class="fa fa-plus"></i> Add Item from List
@@ -25,6 +25,7 @@
         <table
           class="table table-bordered table-striped items-table"
           *ngIf="controlsArray.controls.length > 0"
+          formArrayName="lineItems"
         >
           <thead>
             <th>Product/Service</th>
@@ -34,54 +35,56 @@
             <th style="width: 150px; max-width: 150px">Actions</th>
           </thead>
           <tbody>
-            <tr *ngFor="let _ of controlsArray.controls; let i = index">
-              <ng-container [formGroupName]="i">
-                <td>
-                  <div>
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        formControlName="productName"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <textarea
-                        rows="3"
-                        placeholder="product description..."
-                        class="form-control form-control-sm"
-                        formControlName="description"
-                      ></textarea>
-                    </div>
-                  </div>
-                </td>
-                <td>
+            <tr
+              *ngFor="let _ of controlsArray.controls; index as i"
+              [formGroupName]="i"
+            >
+              <td>
+                <div>
                   <div class="form-group">
-                    <input
-                      type="number"
-                      class="form-control form-control-sm"
-                      formControlName="quantity"
-                    />
+                    <app-product-selector-input
+                      formControlName="product"
+                      [showLabel]="false"
+                      [onlyServices]="false"
+                      (onSelectionChanged)="onItemSelectionChanged($event, i)"
+                    ></app-product-selector-input>
                   </div>
-                </td>
-                <td>
                   <div class="form-group">
-                    <input
-                      type="number"
+                    <textarea
+                      rows="3"
+                      placeholder="product description..."
                       class="form-control form-control-sm"
-                      formControlName="price"
-                    />
+                      formControlName="description"
+                    ></textarea>
                   </div>
-                </td>
-                <td></td>
-                <td>
-                  <div>
-                    <button class="btn btn-sm btn-falcon-danger">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </ng-container>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input
+                    type="number"
+                    class="form-control form-control-sm"
+                    formControlName="quantity"
+                  />
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <input
+                    type="number"
+                    class="form-control form-control-sm"
+                    formControlName="price"
+                  />
+                </div>
+              </td>
+              <td></td>
+              <td>
+                <div>
+                  <button class="btn btn-sm btn-falcon-danger">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
           <tfoot>
@@ -89,7 +92,7 @@
               <th colspan="5">
                 <div class="d-flex justify-content-start">
                   <button
-                    class="btn btn-falcon-default btn-sm"
+                    class="btn btn-falcon-primary btn-sm"
                     (click)="addLineItemClicked(true)"
                   >
                     <i class="fa fa-plus"></i> Add Item

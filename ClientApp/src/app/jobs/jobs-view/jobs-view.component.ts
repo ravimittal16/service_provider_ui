@@ -17,8 +17,6 @@ export class JobsViewComponent implements OnInit {
   jobs$: Observable<JobDto[]>;
   constructor(
     private _jobsModalService: JobsModalService,
-    private _customerFacade: CustomersFacade,
-    private _productsFacade: ProductsFacade,
     private _jobsFacade: JobsFacade
   ) {
     this.jobs$ = _jobsFacade.jobs$;
@@ -41,8 +39,6 @@ export class JobsViewComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this._customerFacade.loadCustomers(1);
-    this._productsFacade.loadProducts();
     this._jobsFacade.loadJobs();
   }
 }
