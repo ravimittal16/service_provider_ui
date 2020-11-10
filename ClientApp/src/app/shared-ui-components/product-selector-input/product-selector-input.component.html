@@ -2,7 +2,7 @@
   <label *ngIf="showLabel">{{ label }}</label>
   <div class="input-group input-group-sm">
     <input
-      id="typeahead-prevent-manual-entry"
+      [id]="id"
       #titleInput
       type="text"
       class="form-control form-control-sm"

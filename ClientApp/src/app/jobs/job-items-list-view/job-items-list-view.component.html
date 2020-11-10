@@ -14,7 +14,7 @@
           class="btn btn-falcon-primary btn-sm"
           (click)="addLineItemClicked(false)"
         >
-          <i class="fa fa-plus"></i> Add Item from List
+          <i class="fa fa-plus"></i> Add product from List
         </button>
       </div>
     </div>
@@ -45,6 +45,8 @@
                     <app-product-selector-input
                       formControlName="product"
                       [showLabel]="false"
+                      [id]="i"
+                      [setAutoFocus]="true"
                       [onlyServices]="false"
                       (onSelectionChanged)="onItemSelectionChanged($event, i)"
                     ></app-product-selector-input>
@@ -52,6 +54,7 @@
                   <div class="form-group">
                     <textarea
                       rows="3"
+                      [id]="'description' + i"
                       placeholder="product description..."
                       class="form-control form-control-sm"
                       formControlName="description"
@@ -80,7 +83,10 @@
               <td></td>
               <td>
                 <div>
-                  <button class="btn btn-sm btn-falcon-danger">
+                  <button
+                    class="btn btn-sm btn-falcon-danger"
+                    (click)="deleteItem(i)"
+                  >
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
@@ -95,7 +101,7 @@
                     class="btn btn-falcon-primary btn-sm"
                     (click)="addLineItemClicked(true)"
                   >
-                    <i class="fa fa-plus"></i> Add Item
+                    <i class="fa fa-plus"></i> Add product
                   </button>
                 </div>
               </th>
