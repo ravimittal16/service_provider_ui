@@ -3,11 +3,16 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnDestroy,
   OnInit,
 } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
-import { JobLineItemDto } from "@shared/service-proxies/service-proxies";
+import { Guid } from "guid-typescript";
+import {
+  JobLineItemDto,
+  ProductDto,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 
 @Component({
@@ -16,7 +21,7 @@ import { Observable } from "rxjs";
   styleUrls: ["./job-items-list-view.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JobItemsListViewComponent implements OnInit {
+export class JobItemsListViewComponent implements OnInit, OnDestroy {
   @Input() jobId: number;
   @Input() initialItems: JobLineItemDto[];
   lineItems: JobLineItemDto[] = [];
@@ -26,13 +31,15 @@ export class JobItemsListViewComponent implements OnInit {
   constructor(private _fb: FormBuilder, private _cdr: ChangeDetectorRef) {
     this.errors$ = this.__errorRenderer.errors$;
   }
+  ngOnDestroy(): void {}
 
   private _addGroup(item?: JobLineItemDto, i: number = 0) {
+    console.log(item?.product?.name);
     const __group = this._fb.group({
       id: [i],
       itemId: [item?.itemId || 0],
       productId: [item?.productId],
-      productName: [item?.product?.name, [Validators.required]],
+      product: [item?.product, [Validators.required]],
       taxable: [item?.taxable || false],
       quantity: [item?.quantity, [Validators.required]],
       price: [item?.price, [Validators.required]],
@@ -51,18 +58,28 @@ export class JobItemsListViewComponent implements OnInit {
     }
   }
 
+  onItemSelectionChanged(product: ProductDto, index: number) {
+    const _formGroup = this.controlsArray.controls[index] as FormGroup;
+    _formGroup.get("quantity").patchValue(1);
+    _formGroup.get("price").patchValue(product.unitPrice);
+  }
+
   get controlsArray(): FormArray {
-    return this.lineItemsFormGroup.get("lineItems") as FormArray;
+    const _formArray = this.lineItemsFormGroup.get("lineItems") as FormArray;
+    return _formArray;
   }
 
   private _initFormControl() {
     this.lineItemsFormGroup = this._fb.group({
+      id: [],
       lineItems: this._fb.array([]),
     });
   }
 
   addLineItemClicked(fromTable: boolean): void {
-    this._addGroup();
+    if (fromTable) {
+      this._addGroup();
+    }
   }
 
   ngOnInit(): void {

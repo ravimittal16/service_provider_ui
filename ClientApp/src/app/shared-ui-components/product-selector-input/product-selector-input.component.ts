@@ -39,12 +39,17 @@ export class ProductSelectorInputComponent
   @Input() validationMessages: { [key: string]: string } = {};
   @Input() validationMessagesKey: string = "";
   @Input() filterServiceTypeOnly: boolean = true;
+  @Input() showLabel: boolean = true;
+  // ==========================================================
+  // default this will show only services, pass [onlyServices]="false" if you want all products
+  // ==========================================================
+  @Input() onlyServices: boolean = true;
   @Output() onSelectionChanged: EventEmitter<ProductDto> = new EventEmitter<
     ProductDto
   >();
 
   public value: ProductDto;
-  services: ProductDto[];
+  products: ProductDto[];
   private _subs = new SubSink();
 
   constructor(
@@ -66,7 +71,10 @@ export class ProductSelectorInputComponent
     });
   }
 
-  searchResultFormatter = (state: ProductDto) => `${state.name}`;
+  searchResultFormatter = (state: ProductDto) =>
+    this.onlyServices
+      ? `${state.name}`
+      : `${state.name} - (${state.type === "Service" ? "Service" : "Product"})`;
 
   searchProduct = (text$: Observable<string>) =>
     text$.pipe(
@@ -74,7 +82,7 @@ export class ProductSelectorInputComponent
       distinctUntilChanged(),
       filter((term) => term.length >= 2),
       map((term) =>
-        this.services
+        this.products
           .filter((product) => new RegExp(term, "mi").test(product.name))
           .slice(0, 10)
       )
@@ -87,6 +95,12 @@ export class ProductSelectorInputComponent
   writeValue(obj: any): void {
     if (this._elementRef.nativeElement) {
       this._renderer.setProperty(this._elementRef.nativeElement, "value", obj);
+    }
+    if (obj as ProductDto) {
+      this.value = obj;
+      setTimeout(() => {
+        this.onChange(obj);
+      }, 100);
     }
   }
 
@@ -109,9 +123,19 @@ export class ProductSelectorInputComponent
     }
   }
 
+  private _subcribeToProducts() {
+    if (this.onlyServices) {
+      this._subs.add(
+        this._productsFacade.servicesOnly$.subscribe((x) => (this.products = x))
+      );
+    } else {
+      this._subs.add(
+        this._productsFacade.products$.subscribe((x) => (this.products = x))
+      );
+    }
+  }
+
   ngOnInit(): void {
-    this._subs.add(
-      this._productsFacade.servicesOnly$.subscribe((x) => (this.services = x))
-    );
+    this._subcribeToProducts();
   }
 }

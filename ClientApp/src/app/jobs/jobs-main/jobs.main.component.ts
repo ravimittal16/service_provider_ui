@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, Renderer2 } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
+import { CustomersFacade } from "@core-data/customers/customers.facade";
+import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { JobDto } from "@shared/service-proxies/service-proxies";
 
 import { SubSink } from "subsink";
@@ -20,6 +22,8 @@ export class JobsMainComponent implements OnInit, OnDestroy {
   constructor(
     private title: Title,
     private _renderer: Renderer2,
+    private _customerFacade: CustomersFacade,
+    private _productsFacade: ProductsFacade,
     private _jobModalService: JobsModalService,
     private _router: Router
   ) {}
@@ -66,6 +70,8 @@ export class JobsMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._customerFacade.loadCustomers(1);
+    this._productsFacade.loadProducts();
     this.title.setTitle("Service Provider | Jobs");
     this._sub.add(
       this._jobModalService.jobVerticalModalBehaviour$.subscribe((details) => {
