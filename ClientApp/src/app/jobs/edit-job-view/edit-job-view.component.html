@@ -187,7 +187,12 @@
           </li>
           <li ngbNavItem>
             <a ngbNavLink>Items</a>
-            <ng-template ngbNavContent>Second content</ng-template>
+            <ng-template ngbNavContent>
+              <app-job-items-list-view
+                [jobId]="jobId"
+                [initialItems]="details?.lineItems"
+              ></app-job-items-list-view>
+            </ng-template>
           </li>
           <li ngbNavItem>
             <a ngbNavLink>Job Forms</a>

@@ -1,0 +1,105 @@
+<div>
+  <div class="row">
+    <div class="col">
+      <app-error-view
+        [errors$]="errors$"
+        [observableDefined]="true"
+      ></app-error-view>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-end">
+        <button
+          class="btn btn-falcon-default btn-sm"
+          (click)="addLineItemClicked(false)"
+        >
+          <i class="fa fa-plus"></i> Add Item from List
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <form [formGroup]="lineItemsFormGroup">
+        <table
+          class="table table-bordered table-striped items-table"
+          *ngIf="controlsArray.controls.length > 0"
+        >
+          <thead>
+            <th>Product/Service</th>
+            <th style="width: 150px; max-width: 150px">Quantity</th>
+            <th style="width: 150px; max-width: 150px">Unit Price</th>
+            <th style="width: 150px; max-width: 150px">Total Price</th>
+            <th style="width: 150px; max-width: 150px">Actions</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let _ of controlsArray.controls; let i = index">
+              <ng-container [formGroupName]="i">
+                <td>
+                  <div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        formControlName="productName"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <textarea
+                        rows="3"
+                        placeholder="product description..."
+                        class="form-control form-control-sm"
+                        formControlName="description"
+                      ></textarea>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      formControlName="quantity"
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      formControlName="price"
+                    />
+                  </div>
+                </td>
+                <td></td>
+                <td>
+                  <div>
+                    <button class="btn btn-sm btn-falcon-danger">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="5">
+                <div class="d-flex justify-content-start">
+                  <button
+                    class="btn btn-falcon-default btn-sm"
+                    (click)="addLineItemClicked(true)"
+                  >
+                    <i class="fa fa-plus"></i> Add Item
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
