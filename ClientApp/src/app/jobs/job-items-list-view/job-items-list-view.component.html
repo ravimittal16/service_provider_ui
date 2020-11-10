@@ -31,8 +31,13 @@
             <th>Product/Service</th>
             <th style="width: 150px; max-width: 150px">Quantity</th>
             <th style="width: 150px; max-width: 150px">Unit Price</th>
+            <th style="width: 100px; max-width: 100px" class="text-center">
+              Taxable
+            </th>
             <th style="width: 150px; max-width: 150px">Total Price</th>
-            <th style="width: 150px; max-width: 150px">Actions</th>
+            <th style="width: 100px; max-width: 100px" class="text-center">
+              Actions
+            </th>
           </thead>
           <tbody>
             <tr
@@ -80,12 +85,53 @@
                   />
                 </div>
               </td>
+              <td class="text-center">
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="taxableCheckbox"
+                    formControlName="taxable"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="taxableCheckbox"
+                  ></label>
+                </div>
+              </td>
               <td></td>
-              <td>
+              <td class="text-center">
                 <div>
+                  <ng-template #popContent>
+                    <div class="row">
+                      <div class="col-auto">
+                        <button
+                          class="btn btn-sm btn-falcon-success"
+                          (click)="deleteItem(i, null, true)"
+                        >
+                          Yes
+                        </button>
+                      </div>
+                      <div class="col-auto">
+                        <button
+                          class="btn btn-sm btn-falcon-danger"
+                          (click)="confirmationPopover.close()"
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <ng-template #popTitle>Are you sure?</ng-template>
                   <button
+                    triggers="manual"
                     class="btn btn-sm btn-falcon-danger"
-                    (click)="deleteItem(i)"
+                    #confirmationPopover="ngbPopover"
+                    [autoClose]="true"
+                    [closeDelay]="3000"
+                    [ngbPopover]="popContent"
+                    [popoverTitle]="popTitle"
+                    (click)="deleteItem(i, confirmationPopover, false)"
                   >
                     <i class="fa fa-trash"></i>
                   </button>
@@ -95,7 +141,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="5">
+              <th colspan="6">
                 <div class="d-flex justify-content-start">
                   <button
                     class="btn btn-falcon-primary btn-sm"

@@ -14,6 +14,7 @@ import {
   ProductDto,
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { NgbPopover } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -46,6 +47,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
       price: [item?.price, [Validators.required]],
       markup: [item?.markup],
       description: [item?.description],
+      isServiceType: [item?.product?.isServiceType],
     });
     this.controlsArray.push(__group);
   }
@@ -70,6 +72,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     const _formGroup = this.controlsArray.controls[index] as FormGroup;
     _formGroup.get("quantity").patchValue(1);
     _formGroup.get("price").patchValue(product.unitPrice);
+    _formGroup.get("description").patchValue(product.description);
     this._setFocusToDescription(index);
   }
 
@@ -91,12 +94,22 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteItem(index: number) {
+  deleteItem(
+    index: number,
+    confirmationPopover: NgbPopover,
+    isFinalConfirmation: boolean
+  ) {
     const _formGroup = this.controlsArray.controls[index] as FormGroup;
     if (_formGroup) {
       const _itemId = _formGroup.get("itemId").value;
       if (_itemId === 0) {
         this.controlsArray.controls.splice(index, 1);
+      } else {
+        if (!isFinalConfirmation) {
+          confirmationPopover.open();
+        } else {
+          console.log("Delete");
+        }
       }
     }
   }

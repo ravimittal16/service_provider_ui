@@ -6,6 +6,7 @@
       #titleInput
       type="text"
       class="form-control form-control-sm"
+      placeholder="search product here..."
       [(ngModel)]="value"
       [ngClass]="{ 'is-invalid': validationMessages[validationMessagesKey] }"
       [ngbTypeahead]="searchProduct"
