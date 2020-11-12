@@ -29,3 +29,7 @@ export const selectAllProducts = createSelector(
 export const selectAllServices = createSelector(selectAllProducts, (products) =>
   products.filter((x) => x.type === "Service")
 );
+export const selectProductsByFilter = createSelector(
+  productsFeatureState,
+  (state) => state.filteredProducts[state.selectedGroupFromModal.groupName]
+);

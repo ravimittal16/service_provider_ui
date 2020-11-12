@@ -28,6 +28,15 @@ export class ProductsFacade implements Facade {
     this.dispatch(fromProductActions.importProductsStartAction());
   }
 
+  onGroupSelected(group: any) {
+    this.dispatch(fromProductActions.onGroupSelectionAction({ group: group }));
+    this.dispatch(
+      fromProductActions.loadProductsByFilterAction({
+        filterBy: group.groupName,
+      })
+    );
+  }
+
   loadProducts() {
     this.dispatch(fromProductActions.loadProductsAction());
   }
