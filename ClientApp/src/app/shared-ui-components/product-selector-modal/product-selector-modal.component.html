@@ -2,7 +2,7 @@
 <div class="modal-body">
   <div>
     <div class="row">
-      <div class="col-auto">
+      <div class="col-auto pr-0">
         <div
           class="btn-group-vertical btn-group-sm btn-group-toggle"
           data-toggle="buttons"
@@ -23,8 +23,48 @@
           </label>
         </div>
       </div>
-      <div class="col">HELLO WORLD</div>
+      <div class="col">
+        <div>
+          <table class="table table-bordered table-sm fs--1">
+            <thead>
+              <tr>
+                <th style="width: 100px; max-width: 100px" class="text-center">
+                  Action
+                </th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of filterProductsForModal$ | async">
+                <td class="text-center">
+                  <label for="checkbox{{ product.productId }}"></label>
+                  <input type="checkbox" id="checkbox{{ product.productId }}" />
+                </td>
+                <td>
+                  {{ product.name }}
+                </td>
+                <td>
+                  {{ product.description }}
+                </td>
+                <td>
+                  {{ product.unitPrice | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<div class="modal-footer">FOOTER</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-danger btn-sm"
+    (click)="activeModal.close(true)"
+  >
+    Close
+  </button>
+</div>
