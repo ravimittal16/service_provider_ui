@@ -41,7 +41,6 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
 
   private _addGroup(item?: JobLineItemDto) {
     const _id = item ? item?.itemId.toString() : Guid.create().toString();
-    console.log(_id);
     const __group = this._fb.group({
       id: [_id],
       itemId: [item?.itemId || 0],
@@ -98,7 +97,11 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
       this._addGroup();
     } else {
       const _productListModal = this._uiComponentsService.openProductSelectorModal(
-        true
+        true,
+        "Add Product",
+        (product: ProductDto) => {
+          console.log("on selection changed", product);
+        }
       );
     }
   }

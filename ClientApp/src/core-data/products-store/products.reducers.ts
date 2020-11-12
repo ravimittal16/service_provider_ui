@@ -44,9 +44,7 @@ const productsFeatureReducer = createReducer(
     productsActions.productsLoadedByFilterAction,
     (state: ProductsState, props) => {
       const __filerProducts = { ...state.filteredProducts };
-
       __filerProducts[props.filterBy] = [...props.products];
-      console.log(__filerProducts);
       return {
         ...state,
         filteredProducts: __filerProducts,

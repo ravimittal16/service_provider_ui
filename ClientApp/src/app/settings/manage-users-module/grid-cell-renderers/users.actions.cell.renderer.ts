@@ -72,7 +72,5 @@ export class UsersActionsCellRenderer
   agInit(params: ICellRendererParams): void {
     this.params = params;
   }
-  afterGuiAttached?(params?: IAfterGuiAttachedParams): void {
-    console.log(params);
-  }
+  afterGuiAttached?(params?: IAfterGuiAttachedParams): void {}
 }

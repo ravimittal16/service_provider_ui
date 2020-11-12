@@ -171,7 +171,6 @@ export class CustomerEditCreateModalComponent
   }
 
   onCustomerSubmitted(): void {
-    console.log(this.customerFormGroup);
     if (this.customerFormGroup.valid) {
       var _customerDto: CustomerModel = this.customerFormGroup.getRawValue();
       if (this.addresses && this.addresses.length > 0) {
