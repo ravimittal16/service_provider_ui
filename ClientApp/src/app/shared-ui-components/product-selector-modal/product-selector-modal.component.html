@@ -2,7 +2,7 @@
 <div class="modal-body">
   <div>
     <div class="row">
-      <div class="col-auto">
+      <div class="col-auto pr-0">
         <div
           class="btn-group-vertical btn-group-sm btn-group-toggle"
           data-toggle="buttons"
@@ -23,7 +23,15 @@
           </label>
         </div>
       </div>
-      <div class="col">HELLO WORLD</div>
+      <div class="col">
+        <ag-grid-angular
+          style="width: 100%; height: calc(100vh - 13.2rem)"
+          class="ag-theme-alpine"
+          [gridOptions]="gridOptions"
+          [rowData]="filterProductsForModal$ | async"
+        >
+        </ag-grid-angular>
+      </div>
     </div>
   </div>
 </div>

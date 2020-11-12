@@ -31,5 +31,9 @@ export const selectAllServices = createSelector(selectAllProducts, (products) =>
 );
 export const selectProductsByFilter = createSelector(
   productsFeatureState,
-  (state) => state.filteredProducts[state.selectedGroupFromModal.groupName]
+  (state) => {
+    if (state.selectedGroupFromModal && state.selectedGroupFromModal.groupName)
+      return state.filteredProducts[state.selectedGroupFromModal.groupName];
+    return null;
+  }
 );

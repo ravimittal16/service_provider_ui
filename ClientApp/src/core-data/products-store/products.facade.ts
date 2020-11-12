@@ -15,12 +15,16 @@ export class ProductsFacade implements Facade {
   isBusy$: Observable<boolean>;
   products$: Observable<ProductDto[]>;
   servicesOnly$: Observable<ProductDto[]>;
+  filterProductsForModal$: Observable<ProductDto[]>;
   constructor(private _store: Store<ProductsState>) {
     this.products$ = this._store.pipe(
       select(fromProductSelectors.selectAllProducts)
     );
     this.servicesOnly$ = this._store.pipe(
       select(fromProductSelectors.selectAllServices)
+    );
+    this.filterProductsForModal$ = this._store.pipe(
+      select(fromProductSelectors.selectProductsByFilter)
     );
   }
 

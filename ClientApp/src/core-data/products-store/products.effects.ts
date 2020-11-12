@@ -43,7 +43,9 @@ export class ProductsStoreEffects extends BaseEffect {
       ofType(productsActions.loadProductsByFilterAction),
       withLatestFrom(this._store.select(allSelectors.selectProductsByFilter)),
       filter(([action, products]) => {
-        return !!products;
+        console.log(action);
+        console.log(products);
+        return products === undefined || products.length === 0;
       }),
       mergeMap((action) => {
         console.log(action);
