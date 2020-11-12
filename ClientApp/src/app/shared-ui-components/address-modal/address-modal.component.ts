@@ -40,7 +40,6 @@ export class AddressModalComponent implements OnInit {
   // ==========================================================
   private get defaultTitle() {
     let _addressType = "";
-    console.log(this.addressType);
     if (this.addressType) {
       switch (this.addressType) {
         case 0:

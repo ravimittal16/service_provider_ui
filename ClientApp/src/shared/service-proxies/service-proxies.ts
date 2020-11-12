@@ -1060,7 +1060,7 @@ export class JobsServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    addUpdateLineItem(jobId: number | undefined, body: JobLineItemDto | undefined): Observable<JobLineItemDto> {
+    addUpdateLineItem(jobId: number | undefined, body: ProductDto | undefined): Observable<JobLineItemDto> {
         let url_ = this.baseUrl + "/api/Jobs/AddUpdateLineItem?";
         if (jobId === null)
             throw new Error("The parameter 'jobId' cannot be null.");
@@ -2934,6 +2934,7 @@ export class ProductDto implements IProductDto {
     itemCategoryType: string | undefined;
     taxable: boolean | undefined;
     unitPrice: number | undefined;
+    quantity: number | undefined;
     sku: string | undefined;
     readonly isServiceType: boolean;
 
@@ -2955,6 +2956,7 @@ export class ProductDto implements IProductDto {
             this.itemCategoryType = _data["itemCategoryType"];
             this.taxable = _data["taxable"];
             this.unitPrice = _data["unitPrice"];
+            this.quantity = _data["quantity"];
             this.sku = _data["sku"];
             (<any>this).isServiceType = _data["isServiceType"];
         }
@@ -2976,6 +2978,7 @@ export class ProductDto implements IProductDto {
         data["itemCategoryType"] = this.itemCategoryType;
         data["taxable"] = this.taxable;
         data["unitPrice"] = this.unitPrice;
+        data["quantity"] = this.quantity;
         data["sku"] = this.sku;
         data["isServiceType"] = this.isServiceType;
         return data; 
@@ -2997,6 +3000,7 @@ export interface IProductDto {
     itemCategoryType: string | undefined;
     taxable: boolean | undefined;
     unitPrice: number | undefined;
+    quantity: number | undefined;
     sku: string | undefined;
     isServiceType: boolean;
 }

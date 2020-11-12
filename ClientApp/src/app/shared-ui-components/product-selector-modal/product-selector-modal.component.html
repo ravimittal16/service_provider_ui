@@ -1,4 +1,6 @@
-<div class="modal-header">HEADER</div>
+<div class="modal-header">
+  {{ title }}
+</div>
 <div class="modal-body">
   <div>
     <div class="row">
@@ -24,36 +26,75 @@
         </div>
       </div>
       <div class="col">
-        <div>
-          <table class="table table-bordered table-sm fs--1">
-            <thead>
-              <tr>
-                <th style="width: 100px; max-width: 100px" class="text-center">
-                  Action
-                </th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of filterProductsForModal$ | async">
-                <td class="text-center">
-                  <label for="checkbox{{ product.productId }}"></label>
-                  <input type="checkbox" id="checkbox{{ product.productId }}" />
-                </td>
-                <td>
-                  {{ product.name }}
-                </td>
-                <td>
-                  {{ product.description }}
-                </td>
-                <td>
-                  {{ product.unitPrice | currency }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="row">
+          <div class="col">
+            <div class="d-flex justify-content-end">
+              <form [formGroup]="searchForm">
+                <div class="input-group input-group-sm">
+                  <input
+                    #titleInput
+                    type="text"
+                    class="form-control form-control-sm"
+                    placeholder="search product here..."
+                    formControlName="searchCriteria"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary btn-sm"
+                      type="button"
+                      tabindex="-1"
+                    >
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col">
+            <div>
+              <table class="table table-bordered table-sm fs--1">
+                <thead>
+                  <tr>
+                    <th
+                      style="width: 100px; max-width: 100px"
+                      class="text-center"
+                    >
+                      Action
+                    </th>
+                    <th style="width: 200px; max-width: 200px">Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of filterProductsForModal$ | async">
+                    <td class="text-center">
+                      <button
+                        class="btn btn-xs btn-falcon-primary"
+                        (click)="selectProduct(product)"
+                      >
+                        Use
+                      </button>
+                    </td>
+                    <td>
+                      <span class="font-weight-semi-bold">
+                        {{ product.name }}
+                      </span>
+                    </td>
+                    <td>
+                      {{ product.description }}
+                    </td>
+                    <td>
+                      {{ product.unitPrice | currency }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -62,9 +103,9 @@
 <div class="modal-footer">
   <button
     type="button"
-    class="btn btn-danger btn-sm"
+    class="btn btn-info btn-sm"
     (click)="activeModal.close(true)"
   >
-    Close
+    Done
   </button>
 </div>

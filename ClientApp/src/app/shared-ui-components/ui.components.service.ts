@@ -37,8 +37,8 @@ export class UiComponentsService {
 
   get filterButtonsGroup() {
     return [
-      { groupName: "*", checked: true },
-      { groupName: "A" },
+      { groupName: "*" },
+      { groupName: "A", checked: true },
       { groupName: "B" },
       { groupName: "C" },
       { groupName: "D" },
@@ -67,13 +67,19 @@ export class UiComponentsService {
     ];
   }
 
-  openProductSelectorModal(showAll: boolean) {
+  openProductSelectorModal(
+    showAll: boolean,
+    title: string,
+    callback?: (product: ProductDto) => void
+  ) {
     this._modalStyle.size = "lg";
     const _modal = this.modalService.open(
       ProductSelectorModalComponent,
       this._modalStyle
     );
     _modal.componentInstance.showAllProducts = showAll;
+    _modal.componentInstance.title = title;
+    _modal.componentInstance.selectionCallback = callback;
     return _modal;
   }
 }
