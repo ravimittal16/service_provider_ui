@@ -7,6 +7,7 @@ import {
   Output,
 } from "@angular/core";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { ProductDto } from "@shared/service-proxies/service-proxies";
 import { GridOptions } from "ag-grid-community";
 import { Observable } from "rxjs";
@@ -25,6 +26,7 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
   gridOptions: GridOptions;
   private _subs = new SubSink();
   constructor(
+    public activeModal: NgbActiveModal,
     private _productsFacade: ProductsFacade,
     private _uiComponentService: UiComponentsService
   ) {

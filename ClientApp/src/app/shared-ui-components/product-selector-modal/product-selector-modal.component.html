@@ -24,15 +24,47 @@
         </div>
       </div>
       <div class="col">
-        <ag-grid-angular
-          style="width: 100%; height: calc(100vh - 13.2rem)"
-          class="ag-theme-alpine"
-          [gridOptions]="gridOptions"
-          [rowData]="filterProductsForModal$ | async"
-        >
-        </ag-grid-angular>
+        <div>
+          <table class="table table-bordered table-sm fs--1">
+            <thead>
+              <tr>
+                <th style="width: 100px; max-width: 100px" class="text-center">
+                  Action
+                </th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of filterProductsForModal$ | async">
+                <td class="text-center">
+                  <label for="checkbox{{ product.productId }}"></label>
+                  <input type="checkbox" id="checkbox{{ product.productId }}" />
+                </td>
+                <td>
+                  {{ product.name }}
+                </td>
+                <td>
+                  {{ product.description }}
+                </td>
+                <td>
+                  {{ product.unitPrice | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
-<div class="modal-footer">FOOTER</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-danger btn-sm"
+    (click)="activeModal.close(true)"
+  >
+    Close
+  </button>
+</div>
