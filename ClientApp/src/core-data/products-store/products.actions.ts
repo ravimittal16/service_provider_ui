@@ -26,3 +26,19 @@ export const productsLoadedErrorAction = createAction(
 // ==========================================================
 // PRODUCT CREATE/UPDATE ACTIONS
 // ==========================================================
+
+// ==========================================================
+// OTHER ACTION
+// ==========================================================
+export const onGroupSelectionAction = createAction(
+  "[Products] On Group Selected",
+  props<{ group: any }>()
+);
+export const loadProductsByFilterAction = createAction(
+  "[Products] Loading products by filter",
+  props<{ filterBy: string }>()
+);
+export const productsLoadedByFilterAction = createAction(
+  "[Products] Loaded products by filter",
+  props<{ products: ProductDto[]; filterBy: string }>()
+);

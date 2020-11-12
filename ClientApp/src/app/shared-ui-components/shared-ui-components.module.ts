@@ -14,6 +14,7 @@ import { CustomerSelectorInputComponent } from "./customer-selector-input/custom
 import { ProductSelectorInputComponent } from "./product-selector-input/product-selector-input.component";
 import { CustomerAddressSelectorModalComponent } from "./customer-address-selector-modal/customer-address-selector-modal.component";
 import { SharedDataService } from "./shared.data.service";
+import { ProductSelectorModalComponent } from "./product-selector-modal/product-selector-modal.component";
 
 const __exportableComponents = [
   CollapsibleCardComponent,
@@ -25,6 +26,7 @@ const __exportableComponents = [
   CustomerSelectorInputComponent,
   ProductSelectorInputComponent,
   CustomerAddressSelectorModalComponent,
+  ProductSelectorModalComponent,
 ];
 
 @NgModule({

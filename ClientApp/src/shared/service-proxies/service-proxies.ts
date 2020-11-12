@@ -1054,6 +1054,67 @@ export class JobsServiceProxy {
         }
         return _observableOf<JobDetailsDto>(<any>null);
     }
+
+    /**
+     * @param jobId (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    addUpdateLineItem(jobId: number | undefined, body: JobLineItemDto | undefined): Observable<JobLineItemDto> {
+        let url_ = this.baseUrl + "/api/Jobs/AddUpdateLineItem?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddUpdateLineItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddUpdateLineItem(<any>response_);
+                } catch (e) {
+                    return <Observable<JobLineItemDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobLineItemDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddUpdateLineItem(response: HttpResponseBase): Observable<JobLineItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobLineItemDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobLineItemDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1123,10 +1184,13 @@ export class ProductsServiceProxy {
     }
 
     /**
+     * @param filterBy (optional) 
      * @return Success
      */
-    getAllProducts(): Observable<ProductDto[]> {
-        let url_ = this.baseUrl + "/api/Products/GetAllProducts";
+    getAllProducts(filterBy: string | null | undefined): Observable<ProductDto[]> {
+        let url_ = this.baseUrl + "/api/Products/GetAllProducts?";
+        if (filterBy !== undefined && filterBy !== null)
+            url_ += "filterBy=" + encodeURIComponent("" + filterBy) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

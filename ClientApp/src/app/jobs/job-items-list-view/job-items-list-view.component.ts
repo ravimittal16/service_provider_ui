@@ -15,6 +15,7 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { NgbPopover } from "@ng-bootstrap/ng-bootstrap";
+import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -29,7 +30,11 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   lineItemsFormGroup: FormGroup;
   private __errorRenderer = new ErrorRenderer();
   errors$: Observable<string[]>;
-  constructor(private _fb: FormBuilder, private _cdr: ChangeDetectorRef) {
+  constructor(
+    private _fb: FormBuilder,
+    private _cdr: ChangeDetectorRef,
+    private _uiComponentsService: UiComponentsService
+  ) {
     this.errors$ = this.__errorRenderer.errors$;
   }
   ngOnDestroy(): void {}
@@ -91,6 +96,10 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   addLineItemClicked(fromTable: boolean): void {
     if (fromTable) {
       this._addGroup();
+    } else {
+      const _productListModal = this._uiComponentsService.openProductSelectorModal(
+        true
+      );
     }
   }
 

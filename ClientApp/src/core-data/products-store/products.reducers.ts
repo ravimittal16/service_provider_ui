@@ -3,6 +3,7 @@ import { ProductsState } from "./products.state";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 import * as productsActions from "./products.actions";
 import { on, Action, createReducer } from "@ngrx/store";
+import { state } from "@angular/animations";
 
 export const productsStoreFeatureKey = "products";
 
@@ -21,6 +22,8 @@ export const initialState: ProductsState = adapter.getInitialState({
   isBusy: false,
   errors: [],
   success: false,
+  selectedGroupFromModal: null,
+  filteredProducts: {},
 });
 
 const productsFeatureReducer = createReducer(
@@ -36,7 +39,28 @@ const productsFeatureReducer = createReducer(
   on(
     productsActions.productsLoadedSuccessAction,
     (state: ProductsState, props) => adapter.addMany(props.products, state)
-  )
+  ),
+  on(
+    productsActions.productsLoadedByFilterAction,
+    (state: ProductsState, props) => {
+      const __filerProducts = { ...state.filteredProducts };
+
+      __filerProducts[props.filterBy] = [...props.products];
+      console.log(__filerProducts);
+      return {
+        ...state,
+        filteredProducts: __filerProducts,
+      };
+    }
+  ),
+  on(productsActions.onGroupSelectionAction, (state: ProductsState, props) => {
+    const __state = state;
+
+    return {
+      ...state,
+      selectedGroupFromModal: props.group,
+    };
+  })
 );
 
 export function reducer(state: ProductsState | undefined, action: Action) {
