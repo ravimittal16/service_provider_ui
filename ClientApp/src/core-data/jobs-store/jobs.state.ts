@@ -4,6 +4,7 @@ import {
   JobDetailsDto,
   JobDto,
   JobFilterModel,
+  JobLineItemDto,
 } from "@shared/service-proxies/service-proxies";
 
 export class JobsState extends BaseState<JobDto> {
@@ -11,4 +12,5 @@ export class JobsState extends BaseState<JobDto> {
   jobDetailsContainer: { [jobId: number]: JobDetailsDto };
   selectedJobId: number;
   selectedJobDetails: JobDetailsDto;
+  jobLineItems: JobLineItemDto[];
 }

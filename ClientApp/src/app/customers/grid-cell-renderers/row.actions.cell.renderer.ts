@@ -78,7 +78,6 @@ export class CustomerActionsCellRenderer
       | "delete"
       | "ínactive"
   ): void {
-    console.log(eventName);
     const listComponent = this.params.context as ListComponent;
     if (listComponent) {
       listComponent.triggerCustomerEvent(eventName, this.params.data);

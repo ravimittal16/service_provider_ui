@@ -54,7 +54,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private patchValue(fieldName: string, value: any): void {
     const field = this.registerForm.get(fieldName);
     if (field) {
-      console.log(value);
       field.setValue(value);
       field.disable();
     }
@@ -91,7 +90,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       if (this.externalSignupId) {
         this._fetchSignupInformation();
         this._registerFacade.externalModel$.subscribe((payload) => {
-          console.log(payload);
           if (payload) {
             this.bindExternalSignupProperties(payload["model"]);
           }

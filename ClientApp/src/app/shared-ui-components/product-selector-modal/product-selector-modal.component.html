@@ -73,8 +73,13 @@
                   <tr *ngFor="let product of filterProductsForModal$ | async">
                     <td class="text-center">
                       <button
+                        #quantityPopover="ngbPopover"
+                        [autoClose]="false"
+                        [closeDelay]="20000"
+                        [ngbPopover]="popQuantityContent"
+                        [popoverTitle]="popQuantityTitle"
                         class="btn btn-xs btn-falcon-primary"
-                        (click)="selectProduct(product)"
+                        (click)="selectProduct(product, quantityPopover, false)"
                       >
                         Use
                       </button>
@@ -109,3 +114,39 @@
     Done
   </button>
 </div>
+<ng-template #popQuantityContent>
+  <div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group flex-fill">
+          <label>{{ selectedProduct?.name }}</label>
+          <input
+            #quantityInput
+            [(ngModel)]="quantityVal"
+            id="quantityInput"
+            type="number"
+            class="form-control form-control-sm"
+            placeholder="quantity..."
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-auto">
+        <button
+          type="button"
+          class="btn btn-sm btn-falcon-success"
+          (click)="selectProduct(null, quantityPopover, true)"
+        >
+          Add
+        </button>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-sm btn-falcon-danger" (click)="closePopover()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #popQuantityTitle>Add Product</ng-template>
