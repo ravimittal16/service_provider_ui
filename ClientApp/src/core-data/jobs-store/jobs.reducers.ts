@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { Action, createReducer, on } from "@ngrx/store";
 import { JobsState } from "./jobs.state";
-import * as jobsAction from "./jobs.actions";
+import * as jobsActions from "./jobs.actions";
 import { JobDto } from "@shared/service-proxies/service-proxies";
 
 export const jobsFeatureKey = "jobs";
@@ -23,24 +23,38 @@ export const initialState: JobsState = adapter.getInitialState({
   jobDetailsContainer: {},
   selectedJobId: 0,
   selectedJobDetails: null,
+  jobLineItems: [],
 });
+
+function insertItem(array, action) {
+  return [
+    ...array.slice(0, action.index),
+    action.item,
+    ...array.slice(action.index),
+  ];
+}
 
 const jobsStoreReducer = createReducer(
   initialState,
-  on(jobsAction.fetchJobDetailsCompletedAction, (state, props) => {
-    const __conainer = { ...state.jobDetailsContainer };
-    __conainer[props.jobId] = props.details;
+  on(jobsActions.fetchJobDetailsCompletedAction, (state, props) => {
     return {
       ...state,
-      jobDetailsContainer: __conainer,
       isBusy: false,
       selectedJobDetails: props.details,
+      jobLineItems: props.details.lineItems,
     };
   }),
-  on(jobsAction.setSelectedJobIdAction, (state, props) => {
+  on(jobsActions.setSelectedJobIdAction, (state, props) => {
     return { ...state, selectedJobId: props.jobId };
   }),
-  on(jobsAction.jobsLoadedAction, (state, props) => {
+  on(jobsActions.addItemToJobCompletedAction, (state, props) => {
+    const __itemArray = insertItem(state.jobLineItems, {
+      index: state.jobLineItems.length,
+      item: props.itemDto,
+    });
+    return { ...state, isBusy: false, jobLineItems: __itemArray };
+  }),
+  on(jobsActions.jobsLoadedAction, (state, props) => {
     const __state = adapter.addMany(props.items, state);
     return {
       ...__state,

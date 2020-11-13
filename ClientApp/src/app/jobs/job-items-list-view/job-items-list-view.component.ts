@@ -16,6 +16,9 @@ import {
 import { Observable } from "rxjs";
 import { NgbPopover } from "@ng-bootstrap/ng-bootstrap";
 import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
+import { JobsDataService } from "../jobs.data.service";
+import { SubSink } from "subsink";
+import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -26,21 +29,25 @@ import { UiComponentsService } from "@app/shared-ui-components/ui.components.ser
 export class JobItemsListViewComponent implements OnInit, OnDestroy {
   @Input() jobId: number;
   @Input() initialItems: JobLineItemDto[];
-  lineItems: JobLineItemDto[] = [];
+  lineItems$: Observable<JobLineItemDto[]>;
   lineItemsFormGroup: FormGroup;
-  private __errorRenderer = new ErrorRenderer();
   errors$: Observable<string[]>;
+  private __errorRenderer = new ErrorRenderer();
+  private __sub = new SubSink();
   constructor(
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
-    private _uiComponentsService: UiComponentsService
+    private _uiComponentsService: UiComponentsService,
+    private _jobDataService: JobsDataService,
+    private _jobFacade: JobsFacade
   ) {
     this.errors$ = this.__errorRenderer.errors$;
+    this.lineItems$ = this._jobFacade.jobLineItems$;
   }
-  ngOnDestroy(): void {}
 
   private _addGroup(item?: JobLineItemDto) {
     const _id = item ? item?.itemId.toString() : Guid.create().toString();
+    console.log(item);
     const __group = this._fb.group({
       id: [_id],
       itemId: [item?.itemId || 0],
@@ -96,14 +103,27 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     if (fromTable) {
       this._addGroup();
     } else {
-      const _productListModal = this._uiComponentsService.openProductSelectorModal(
+      this._uiComponentsService.openProductSelectorModal(
         true,
         "Add Product",
         (product: ProductDto) => {
-          console.log("on selection changed", product);
+          this.__sub.add(
+            this._jobDataService
+              .addProductToJob(this.jobId, product)
+              .subscribe((item) => {
+                if (item) {
+                  this._addGroup(item);
+                  this._jobFacade.lineItemAdded(item, this.jobId);
+                }
+              })
+          );
         }
       );
     }
+  }
+
+  trackByItemId(index: number, item: JobLineItemDto) {
+    return item.itemId;
   }
 
   deleteItem(
@@ -126,10 +146,13 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnDestroy(): void {
+    this.__sub.unsubscribe();
+  }
+
   ngOnInit(): void {
     this._initFormControl();
     if (this.initialItems) {
-      this.lineItems.push(...this.initialItems);
       this._pushItemsToFormArray();
     }
   }

@@ -41,7 +41,11 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let _ of controlsArray.controls; index as i"
+              *ngFor="
+                let _ of controlsArray.controls;
+                index as i;
+                trackBy: trackByItemId
+              "
               [formGroupName]="i"
             >
               <td>
@@ -90,12 +94,12 @@
                   <input
                     type="checkbox"
                     class="custom-control-input"
-                    id="taxableCheckbox"
+                    id="taxableCheckbox{{ i }}"
                     formControlName="taxable"
                   />
                   <label
                     class="custom-control-label"
-                    for="taxableCheckbox"
+                    for="taxableCheckbox{{ i }}"
                   ></label>
                 </div>
               </td>

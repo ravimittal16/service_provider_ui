@@ -3,6 +3,7 @@ import {
   JobDetailsDto,
   JobDto,
   JobFilterModel,
+  JobLineItemDto,
 } from "@shared/service-proxies/service-proxies";
 
 export const loadJobsAction = createAction(
@@ -14,6 +15,7 @@ export const jobsLoadedAction = createAction(
   props<{ items: JobDto[] }>()
 );
 export const jobsUpdateFiltersAction = createAction("[Jobs] Filter updated");
+
 export const jobsLoadedErrorAction = createAction(
   "[Jobs] loaded completed success.",
   props<{ errors: string[] }>()
@@ -28,7 +30,13 @@ export const fetchJobDetailsAction = createAction(
   "[Jobs] Fethcing Job Details",
   props<{ jobId: number }>()
 );
+
 export const fetchJobDetailsCompletedAction = createAction(
   "[Jobs] Details Loaded",
   props<{ details: JobDetailsDto; jobId: number }>()
+);
+
+export const addItemToJobCompletedAction = createAction(
+  "[Jobs] Item added to Job",
+  props<{ itemDto: JobLineItemDto; jobId: number }>()
 );

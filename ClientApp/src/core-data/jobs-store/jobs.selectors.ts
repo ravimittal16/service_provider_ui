@@ -24,3 +24,8 @@ export const selectJobDetails = createSelector(
   jobsFeatureState,
   (state: JobsState) => state.selectedJobDetails
 );
+
+export const selectJobLineItems = createSelector(
+  jobsFeatureState,
+  (state: JobsState) => state.jobLineItems
+);

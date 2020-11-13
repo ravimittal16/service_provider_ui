@@ -1,15 +1,17 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbActiveModal, NgbPopover } from "@ng-bootstrap/ng-bootstrap";
 import { ProductDto } from "@shared/service-proxies/service-proxies";
 import { GridOptions } from "ag-grid-community";
 import { Observable } from "rxjs";
@@ -25,6 +27,7 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
   @Input() showAllProducts: boolean;
   @Input() title: string;
   @Input() selectionCallback: (product: ProductDto) => void;
+  @ViewChild("quantityInput") quantityInput: ElementRef;
   products: ProductDto[];
   groups: { groupName: string; checked?: boolean }[] = [];
   filterProductsForModal$: Observable<ProductDto[]>;
@@ -32,6 +35,9 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
   private _subs = new SubSink();
   hasProducts: boolean = false;
   searchForm: FormGroup;
+  quantityVal: number = 1;
+  selectedProduct: ProductDto;
+  private __quantityPopoverRef: NgbPopover;
   constructor(
     public activeModal: NgbActiveModal,
     private _productsFacade: ProductsFacade,
@@ -53,9 +59,38 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectProduct(product: ProductDto): void {
-    if (this.selectionCallback) {
-      this.selectionCallback(product);
+  selectProduct(
+    product: ProductDto,
+    quantityPopover: NgbPopover,
+    final: boolean
+  ): void {
+    // ==========================================================
+    // Closing the already opened popover
+    // ==========================================================
+    if (this.__quantityPopoverRef && this.__quantityPopoverRef.isOpen) {
+      this.__quantityPopoverRef.close();
+    }
+    this.__quantityPopoverRef = quantityPopover;
+    if (!final) {
+      this.selectedProduct = product;
+      quantityPopover.open();
+      setTimeout(() => {
+        const __inputBox = document.getElementById("quantityInput");
+        if (__inputBox) __inputBox.focus();
+      }, 10);
+    } else {
+      if (this.selectedProduct && this.selectionCallback) {
+        const __product = { ...this.selectedProduct };
+        __product.quantity = this.quantityVal;
+        this.selectionCallback(__product as ProductDto);
+        this.quantityVal = 1;
+      }
+    }
+  }
+
+  closePopover(): void {
+    if (this.__quantityPopoverRef) {
+      this.__quantityPopoverRef.close();
     }
   }
 
