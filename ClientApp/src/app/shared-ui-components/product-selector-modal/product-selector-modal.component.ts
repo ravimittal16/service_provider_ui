@@ -17,6 +17,7 @@ import { GridOptions } from "ag-grid-community";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { SubSink } from "subsink";
+import { SharedDataService } from "../shared.data.service";
 import { UiComponentsService } from "../ui.components.service";
 @Component({
   selector: "app-product-selector-modal",
@@ -41,7 +42,7 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
   constructor(
     public activeModal: NgbActiveModal,
     private _productsFacade: ProductsFacade,
-    private _uiComponentService: UiComponentsService,
+    private _shaedDateService: SharedDataService,
     private _cdr: ChangeDetectorRef,
     private _fb: FormBuilder
   ) {}
@@ -95,7 +96,7 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const _groups = this._uiComponentService.filterButtonsGroup;
+    const _groups = this._shaedDateService.filterButtonsGroup;
     this._productsFacade.onGroupSelected(_groups[1]);
     this.groups = _groups;
     this.filterProductsForModal$ = this._productsFacade.filterProductsForModal$.pipe(

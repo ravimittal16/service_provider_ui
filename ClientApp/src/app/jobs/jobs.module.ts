@@ -11,6 +11,7 @@ import { ColorPickerModule } from "ngx-color-picker";
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { JobCardListItemComponent } from "./job-card-list-item/job-card-list-item.component";
 import { JobItemsListViewComponent } from "./job-items-list-view/job-items-list-view.component";
+import { JobVisitsViewComponent } from "./job-visits-view/job-visits-view.component";
 import { JobsFilterComponent } from "./jobs-filter/jobs-filter.component";
 import { JobsDataService } from "./jobs.data.service";
 import { JobsModalService } from "./jobs.modal.service";
@@ -21,6 +22,7 @@ const __moduleComponents = [
   JobsFilterComponent,
   JobCardListItemComponent,
   JobItemsListViewComponent,
+  JobVisitsViewComponent,
 ];
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],

@@ -1,99 +1,80 @@
-<!-- <div class="wrapper">
-  <div class="row flex-center min-vh-100 py-6">
-    <div class="col-sm-10 col-md-8 col-lg-6 col-xl-3 col-xxl-4">
-      <h4 class="d-flex flex-center mb-4" href="../../index.html"><span
-          class="text-sans-serif font-weight-extra-bold fs-5 d-inline-block">
-          <app-logo size="large"></app-logo>
-        </span></h4>
-      <div class="card">
-        <div class="card-body p-4 p-sm-5">
-          <div class="row text-left justify-content-between align-items-center mb-2">
-            <div class="col-auto">
-              <h5>Log in</h5>
-            </div>
-            <div class="col-auto">
-              <p class="fs--1 text-600 mb-0">or <a [routerLink]="['/account/register']">Create an
-                  account</a></p>
-            </div>
-          </div>
-          <form [formGroup]="loginForm" (ngSubmit)="login()">
-            <div class="form-group"><input formControlName="userNameOrEmailAddress" class="form-control"
-                autofocus="autofocus" type="email" placeholder="User name" tabindex="1" autocomplete="new-password">
-            </div>
-            <div class="form-group"><input formControlName="password" class="form-control" type="password"
-                placeholder="Password" tabindex="2" autocomplete="new-password"></div>
-            <div class="row justify-content-between align-items-center">
-              <div class="col-auto">
-                <div class="custom-control custom-checkbox"><input formControlName="rememberClient"
-                    class="custom-control-input" type="checkbox" id="basic-checkbox" tabindex="3"
-                    checked="checked"><label class="custom-control-label" for="basic-checkbox">Remember me</label></div>
-              </div>
-              <div class="col-auto"><a class="btn btn-link fs--1">Forgot
-                  Password?</a></div>
-            </div>
-            <div class="form-group"><button [disabled]="loginForm.invalid || (isBusy$ | async)" tabindex="4"
-                class="btn btn-primary btn-block mt-3" type="submit" name="submit">
-                <span *ngIf="!(isBusy$ | async)">Authenticate</span>
-                <span *ngIf="(isBusy$ | async)">
-                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                  Authenticating...
-                </span>
-              </button>
-            </div>
-          </form>
-          <div class="w-100 position-relative mt-4">
-            <hr class="text-300">
-            <div
-              class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap">
-              or log in with</div>
-          </div>
-          <div class="form-group"><button [disabled]="loginForm.invalid || (isBusy$ | async)"
-              class="btn btn-light btn-block mt-3" type="button" name="submit">Login with <span><strong
-                  style="color:#Da251C;">Goo</strong><strong style="color:#Da251C;">gle</strong> </span>
-            </button></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div> -->
 <div class="row flex-center min-vh-100 py-6">
   <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-    <h4 class="d-flex flex-center mb-4" href="../../index.html"><span
-        class="text-sans-serif font-weight-extra-bold fs-5 d-inline-block">
+    <h4 class="d-flex flex-center mb-4" href="../../index.html">
+      <span class="text-sans-serif font-weight-extra-bold fs-5 d-inline-block">
         <app-logo size="large"></app-logo>
-      </span></h4>
+      </span>
+    </h4>
     <div class="card">
       <div class="card-body p-4 p-sm-5">
-        <div class="row text-left justify-content-between align-items-center mb-2">
+        <div
+          class="row text-left justify-content-between align-items-center mb-2"
+        >
           <div class="col-auto">
             <h5>Log in</h5>
           </div>
           <div class="col-auto">
-            <p class="fs--1 text-600 mb-0">or <a [routerLink]="['/account/register']">Create an
-                account</a></p>
+            <p class="fs--1 text-600 mb-0">
+              or <a [routerLink]="['/account/register']">Create an account</a>
+            </p>
           </div>
         </div>
         <form [formGroup]="loginForm" (ngSubmit)="login()">
-          <div class="form-group"><input formControlName="userNameOrEmailAddress" class="form-control"
-              autofocus="autofocus" type="email" placeholder="User name" tabindex="1" autocomplete="new-password">
+          <div class="form-group">
+            <input
+              formControlName="userNameOrEmailAddress"
+              class="form-control"
+              autofocus="autofocus"
+              type="email"
+              placeholder="User name"
+              tabindex="1"
+              autocomplete="new-password"
+            />
           </div>
-          <div class="form-group"><input formControlName="password" class="form-control" type="password"
-              placeholder="Password" tabindex="2" autocomplete="new-password"></div>
+          <div class="form-group mt-2">
+            <input
+              formControlName="password"
+              class="form-control"
+              type="password"
+              placeholder="Password"
+              tabindex="2"
+              autocomplete="new-password"
+            />
+          </div>
           <div class="row justify-content-between align-items-center">
             <div class="col-auto">
-              <div class="custom-control custom-checkbox"><input formControlName="rememberClient"
-                  class="custom-control-input" type="checkbox" id="basic-checkbox" tabindex="3" checked="checked"><label
-                  class="custom-control-label" for="basic-checkbox">Remember me</label></div>
+              <div class="custom-control custom-checkbox">
+                <input
+                  formControlName="rememberClient"
+                  class="custom-control-input"
+                  type="checkbox"
+                  id="basic-checkbox"
+                  tabindex="3"
+                  checked="checked"
+                /><label class="custom-control-label" for="basic-checkbox"
+                  >Remember me</label
+                >
+              </div>
             </div>
-            <div class="col-auto"><a class="btn btn-link fs--1">Forgot
-                Password?</a></div>
+            <div class="col-auto">
+              <a class="btn btn-link fs--1">Forgot Password?</a>
+            </div>
           </div>
-          <div class="form-group"><button [disabled]="loginForm.invalid || (isBusy$ | async)" tabindex="4"
-              class="btn btn-primary btn-block mt-3" type="submit" name="submit">
+          <div class="form-group">
+            <button
+              [disabled]="loginForm.invalid || (isBusy$ | async)"
+              tabindex="4"
+              class="btn btn-primary btn-block mt-3"
+              type="submit"
+              name="submit"
+            >
               <span *ngIf="!(isBusy$ | async)">Authenticate</span>
-              <span *ngIf="(isBusy$ | async)">
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="isBusy$ | async">
+                <span
+                  class="spinner-grow spinner-grow-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
                 Authenticating...
               </span>
             </button>
@@ -101,14 +82,25 @@
         </form>
         <div class="w-100 position-relative mt-4">
           <hr class="text-300" />
-          <div class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap">
-            or log in with</div>
+          <div
+            class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap"
+          >
+            or log in with
+          </div>
         </div>
         <div class="form-group mb-0">
           <div class="row no-gutters">
-            <button [disabled]="loginForm.invalid || (isBusy$ | async)" class="btn btn-block mt-3" type="button"
-              name="submit">Login with <span><strong style="color:#Da251C;">Goo</strong><strong
-                  style="color:#Da251C;">gle</strong> </span>
+            <button
+              [disabled]="loginForm.invalid || (isBusy$ | async)"
+              class="btn btn-block mt-3"
+              type="button"
+              name="submit"
+            >
+              Login with
+              <span
+                ><strong style="color: #da251c">Goo</strong
+                ><strong style="color: #da251c">gle</strong>
+              </span>
             </button>
             <!-- <div class="col-sm-6 pr-sm-1"><a class="btn btn-outline-google-plus btn-sm btn-block mt-2" href="#"><span
                   class="fab fa-google-plus-g mr-2" data-fa-transform="grow-8"></span> google</a></div>
