@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 import { JobDetailsDto } from "@shared/service-proxies/service-proxies";
@@ -12,6 +12,7 @@ import { SubSink } from "subsink";
   styleUrls: ["./edit-job-view.component.scss"],
 })
 export class EditJobViewComponent implements OnInit {
+  @ViewChild("itemCounter") itemCounter: ElementRef;
   jobId: number;
   private _sub = new SubSink();
   selectedJobDetails$: Observable<JobDetailsDto>;
@@ -25,6 +26,9 @@ export class EditJobViewComponent implements OnInit {
     if (this.jobId) {
       this._jobsStoreFacade.fetchJobDetails(this.jobId);
     }
+  }
+  onItemAddCompleted(details: { totalItems: number }): void {
+    this.itemCounter.nativeElement.innerHTML = `${details.totalItems}`;
   }
 
   addNoteClicked() {}
@@ -40,6 +44,7 @@ export class EditJobViewComponent implements OnInit {
       this._jobsStoreFacade.selectedJobDetails$.subscribe((details) => {
         if (details) {
           this.details = details;
+          this.itemCounter.nativeElement.innerHTML = `${this.details.lineItems.length}`;
         }
       })
     );

@@ -185,12 +185,21 @@
           </li>
           <li ngbNavItem>
             <a ngbNavLink>Job Visits</a>
-            <ng-template ngbNavContent>First content</ng-template>
+            <ng-template ngbNavContent>
+              <app-job-visits-view [jobId]="jobId"></app-job-visits-view>
+            </ng-template>
           </li>
           <li ngbNavItem>
-            <a ngbNavLink>Products</a>
+            <a ngbNavLink class="d-flex justify-content-center"
+              >Products
+              <span
+                class="badge badge-pill badge-soft-primary ml-1"
+                #itemCounter
+              ></span
+            ></a>
             <ng-template ngbNavContent>
               <app-job-items-list-view
+                (onItemAddCompleted)="onItemAddCompleted($event)"
                 [jobId]="jobId"
                 [initialItems]="details?.lineItems"
               ></app-job-items-list-view>

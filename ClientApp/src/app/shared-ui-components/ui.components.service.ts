@@ -35,38 +35,6 @@ export class UiComponentsService {
     return _modal;
   }
 
-  get filterButtonsGroup() {
-    return [
-      { groupName: "*" },
-      { groupName: "A", checked: true },
-      { groupName: "B" },
-      { groupName: "C" },
-      { groupName: "D" },
-      { groupName: "E" },
-      { groupName: "F" },
-      { groupName: "G" },
-      { groupName: "H" },
-      { groupName: "I" },
-      { groupName: "J" },
-      { groupName: "K" },
-      { groupName: "L" },
-      { groupName: "M" },
-      { groupName: "N" },
-      { groupName: "O" },
-      { groupName: "P" },
-      { groupName: "Q" },
-      { groupName: "R" },
-      { groupName: "S" },
-      { groupName: "T" },
-      { groupName: "U" },
-      { groupName: "V" },
-      { groupName: "W" },
-      { groupName: "X" },
-      { groupName: "Y" },
-      { groupName: "Z" },
-    ];
-  }
-
   openProductSelectorModal(
     showAll: boolean,
     title: string,

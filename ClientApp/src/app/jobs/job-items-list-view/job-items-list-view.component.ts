@@ -2,9 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
 } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
@@ -19,6 +22,7 @@ import { UiComponentsService } from "@app/shared-ui-components/ui.components.ser
 import { JobsDataService } from "../jobs.data.service";
 import { SubSink } from "subsink";
 import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
+import { finalize, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -29,6 +33,9 @@ import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 export class JobItemsListViewComponent implements OnInit, OnDestroy {
   @Input() jobId: number;
   @Input() initialItems: JobLineItemDto[];
+  @Output() onItemAddCompleted: EventEmitter<{
+    totalItems: number;
+  }> = new EventEmitter<{ totalItems: number }>();
   lineItems$: Observable<JobLineItemDto[]>;
   lineItemsFormGroup: FormGroup;
   errors$: Observable<string[]>;
@@ -42,12 +49,11 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     private _jobFacade: JobsFacade
   ) {
     this.errors$ = this.__errorRenderer.errors$;
-    this.lineItems$ = this._jobFacade.jobLineItems$;
   }
 
   private _addGroup(item?: JobLineItemDto) {
     const _id = item ? item?.itemId.toString() : Guid.create().toString();
-    console.log(item);
+
     const __group = this._fb.group({
       id: [_id],
       itemId: [item?.itemId || 0],
@@ -114,6 +120,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
                 if (item) {
                   this._addGroup(item);
                   this._jobFacade.lineItemAdded(item, this.jobId);
+                  this._cdr.detectChanges();
                 }
               })
           );
@@ -151,6 +158,15 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.__sub.add(
+      this._jobFacade.jobLineItems$
+        .pipe(
+          tap((items: JobLineItemDto[]) => {
+            this.onItemAddCompleted.emit({ totalItems: items.length });
+          })
+        )
+        .subscribe()
+    );
     this._initFormControl();
     if (this.initialItems) {
       this._pushItemsToFormArray();
