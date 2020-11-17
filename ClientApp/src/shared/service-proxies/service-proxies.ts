@@ -1115,6 +1115,67 @@ export class JobsServiceProxy {
         }
         return _observableOf<JobLineItemDto>(<any>null);
     }
+
+    /**
+     * @param jobId (optional) 
+     * @param itemId (optional) 
+     * @return Success
+     */
+    deleteLineItem(jobId: number | undefined, itemId: number | undefined): Observable<OperationResult> {
+        let url_ = this.baseUrl + "/api/Jobs/DeleteLineItem?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        if (itemId === null)
+            throw new Error("The parameter 'itemId' cannot be null.");
+        else if (itemId !== undefined)
+            url_ += "itemId=" + encodeURIComponent("" + itemId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteLineItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteLineItem(<any>response_);
+                } catch (e) {
+                    return <Observable<OperationResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OperationResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteLineItem(response: HttpResponseBase): Observable<OperationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OperationResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OperationResult>(<any>null);
+    }
 }
 
 @Injectable()
@@ -3610,6 +3671,93 @@ export interface IJobLineItemDto {
     description: string | undefined;
 }
 
+export enum VisitStatuses {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+    _8 = 8,
+}
+
+export class JobVisitDto implements IJobVisitDto {
+    title: string | undefined;
+    description: string | undefined;
+    isBillable: boolean;
+    visitStatus: VisitStatuses;
+    startDateTime: moment.Moment | undefined;
+    endDateTime: moment.Moment | undefined;
+    actualStartDateTime: moment.Moment | undefined;
+    actualEndDateTime: moment.Moment | undefined;
+    assignedTo: EmployeeDto;
+
+    constructor(data?: IJobVisitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.isBillable = _data["isBillable"];
+            this.visitStatus = _data["visitStatus"];
+            this.startDateTime = _data["startDateTime"] ? moment(_data["startDateTime"].toString()) : <any>undefined;
+            this.endDateTime = _data["endDateTime"] ? moment(_data["endDateTime"].toString()) : <any>undefined;
+            this.actualStartDateTime = _data["actualStartDateTime"] ? moment(_data["actualStartDateTime"].toString()) : <any>undefined;
+            this.actualEndDateTime = _data["actualEndDateTime"] ? moment(_data["actualEndDateTime"].toString()) : <any>undefined;
+            this.assignedTo = _data["assignedTo"] ? EmployeeDto.fromJS(_data["assignedTo"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): JobVisitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobVisitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["isBillable"] = this.isBillable;
+        data["visitStatus"] = this.visitStatus;
+        data["startDateTime"] = this.startDateTime ? this.startDateTime.toISOString() : <any>undefined;
+        data["endDateTime"] = this.endDateTime ? this.endDateTime.toISOString() : <any>undefined;
+        data["actualStartDateTime"] = this.actualStartDateTime ? this.actualStartDateTime.toISOString() : <any>undefined;
+        data["actualEndDateTime"] = this.actualEndDateTime ? this.actualEndDateTime.toISOString() : <any>undefined;
+        data["assignedTo"] = this.assignedTo ? this.assignedTo.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): JobVisitDto {
+        const json = this.toJSON();
+        let result = new JobVisitDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobVisitDto {
+    title: string | undefined;
+    description: string | undefined;
+    isBillable: boolean;
+    visitStatus: VisitStatuses;
+    startDateTime: moment.Moment | undefined;
+    endDateTime: moment.Moment | undefined;
+    actualStartDateTime: moment.Moment | undefined;
+    actualEndDateTime: moment.Moment | undefined;
+    assignedTo: EmployeeDto;
+}
+
 export class JobDetailsDto implements IJobDetailsDto {
     customer: CustomerDto;
     jobAddress: AddressDto;
@@ -3632,6 +3780,7 @@ export class JobDetailsDto implements IJobDetailsDto {
     readonly jobStatusText: string | undefined;
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
+    jobVisits: JobVisitDto[] | undefined;
 
     constructor(data?: IJobDetailsDto) {
         if (data) {
@@ -3668,6 +3817,11 @@ export class JobDetailsDto implements IJobDetailsDto {
                 this.lineItems = [] as any;
                 for (let item of _data["lineItems"])
                     this.lineItems.push(JobLineItemDto.fromJS(item));
+            }
+            if (Array.isArray(_data["jobVisits"])) {
+                this.jobVisits = [] as any;
+                for (let item of _data["jobVisits"])
+                    this.jobVisits.push(JobVisitDto.fromJS(item));
             }
         }
     }
@@ -3706,6 +3860,11 @@ export class JobDetailsDto implements IJobDetailsDto {
             for (let item of this.lineItems)
                 data["lineItems"].push(item.toJSON());
         }
+        if (Array.isArray(this.jobVisits)) {
+            data["jobVisits"] = [];
+            for (let item of this.jobVisits)
+                data["jobVisits"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -3739,6 +3898,86 @@ export interface IJobDetailsDto {
     jobStatusText: string | undefined;
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
+    jobVisits: JobVisitDto[] | undefined;
+}
+
+export class OperationResult implements IOperationResult {
+    isSuccess: boolean;
+    errors: string[] | undefined;
+    warnings: string[] | undefined;
+    clientMessages: string[] | undefined;
+
+    constructor(data?: IOperationResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isSuccess = _data["isSuccess"];
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            if (Array.isArray(_data["warnings"])) {
+                this.warnings = [] as any;
+                for (let item of _data["warnings"])
+                    this.warnings.push(item);
+            }
+            if (Array.isArray(_data["clientMessages"])) {
+                this.clientMessages = [] as any;
+                for (let item of _data["clientMessages"])
+                    this.clientMessages.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): OperationResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new OperationResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        if (Array.isArray(this.warnings)) {
+            data["warnings"] = [];
+            for (let item of this.warnings)
+                data["warnings"].push(item);
+        }
+        if (Array.isArray(this.clientMessages)) {
+            data["clientMessages"] = [];
+            for (let item of this.clientMessages)
+                data["clientMessages"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): OperationResult {
+        const json = this.toJSON();
+        let result = new OperationResult();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOperationResult {
+    isSuccess: boolean;
+    errors: string[] | undefined;
+    warnings: string[] | undefined;
+    clientMessages: string[] | undefined;
 }
 
 export class CreateUserModel implements ICreateUserModel {
