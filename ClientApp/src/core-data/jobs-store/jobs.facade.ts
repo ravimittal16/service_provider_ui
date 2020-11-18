@@ -37,6 +37,10 @@ export class JobsFacade implements Facade {
     this.dispatch(fromJobsActions.fetchJobDetailsAction({ jobId: jobId }));
   }
 
+  deleteItem(itemId: number, jobId: number) {
+    this.dispatch(fromJobsActions.deleteItemFromJob({ itemId, jobId }));
+  }
+
   loadJobs() {
     this.dispatch(fromJobsActions.loadJobsAction({ filters: null }));
   }

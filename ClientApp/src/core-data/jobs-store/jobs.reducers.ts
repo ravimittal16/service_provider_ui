@@ -61,6 +61,12 @@ const jobsStoreReducer = createReducer(
       items: props.items,
       success: true,
     };
+  }),
+  on(jobsActions.deleteItemFromJobCompleted, (state, props) => {
+    return {
+      ...state,
+      jobLineItems: state.jobLineItems.filter((x) => x.itemId !== props.itemId),
+    };
   })
 );
 

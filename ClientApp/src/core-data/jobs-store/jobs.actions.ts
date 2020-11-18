@@ -40,3 +40,12 @@ export const addItemToJobCompletedAction = createAction(
   "[Jobs] Item added to Job",
   props<{ itemDto: JobLineItemDto; jobId: number }>()
 );
+
+export const deleteItemFromJob = createAction(
+  "[Jobs] Delete Item",
+  props<{ itemId: number; jobId: number }>()
+);
+export const deleteItemFromJobCompleted = createAction(
+  "[Jobs] Delete Item Success",
+  props<{ itemId: number; success: boolean }>()
+);

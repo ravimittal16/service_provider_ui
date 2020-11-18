@@ -3,7 +3,10 @@ import { BaseEffect } from "@core-data/base.effect";
 import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { JobsServiceProxy } from "@shared/service-proxies/service-proxies";
+import {
+  JobsServiceProxy,
+  OperationResult,
+} from "@shared/service-proxies/service-proxies";
 import { of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
 import * as jobsActions from "./jobs.actions";
@@ -38,6 +41,29 @@ export class JobsEffects extends BaseEffect {
               })
             );
           })
+        )
+      )
+    );
+  });
+
+  deleteItem$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(jobsActions.deleteItemFromJob),
+      mergeMap((action) =>
+        this.jobsServiceProxy.deleteLineItem(action.jobId, action.itemId).pipe(
+          map((data: OperationResult) => {
+            return jobsActions.deleteItemFromJobCompleted({
+              itemId: action.itemId,
+              success: data.isSuccess,
+            });
+          }),
+          catchError((error) =>
+            of(
+              jobsActions.jobsLoadedErrorAction({
+                errors: ["Error while deleting item.", error],
+              })
+            )
+          )
         )
       )
     );

@@ -147,7 +147,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
         if (!isFinalConfirmation) {
           confirmationPopover.open();
         } else {
-          console.log("Delete");
+          this._jobFacade.deleteItem(_itemId, this.jobId);
         }
       }
     }
