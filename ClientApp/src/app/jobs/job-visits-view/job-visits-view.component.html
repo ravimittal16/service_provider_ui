@@ -1,1 +1,9 @@
-<p>job-visits-view works!</p>
+<div>
+  <div *ngIf="visits$ | async as visits">
+    <div class="row" *ngFor="let visit of visits">
+      <div class="col-6">
+        {{ visit.visitStatus }}
+      </div>
+    </div>
+  </div>
+</div>

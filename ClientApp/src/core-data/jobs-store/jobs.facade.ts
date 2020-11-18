@@ -6,9 +6,10 @@ import {
   JobDto,
   JobFilterModel,
   JobLineItemDto,
+  JobVisitDto,
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
-import { JobsState } from "./jobs.state";
+import { JobActionListenerSchema, JobsState } from "./jobs.state";
 import * as fromJobsSelectors from "./jobs.selectors";
 import * as fromJobsActions from "./jobs.actions";
 
@@ -20,6 +21,8 @@ export class JobsFacade implements Facade {
   jobs$: Observable<JobDto[]>;
   selectedJobDetails$: Observable<JobDetailsDto>;
   jobLineItems$: Observable<JobLineItemDto[]>;
+  visits$: Observable<JobVisitDto[]>;
+  actionListener$: Observable<JobActionListenerSchema>;
   constructor(private _store: Store<JobsState>) {
     this.filters$ = this._store.pipe(
       select(fromJobsSelectors.selectJobsFilter)
@@ -31,6 +34,10 @@ export class JobsFacade implements Facade {
     this.jobLineItems$ = this._store.pipe(
       select(fromJobsSelectors.selectJobLineItems)
     );
+    this.visits$ = this._store.pipe(select(fromJobsSelectors.selectJobVisits));
+    this.actionListener$ = this._store.pipe(
+      select(fromJobsSelectors.selectActionPayload)
+    );
   }
 
   fetchJobDetails(jobId: number) {
@@ -39,6 +46,11 @@ export class JobsFacade implements Facade {
 
   deleteItem(itemId: number, jobId: number) {
     this.dispatch(fromJobsActions.deleteItemFromJob({ itemId, jobId }));
+  }
+  clearEventData() {
+    this.dispatch(
+      fromJobsActions.eventCompleteListenerAction({ payload: null })
+    );
   }
 
   loadJobs() {

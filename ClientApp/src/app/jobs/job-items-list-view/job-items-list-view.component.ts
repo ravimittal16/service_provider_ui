@@ -23,6 +23,7 @@ import { JobsDataService } from "../jobs.data.service";
 import { SubSink } from "subsink";
 import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 import { finalize, tap } from "rxjs/operators";
+import { JobActionListenerSchema } from "@core-data/jobs-store/jobs.state";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -39,6 +40,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   lineItems$: Observable<JobLineItemDto[]>;
   lineItemsFormGroup: FormGroup;
   errors$: Observable<string[]>;
+  actionListener$: Observable<JobActionListenerSchema>;
   private __errorRenderer = new ErrorRenderer();
   private __sub = new SubSink();
   constructor(
@@ -167,9 +169,34 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
         )
         .subscribe()
     );
+    this.listenEvents();
     this._initFormControl();
     if (this.initialItems) {
       this._pushItemsToFormArray();
     }
+  }
+
+  private __clearItemFromFromArray(itemId: number) {
+    const __form = this.controlsArray.controls.filter(
+      (x) => x.get("itemId").value === itemId
+    );
+    if (__form) {
+      const __index = this.controlsArray.controls.indexOf(__form[0]);
+      this.controlsArray.controls.splice(__index, 1);
+      this._cdr.detectChanges();
+    }
+  }
+
+  private listenEvents() {
+    this.__sub.add(
+      this._jobFacade.actionListener$.subscribe((listenerPayload) => {
+        if (listenerPayload !== null) {
+          if (listenerPayload.actionType === "Delete Item") {
+            this.__clearItemFromFromArray(listenerPayload.itemId);
+          }
+          this._jobFacade.clearEventData();
+        }
+      })
+    );
   }
 }
