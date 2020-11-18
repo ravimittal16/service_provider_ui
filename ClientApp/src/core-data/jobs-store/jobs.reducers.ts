@@ -24,6 +24,8 @@ export const initialState: JobsState = adapter.getInitialState({
   selectedJobId: 0,
   selectedJobDetails: null,
   jobLineItems: [],
+  jobVisits: [],
+  actionListenerPayload: null,
 });
 
 function insertItem(array, action) {
@@ -41,7 +43,9 @@ const jobsStoreReducer = createReducer(
       ...state,
       isBusy: false,
       selectedJobDetails: props.details,
-      jobLineItems: props.details.lineItems,
+      jobLineItems: props.details?.lineItems,
+      jobVisits: props.details?.jobVisits,
+      success: true,
     };
   }),
   on(jobsActions.setSelectedJobIdAction, (state, props) => {
@@ -62,10 +66,17 @@ const jobsStoreReducer = createReducer(
       success: true,
     };
   }),
+  on(jobsActions.eventCompleteListenerAction, (state, props) => {
+    return {
+      ...state,
+      actionListenerPayload: props.payload,
+    };
+  }),
   on(jobsActions.deleteItemFromJobCompleted, (state, props) => {
     return {
       ...state,
       jobLineItems: state.jobLineItems.filter((x) => x.itemId !== props.itemId),
+      success: props.success,
     };
   })
 );

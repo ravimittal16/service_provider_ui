@@ -5,6 +5,7 @@ import {
   JobFilterModel,
   JobLineItemDto,
 } from "@shared/service-proxies/service-proxies";
+import { JobActionListenerSchema } from "./jobs.state";
 
 export const loadJobsAction = createAction(
   "[Jobs] Load Jobs action",
@@ -48,4 +49,11 @@ export const deleteItemFromJob = createAction(
 export const deleteItemFromJobCompleted = createAction(
   "[Jobs] Delete Item Success",
   props<{ itemId: number; success: boolean }>()
+);
+
+export const eventCompleteListenerAction = createAction(
+  "[Jobs] Actions Completed",
+  props<{
+    payload: JobActionListenerSchema;
+  }>()
 );

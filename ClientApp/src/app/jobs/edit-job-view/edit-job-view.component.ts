@@ -44,7 +44,9 @@ export class EditJobViewComponent implements OnInit {
       this._jobsStoreFacade.selectedJobDetails$.subscribe((details) => {
         if (details) {
           this.details = details;
-          this.itemCounter.nativeElement.innerHTML = `${this.details.lineItems.length}`;
+          setTimeout(() => {
+            this.itemCounter.nativeElement.innerHTML = `${this.details.lineItems.length}`;
+          }, 100);
         }
       })
     );

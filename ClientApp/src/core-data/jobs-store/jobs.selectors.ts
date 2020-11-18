@@ -29,3 +29,11 @@ export const selectJobLineItems = createSelector(
   jobsFeatureState,
   (state: JobsState) => state.jobLineItems
 );
+export const selectJobVisits = createSelector(
+  jobsFeatureState,
+  (state: JobsState) => state.jobVisits
+);
+export const selectActionPayload = createSelector(
+  jobsFeatureState,
+  (state: JobsState) => state.actionListenerPayload
+);
