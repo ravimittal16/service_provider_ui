@@ -33,7 +33,6 @@ import { JobActionListenerSchema } from "@core-data/jobs-store/jobs.state";
 })
 export class JobItemsListViewComponent implements OnInit, OnDestroy {
   @Input() jobId: number;
-  @Input() initialItems: JobLineItemDto[];
   @Output() onItemAddCompleted: EventEmitter<{
     totalItems: number;
   }> = new EventEmitter<{ totalItems: number }>();
@@ -42,6 +41,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   errors$: Observable<string[]>;
   actionListener$: Observable<JobActionListenerSchema>;
   private __errorRenderer = new ErrorRenderer();
+  private __formArrayRendered: boolean = false;
   private __sub = new SubSink();
   constructor(
     private _fb: FormBuilder,
@@ -71,10 +71,10 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     this.controlsArray.push(__group);
   }
 
-  private _pushItemsToFormArray() {
-    if (this.initialItems && this.initialItems.length > 0) {
-      for (let i = 0; i < this.initialItems.length; i++) {
-        const __item = this.initialItems[i];
+  private __pushItemsToFormArray(items: JobLineItemDto[]) {
+    if (items.length > 0) {
+      for (let i = 0; i < items.length; i++) {
+        const __item = items[i];
         this._addGroup(__item);
       }
     }
@@ -160,20 +160,21 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._initFormControl();
     this.__sub.add(
       this._jobFacade.jobLineItems$
         .pipe(
           tap((items: JobLineItemDto[]) => {
+            if (!this.__formArrayRendered) {
+              this.__pushItemsToFormArray(items);
+              this.__formArrayRendered = true;
+            }
             this.onItemAddCompleted.emit({ totalItems: items.length });
           })
         )
         .subscribe()
     );
-    this.listenEvents();
-    this._initFormControl();
-    if (this.initialItems) {
-      this._pushItemsToFormArray();
-    }
+    this.__listenEvents();
   }
 
   private __clearItemFromFromArray(itemId: number) {
@@ -182,12 +183,18 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     );
     if (__form) {
       const __index = this.controlsArray.controls.indexOf(__form[0]);
-      this.controlsArray.controls.splice(__index, 1);
-      this._cdr.detectChanges();
+      setTimeout(() => {
+        this.controlsArray.controls.splice(__index, 1);
+        this._cdr.detectChanges();
+      }, 100);
     }
+
+    const __form1 = this.controlsArray.controls.filter(
+      (x) => x.get("itemId").value === itemId
+    );
   }
 
-  private listenEvents() {
+  private __listenEvents() {
     this.__sub.add(
       this._jobFacade.actionListener$.subscribe((listenerPayload) => {
         if (listenerPayload !== null) {
