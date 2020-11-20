@@ -24,6 +24,14 @@ export class JobVisitsViewComponent implements OnInit {
     private _jobFacade: JobsFacade
   ) {}
 
+  visitCheckboxClicked(visit: JobVisitDto, $eventArgs: MouseEvent): void {
+    $eventArgs.stopPropagation();
+  }
+
+  onVisitClicked(visit: JobVisitDto, $eventArgs: MouseEvent): void {
+    $eventArgs.stopPropagation();
+  }
+
   ngOnInit(): void {
     this.visits$ = this._jobFacade.visits$;
   }

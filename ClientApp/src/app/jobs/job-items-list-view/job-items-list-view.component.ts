@@ -131,10 +131,6 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackByItemId(index: number, item: JobLineItemDto) {
-    return item.itemId;
-  }
-
   deleteItem(
     index: number,
     confirmationPopover: NgbPopover,
@@ -184,14 +180,10 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     if (__form) {
       const __index = this.controlsArray.controls.indexOf(__form[0]);
       setTimeout(() => {
-        this.controlsArray.controls.splice(__index, 1);
+        this.controlsArray.removeAt(__index);
         this._cdr.detectChanges();
       }, 100);
     }
-
-    const __form1 = this.controlsArray.controls.filter(
-      (x) => x.get("itemId").value === itemId
-    );
   }
 
   private __listenEvents() {

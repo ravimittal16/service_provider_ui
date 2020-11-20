@@ -41,11 +41,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="
-                let _ of controlsArray.controls;
-                index as i;
-                trackBy: trackByItemId
-              "
+              *ngFor="let _ of controlsArray.controls; index as i"
               [formGroupName]="i"
             >
               <td>

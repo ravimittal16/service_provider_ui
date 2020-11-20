@@ -3684,6 +3684,7 @@ export enum VisitStatuses {
 }
 
 export class JobVisitDto implements IJobVisitDto {
+    visitId: number;
     title: string | undefined;
     description: string | undefined;
     isBillable: boolean;
@@ -3693,6 +3694,9 @@ export class JobVisitDto implements IJobVisitDto {
     actualStartDateTime: moment.Moment | undefined;
     actualEndDateTime: moment.Moment | undefined;
     assignedTo: EmployeeDto;
+    readonly visitStatusValue: string | undefined;
+    readonly isAssigned: boolean;
+    hasSameDate: boolean;
 
     constructor(data?: IJobVisitDto) {
         if (data) {
@@ -3705,6 +3709,7 @@ export class JobVisitDto implements IJobVisitDto {
 
     init(_data?: any) {
         if (_data) {
+            this.visitId = _data["visitId"];
             this.title = _data["title"];
             this.description = _data["description"];
             this.isBillable = _data["isBillable"];
@@ -3714,6 +3719,9 @@ export class JobVisitDto implements IJobVisitDto {
             this.actualStartDateTime = _data["actualStartDateTime"] ? moment(_data["actualStartDateTime"].toString()) : <any>undefined;
             this.actualEndDateTime = _data["actualEndDateTime"] ? moment(_data["actualEndDateTime"].toString()) : <any>undefined;
             this.assignedTo = _data["assignedTo"] ? EmployeeDto.fromJS(_data["assignedTo"]) : <any>undefined;
+            (<any>this).visitStatusValue = _data["visitStatusValue"];
+            (<any>this).isAssigned = _data["isAssigned"];
+            this.hasSameDate = _data["hasSameDate"];
         }
     }
 
@@ -3726,6 +3734,7 @@ export class JobVisitDto implements IJobVisitDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["visitId"] = this.visitId;
         data["title"] = this.title;
         data["description"] = this.description;
         data["isBillable"] = this.isBillable;
@@ -3735,6 +3744,9 @@ export class JobVisitDto implements IJobVisitDto {
         data["actualStartDateTime"] = this.actualStartDateTime ? this.actualStartDateTime.toISOString() : <any>undefined;
         data["actualEndDateTime"] = this.actualEndDateTime ? this.actualEndDateTime.toISOString() : <any>undefined;
         data["assignedTo"] = this.assignedTo ? this.assignedTo.toJSON() : <any>undefined;
+        data["visitStatusValue"] = this.visitStatusValue;
+        data["isAssigned"] = this.isAssigned;
+        data["hasSameDate"] = this.hasSameDate;
         return data; 
     }
 
@@ -3747,6 +3759,7 @@ export class JobVisitDto implements IJobVisitDto {
 }
 
 export interface IJobVisitDto {
+    visitId: number;
     title: string | undefined;
     description: string | undefined;
     isBillable: boolean;
@@ -3756,6 +3769,9 @@ export interface IJobVisitDto {
     actualStartDateTime: moment.Moment | undefined;
     actualEndDateTime: moment.Moment | undefined;
     assignedTo: EmployeeDto;
+    visitStatusValue: string | undefined;
+    isAssigned: boolean;
+    hasSameDate: boolean;
 }
 
 export class JobDetailsDto implements IJobDetailsDto {
