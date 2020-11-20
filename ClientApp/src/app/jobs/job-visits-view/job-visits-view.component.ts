@@ -3,7 +3,10 @@ import { FormBuilder } from "@angular/forms";
 import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
 import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 import { JobActionListenerSchema } from "@core-data/jobs-store/jobs.state";
-import { JobVisitDto } from "@shared/service-proxies/service-proxies";
+import {
+  JobDetailsDto,
+  JobVisitDto,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { JobsDataService } from "../jobs.data.service";
 import { JobsModalService } from "../jobs.modal.service";
@@ -16,7 +19,7 @@ import { JobsModalService } from "../jobs.modal.service";
 export class JobVisitsViewComponent implements OnInit {
   @Input() jobId: number;
   visits$: Observable<JobVisitDto[]>;
-
+  jobDetails: JobDetailsDto = null;
   constructor(
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
@@ -35,16 +38,23 @@ export class JobVisitsViewComponent implements OnInit {
     $eventArgs.stopPropagation();
   }
 
-  onVisitClicked(
-    visit: JobVisitDto,
-
-    openModal: boolean
-  ) {
+  onVisitClicked(visit: JobVisitDto, openModal: boolean) {
     console.log(openModal);
     const __modal = this._modalService.openVisitDetailsModal();
   }
 
+  newVisitClicked() {
+    const __addModal = this._modalService.openAddVisitDetailsModal(
+      this.jobDetails
+    );
+  }
+
   ngOnInit(): void {
     this.visits$ = this._jobFacade.visits$;
+    this._jobFacade.selectedJobDetails$.subscribe((details) => {
+      if (details) {
+        this.jobDetails = details;
+      }
+    });
   }
 }
