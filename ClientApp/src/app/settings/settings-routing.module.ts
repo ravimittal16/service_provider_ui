@@ -4,7 +4,6 @@ import { CompanyComponent } from "./company/company.component";
 import { MainComponent } from "./main/main.component";
 import { BrandingComponent } from "./branding/branding.component";
 import { CustomFieldsComponent } from "./custom-fields/custom-fields.component";
-import { JobConfigurationsComponent } from "./job-configurations/job-configurations.component";
 
 const routes: Routes = [
   {
@@ -14,7 +13,13 @@ const routes: Routes = [
       { path: "company", component: CompanyComponent },
       { path: "branding", component: BrandingComponent },
       { path: "cusflds", component: CustomFieldsComponent },
-      { path: "job-configurations", component: JobConfigurationsComponent },
+      {
+        path: "jobs",
+        loadChildren: () =>
+          import("./jobs/jobs.settings.module").then(
+            (module) => module.JobsSettingsModule
+          ),
+      },
       {
         path: "products",
         loadChildren: () =>

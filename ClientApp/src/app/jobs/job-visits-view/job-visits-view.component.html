@@ -1,8 +1,51 @@
 <div>
-  <div *ngIf="visits$ | async as visits">
-    <div class="row" *ngFor="let visit of visits">
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-falcon-success btn-xs">New Visit</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="visits$ | async as visits" class="mt-2">
+    <div
+      class="row visit-row"
+      *ngFor="let visit of visits"
+      (click)="onVisitClicked(visit, $event)"
+    >
       <div class="col-6">
-        {{ visit.visitStatus }}
+        <div class="custom-control custom-checkbox ml-1">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            (click)="visitCheckboxClicked(visit, $event)"
+            id="visit{{ visit.visitId }}"
+          />
+          <label class="custom-control-label" for="visit{{ visit.visitId }}">
+            <i class="fa fa-clock-o"></i>
+            <span>{{ visit.startDateTime | date: "EEE, MMM yy h:mm a" }}</span>
+            <span *ngIf="visit.endDateTime">,&nbsp;</span>
+            <span *ngIf="visit.hasSameDate">{{
+              visit.endDateTime | date: "h:mm a"
+            }}</span>
+            <span *ngIf="!visit.hasSameDate">{{
+              visit.endDateTime | date: "EEE, MMM yy h:mm a"
+            }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="d-flex justify-content-end">
+          <div class="d-flex align-items-center">
+            <div *ngIf="!visit.isAssigned" class="badge badge-danger">
+              Unassigned
+            </div>
+            <div class="actions ml-3">
+              <button class="btn btn-falcon-danger btn-xs">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
