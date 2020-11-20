@@ -6,6 +6,7 @@ import { JobActionListenerSchema } from "@core-data/jobs-store/jobs.state";
 import { JobVisitDto } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { JobsDataService } from "../jobs.data.service";
+import { JobsModalService } from "../jobs.modal.service";
 
 @Component({
   selector: "app-job-visits-view",
@@ -20,16 +21,27 @@ export class JobVisitsViewComponent implements OnInit {
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
     private _uiComponentsService: UiComponentsService,
+    private _modalService: JobsModalService,
     private _jobDataService: JobsDataService,
     private _jobFacade: JobsFacade
   ) {}
 
-  visitCheckboxClicked(visit: JobVisitDto, $eventArgs: MouseEvent): void {
+  visitCheckboxClicked(
+    visit: JobVisitDto,
+    $eventArgs: any,
+    openModal: boolean
+  ) {
+    console.log($eventArgs);
     $eventArgs.stopPropagation();
   }
 
-  onVisitClicked(visit: JobVisitDto, $eventArgs: MouseEvent): void {
-    $eventArgs.stopPropagation();
+  onVisitClicked(
+    visit: JobVisitDto,
+
+    openModal: boolean
+  ) {
+    console.log(openModal);
+    const __modal = this._modalService.openVisitDetailsModal();
   }
 
   ngOnInit(): void {
