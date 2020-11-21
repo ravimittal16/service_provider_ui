@@ -13,7 +13,7 @@
   </div>
   <div *ngIf="visits$ | async as visits" class="mt-2">
     <div
-      class="row visit-row"
+      class="row border-bottom hover-shadow visit-row"
       *ngFor="let visit of visits"
       (click)="onVisitClicked(visit, true)"
     >

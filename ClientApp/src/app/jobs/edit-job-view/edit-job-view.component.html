@@ -22,12 +22,17 @@
     <div class="row">
       <div class="col">
         <a class="btn btn-falcon-primary btn-sm" (click)="addNoteClicked()"
-          ><span class="fa fa-plus fs--2 mr-1"></span>Add note</a
+          ><span class="fa fa-lightbulb-o fs--2 mr-1"></span>Add note</a
         >
         <a
           class="btn btn-falcon-success btn-sm ml-1"
           (click)="markAsCompleted()"
-          ><span class="fa fa-check fs--2 mr-1"></span>Mark as completed</a
+          ><span class="fa fa-check fs--2 mr-1"></span>Close job</a
+        >
+        <a
+          class="btn btn-falcon-warning btn-sm ml-1"
+          (click)="markAsCompleted()"
+          ><span class="fa fa-usd fs--2 mr-1"></span>Generate Invoice</a
         >
         <a class="btn btn-falcon-default btn-sm ml-1"
           ><span class="fa fa-pencil fs--2 mr-1"></span>Edit</a
@@ -200,6 +205,7 @@
             <ng-template ngbNavContent>
               <app-job-items-list-view
                 (onItemAddCompleted)="onItemAddCompleted($event)"
+                [watchJobItems]="true"
                 [jobId]="jobId"
               ></app-job-items-list-view>
             </ng-template>

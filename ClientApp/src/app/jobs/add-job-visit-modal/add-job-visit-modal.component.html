@@ -6,10 +6,175 @@
 
 <div class="modal-body">
   <form [formGroup]="newVistFormGroup">
+    <div class="row border-bottom pb-3">
+      <div class="col-7">
+        <div class="form-group flex-fill">
+          <label>Title*</label>
+          <input
+            type="text"
+            #title
+            placeholder="visit title"
+            formControlName="title"
+            class="form-control form-control-sm"
+            [ngClass]="{ 'is-invalid': validationMessages.title }"
+          />
+          <div class="invalid-feedback" *ngIf="validationMessages.title">
+            {{ validationMessages.title }}
+          </div>
+        </div>
+        <div class="form-group flex-fill">
+          <label>Instructions</label>
+          <textarea
+            rows="3"
+            autofocus=""
+            placeholder="visit instructions..."
+            formControlName="description"
+            class="form-control form-control-sm"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-5">
+        <div>
+          <h6>Job details</h6>
+          <div class="row">
+            <div class="col-4">
+              <p class="fs--1 mb-2">
+                <span>Job Number :</span>
+              </p>
+            </div>
+            <div class="col-auto">
+              <p class="fs--1 mb-2">
+                <span class="font-weight-bold"> #{{ job?.fullJobNumber }}</span>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <p class="fs--1 mb-2">
+                <span>Customer :</span>
+              </p>
+            </div>
+            <div class="col-auto">
+              <p class="fs--1 mb-2">
+                <span class="font-weight-bold">
+                  {{ job?.customer?.displayName }}</span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <p class="fs--1 mb-2">
+                <span>Address :</span>
+              </p>
+            </div>
+            <div class="col-auto">
+              <p class="fs--1 mb-2">
+                <span>
+                  <address class="fs--1">
+                    {{ job?.jobAddress?.addressLine1 }}<br />
+                    {{ job?.jobAddress?.city }},
+                    {{ job?.jobAddress?.countrySubDivisionCode }}
+                    <strong>{{ job?.jobAddress?.postalCode }}</strong
+                    ><br />
+                    <a class="btn btn-link btn-sm pl-0 fs--1">view map</a>
+                  </address></span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-auto">
+        <h6 class="modal-title text-500">Schedule</h6>
+      </div>
+    </div>
+    <div class="form-group flex-fill">
+      <label>Assign To</label>
+      <select
+        formControlName="assignedTo"
+        class="form-control form-control-sm"
+      ></select>
+    </div>
     <div class="row">
-      <div class="col-7">HELLO</div>
-      <div class="col-5">WORLD</div>
+      <div class="col">
+        <div class="form-row">
+          <div class="col-3">
+            <div class="form-group flex-fill">
+              <app-datetime-picker
+                selectorType="date"
+                formControlName="startDate"
+                title="Start Date"
+                (onChanged)="onStartDateChanged($event)"
+              ></app-datetime-picker>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="top-margin-4">
+              <label class="sr-only">Start Date</label>
+              <app-datetime-picker
+                selectorType="time"
+                formControlName="startTime"
+                [showTitle]="false"
+                [combinedWithDate]="getFieldValue('startDate')"
+              ></app-datetime-picker>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group flex-fill">
+              <app-datetime-picker
+                selectorType="date"
+                formControlName="endDate"
+                title="End Date (Optional)"
+              ></app-datetime-picker>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="top-margin-4">
+              <label class="sr-only">Start Time</label>
+              <app-datetime-picker
+                selectorType="time"
+                formControlName="endTime"
+                [showTitle]="false"
+                [combinedWithDate]="getFieldValue('endDate')"
+              ></app-datetime-picker>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group form-check">
+      <input
+        class="form-check-input"
+        id="scheduleLater"
+        type="checkbox"
+        formControlName="scheduleLater"
+        (change)="onScheduleLaterCheckChange()"
+      />
+      <label class="form-check-label" for="scheduleLater">Schedule Later</label>
+    </div>
+    <div class="row border-top mt-3">
+      <div class="col-auto">
+        <h6 class="modal-title text-500 mt-2">Line Items (Optional)</h6>
+      </div>
     </div>
   </form>
 </div>
-<div class="modal-footer">FOOTER</div>
+<div class="modal-footer">
+  <div class="col pr-0">
+    <div class="float-right">
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-sm mr-1 mb-1"
+        (click)="onCancelClicked()"
+      >
+        Cancel
+      </button>
+      <button class="btn btn-primary btn-sm mr-1 mb-1" type="submit">
+        <span>Create</span>
+      </button>
+    </div>
+  </div>
+</div>

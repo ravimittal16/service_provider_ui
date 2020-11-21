@@ -36,6 +36,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   @Output() onItemAddCompleted: EventEmitter<{
     totalItems: number;
   }> = new EventEmitter<{ totalItems: number }>();
+  @Input() watchJobItems: boolean = false;
   lineItems$: Observable<JobLineItemDto[]>;
   lineItemsFormGroup: FormGroup;
   errors$: Observable<string[]>;
