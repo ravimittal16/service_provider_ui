@@ -72,19 +72,25 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
       this.__quantityPopoverRef.close();
     }
     this.__quantityPopoverRef = quantityPopover;
-    if (!final) {
-      this.selectedProduct = product;
-      quantityPopover.open();
-      setTimeout(() => {
-        const __inputBox = document.getElementById("quantityInput");
-        if (__inputBox) __inputBox.focus();
-      }, 10);
+    if (product && product.isServiceType) {
+      const __product = { ...product };
+      __product.quantity = 0;
+      this.selectionCallback(__product as ProductDto);
     } else {
-      if (this.selectedProduct && this.selectionCallback) {
-        const __product = { ...this.selectedProduct };
-        __product.quantity = this.quantityVal;
-        this.selectionCallback(__product as ProductDto);
-        this.quantityVal = 1;
+      if (!final) {
+        this.selectedProduct = product;
+        quantityPopover.open();
+        setTimeout(() => {
+          const __inputBox = document.getElementById("quantityInput");
+          if (__inputBox) __inputBox.focus();
+        }, 10);
+      } else {
+        if (this.selectedProduct && this.selectionCallback) {
+          const __product = { ...this.selectedProduct };
+          __product.quantity = this.quantityVal;
+          this.selectionCallback(__product as ProductDto);
+          this.quantityVal = 1;
+        }
       }
     }
   }

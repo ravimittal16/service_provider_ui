@@ -85,7 +85,6 @@ export class DatetimePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    console.log(isDisabled);
     this.isDisabled = isDisabled;
     this._renderer.setProperty(
       this._elementRef.nativeElement,
