@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    New Visit for <span class="text-600">#{{ job.fullJobNumber }}</span>
+    New visit for <span class="text-600">#{{ job.fullJobNumber }}</span>
   </h5>
 </div>
 
@@ -160,6 +160,12 @@
         <h6 class="modal-title text-500 mt-2">Line Items (Optional)</h6>
       </div>
     </div>
+    <app-job-items-table-view
+      [jobId]="job?.jobId"
+      [visitId]="0"
+      [parentFormGroup]="newVistFormGroup"
+      formArrayName="visitItems"
+    ></app-job-items-table-view>
   </form>
 </div>
 <div class="modal-footer">

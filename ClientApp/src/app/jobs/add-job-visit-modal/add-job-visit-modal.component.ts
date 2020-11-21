@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { JobDetailsDto } from "@shared/service-proxies/service-proxies";
 
@@ -45,7 +45,12 @@ export class AddJobVisitModalComponent implements OnInit {
       startTime: [__now],
       endDate: [null],
       endTime: [null],
+      visitItems: this._fb.array([]),
     });
+  }
+
+  get visitItemsFormArray(): FormArray {
+    return this.newVistFormGroup.get("visitItems") as FormArray;
   }
 
   onCancelClicked() {
