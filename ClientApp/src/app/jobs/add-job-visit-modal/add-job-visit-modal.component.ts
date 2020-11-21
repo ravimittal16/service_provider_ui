@@ -44,6 +44,7 @@ export class AddJobVisitModalComponent implements OnInit {
       startDate: [__now],
       startTime: [__now],
       endDate: [null],
+      jobId: [this.job.jobId],
       endTime: [null],
       visitItems: this._fb.array([]),
     });
@@ -51,6 +52,10 @@ export class AddJobVisitModalComponent implements OnInit {
 
   get visitItemsFormArray(): FormArray {
     return this.newVistFormGroup.get("visitItems") as FormArray;
+  }
+
+  onSubmitButtonClicked(): void {
+    console.log(this.newVistFormGroup.getRawValue());
   }
 
   onCancelClicked() {

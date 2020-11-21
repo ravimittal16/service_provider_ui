@@ -76,6 +76,7 @@
                         #quantityPopover="ngbPopover"
                         [autoClose]="false"
                         [closeDelay]="20000"
+                        triggers="manual"
                         [ngbPopover]="popQuantityContent"
                         [popoverTitle]="popQuantityTitle"
                         class="btn btn-xs btn-falcon-primary"
@@ -87,6 +88,11 @@
                     <td>
                       <span class="font-weight-semi-bold">
                         {{ product.name }}
+                        <span
+                          class="badge badge-soft-warning"
+                          *ngIf="product.isServiceType"
+                          >S</span
+                        >
                       </span>
                     </td>
                     <td>
@@ -119,7 +125,10 @@
     <div class="row">
       <div class="col">
         <div class="form-group flex-fill">
-          <label>{{ selectedProduct?.name }}</label>
+          <label class="fs--1"
+            >{{ selectedProduct?.name }}
+            <span class="text-300">quantity</span></label
+          >
           <input
             #quantityInput
             [(ngModel)]="quantityVal"
@@ -149,4 +158,4 @@
     </div>
   </div>
 </ng-template>
-<ng-template #popQuantityTitle>Add Product</ng-template>
+<ng-template #popQuantityTitle>Use Quantity</ng-template>

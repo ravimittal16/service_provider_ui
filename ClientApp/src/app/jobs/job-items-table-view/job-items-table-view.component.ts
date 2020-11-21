@@ -66,7 +66,7 @@ export class JobItemsTableViewComponent implements OnInit {
       this.controlsArray.push(
         this._fb.group({
           title: [product.name],
-          description: [""],
+          description: [product.description],
           quantity: [product.quantity, [Validators.required]],
           price: [product.unitPrice, [Validators.required]],
           product: [product],

@@ -17,10 +17,10 @@
     <div
       class="row header-row border-bottom bg-light p-2 mt-2 d-flex align-items-center"
     >
-      <div class="col-4">
+      <div class="col-5">
         <h6 class="font-weight-bold mb-0">Product/Service</h6>
       </div>
-      <div class="col-3 d-flex justify-content-center">
+      <div class="col-2 d-flex justify-content-center">
         <h6 class="font-weight-bold mb-0">Quantity</h6>
       </div>
       <div class="col-2 d-flex justify-content-center">
@@ -33,72 +33,82 @@
         <h6 class="font-weight-bold">&nbsp;</h6>
       </div>
     </div>
-    <div
-      class="row p-2 border-bottom hover-shadow d-flex align-items-center"
-      *ngFor="let _ of controlsArray.controls; index as i"
-      [formGroupName]="i"
-    >
-      <div class="col-4">
-        <h6 class="font-weight-light mb-0">
-          {{ productName(i) }}
-        </h6>
-      </div>
-      <div class="col-3 d-flex justify-content-center">
-        <div class="form-group flex-fill">
-          <div class="input-group input-group-sm">
-            <div class="input-group-prepend">
-              <button
-                class="btn btn-sm btn-outline-secondary border-300 px-2"
-                data-field="input-quantity"
-                (click)="updateQuantity(i, -1)"
-                tabindex="-1"
-                data-type="minus"
-              >
-                -
-              </button>
-            </div>
-            <input
-              class="form-control form-control-sm text-center px-2 input-quantity input-spin-none"
-              type="number"
-              formControlName="quantity"
-              aria-label="Amount (to the nearest dollar)"
-              style="max-width: 40px"
-            />
-            <div class="input-group-append">
-              <button
-                class="btn btn-sm btn-outline-secondary border-300 px-2"
-                data-field="input-quantity"
-                data-type="plus"
-                (click)="updateQuantity(i, 1)"
-                tabindex="-1"
-              >
-                +
-              </button>
+    <div *ngIf="controlsArray.controls.length > 0">
+      <div
+        class="row p-2 border-bottom hover-shadow d-flex align-items-center"
+        *ngFor="let _ of controlsArray.controls; index as i"
+        [formGroupName]="i"
+      >
+        <div class="col-5">
+          <h6 class="font-weight-light mb-0">
+            {{ productName(i) }}
+          </h6>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="form-group flex-fill">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <button
+                  class="btn btn-sm btn-outline-secondary border-300 px-2"
+                  data-field="input-quantity"
+                  (click)="updateQuantity(i, -1)"
+                  tabindex="-1"
+                  data-type="minus"
+                >
+                  -
+                </button>
+              </div>
+              <input
+                class="form-control form-control-sm text-center px-2 input-quantity input-spin-none"
+                type="number"
+                formControlName="quantity"
+                aria-label="Amount (to the nearest dollar)"
+                style="max-width: 40px"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-sm btn-outline-secondary border-300 px-2"
+                  data-field="input-quantity"
+                  data-type="plus"
+                  (click)="updateQuantity(i, 1)"
+                  tabindex="-1"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group flex-fill">
-          <input
-            class="form-control form-control-sm text-center px-2"
-            type="text"
-            formControlName="price"
-          />
+        <div class="col-2">
+          <div class="form-group flex-fill">
+            <input
+              class="form-control form-control-sm text-center px-2"
+              type="text"
+              formControlName="price"
+            />
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <h6 class="font-weight-bold mb-0">
+            {{ getRowTotal(i) | currency }}
+          </h6>
+        </div>
+        <div class="col-1">
+          <button
+            class="btn btn-sm btn-falcon-danger"
+            (click)="deleteItem(i, false)"
+          >
+            <i class="fa fa-trash"></i>
+          </button>
         </div>
       </div>
-      <div class="col-2 d-flex justify-content-center">
-        <h6 class="font-weight-bold mb-0">
-          {{ getRowTotal(i) | currency }}
-        </h6>
-      </div>
-      <div class="col-1">
-        <button
-          class="btn btn-sm btn-falcon-danger"
-          (click)="deleteItem(i, false)"
-        >
-          <i class="fa fa-trash"></i>
-        </button>
+    </div>
+    <div
+      class="row p-3 border-bottom"
+      *ngIf="controlsArray.controls.length === 0"
+    >
+      <div class="col d-flex justify-content-center">
+        <h6 class="font-weight-normal mb-0 text-400">No Line items added</h6>
       </div>
     </div>
   </div>
