@@ -12,6 +12,7 @@ import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { AddJobVisitModalComponent } from "./add-job-visit-modal/add-job-visit-modal.component";
 import { JobCardListItemComponent } from "./job-card-list-item/job-card-list-item.component";
 import { JobItemsListViewComponent } from "./job-items-list-view/job-items-list-view.component";
+import { JobItemsTableViewComponent } from "./job-items-table-view/job-items-table-view.component";
 import { JobVisitDetailModalComponent } from "./job-visit-detail-modal/job-visit-detail-modal.component";
 import { JobVisitsViewComponent } from "./job-visits-view/job-visits-view.component";
 import { JobsFilterComponent } from "./jobs-filter/jobs-filter.component";
@@ -29,6 +30,7 @@ const __moduleComponents = [
   JobCardListItemComponent,
   JobItemsListViewComponent,
   JobVisitsViewComponent,
+  JobItemsTableViewComponent,
 ];
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],
