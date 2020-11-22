@@ -59,6 +59,8 @@ export const reducers: ActionReducerMap<AppState> = {
 
 export const selectAllJobs = fromJobsSelectors.selectAllJobs;
 export const selectJobsFilter = fromJobsSelectors.selectJobsFilter;
+export const selectJobLineItems = fromJobsSelectors.selectJobLineItems;
+export const selectJobVisits = fromJobsSelectors.selectJobVisits;
 
 // ==========================================================
 // REGISTRATION
@@ -98,6 +100,8 @@ export const selectAllUsers = fromUsersStateSelectors.selectAllUsers;
 export const usersBusyStateSelector =
   fromUsersStateSelectors.usersBusyStateSelector;
 export const selectUsersStateErrors = fromUsersStateSelectors.selectErrors;
+export const selectEmployeesList = fromUsersStateSelectors.selectEmployeesList;
+export const selectTeamsList = fromUsersStateSelectors.selectTeamsList;
 // ==========================================================
 // LOGIN
 // ==========================================================

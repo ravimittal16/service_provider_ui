@@ -19,6 +19,8 @@ export const initialState: UsersState = adapter.getInitialState({
   isBusy: false,
   errors: [],
   success: false,
+  employees: [],
+  teams: [],
 });
 
 const usersReducer = createReducer(
@@ -31,6 +33,16 @@ const usersReducer = createReducer(
     ...state,
     isBusy: false,
     errors: props.errors,
+  })),
+  on(fromUsersActions.loaedEmployeesList, (state, props) => ({
+    ...state,
+    isBusy: false,
+    employees: props.employees,
+  })),
+  on(fromUsersActions.loadedTeamsList, (state, props) => ({
+    ...state,
+    isBusy: false,
+    teams: props.teams,
   })),
   on(fromUsersActions.modalOpenedAction, (state) => ({
     ...state,

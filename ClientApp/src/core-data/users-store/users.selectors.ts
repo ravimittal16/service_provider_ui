@@ -21,3 +21,11 @@ export const usersBusyStateSelector = createSelector(
 );
 
 export const selectErrors = createSelector(usersFeatureState, (s) => s.errors);
+export const selectEmployeesList = createSelector(
+  usersFeatureState,
+  (s) => s.employees
+);
+export const selectTeamsList = createSelector(
+  usersFeatureState,
+  (s) => s.teams
+);
