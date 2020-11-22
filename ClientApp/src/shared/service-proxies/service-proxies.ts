@@ -1370,6 +1370,116 @@ export class UsersServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllEmployees(): Observable<EmployeeDto[]> {
+        let url_ = this.baseUrl + "/api/Users/GetAllEmployees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllEmployees(<any>response_);
+                } catch (e) {
+                    return <Observable<EmployeeDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EmployeeDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllEmployees(response: HttpResponseBase): Observable<EmployeeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(EmployeeDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EmployeeDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllTeams(): Observable<TeamDto[]> {
+        let url_ = this.baseUrl + "/api/Users/GetAllTeams";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTeams(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTeams(<any>response_);
+                } catch (e) {
+                    return <Observable<TeamDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TeamDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTeams(response: HttpResponseBase): Observable<TeamDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(TeamDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TeamDto[]>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -3410,13 +3520,86 @@ export enum EmployeeTypes {
     _7 = 7,
 }
 
+export enum EmployeeStatuses {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+}
+
+export class TeamDto implements ITeamDto {
+    teamId: number;
+    teamName: string | undefined;
+    description: string | undefined;
+    employees: EmployeeDto[] | undefined;
+
+    constructor(data?: ITeamDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.teamId = _data["teamId"];
+            this.teamName = _data["teamName"];
+            this.description = _data["description"];
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees.push(EmployeeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TeamDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TeamDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["teamId"] = this.teamId;
+        data["teamName"] = this.teamName;
+        data["description"] = this.description;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): TeamDto {
+        const json = this.toJSON();
+        let result = new TeamDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITeamDto {
+    teamId: number;
+    teamName: string | undefined;
+    description: string | undefined;
+    employees: EmployeeDto[] | undefined;
+}
+
 export class EmployeeDto implements IEmployeeDto {
     title: string | undefined;
     givenName: string | undefined;
     displayName: string | undefined;
     email: string | undefined;
     employeeType: EmployeeTypes;
+    status: EmployeeStatuses;
     employeeId: number;
+    team: TeamDto;
+    readonly fullDisplayName: string | undefined;
 
     constructor(data?: IEmployeeDto) {
         if (data) {
@@ -3434,7 +3617,10 @@ export class EmployeeDto implements IEmployeeDto {
             this.displayName = _data["displayName"];
             this.email = _data["email"];
             this.employeeType = _data["employeeType"];
+            this.status = _data["status"];
             this.employeeId = _data["employeeId"];
+            this.team = _data["team"] ? TeamDto.fromJS(_data["team"]) : <any>undefined;
+            (<any>this).fullDisplayName = _data["fullDisplayName"];
         }
     }
 
@@ -3452,7 +3638,10 @@ export class EmployeeDto implements IEmployeeDto {
         data["displayName"] = this.displayName;
         data["email"] = this.email;
         data["employeeType"] = this.employeeType;
+        data["status"] = this.status;
         data["employeeId"] = this.employeeId;
+        data["team"] = this.team ? this.team.toJSON() : <any>undefined;
+        data["fullDisplayName"] = this.fullDisplayName;
         return data; 
     }
 
@@ -3470,7 +3659,10 @@ export interface IEmployeeDto {
     displayName: string | undefined;
     email: string | undefined;
     employeeType: EmployeeTypes;
+    status: EmployeeStatuses;
     employeeId: number;
+    team: TeamDto;
+    fullDisplayName: string | undefined;
 }
 
 export class JobDto implements IJobDto {

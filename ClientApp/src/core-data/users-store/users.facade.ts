@@ -4,6 +4,8 @@ import { Action, Store, select } from "@ngrx/store";
 import {
   UserDto,
   CreateUserModel,
+  EmployeeDto,
+  TeamDto,
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { UsersState } from "./users.state";
@@ -17,6 +19,8 @@ export class UsersFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   users$: Observable<UserDto[]>;
+  employees$: Observable<EmployeeDto[]>;
+  teams$: Observable<TeamDto[]>;
 
   constructor(private _store: Store<UsersState>) {
     this.users$ = this._store.pipe(select(fromUsersSelectors.selectAllUsers));
@@ -24,10 +28,22 @@ export class UsersFacade implements Facade {
       select(fromUsersSelectors.usersBusyStateSelector)
     );
     this.errors$ = this._store.pipe(select(fromUsersSelectors.selectErrors));
+    this.employees$ = this._store.pipe(
+      select(fromUsersSelectors.selectEmployeesList)
+    );
+    this.teams$ = this._store.pipe(select(fromUsersSelectors.selectTeamsList));
   }
 
   onUserModalOpened() {
     this.dispatch(fromUsersActions.modalOpenedAction());
+  }
+
+  fetchEmloyeesList() {
+    this.dispatch(fromUsersActions.loadEmployeesAction({ companyId: 0 }));
+  }
+
+  fetchTeamsList() {
+    this.dispatch(fromUsersActions.loadTeamsAction());
   }
 
   triggerCreateUserAction(model: CreateUserModel) {

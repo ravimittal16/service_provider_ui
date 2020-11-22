@@ -1,7 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UsersFacade } from "@core-data/users-store/users.facade";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { JobDetailsDto } from "@shared/service-proxies/service-proxies";
+import {
+  JobDetailsDto,
+  TeamDto,
+} from "@shared/service-proxies/service-proxies";
+
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-add-job-visit-modal",
@@ -12,7 +19,18 @@ export class AddJobVisitModalComponent implements OnInit {
   @Input() job: JobDetailsDto;
   newVistFormGroup: FormGroup;
   validationMessages: { [key: string]: string } = {};
-  constructor(public activeModal: NgbActiveModal, private _fb: FormBuilder) {}
+  teams$: Observable<TeamDto[]>;
+  constructor(
+    public activeModal: NgbActiveModal,
+    private _fb: FormBuilder,
+    private _usersFacade: UsersFacade
+  ) {
+    this.teams$ = this._usersFacade.teams$.pipe(
+      tap((data) => {
+        console.log(data);
+      })
+    );
+  }
   onStartDateChanged(newDate: Date) {}
   getFieldValue(fieldName: string) {
     return this.newVistFormGroup.get(fieldName).value;

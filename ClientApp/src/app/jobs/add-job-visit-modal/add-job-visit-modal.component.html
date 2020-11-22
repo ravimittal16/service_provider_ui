@@ -95,8 +95,15 @@
       <label>Assign To</label>
       <select
         formControlName="assignedTo"
-        class="form-control form-control-sm"
-      ></select>
+        class="form-control form-control-sm js-choice"
+        choices=""
+      >
+        <optgroup *ngFor="let team of teams$ | async" [label]="team.teamName">
+          <option *ngFor="let emp of team.employees" [ngValue]="emp.employeeId">
+            {{ emp.fullDisplayName }}
+          </option>
+        </optgroup>
+      </select>
     </div>
     <div class="row">
       <div class="col">

@@ -51,6 +51,57 @@ export class UsersEffects extends BaseEffect {
     );
   });
 
+  fetchEmployees$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromUserActions.loadEmployeesAction),
+      withLatestFrom(
+        this._store.select(fromUsersSelectors.selectEmployeesList)
+      ),
+      filter(([action, employees]) => {
+        return employees === undefined || employees.length === 0;
+      }),
+      mergeMap(() =>
+        this.usersDataService.getAllEmployees().pipe(
+          map((data) =>
+            fromUserActions.loaedEmployeesList({ employees: data })
+          ),
+          catchError((error) => {
+            return of(
+              fromUserActions.userErrorsStateAction({
+                errors: ["Error while loading employees."],
+              })
+            );
+          })
+        )
+      )
+    );
+  });
+
+  fetchTeams$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromUserActions.loadTeamsAction),
+      withLatestFrom(this._store.select(fromUsersSelectors.selectTeamsList)),
+      filter(([action, teams]) => {
+        return teams === undefined || teams.length === 0;
+      }),
+      mergeMap(() =>
+        this.usersDataService.getAllTeams().pipe(
+          map((data) => {
+            console.log(data);
+            return fromUserActions.loadedTeamsList({ teams: data });
+          }),
+          catchError((error) => {
+            return of(
+              fromUserActions.userErrorsStateAction({
+                errors: ["Error while loading teams."],
+              })
+            );
+          })
+        )
+      )
+    );
+  });
+
   createUpdateUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromUserActions.createUserStartAction),
