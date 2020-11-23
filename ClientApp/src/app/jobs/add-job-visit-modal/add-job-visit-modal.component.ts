@@ -34,6 +34,7 @@ export class AddJobVisitModalComponent implements OnInit {
   newVistFormGroup: FormGroup;
   validationMessages: { [key: string]: string } = {};
   teams$: Observable<TeamDto[]>;
+  errors$: Observable<string[]>;
   isBusy = false;
   private __errorHandler = new ErrorRenderer();
   private __subs = new SubSink();
@@ -46,11 +47,8 @@ export class AddJobVisitModalComponent implements OnInit {
     private _jobDataService: JobsDataService,
     private _toastService: ToastService
   ) {
-    this.teams$ = this._usersFacade.teams$.pipe(
-      tap((data) => {
-        console.log(data);
-      })
-    );
+    this.errors$ = this.__errorHandler.errors$;
+    this.teams$ = this._usersFacade.teams$;
   }
   onStartDateChanged(newDate: Date) {}
   getFieldValue(fieldName: string) {
@@ -121,6 +119,8 @@ export class AddJobVisitModalComponent implements OnInit {
                 "Visit created",
                 "Job visit has been created successfully"
               );
+            } else {
+              this.__errorHandler.notifyError("Error while adding job visit.");
             }
           })
       );

@@ -5,6 +5,10 @@
 </div>
 
 <div class="modal-body">
+  <app-error-view
+    [errors$]="errors$"
+    [observableDefined]="true"
+  ></app-error-view>
   <form [formGroup]="newVistFormGroup">
     <div class="row border-bottom pb-3">
       <div class="col-7">
