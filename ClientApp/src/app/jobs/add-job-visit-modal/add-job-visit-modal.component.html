@@ -99,7 +99,7 @@
         choices=""
       >
         <optgroup *ngFor="let team of teams$ | async" [label]="team.teamName">
-          <option *ngFor="let emp of team.employees" [ngValue]="emp.employeeId">
+          <option *ngFor="let emp of team.employees" [ngValue]="emp">
             {{ emp.fullDisplayName }}
           </option>
         </optgroup>
@@ -180,7 +180,7 @@
     <div class="float-right">
       <button
         type="button"
-        class="btn btn-outline-dark btn-sm mr-1 mb-1"
+        class="btn btn-outline-danger btn-sm mr-1 mb-1"
         (click)="onCancelClicked()"
       >
         Cancel
