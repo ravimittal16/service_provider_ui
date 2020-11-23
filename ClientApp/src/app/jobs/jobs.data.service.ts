@@ -4,9 +4,11 @@ import {
   AddressDto,
   CreateJobModel,
   CreateJobModelGenericResponse,
+  CreateJobVisitModel,
   CustomersServiceProxy,
   JobLineItemDto,
   JobsServiceProxy,
+  JobVisitDtoGenericResponse,
   ProductDto,
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs/internal/Observable";
@@ -24,6 +26,12 @@ export class JobsDataService {
 
   createJob(model: CreateJobModel): Observable<CreateJobModelGenericResponse> {
     return this.__jobServiceProxy.createJob(model);
+  }
+
+  addVisitToJob(
+    model: CreateJobVisitModel
+  ): Observable<JobVisitDtoGenericResponse> {
+    return this.__jobServiceProxy.createJobVisit(model);
   }
 
   addProductToJob(
