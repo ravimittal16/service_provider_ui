@@ -21,6 +21,7 @@ import { finalize, tap } from "rxjs/operators";
 import { JobsDataService } from "../jobs.data.service";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import { SubSink } from "subsink";
+import { ToastService } from "@shared/services/toast.service";
 
 @Component({
   selector: "app-add-job-visit-modal",
@@ -42,7 +43,8 @@ export class AddJobVisitModalComponent implements OnInit {
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
     private _usersFacade: UsersFacade,
-    private _jobDataService: JobsDataService
+    private _jobDataService: JobsDataService,
+    private _toastService: ToastService
   ) {
     this.teams$ = this._usersFacade.teams$.pipe(
       tap((data) => {
@@ -114,7 +116,12 @@ export class AddJobVisitModalComponent implements OnInit {
           .addVisitToJob(_model)
           .pipe(finalize(() => {}))
           .subscribe((respnse) => {
-            console.log(respnse);
+            if (respnse.isSuccess) {
+              this._toastService.showSuccess(
+                "Visit created",
+                "Job visit has been created successfully"
+              );
+            }
           })
       );
     }
