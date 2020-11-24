@@ -59,6 +59,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
 
     const __group = this._fb.group({
       id: [_id],
+      title: [item?.product?.name],
       itemId: [item?.itemId || 0],
       productId: [item?.productId],
       product: [item?.product, [Validators.required]],
@@ -68,8 +69,47 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
       markup: [item?.markup],
       description: [item?.description],
       isServiceType: [item?.product?.isServiceType],
+      isInEditMode: [false],
     });
     this.controlsArray.push(__group);
+  }
+
+  updateQuantity(formIndex: number, quantity: number) {
+    const __formGroup = this.controlsArray.controls[formIndex] as FormGroup;
+    if (__formGroup) {
+      const __quantity = __formGroup.get("quantity");
+      const __currentVal = ((__quantity.value || 0) as number) + quantity;
+      if (__currentVal >= 0) {
+        __quantity.patchValue(__currentVal);
+      }
+    }
+  }
+
+  isInEditMode(formIndex: number) {
+    const __formGroup = this.controlsArray.controls[formIndex] as FormGroup;
+    if (__formGroup) {
+      return __formGroup.get("isInEditMode").value as boolean;
+    }
+  }
+
+  onRowClicked(formIndex: number, event: any) {
+    const __formGroup = this.controlsArray.controls[formIndex] as FormGroup;
+    if (__formGroup) {
+      const __isInEditMode = __formGroup.get("isInEditMode").value as boolean;
+      __formGroup.get("isInEditMode").patchValue(!__isInEditMode);
+    }
+
+    event.stopPropagation();
+  }
+
+  getRowTotal(formIndex: number) {
+    const __formGroup = this.controlsArray.controls[formIndex] as FormGroup;
+    if (__formGroup) {
+      const __quantity = __formGroup.get("quantity").value;
+      const __price = __formGroup.get("price").value;
+      return (__price || 0) * (__quantity || 0);
+    }
+    return "0";
   }
 
   private __pushItemsToFormArray(items: JobLineItemDto[]) {
@@ -133,6 +173,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   }
 
   deleteItem(
+    $event: any,
     index: number,
     confirmationPopover: NgbPopover,
     isFinalConfirmation: boolean
@@ -150,6 +191,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
         }
       }
     }
+    $event.stopPropagation();
   }
 
   ngOnDestroy(): void {
@@ -185,6 +227,14 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
         this._cdr.detectChanges();
       }, 100);
     }
+  }
+
+  productName(index: number): any {
+    const __formGroup = this.controlsArray.controls[index] as FormGroup;
+    if (__formGroup) {
+      return __formGroup.get("title").value;
+    }
+    return "";
   }
 
   private __listenEvents() {

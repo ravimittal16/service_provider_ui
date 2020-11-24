@@ -19,143 +19,179 @@
       </div>
     </div>
   </div>
-  <div class="row mt-2">
-    <div class="col">
-      <form [formGroup]="lineItemsFormGroup">
-        <table
-          class="table table-bordered table-striped items-table"
-          *ngIf="controlsArray.controls.length > 0"
-          formArrayName="lineItems"
-        >
-          <thead>
-            <th>Product/Service</th>
-            <th style="width: 150px; max-width: 150px">Quantity</th>
-            <th style="width: 150px; max-width: 150px">Unit Price</th>
-            <th style="width: 100px; max-width: 100px" class="text-center">
-              Taxable
-            </th>
-            <th style="width: 150px; max-width: 150px">Total Price</th>
-            <th style="width: 100px; max-width: 100px" class="text-center">
-              Actions
-            </th>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let _ of controlsArray.controls; index as i"
-              [formGroupName]="i"
-            >
-              <td>
-                <div>
-                  <div class="form-group">
-                    <app-product-selector-input
-                      formControlName="product"
-                      [showLabel]="false"
-                      [id]="i"
-                      [setAutoFocus]="true"
-                      [onlyServices]="false"
-                      (onSelectionChanged)="onItemSelectionChanged($event, i)"
-                    ></app-product-selector-input>
-                  </div>
-                  <div class="form-group">
-                    <textarea
-                      rows="3"
-                      [id]="'description' + i"
-                      placeholder="product description..."
-                      class="form-control form-control-sm"
-                      formControlName="description"
-                    ></textarea>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="form-group">
-                  <input
-                    type="number"
-                    class="form-control form-control-sm"
-                    formControlName="quantity"
-                  />
-                </div>
-              </td>
-              <td>
-                <div class="form-group">
-                  <input
-                    type="number"
-                    class="form-control form-control-sm"
-                    formControlName="price"
-                  />
-                </div>
-              </td>
-              <td class="text-center">
-                <div class="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="taxableCheckbox{{ i }}"
-                    formControlName="taxable"
-                  />
-                  <label
-                    class="custom-control-label"
-                    for="taxableCheckbox{{ i }}"
-                  ></label>
-                </div>
-              </td>
-              <td></td>
-              <td class="text-center">
-                <div>
-                  <ng-template #popContent>
-                    <div class="row">
-                      <div class="col-auto">
-                        <button
-                          class="btn btn-sm btn-falcon-success"
-                          (click)="deleteItem(i, null, true)"
-                        >
-                          Yes
-                        </button>
-                      </div>
-                      <div class="col-auto">
-                        <button
-                          class="btn btn-sm btn-falcon-danger"
-                          (click)="confirmationPopover.close()"
-                        >
-                          No
-                        </button>
-                      </div>
-                    </div>
-                  </ng-template>
-                  <ng-template #popTitle>Are you sure?</ng-template>
-                  <button
-                    triggers="manual"
-                    class="btn btn-sm btn-falcon-danger"
-                    #confirmationPopover="ngbPopover"
-                    [autoClose]="true"
-                    [closeDelay]="3000"
-                    [ngbPopover]="popContent"
-                    [popoverTitle]="popTitle"
-                    (click)="deleteItem(i, confirmationPopover, false)"
-                  >
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="6">
-                <div class="d-flex justify-content-start">
-                  <button
-                    class="btn btn-link btn-xs"
-                    (click)="addLineItemClicked(true)"
-                  >
-                    + Add Line item
-                    <!-- <i class="fa fa-plus"></i> Add product -->
-                  </button>
-                </div>
-              </th>
-            </tr>
-          </tfoot>
-        </table>
-      </form>
+  <form [formGroup]="lineItemsFormGroup">
+    <div
+      class="row header-row border-bottom bg-light p-2 mt-2 d-flex align-items-center"
+    >
+      <div class="col-5">
+        <h6 class="font-weight-bold mb-0">Products/Services</h6>
+      </div>
+      <div class="col-2 d-flex justify-content-center">
+        <h6 class="font-weight-bold mb-0">Quantity</h6>
+      </div>
+      <div class="col-2 d-flex justify-content-center">
+        <h6 class="font-weight-bold mb-0">Price</h6>
+      </div>
+      <div class="col-2 d-flex justify-content-center">
+        <h6 class="font-weight-bold mb-0">Total</h6>
+      </div>
+      <div class="col-1">
+        <h6 class="font-weight-bold">&nbsp;</h6>
+      </div>
     </div>
-  </div>
+
+    <div formArrayName="lineItems" *ngIf="controlsArray.controls.length > 0">
+      <div
+        class="row p-2 border-bottom hover-shadow d-flex align-items-center pointer"
+        *ngFor="let _ of controlsArray.controls; index as i"
+        (click)="onRowClicked(i, $event)"
+        [formGroupName]="i"
+      >
+        <div class="col-5">
+          <div *ngIf="!isInEditMode(i) as _isInEditMode">
+            <h6 class="font-weight-light mb-0">
+              {{ productName(i) }}
+            </h6>
+          </div>
+          <div *ngIf="isInEditMode(i) as _isInEditMode">
+            <div>
+              <div class="form-group">
+                <app-product-selector-input
+                  formControlName="product"
+                  [showLabel]="false"
+                  [id]="i"
+                  [setAutoFocus]="true"
+                  [onlyServices]="false"
+                  (onSelectionChanged)="onItemSelectionChanged($event, i)"
+                ></app-product-selector-input>
+              </div>
+              <div class="form-group">
+                <textarea
+                  rows="3"
+                  [id]="'description' + i"
+                  placeholder="product description..."
+                  class="form-control form-control-sm"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="form-group">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <button
+                  class="btn btn-sm btn-outline-secondary border-300 px-2"
+                  data-field="input-quantity"
+                  (click)="updateQuantity(i, -1)"
+                  tabindex="-1"
+                  data-type="minus"
+                >
+                  -
+                </button>
+              </div>
+              <input
+                class="form-control form-control-sm text-center px-2 input-quantity input-spin-none"
+                type="number"
+                formControlName="quantity"
+                aria-label="Amount (to the nearest dollar)"
+                style="max-width: 40px"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-sm btn-outline-secondary border-300 px-2"
+                  data-field="input-quantity"
+                  data-type="plus"
+                  (click)="updateQuantity(i, 1)"
+                  tabindex="-1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-group">
+            <input
+              class="form-control form-control-sm text-center px-2"
+              type="text"
+              formControlName="price"
+            />
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <h6 class="font-weight-bold mb-0">
+            {{ getRowTotal(i) | currency }}
+          </h6>
+        </div>
+        <div class="col-1">
+          <ng-container *ngIf="!isInEditMode(i)">
+            <ng-template #popContent>
+              <div class="row">
+                <div class="col-auto">
+                  <button
+                    class="btn btn-sm btn-falcon-success"
+                    (click)="deleteItem($event, i, null, true)"
+                  >
+                    Yes
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button
+                    class="btn btn-sm btn-falcon-danger"
+                    (click)="confirmationPopover.close()"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #popTitle>Are you sure?</ng-template>
+            <button
+              triggers="manual"
+              class="btn btn-sm btn-falcon-danger"
+              #confirmationPopover="ngbPopover"
+              [autoClose]="true"
+              container="body"
+              [closeDelay]="3000"
+              [ngbPopover]="popContent"
+              [popoverTitle]="popTitle"
+              (click)="deleteItem($event, i, confirmationPopover, false)"
+            >
+              <i class="fa fa-trash"></i>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+      <div
+        class="row p-2 border-bottom hover-shadow d-flex align-items-center bg-soft-primary"
+      >
+        <div class="col-5">
+          <h6 class="font-weight-bold mb-0">&nbsp;</h6>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <h6 class="font-weight-bold mb-0">&nbsp;</h6>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <h6 class="font-weight-bold mb-0">&nbsp;</h6>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <h6 class="font-weight-bold mb-0">Total</h6>
+        </div>
+        <div class="col-1">
+          <h6 class="font-weight-bold">&nbsp;</h6>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row p-3 border-bottom"
+      *ngIf="controlsArray.controls.length === 0"
+    >
+      <div class="col d-flex justify-content-center">
+        <h6 class="font-weight-normal mb-0 text-400">No Line items added</h6>
+      </div>
+    </div>
+  </form>
 </div>
