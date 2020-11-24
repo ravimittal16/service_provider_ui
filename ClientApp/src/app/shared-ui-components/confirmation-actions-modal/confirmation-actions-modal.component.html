@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ dialogConfig.heading }}</h5>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col">
+      <button
+        *ngFor="let action of dialogConfig.actions; index as i"
+        class="btn btn-sm btn-block {{ action.actionClass }}"
+        (click)="onActionClicked(i)"
+      >
+        {{ action.title }}
+      </button>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <button
+        class="btn btn-sm btn-block {{
+          dialogConfig.destructiveAction.actionClass
+        }}"
+        (click)="onActionClicked(-1)"
+      >
+        {{ dialogConfig.destructiveAction.title }}
+      </button>
+    </div>
+  </div>
+</div>

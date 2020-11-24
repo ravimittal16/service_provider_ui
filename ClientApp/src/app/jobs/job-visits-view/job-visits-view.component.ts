@@ -1,12 +1,18 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
+import {
+  ConfirmationActionsModel,
+  UiAlertsService,
+} from "@app/shared-ui-components/ui.alerts.service";
 import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
 import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 import { JobActionListenerSchema } from "@core-data/jobs-store/jobs.state";
+import { NgbPopover } from "@ng-bootstrap/ng-bootstrap";
 import {
   JobDetailsDto,
   JobVisitDto,
 } from "@shared/service-proxies/service-proxies";
+import { title } from "process";
 import { Observable } from "rxjs";
 import { JobsDataService } from "../jobs.data.service";
 import { JobsModalService } from "../jobs.modal.service";
@@ -21,10 +27,9 @@ export class JobVisitsViewComponent implements OnInit {
   visits$: Observable<JobVisitDto[]>;
   jobDetails: JobDetailsDto = null;
   constructor(
-    private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
-    private _uiComponentsService: UiComponentsService,
     private _modalService: JobsModalService,
+    private _alertsService: UiAlertsService,
     private _jobDataService: JobsDataService,
     private _jobFacade: JobsFacade
   ) {}
@@ -38,7 +43,35 @@ export class JobVisitsViewComponent implements OnInit {
     $eventArgs.stopPropagation();
   }
 
-  onDeleteVisitClicked($event: any): void {
+  onDeleteVisitClicked(
+    $event: any,
+    visit: JobVisitDto,
+    confirmationPopover: NgbPopover,
+    isFinalConfirmation: boolean
+  ): void {
+    this._alertsService
+      .showConfirmationActions({
+        heading: "Delete Visit",
+        actions: [
+          { actionClass: "btn-danger", title: "Delete visit only" },
+          { actionClass: "btn-danger", title: "Delete visit and items" },
+        ],
+        destructiveAction: {
+          actionClass: "btn-default",
+          title: "Don't do anything.",
+        },
+        closeOnConfirm: true,
+      })
+      .then((index) => {
+        console.log(index);
+      });
+
+    // if (!isFinalConfirmation) {
+    //   confirmationPopover.open();
+    // } else {
+    //   // this._jobFacade.deleteItem(_itemId, this.jobId);
+    //   console.log(visit);
+    // }
     $event.stopPropagation();
   }
 
