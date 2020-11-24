@@ -71,4 +71,6 @@ export class ConfirmationActionsModel {
   actions: IConfirmationActionModel[];
   destructiveAction: IConfirmationActionModel;
   heading: string;
+  message?: string;
+  titleIcon?: string;
 }

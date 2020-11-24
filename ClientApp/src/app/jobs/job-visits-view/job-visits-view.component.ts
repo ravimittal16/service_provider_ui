@@ -43,12 +43,7 @@ export class JobVisitsViewComponent implements OnInit {
     $eventArgs.stopPropagation();
   }
 
-  onDeleteVisitClicked(
-    $event: any,
-    visit: JobVisitDto,
-    confirmationPopover: NgbPopover,
-    isFinalConfirmation: boolean
-  ): void {
+  onDeleteVisitClicked($event: any, visit: JobVisitDto): void {
     this._alertsService
       .showConfirmationActions({
         heading: "Delete Visit",
@@ -61,17 +56,15 @@ export class JobVisitsViewComponent implements OnInit {
           title: "Don't do anything.",
         },
         closeOnConfirm: true,
+        titleIcon: "fa-trash text-danger",
       })
       .then((index) => {
-        console.log(index);
+        if (index >= 0) {
+          const _deleteItems = index === 1;
+          this._jobFacade.deleteVisit(visit.visitId, this.jobId, _deleteItems);
+        }
       });
 
-    // if (!isFinalConfirmation) {
-    //   confirmationPopover.open();
-    // } else {
-    //   // this._jobFacade.deleteItem(_itemId, this.jobId);
-    //   console.log(visit);
-    // }
     $event.stopPropagation();
   }
 
