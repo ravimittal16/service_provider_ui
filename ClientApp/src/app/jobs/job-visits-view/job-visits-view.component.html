@@ -58,9 +58,44 @@
             </h6>
           </div>
           <div class="actions ml-3">
+            <ng-template #popContentVisit>
+              <div class="row">
+                <div class="col-auto">
+                  <button
+                    class="btn btn-sm btn-falcon-success"
+                    (click)="onDeleteVisitClicked($event, visit, null, true)"
+                  >
+                    Yes
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button
+                    class="btn btn-sm btn-falcon-danger"
+                    (click)="visitConfirmationPopover.close()"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #popTitleVisit>Are you sure?</ng-template>
             <button
+              triggers="manual"
+              #visitConfirmationPopover="ngbPopover"
+              [autoClose]="true"
+              container="body"
+              [closeDelay]="3000"
+              [ngbPopover]="popContentVisit"
+              [popoverTitle]="popTitleVisit"
               class="btn btn-falcon-danger btn-xs"
-              (click)="onDeleteVisitClicked($event)"
+              (click)="
+                onDeleteVisitClicked(
+                  $event,
+                  visit,
+                  visitConfirmationPopover,
+                  false
+                )
+              "
             >
               <i class="fa fa-trash"></i>
             </button>

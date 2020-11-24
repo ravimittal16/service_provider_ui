@@ -32,10 +32,10 @@
       <div class="col-2 d-flex justify-content-center">
         <h6 class="font-weight-bold mb-0">Price</h6>
       </div>
-      <div class="col-2 d-flex justify-content-center">
+      <div class="col-1 d-flex justify-content-center">
         <h6 class="font-weight-bold mb-0">Total</h6>
       </div>
-      <div class="col-1">
+      <div class="col-2">
         <h6 class="font-weight-bold">&nbsp;</h6>
       </div>
     </div>
@@ -121,13 +121,13 @@
             />
           </div>
         </div>
-        <div class="col-2 d-flex justify-content-center">
+        <div class="col-1 d-flex justify-content-center">
           <h6 class="font-weight-bold mb-0">
             {{ getRowTotal(i) | currency }}
           </h6>
         </div>
-        <div class="col-1">
-          <ng-container *ngIf="!isInEditMode(i)">
+        <div class="col-2">
+          <div class="d-flex justify-content-end">
             <ng-template #popContent>
               <div class="row">
                 <div class="col-auto">
@@ -149,20 +149,48 @@
               </div>
             </ng-template>
             <ng-template #popTitle>Are you sure?</ng-template>
-            <button
-              triggers="manual"
-              class="btn btn-sm btn-falcon-danger"
-              #confirmationPopover="ngbPopover"
-              [autoClose]="true"
-              container="body"
-              [closeDelay]="3000"
-              [ngbPopover]="popContent"
-              [popoverTitle]="popTitle"
-              (click)="deleteItem($event, i, confirmationPopover, false)"
-            >
-              <i class="fa fa-trash"></i>
-            </button>
-          </ng-container>
+            <ng-container *ngIf="!isInEditMode(i)">
+              <button
+                triggers="manual"
+                class="btn btn-sm btn-falcon-danger"
+                #confirmationPopover="ngbPopover"
+                [autoClose]="true"
+                container="body"
+                [closeDelay]="3000"
+                [ngbPopover]="popContent"
+                [popoverTitle]="popTitle"
+                (click)="deleteItem($event, i, confirmationPopover, false)"
+              >
+                <i class="fa fa-trash"></i>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isInEditMode(i)">
+              <div class="row">
+                <div class="col">
+                  <div>
+                    <button
+                      triggers="manual"
+                      class="btn btn-xs btn-falcon-danger mr-1"
+                      #confirmationPopover="ngbPopover"
+                      [autoClose]="true"
+                      container="body"
+                      [closeDelay]="3000"
+                      [ngbPopover]="popContent"
+                      [popoverTitle]="popTitle"
+                      (click)="
+                        deleteItem($event, i, confirmationPopover, false)
+                      "
+                    >
+                      Delete
+                    </button>
+                    <button class="btn btn-falcon-success btn-xs" type="button">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
       <div
@@ -177,10 +205,10 @@
         <div class="col-2 d-flex justify-content-center">
           <h6 class="font-weight-bold mb-0">&nbsp;</h6>
         </div>
-        <div class="col-2 d-flex justify-content-center">
+        <div class="col-1 d-flex justify-content-center">
           <h6 class="font-weight-bold mb-0">Total</h6>
         </div>
-        <div class="col-1">
+        <div class="col-2">
           <h6 class="font-weight-bold">&nbsp;</h6>
         </div>
       </div>
