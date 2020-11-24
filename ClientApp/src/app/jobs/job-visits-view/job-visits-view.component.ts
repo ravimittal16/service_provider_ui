@@ -29,18 +29,17 @@ export class JobVisitsViewComponent implements OnInit {
     private _jobFacade: JobsFacade
   ) {}
 
-  visitCheckboxClicked(
-    visit: JobVisitDto,
-    $eventArgs: any,
-    openModal: boolean
-  ) {
-    console.log($eventArgs);
+  visitCheckboxClicked(visit: JobVisitDto, $eventArgs: any) {
     $eventArgs.stopPropagation();
   }
 
-  onVisitClicked(visit: JobVisitDto, openModal: boolean) {
-    console.log(openModal);
+  onVisitClicked($eventArgs: any, visit: JobVisitDto, openModal: boolean) {
     const __modal = this._modalService.openVisitDetailsModal();
+    $eventArgs.stopPropagation();
+  }
+
+  onDeleteVisitClicked($event: any): void {
+    $event.stopPropagation();
   }
 
   newVisitClicked() {

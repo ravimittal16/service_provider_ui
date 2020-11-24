@@ -3677,6 +3677,8 @@ export class JobLineItemDto implements IJobLineItemDto {
     discountValue: number | undefined;
     discountType: number | undefined;
     description: string | undefined;
+    visitId: number;
+    jobId: number;
 
     constructor(data?: IJobLineItemDto) {
         if (data) {
@@ -3700,6 +3702,8 @@ export class JobLineItemDto implements IJobLineItemDto {
             this.discountValue = _data["discountValue"];
             this.discountType = _data["discountType"];
             this.description = _data["description"];
+            this.visitId = _data["visitId"];
+            this.jobId = _data["jobId"];
         }
     }
 
@@ -3723,6 +3727,8 @@ export class JobLineItemDto implements IJobLineItemDto {
         data["discountValue"] = this.discountValue;
         data["discountType"] = this.discountType;
         data["description"] = this.description;
+        data["visitId"] = this.visitId;
+        data["jobId"] = this.jobId;
         return data; 
     }
 
@@ -3746,6 +3752,8 @@ export interface IJobLineItemDto {
     discountValue: number | undefined;
     discountType: number | undefined;
     description: string | undefined;
+    visitId: number;
+    jobId: number;
 }
 
 export class CreateJobVisitModel implements ICreateJobVisitModel {
@@ -3865,6 +3873,8 @@ export class JobVisitDto implements IJobVisitDto {
     readonly visitStatusValue: string | undefined;
     readonly isAssigned: boolean;
     hasSameDate: boolean;
+    scheduleLater: boolean | undefined;
+    lineItems: JobLineItemDto[] | undefined;
 
     constructor(data?: IJobVisitDto) {
         if (data) {
@@ -3890,6 +3900,12 @@ export class JobVisitDto implements IJobVisitDto {
             (<any>this).visitStatusValue = _data["visitStatusValue"];
             (<any>this).isAssigned = _data["isAssigned"];
             this.hasSameDate = _data["hasSameDate"];
+            this.scheduleLater = _data["scheduleLater"];
+            if (Array.isArray(_data["lineItems"])) {
+                this.lineItems = [] as any;
+                for (let item of _data["lineItems"])
+                    this.lineItems.push(JobLineItemDto.fromJS(item));
+            }
         }
     }
 
@@ -3915,6 +3931,12 @@ export class JobVisitDto implements IJobVisitDto {
         data["visitStatusValue"] = this.visitStatusValue;
         data["isAssigned"] = this.isAssigned;
         data["hasSameDate"] = this.hasSameDate;
+        data["scheduleLater"] = this.scheduleLater;
+        if (Array.isArray(this.lineItems)) {
+            data["lineItems"] = [];
+            for (let item of this.lineItems)
+                data["lineItems"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -3940,6 +3962,8 @@ export interface IJobVisitDto {
     visitStatusValue: string | undefined;
     isAssigned: boolean;
     hasSameDate: boolean;
+    scheduleLater: boolean | undefined;
+    lineItems: JobLineItemDto[] | undefined;
 }
 
 export class JobVisitDtoGenericResponse implements IJobVisitDtoGenericResponse {

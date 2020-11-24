@@ -9,3 +9,11 @@
 .align-content-center{
     align-content: center;
 }
+
+.check-success{
+    color:white;
+}
+.custom-control-input:checked ~ .custom-control-label::before{
+    border-color: #49a260;
+    background-color: #49a260;
+}
