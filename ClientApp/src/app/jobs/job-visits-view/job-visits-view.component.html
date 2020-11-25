@@ -12,60 +12,71 @@
     </div>
   </div>
   <div *ngIf="visits$ | async as visits" class="mt-2">
-    <div
-      class="row border-bottom hover-shadow visit-row"
-      *ngFor="let visit of visits"
-      (click)="onVisitClicked($event, visit, true)"
-      [ngClass]="{ 'bg-soft-success': visit.visitStatus === 7 }"
-    >
-      <div class="col-6">
-        <div
-          class="custom-control custom-checkbox ml-1"
-          (click)="$event.stopPropagation()"
-          *ngIf="!visit.scheduleLater"
-        >
-          <input
-            type="checkbox"
-            class="custom-control-input check-success"
-            [checked]="visit.visitStatus === 7"
-            (click)="visitCheckboxClicked(visit, $event)"
-            id="visit{{ visit.visitId }}"
-          />
-          <label class="custom-control-label" for="visit{{ visit.visitId }}">
-            <i class="fa fa-clock-o"></i>
-            <span>{{ visit.startDateTime | date: "EEE, MMM yy h:mm a" }}</span>
-            <span *ngIf="visit.endDateTime">,&nbsp;</span>
-            <span *ngIf="visit.hasSameDate">{{
-              visit.endDateTime | date: "h:mm a"
-            }}</span>
-            <span *ngIf="!visit.hasSameDate">{{
-              visit.endDateTime | date: "EEE, MMM yy h:mm a"
-            }}</span>
-          </label>
+    <ng-container *ngIf="visits.length > 0">
+      <div
+        class="row border-bottom hover-shadow visit-row"
+        *ngFor="let visit of visits"
+        (click)="onVisitClicked($event, visit, true)"
+        [ngClass]="{ 'bg-soft-success': visit.visitStatus === 7 }"
+      >
+        <div class="col-6">
+          <div
+            class="custom-control custom-checkbox ml-1"
+            (click)="$event.stopPropagation()"
+            *ngIf="!visit.scheduleLater"
+          >
+            <input
+              type="checkbox"
+              class="custom-control-input check-success"
+              [checked]="visit.visitStatus === 7"
+              (click)="visitCheckboxClicked(visit, $event)"
+              id="visit{{ visit.visitId }}"
+            />
+            <label class="custom-control-label" for="visit{{ visit.visitId }}">
+              <i class="fa fa-clock-o"></i>
+              <span>{{
+                visit.startDateTime | date: "EEE, MMM yy h:mm a"
+              }}</span>
+              <span *ngIf="visit.endDateTime">,&nbsp;</span>
+              <span *ngIf="visit.hasSameDate">{{
+                visit.endDateTime | date: "h:mm a"
+              }}</span>
+              <span *ngIf="!visit.hasSameDate">{{
+                visit.endDateTime | date: "EEE, MMM yy h:mm a"
+              }}</span>
+            </label>
+          </div>
+          <div *ngIf="visit.scheduleLater">
+            <label class="mb-0 pb-0 text-danger">Click to schedule!!</label>
+          </div>
         </div>
-        <div *ngIf="visit.scheduleLater">
-          <label class="mb-0 pb-0 text-danger">Click to schedule!!</label>
+        <div class="col-6 col-6 d-flex align-items-center justify-content-end">
+          <div class="d-flex flex-row align-items-center">
+            <div *ngIf="!visit.isAssigned" class="badge badge-danger">
+              Unassigned
+            </div>
+            <div *ngIf="visit.isAssigned">
+              <h6 class="mb-0 pb-0">
+                Assigned To {{ visit?.assignedTo.displayName }}
+              </h6>
+            </div>
+            <div class="actions ml-3">
+              <button
+                class="btn btn-falcon-danger btn-xs"
+                (click)="onDeleteVisitClicked($event, visit)"
+              >
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-6 col-6 d-flex align-items-center justify-content-end">
-        <div class="d-flex flex-row align-items-center">
-          <div *ngIf="!visit.isAssigned" class="badge badge-danger">
-            Unassigned
-          </div>
-          <div *ngIf="visit.isAssigned">
-            <h6 class="mb-0 pb-0">
-              Assigned To {{ visit?.assignedTo.displayName }}
-            </h6>
-          </div>
-          <div class="actions ml-3">
-            <button
-              class="btn btn-falcon-danger btn-xs"
-              (click)="onDeleteVisitClicked($event, visit)"
-            >
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-        </div>
+    </ng-container>
+    <div class="row p-3 border-bottom" *ngIf="visits.length === 0">
+      <div class="col d-flex justify-content-center">
+        <h6 class="font-weight-normal mb-0 text-500">
+          <i class="fa fa-clock-o"></i> No visit scheduled.
+        </h6>
       </div>
     </div>
   </div>

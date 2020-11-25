@@ -100,11 +100,16 @@
       <select
         formControlName="assignedTo"
         class="form-control form-control-sm js-choice"
+        data-hello="helloWorld"
         [ngClass]="{ 'is-invalid': validationMessages.assignedTo }"
         choices=""
       >
         <optgroup *ngFor="let team of teams$ | async" [label]="team.teamName">
-          <option *ngFor="let emp of team.employees" [ngValue]="emp">
+          <option
+            *ngFor="let emp of team.employees"
+            [ngValue]="emp"
+            [value]="emp | json"
+          >
             {{ emp.fullDisplayName }}
           </option>
         </optgroup>
