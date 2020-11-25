@@ -23,6 +23,7 @@ export class InputSelectorDirectiveDirective
   implements OnInit, ControlValueAccessor {
   private __maxIntervalCheckCount = 30;
   private choices: Choices;
+  private _parentEl: HTMLElement;
   @Input() isObservableList: boolean = false;
   constructor(private _renderer: Renderer2, private el: ElementRef) {}
   writeValue(obj: any): void {}
@@ -37,6 +38,15 @@ export class InputSelectorDirectiveDirective
     if (this.choices && this.el.nativeElement) {
       if (isDisabled) {
         this.choices.disable();
+        this.choices.clearInput();
+        if (this._parentEl) {
+          const __labelEl = this._parentEl.getElementsByClassName(
+            "choices__list choices__list--single"
+          );
+          if (__labelEl) {
+            this._renderer.setProperty(__labelEl.item(0), "innerText", "");
+          }
+        }
       } else {
         this.choices.enable();
       }
@@ -46,6 +56,8 @@ export class InputSelectorDirectiveDirective
   ngOnInit(): void {
     let __counter = 1;
     if (this.el) {
+      this._parentEl = this.el.nativeElement.parentElement;
+
       const __interval = setInterval(() => {
         const __length = (this.el.nativeElement as HTMLSelectElement).options
           .length;

@@ -58,17 +58,22 @@ export class AddJobVisitModalComponent implements OnInit {
   onScheduleLaterCheckChange(): void {
     const __scheduleLater = this.newVistFormGroup.get("scheduleLater")
       .value as boolean;
+    const __assignedTo = this.newVistFormGroup.get("assignedTo");
     this.newVistFormGroup.get("startDate").enable();
     this.newVistFormGroup.get("startTime").enable();
     this.newVistFormGroup.get("endDate").enable();
     this.newVistFormGroup.get("endTime").enable();
-    this.newVistFormGroup.get("assignedTo").enable();
+    __assignedTo.enable();
+    __assignedTo.setValidators([Validators.required]);
+    __assignedTo.updateValueAndValidity();
     if (__scheduleLater) {
       this.newVistFormGroup.get("startDate").disable();
       this.newVistFormGroup.get("startTime").disable();
       this.newVistFormGroup.get("endDate").disable();
       this.newVistFormGroup.get("endTime").disable();
-      this.newVistFormGroup.get("assignedTo").disable();
+      __assignedTo.disable();
+      __assignedTo.clearValidators();
+      __assignedTo.updateValueAndValidity();
     }
   }
 
@@ -78,7 +83,7 @@ export class AddJobVisitModalComponent implements OnInit {
     this.newVistFormGroup = this._fb.group({
       title: [__defaultTitle, [Validators.required, Validators.maxLength(200)]],
       description: ["", []],
-      assignedTo: [null],
+      assignedTo: [null, [Validators.required]],
       scheduleLater: [false],
       startDate: [__now],
       startTime: [__now],
@@ -95,6 +100,10 @@ export class AddJobVisitModalComponent implements OnInit {
           { validatorType: ValidationTypes.MaxLength, withValue: 200 },
         ],
       },
+      assignedTo: {
+        fieldName: "Assign To",
+        validationProps: [{ validatorType: ValidationTypes.Required }],
+      },
     });
   }
 
@@ -109,6 +118,7 @@ export class AddJobVisitModalComponent implements OnInit {
         this.newVistFormGroup
       );
       this._cdr.detectChanges();
+      console.log(this.validationMessages);
     } else {
       this.isBusy = true;
       this.__subs.add(
