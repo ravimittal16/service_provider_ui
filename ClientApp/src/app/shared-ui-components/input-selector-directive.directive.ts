@@ -26,8 +26,18 @@ export class InputSelectorDirectiveDirective
   private _parentEl: HTMLElement;
   @Input() isObservableList: boolean = false;
   constructor(private _renderer: Renderer2, private el: ElementRef) {}
-  writeValue(obj: any): void {}
-  registerOnChange(fn: any): void {}
+
+  onChange: (_: any) => {};
+
+  onTouched = () => {};
+
+  writeValue(obj: any): void {
+    console.log(obj);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = (value) => fn(value);
+  }
   registerOnTouched(fn: any): void {}
   setDisabledState?(isDisabled: boolean): void {
     this._renderer.setProperty(
@@ -40,6 +50,9 @@ export class InputSelectorDirectiveDirective
         this.choices.disable();
         this.choices.clearInput();
         if (this._parentEl) {
+          // ==========================================================
+          //selection label is not getting cleared, when we dynamically enable or disable
+          // ==========================================================
           const __labelEl = this._parentEl.getElementsByClassName(
             "choices__list choices__list--single"
           );
@@ -57,7 +70,6 @@ export class InputSelectorDirectiveDirective
     let __counter = 1;
     if (this.el) {
       this._parentEl = this.el.nativeElement.parentElement;
-
       const __interval = setInterval(() => {
         const __length = (this.el.nativeElement as HTMLSelectElement).options
           .length;
@@ -67,6 +79,17 @@ export class InputSelectorDirectiveDirective
               placeholder: true,
               removeItemButton: false,
             });
+            (this.el.nativeElement as HTMLSelectElement).addEventListener(
+              "change",
+              () => {
+                setTimeout(() => {
+                  const __valD = this.choices.getValue();
+                  if (__valD) {
+                    this.onChange(JSON.parse(__valD as string));
+                  }
+                }, 100);
+              }
+            );
           }
           clearInterval(__interval);
         }
