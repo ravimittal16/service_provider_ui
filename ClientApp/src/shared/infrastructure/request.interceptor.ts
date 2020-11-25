@@ -101,6 +101,10 @@ export class HttpReqInterceptor implements HttpInterceptor {
     return response;
   }
 
+  getTimezoneOffset(): string {
+    return String(new Date().getTimezoneOffset());
+  }
+
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -114,8 +118,11 @@ export class HttpReqInterceptor implements HttpInterceptor {
       });
     }
     if (request.headers && token) {
+      let __headers = request.headers;
+      __headers = __headers.set("Authorization", "Bearer " + token);
+      __headers = __headers.set("X-Timezone-Offset", this.getTimezoneOffset());
       request = request.clone({
-        headers: request.headers.set("Authorization", "Bearer " + token),
+        headers: __headers,
       });
     }
     return next.handle(request).pipe(

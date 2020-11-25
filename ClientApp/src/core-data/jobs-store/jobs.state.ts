@@ -9,11 +9,12 @@ import {
 } from "@shared/service-proxies/service-proxies";
 
 export class JobActionListenerSchema {
-  actionType: "Delete Item" | "Add Item" | "Update Job";
+  actionType: "Delete Item" | "Add Item" | "Update Job" | "Delete Visit";
   itemId?: number;
   jobId?: number;
   message?: string;
   success?: boolean;
+  visitId?: number;
 }
 
 export class JobsState extends BaseState<JobDto> {

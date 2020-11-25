@@ -72,6 +72,34 @@ const jobsStoreReducer = createReducer(
       actionListenerPayload: props.payload,
     };
   }),
+  // ==========================================================
+  // ON VISIT ADD COMPLETED
+  // ==========================================================
+  on(jobsActions.onVisitAddCompleted, (state, props) => {
+    let hasItems = props.visitItems && props.visitItems.length > 0;
+    if (props.visitItems && props.visitItems.length > 0) {
+    }
+    return {
+      ...state,
+      success: true,
+      jobLineItems: hasItems
+        ? [...state.jobLineItems, ...props.visitItems]
+        : state.jobLineItems,
+      jobVisits: [...state.jobVisits, props.visit],
+    };
+  }),
+  on(jobsActions.deleteVisitCompletedAction, (state, props) => {
+    const items = props.deleteVisitItems
+      ? state.jobLineItems.filter((x) => x.visitId !== props.visitId)
+      : state.jobLineItems;
+    const __visits = state.jobVisits.filter((x) => x.visitId !== props.visitId);
+    return {
+      ...state,
+      success: props.success,
+      jobVisits: __visits,
+      jobLineItems: items,
+    };
+  }),
   on(jobsActions.deleteItemFromJobCompleted, (state, props) => {
     return {
       ...state,

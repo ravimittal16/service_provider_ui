@@ -14,6 +14,7 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { title } from "process";
 import { Observable } from "rxjs";
+import { JobVisitDetailModalComponent } from "../job-visit-detail-modal/job-visit-detail-modal.component";
 import { JobsDataService } from "../jobs.data.service";
 import { JobsModalService } from "../jobs.modal.service";
 
@@ -72,6 +73,11 @@ export class JobVisitsViewComponent implements OnInit {
     const __addModal = this._modalService.openAddVisitDetailsModal(
       this.jobDetails
     );
+    __addModal.result.then((res: JobVisitDto) => {
+      if (res) {
+        this._jobFacade.onVisitAddCompleted(res, res.lineItems);
+      }
+    });
   }
 
   ngOnInit(): void {

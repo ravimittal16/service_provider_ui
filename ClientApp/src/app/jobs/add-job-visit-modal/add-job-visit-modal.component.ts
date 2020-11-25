@@ -62,11 +62,13 @@ export class AddJobVisitModalComponent implements OnInit {
     this.newVistFormGroup.get("startTime").enable();
     this.newVistFormGroup.get("endDate").enable();
     this.newVistFormGroup.get("endTime").enable();
+    this.newVistFormGroup.get("assignedTo").enable();
     if (__scheduleLater) {
       this.newVistFormGroup.get("startDate").disable();
       this.newVistFormGroup.get("startTime").disable();
       this.newVistFormGroup.get("endDate").disable();
       this.newVistFormGroup.get("endTime").disable();
+      this.newVistFormGroup.get("assignedTo").disable();
     }
   }
 
@@ -114,11 +116,13 @@ export class AddJobVisitModalComponent implements OnInit {
           .addVisitToJob(_model)
           .pipe(finalize(() => {}))
           .subscribe((respnse) => {
+            console.log(respnse);
             if (respnse.isSuccess) {
               this._toastService.showSuccess(
                 "Visit created",
                 "Job visit has been created successfully"
               );
+              this.activeModal.close(respnse.entity);
             } else {
               this.__errorHandler.notifyError("Error while adding job visit.");
             }

@@ -1232,6 +1232,72 @@ export class JobsServiceProxy {
         }
         return _observableOf<OperationResult>(<any>null);
     }
+
+    /**
+     * @param jobId (optional) 
+     * @param visitId (optional) 
+     * @param deleteItems (optional) 
+     * @return Success
+     */
+    deleteVisit(jobId: number | undefined, visitId: number | undefined, deleteItems: boolean | undefined): Observable<OperationResult> {
+        let url_ = this.baseUrl + "/api/Jobs/DeleteVisit?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        if (visitId === null)
+            throw new Error("The parameter 'visitId' cannot be null.");
+        else if (visitId !== undefined)
+            url_ += "visitId=" + encodeURIComponent("" + visitId) + "&";
+        if (deleteItems === null)
+            throw new Error("The parameter 'deleteItems' cannot be null.");
+        else if (deleteItems !== undefined)
+            url_ += "deleteItems=" + encodeURIComponent("" + deleteItems) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteVisit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteVisit(<any>response_);
+                } catch (e) {
+                    return <Observable<OperationResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OperationResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteVisit(response: HttpResponseBase): Observable<OperationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OperationResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OperationResult>(<any>null);
+    }
 }
 
 @Injectable()

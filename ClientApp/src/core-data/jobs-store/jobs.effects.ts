@@ -83,6 +83,45 @@ export class JobsEffects extends BaseEffect {
     },
     { dispatch: true }
   );
+  deleteVisit$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(jobsActions.deleteVisitAction),
+        mergeMap((action) =>
+          this.jobsServiceProxy
+            .deleteVisit(action.jobId, action.visitId, action.deleteVisitItems)
+            .pipe(
+              switchMap((data: OperationResult) => {
+                return [
+                  jobsActions.deleteVisitCompletedAction({
+                    visitId: action.visitId,
+                    jobId: action.jobId,
+                    deleteVisitItems: action.deleteVisitItems,
+                    success: data.isSuccess,
+                  }),
+                  jobsActions.eventCompleteListenerAction({
+                    payload: {
+                      actionType: "Delete Visit",
+                      visitId: action.visitId,
+                      jobId: action.jobId,
+                      success: data.isSuccess,
+                    },
+                  }),
+                ];
+              }),
+              catchError((error) =>
+                of(
+                  jobsActions.jobsLoadedErrorAction({
+                    errors: ["Error while deleting item.", error],
+                  })
+                )
+              )
+            )
+        )
+      );
+    },
+    { dispatch: true }
+  );
 
   loadJobs$ = createEffect(() => {
     return this.actions$.pipe(
