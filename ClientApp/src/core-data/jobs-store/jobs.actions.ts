@@ -4,6 +4,7 @@ import {
   JobDto,
   JobFilterModel,
   JobLineItemDto,
+  JobVisitDto,
 } from "@shared/service-proxies/service-proxies";
 import { JobActionListenerSchema } from "./jobs.state";
 
@@ -56,4 +57,24 @@ export const eventCompleteListenerAction = createAction(
   props<{
     payload: JobActionListenerSchema;
   }>()
+);
+// ==========================================================
+// VISIT ACTIONS
+// ==========================================================
+export const deleteVisitAction = createAction(
+  "[Jobs] Delete Visit Action",
+  props<{ jobId: number; visitId: number; deleteVisitItems: boolean }>()
+);
+export const deleteVisitCompletedAction = createAction(
+  "[Jobs] Delete Visit Completed Action",
+  props<{
+    jobId: number;
+    visitId: number;
+    deleteVisitItems: boolean;
+    success: boolean;
+  }>()
+);
+export const onVisitAddCompleted = createAction(
+  "[Jobs] On Visit Add Complete",
+  props<{ visit: JobVisitDto; visitItems?: JobLineItemDto[] }>()
 );
