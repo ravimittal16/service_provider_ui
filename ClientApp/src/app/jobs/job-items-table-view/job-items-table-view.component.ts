@@ -29,13 +29,10 @@ export class JobItemsTableViewComponent implements OnInit {
   @Input() formArrayName: string;
   errors$: Observable<string[]>;
   items: JobLineItemDto[] = [];
-  private __sub = new SubSink();
   constructor(
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
-    private _uiComponentsService: UiComponentsService,
-    private _jobDataService: JobsDataService,
-    private _jobFacade: JobsFacade
+    private _uiComponentsService: UiComponentsService
   ) {}
 
   get controlsArray(): FormArray {

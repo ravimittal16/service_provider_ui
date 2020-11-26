@@ -84,5 +84,5 @@ export const markVisitAsCompletedAction = createAction(
 );
 export const onMarkVisitAsCompletedActionCompleted = createAction(
   "[Jobs] Mark Visit As Completed Action Completed",
-  props<{ visit: JobVisitDto }>()
+  props<{ visit: JobVisitDto; visitId: number }>()
 );

@@ -84,7 +84,7 @@
                 <button
                   class="btn btn-sm btn-outline-secondary border-300 px-2"
                   data-field="input-quantity"
-                  (click)="updateQuantity(i, -1)"
+                  (click)="updateQuantity(i, -1, $event)"
                   tabindex="-1"
                   data-type="minus"
                 >
@@ -103,7 +103,7 @@
                   class="btn btn-sm btn-outline-secondary border-300 px-2"
                   data-field="input-quantity"
                   data-type="plus"
-                  (click)="updateQuantity(i, 1)"
+                  (click)="updateQuantity(i, 1, $event)"
                   tabindex="-1"
                 >
                   +

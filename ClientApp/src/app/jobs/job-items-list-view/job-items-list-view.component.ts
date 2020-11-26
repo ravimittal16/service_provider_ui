@@ -44,6 +44,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   private __errorRenderer = new ErrorRenderer();
   private __formArrayRendered: boolean = false;
   private __sub = new SubSink();
+  totals: { [key: string]: number } = {};
   constructor(
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef,
@@ -74,7 +75,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     this.controlsArray.push(__group);
   }
 
-  updateQuantity(formIndex: number, quantity: number) {
+  updateQuantity(formIndex: number, quantity: number, $event: any) {
     const __formGroup = this.controlsArray.controls[formIndex] as FormGroup;
     if (__formGroup) {
       const __quantity = __formGroup.get("quantity");
@@ -83,6 +84,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
         __quantity.patchValue(__currentVal);
       }
     }
+    $event.stopPropagation();
   }
 
   isInEditMode(formIndex: number) {
@@ -107,7 +109,10 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     if (__formGroup) {
       const __quantity = __formGroup.get("quantity").value;
       const __price = __formGroup.get("price").value;
-      return (__price || 0) * (__quantity || 0);
+      const __itemId = __formGroup.get("itemId").value;
+      const __total = (__price || 0) * (__quantity || 0);
+      this.totals[__itemId] = __total;
+      return __total;
     }
     return "0";
   }
