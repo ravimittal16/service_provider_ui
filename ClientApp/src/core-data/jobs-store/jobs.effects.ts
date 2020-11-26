@@ -83,6 +83,7 @@ export class JobsEffects extends BaseEffect {
     },
     { dispatch: true }
   );
+
   deleteVisit$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -113,6 +114,45 @@ export class JobsEffects extends BaseEffect {
                 of(
                   jobsActions.jobsLoadedErrorAction({
                     errors: ["Error while deleting item.", error],
+                  })
+                )
+              )
+            )
+        )
+      );
+    },
+    { dispatch: true }
+  );
+
+  markVisitAsCompleted$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(jobsActions.markVisitAsCompletedAction),
+        mergeMap((action) =>
+          this.jobsServiceProxy
+            .markVisitAsCompleted(action.jobId, action.visitId)
+            .pipe(
+              switchMap((data) => {
+                if (data.isSuccess) {
+                  return [
+                    jobsActions.onMarkVisitAsCompletedActionCompleted({
+                      visit: data.entity,
+                    }),
+                    jobsActions.eventCompleteListenerAction({
+                      payload: {
+                        actionType: "Marked as completed",
+                        visitId: action.visitId,
+                        jobId: action.jobId,
+                        success: data.isSuccess,
+                      },
+                    }),
+                  ];
+                }
+              }),
+              catchError((error) =>
+                of(
+                  jobsActions.jobsLoadedErrorAction({
+                    errors: ["Error while updating visit.", error],
                   })
                 )
               )

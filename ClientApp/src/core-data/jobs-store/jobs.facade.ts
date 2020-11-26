@@ -63,6 +63,15 @@ export class JobsFacade implements Facade {
     );
   }
 
+  markVisitAsCompleted(jobId: number, visitId: number) {
+    this.dispatch(
+      fromJobsActions.markVisitAsCompletedAction({
+        jobId: jobId,
+        visitId: visitId,
+      })
+    );
+  }
+
   deleteItem(itemId: number, jobId: number) {
     this.dispatch(fromJobsActions.deleteItemFromJob({ itemId, jobId }));
   }

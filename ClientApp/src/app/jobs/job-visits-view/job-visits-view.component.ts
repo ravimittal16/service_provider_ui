@@ -27,6 +27,7 @@ export class JobVisitsViewComponent implements OnInit {
   @Input() jobId: number;
   visits$: Observable<JobVisitDto[]>;
   jobDetails: JobDetailsDto = null;
+  isBusy = false;
   constructor(
     private _cdr: ChangeDetectorRef,
     private _modalService: JobsModalService,
@@ -36,11 +37,16 @@ export class JobVisitsViewComponent implements OnInit {
   ) {}
 
   visitCheckboxClicked(visit: JobVisitDto, $eventArgs: any) {
+    setTimeout(() => {
+      console.log(visit.isChecked);
+      this._jobFacade.markVisitAsCompleted(this.jobId, visit.visitId);
+    }, 100);
     $eventArgs.stopPropagation();
   }
 
   onVisitClicked($eventArgs: any, visit: JobVisitDto, openModal: boolean) {
     const __modal = this._modalService.openVisitDetailsModal();
+
     $eventArgs.stopPropagation();
   }
 

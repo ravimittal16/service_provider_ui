@@ -83,9 +83,10 @@ export class InputSelectorDirectiveDirective
               "change",
               () => {
                 setTimeout(() => {
-                  const __valD = this.choices.getValue();
+                  const __valD = (this.el.nativeElement as HTMLSelectElement)
+                    .value;
                   if (__valD) {
-                    this.onChange(JSON.parse(__valD as string));
+                    this.onChange(JSON.parse(__valD));
                   }
                 }, 100);
               }

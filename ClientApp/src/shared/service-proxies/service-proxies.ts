@@ -1298,6 +1298,67 @@ export class JobsServiceProxy {
         }
         return _observableOf<OperationResult>(<any>null);
     }
+
+    /**
+     * @param jobId (optional) 
+     * @param visitId (optional) 
+     * @return Success
+     */
+    markVisitAsCompleted(jobId: number | undefined, visitId: number | undefined): Observable<JobVisitDtoGenericResponse> {
+        let url_ = this.baseUrl + "/api/Jobs/MarkVisitAsCompleted?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        if (visitId === null)
+            throw new Error("The parameter 'visitId' cannot be null.");
+        else if (visitId !== undefined)
+            url_ += "visitId=" + encodeURIComponent("" + visitId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMarkVisitAsCompleted(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMarkVisitAsCompleted(<any>response_);
+                } catch (e) {
+                    return <Observable<JobVisitDtoGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobVisitDtoGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMarkVisitAsCompleted(response: HttpResponseBase): Observable<JobVisitDtoGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobVisitDtoGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobVisitDtoGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1915,6 +1976,68 @@ export enum ErrorTypes {
     _5 = 5,
 }
 
+export enum CodeType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+}
+
+export class ActionReturnCode implements IActionReturnCode {
+    code: number;
+    message: string | undefined;
+    codeType: CodeType;
+    clientMessage: string | undefined;
+
+    constructor(data?: IActionReturnCode) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.message = _data["message"];
+            this.codeType = _data["codeType"];
+            this.clientMessage = _data["clientMessage"];
+        }
+    }
+
+    static fromJS(data: any): ActionReturnCode {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActionReturnCode();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["message"] = this.message;
+        data["codeType"] = this.codeType;
+        data["clientMessage"] = this.clientMessage;
+        return data; 
+    }
+
+    clone(): ActionReturnCode {
+        const json = this.toJSON();
+        let result = new ActionReturnCode();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IActionReturnCode {
+    code: number;
+    message: string | undefined;
+    codeType: CodeType;
+    clientMessage: string | undefined;
+}
+
 export class RegisterModelGenericResponse implements IRegisterModelGenericResponse {
     httpStatusCode: number;
     readonly hasError: boolean;
@@ -1922,6 +2045,7 @@ export class RegisterModelGenericResponse implements IRegisterModelGenericRespon
     entity: RegisterModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: IRegisterModelGenericResponse) {
         if (data) {
@@ -1944,6 +2068,7 @@ export class RegisterModelGenericResponse implements IRegisterModelGenericRespon
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -1966,6 +2091,7 @@ export class RegisterModelGenericResponse implements IRegisterModelGenericRespon
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -1984,6 +2110,7 @@ export interface IRegisterModelGenericResponse {
     entity: RegisterModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export enum Weekdays {
@@ -2568,6 +2695,7 @@ export class CompanyDetailsModelGenericResponse implements ICompanyDetailsModelG
     entity: CompanyDetailsModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: ICompanyDetailsModelGenericResponse) {
         if (data) {
@@ -2590,6 +2718,7 @@ export class CompanyDetailsModelGenericResponse implements ICompanyDetailsModelG
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -2612,6 +2741,7 @@ export class CompanyDetailsModelGenericResponse implements ICompanyDetailsModelG
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -2630,6 +2760,7 @@ export interface ICompanyDetailsModelGenericResponse {
     entity: CompanyDetailsModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class CustomerModel implements ICustomerModel {
@@ -2746,6 +2877,7 @@ export class CustomerModelGenericResponse implements ICustomerModelGenericRespon
     entity: CustomerModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: ICustomerModelGenericResponse) {
         if (data) {
@@ -2768,6 +2900,7 @@ export class CustomerModelGenericResponse implements ICustomerModelGenericRespon
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -2790,6 +2923,7 @@ export class CustomerModelGenericResponse implements ICustomerModelGenericRespon
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -2808,6 +2942,7 @@ export interface ICustomerModelGenericResponse {
     entity: CustomerModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class CustomerDetailModel implements ICustomerDetailModel {
@@ -3155,6 +3290,7 @@ export class BatchActionRequestModelGenericResponse implements IBatchActionReque
     entity: BatchActionRequestModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: IBatchActionRequestModelGenericResponse) {
         if (data) {
@@ -3177,6 +3313,7 @@ export class BatchActionRequestModelGenericResponse implements IBatchActionReque
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -3199,6 +3336,7 @@ export class BatchActionRequestModelGenericResponse implements IBatchActionReque
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -3217,6 +3355,7 @@ export interface IBatchActionRequestModelGenericResponse {
     entity: BatchActionRequestModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class ProductDto implements IProductDto {
@@ -3511,6 +3650,7 @@ export class CreateJobModelGenericResponse implements ICreateJobModelGenericResp
     entity: CreateJobModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: ICreateJobModelGenericResponse) {
         if (data) {
@@ -3533,6 +3673,7 @@ export class CreateJobModelGenericResponse implements ICreateJobModelGenericResp
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -3555,6 +3696,7 @@ export class CreateJobModelGenericResponse implements ICreateJobModelGenericResp
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -3573,6 +3715,7 @@ export interface ICreateJobModelGenericResponse {
     entity: CreateJobModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export enum EmployeeTypes {
@@ -3940,7 +4083,11 @@ export class JobVisitDto implements IJobVisitDto {
     readonly isAssigned: boolean;
     hasSameDate: boolean;
     scheduleLater: boolean | undefined;
+    sequence: number;
+    readonly fullTitle: string | undefined;
     lineItems: JobLineItemDto[] | undefined;
+    isChecked: boolean;
+    readonly isCompleted: boolean;
 
     constructor(data?: IJobVisitDto) {
         if (data) {
@@ -3967,11 +4114,15 @@ export class JobVisitDto implements IJobVisitDto {
             (<any>this).isAssigned = _data["isAssigned"];
             this.hasSameDate = _data["hasSameDate"];
             this.scheduleLater = _data["scheduleLater"];
+            this.sequence = _data["sequence"];
+            (<any>this).fullTitle = _data["fullTitle"];
             if (Array.isArray(_data["lineItems"])) {
                 this.lineItems = [] as any;
                 for (let item of _data["lineItems"])
                     this.lineItems.push(JobLineItemDto.fromJS(item));
             }
+            this.isChecked = _data["isChecked"];
+            (<any>this).isCompleted = _data["isCompleted"];
         }
     }
 
@@ -3998,11 +4149,15 @@ export class JobVisitDto implements IJobVisitDto {
         data["isAssigned"] = this.isAssigned;
         data["hasSameDate"] = this.hasSameDate;
         data["scheduleLater"] = this.scheduleLater;
+        data["sequence"] = this.sequence;
+        data["fullTitle"] = this.fullTitle;
         if (Array.isArray(this.lineItems)) {
             data["lineItems"] = [];
             for (let item of this.lineItems)
                 data["lineItems"].push(item.toJSON());
         }
+        data["isChecked"] = this.isChecked;
+        data["isCompleted"] = this.isCompleted;
         return data; 
     }
 
@@ -4029,7 +4184,11 @@ export interface IJobVisitDto {
     isAssigned: boolean;
     hasSameDate: boolean;
     scheduleLater: boolean | undefined;
+    sequence: number;
+    fullTitle: string | undefined;
     lineItems: JobLineItemDto[] | undefined;
+    isChecked: boolean;
+    isCompleted: boolean;
 }
 
 export class JobVisitDtoGenericResponse implements IJobVisitDtoGenericResponse {
@@ -4039,6 +4198,7 @@ export class JobVisitDtoGenericResponse implements IJobVisitDtoGenericResponse {
     entity: JobVisitDto;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: IJobVisitDtoGenericResponse) {
         if (data) {
@@ -4061,6 +4221,7 @@ export class JobVisitDtoGenericResponse implements IJobVisitDtoGenericResponse {
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -4083,6 +4244,7 @@ export class JobVisitDtoGenericResponse implements IJobVisitDtoGenericResponse {
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -4101,6 +4263,7 @@ export interface IJobVisitDtoGenericResponse {
     entity: JobVisitDto;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export enum JobStatuses {
@@ -4602,6 +4765,7 @@ export class CreateUserModelGenericResponse implements ICreateUserModelGenericRe
     entity: CreateUserModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 
     constructor(data?: ICreateUserModelGenericResponse) {
         if (data) {
@@ -4624,6 +4788,7 @@ export class CreateUserModelGenericResponse implements ICreateUserModelGenericRe
                     this.errors.push(item);
             }
             this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
         }
     }
 
@@ -4646,6 +4811,7 @@ export class CreateUserModelGenericResponse implements ICreateUserModelGenericRe
                 data["errors"].push(item);
         }
         data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -4664,6 +4830,7 @@ export interface ICreateUserModelGenericResponse {
     entity: CreateUserModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class WeatherForecast implements IWeatherForecast {
