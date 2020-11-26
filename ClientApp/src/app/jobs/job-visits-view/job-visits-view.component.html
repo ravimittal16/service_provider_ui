@@ -46,7 +46,7 @@
                 >
                   <p class="mb-0">
                     <i class="fa fa-clock-o"></i>
-                    <span>{{
+                    <span class="ml-1">{{
                       visit.startDateTime | date: "EEE, MMM yy h:mm a"
                     }}</span>
                     <span *ngIf="visit.endDateTime">,&nbsp;</span>
@@ -57,7 +57,7 @@
                       visit.endDateTime | date: "EEE, MMM yy h:mm a"
                     }}</span>
                   </p>
-                  <p class="mb-0 text-500 fs--2">
+                  <p class="mb-0 text-500 font-weight-normal fs--2">
                     {{ visit.fullTitle }}
                   </p>
                 </label>

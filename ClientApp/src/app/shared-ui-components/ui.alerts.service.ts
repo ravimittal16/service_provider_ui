@@ -64,6 +64,7 @@ export interface IConfirmationDialogConfig {
 export interface IConfirmationActionModel {
   title: string;
   actionClass: string;
+  tooltip?: string;
 }
 
 export class ConfirmationActionsModel {

@@ -7,11 +7,12 @@ import { environment } from "../../environments/environment";
 import { JobsEffects } from "./jobs.effects";
 import { JobsFacade } from "./jobs.facade";
 import { jobsFeatureKey, reducer } from "./jobs.reducers";
+import { JobsVisitsEffects } from "./jobs.visit.effects";
 
 @NgModule({
   imports: [
     StoreModule.forFeature(jobsFeatureKey, reducer),
-    EffectsModule.forFeature([JobsEffects]),
+    EffectsModule.forFeature([JobsEffects, JobsVisitsEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
   providers: [NWTokenService, JobsFacade],

@@ -3,6 +3,7 @@ import { Action, createReducer, on } from "@ngrx/store";
 import { JobsState } from "./jobs.state";
 import * as jobsActions from "./jobs.actions";
 import { JobDto } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
 
 export const jobsFeatureKey = "jobs";
 
@@ -34,6 +35,22 @@ function insertItem(array, action) {
     action.item,
     ...array.slice(action.index),
   ];
+}
+
+function removeItem(array, action) {
+  return [...array.slice(0, action.index), ...array.slice(action.index + 1)];
+}
+
+function updateObjectInArray(array, action) {
+  return array.map((item, index) => {
+    if (index !== action.index) {
+      return item;
+    }
+    return {
+      ...item,
+      ...action.item,
+    };
+  });
 }
 
 const jobsStoreReducer = createReducer(
@@ -86,6 +103,24 @@ const jobsStoreReducer = createReducer(
         ? [...state.jobLineItems, ...props.visitItems]
         : state.jobLineItems,
       jobVisits: [...state.jobVisits, props.visit],
+    };
+  }),
+  on(jobsActions.onMarkVisitAsCompletedActionCompleted, (state, props) => {
+    let __visits = state.jobVisits;
+    const __current = __visits.filter((x) => x.visitId === props.visitId);
+    if (__current.length > 0) {
+      const __index = __visits.indexOf(__current[0]);
+      const __newArray = updateObjectInArray(__visits, {
+        index: __index,
+        item: props.visit,
+      });
+      console.log(__newArray);
+      __visits = __newArray;
+    }
+    return {
+      ...state,
+      success: true,
+      jobVisits: __visits,
     };
   }),
   on(jobsActions.deleteVisitCompletedAction, (state, props) => {
