@@ -78,3 +78,11 @@ export const onVisitAddCompleted = createAction(
   "[Jobs] On Visit Add Complete",
   props<{ visit: JobVisitDto; visitItems?: JobLineItemDto[] }>()
 );
+export const markVisitAsCompletedAction = createAction(
+  "[Jobs] Mark Visit As Completed Action",
+  props<{ jobId: number; visitId: number }>()
+);
+export const onMarkVisitAsCompletedActionCompleted = createAction(
+  "[Jobs] Mark Visit As Completed Action Completed",
+  props<{ visit: JobVisitDto }>()
+);

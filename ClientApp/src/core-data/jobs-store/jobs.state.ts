@@ -9,7 +9,12 @@ import {
 } from "@shared/service-proxies/service-proxies";
 
 export class JobActionListenerSchema {
-  actionType: "Delete Item" | "Add Item" | "Update Job" | "Delete Visit";
+  actionType:
+    | "Delete Item"
+    | "Add Item"
+    | "Update Job"
+    | "Delete Visit"
+    | "Marked as completed";
   itemId?: number;
   jobId?: number;
   message?: string;

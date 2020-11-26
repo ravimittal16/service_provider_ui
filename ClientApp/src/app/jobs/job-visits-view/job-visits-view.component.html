@@ -20,34 +20,52 @@
         [ngClass]="{ 'bg-soft-success': visit.visitStatus === 7 }"
       >
         <div class="col-6">
-          <div
-            class="custom-control custom-checkbox ml-1"
-            (click)="$event.stopPropagation()"
-            *ngIf="!visit.scheduleLater"
-          >
-            <input
-              type="checkbox"
-              class="custom-control-input check-success"
-              [checked]="visit.visitStatus === 7"
-              (click)="visitCheckboxClicked(visit, $event)"
-              id="visit{{ visit.visitId }}"
-            />
-            <label class="custom-control-label" for="visit{{ visit.visitId }}">
-              <i class="fa fa-clock-o"></i>
-              <span>{{
-                visit.startDateTime | date: "EEE, MMM yy h:mm a"
-              }}</span>
-              <span *ngIf="visit.endDateTime">,&nbsp;</span>
-              <span *ngIf="visit.hasSameDate">{{
-                visit.endDateTime | date: "h:mm a"
-              }}</span>
-              <span *ngIf="!visit.hasSameDate">{{
-                visit.endDateTime | date: "EEE, MMM yy h:mm a"
-              }}</span>
-            </label>
-          </div>
-          <div *ngIf="visit.scheduleLater">
-            <label class="mb-0 pb-0 text-danger">Click to schedule!!</label>
+          <div class="row no-gutters">
+            <div class="col">
+              <div
+                class="custom-control custom-checkbox ml-1"
+                (click)="$event.stopPropagation()"
+                *ngIf="!visit.scheduleLater"
+              >
+                <input
+                  type="checkbox"
+                  class="custom-control-input check-success"
+                  [checked]="visit.isChecked"
+                  (click)="visitCheckboxClicked(visit, $event)"
+                  id="visit{{ visit.visitId }}"
+                />
+                <label
+                  placement="top"
+                  [ngbTooltip]="
+                    visit.isCompleted
+                      ? 'Completed'
+                      : 'Click to mark as completed'
+                  "
+                  class="custom-control-label"
+                  for="visit{{ visit.visitId }}"
+                >
+                  <p class="mb-0">
+                    <i class="fa fa-clock-o"></i>
+                    <span>{{
+                      visit.startDateTime | date: "EEE, MMM yy h:mm a"
+                    }}</span>
+                    <span *ngIf="visit.endDateTime">,&nbsp;</span>
+                    <span *ngIf="visit.hasSameDate">{{
+                      visit.endDateTime | date: "h:mm a"
+                    }}</span>
+                    <span *ngIf="!visit.hasSameDate">{{
+                      visit.endDateTime | date: "EEE, MMM yy h:mm a"
+                    }}</span>
+                  </p>
+                  <p class="mb-0 text-500 fs--2">
+                    {{ visit.fullTitle }}
+                  </p>
+                </label>
+              </div>
+              <div *ngIf="visit.scheduleLater">
+                <label class="mb-0 pb-0 text-danger">Click to schedule!!</label>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-6 col-6 d-flex align-items-center justify-content-end">
