@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
+import { JobsFacade } from "@core-data/index";
+
 import { JobDetailsDto } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { finalize } from "rxjs/operators";

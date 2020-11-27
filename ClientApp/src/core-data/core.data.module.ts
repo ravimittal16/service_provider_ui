@@ -16,6 +16,7 @@ import { ProductsStoreModule } from "./products-store/products.store.module";
 import { UsersStoreModule } from "./users-store/users.store.module";
 import { CompanyStoreModule } from "./company-store/company.store.module";
 import { JobsStoreModule } from "./jobs-store/jobs.store.module";
+import { reducers } from "./core.data.reducers";
 
 @NgModule({
   imports: [
@@ -32,7 +33,7 @@ import { JobsStoreModule } from "./jobs-store/jobs.store.module";
     EffectsModule.forRoot([]),
     environment.production
       ? []
-      : StoreDevtoolsModule.instrument({ maxAge: 10 }),
+      : StoreDevtoolsModule.instrument({ maxAge: 25 }),
   ],
   providers: [DataPersistence],
 })

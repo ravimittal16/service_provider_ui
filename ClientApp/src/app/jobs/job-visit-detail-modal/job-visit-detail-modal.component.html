@@ -1,25 +1,80 @@
 <div class="modal-header">
-  <h5 class="modal-title">#6 - Visit</h5>
-  <button
-    type="button"
-    class="close"
-    aria-label="Close"
-    (click)="activeModal.dismiss('Cross click')"
-  >
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <ng-container *ngIf="visitDetails">
+    <h5 class="modal-title">#{{ visitDetails.visit.sequence }} - Visit</h5>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </ng-container>
 </div>
 
 <div class="modal-body">
   <div>
     <div class="row">
-      <div class="col"></div>
-      <div class="col"></div>
+      <div class="col-7 border-left">
+        <div class="row no-gutters">
+          <div class="col">
+            <h6 class="mb-0">
+              <span class="text-500">#Job:</span>
+              <span class="ml-2">{{ job.fullJobNumber }}</span>
+            </h6>
+            <h6 class="mb-0 mt-2">
+              <span class="text-500">Customer:</span>
+              <span class="ml-2">{{ job.customer.displayName }}</span>
+            </h6>
+            <h6 class="mt-2">
+              <span>
+                <span class="text-500">Service Address:</span>
+                <address class="fs--1 mt-2">
+                  {{ job?.jobAddress?.addressLine1 }}<br />
+                  {{ job?.jobAddress?.city }},
+                  {{ job?.jobAddress?.countrySubDivisionCode }}
+                  <strong>{{ job?.jobAddress?.postalCode }}</strong
+                  ><br />
+                  <a class="btn btn-link btn-sm pl-0 fs--1">view map</a>
+                </address></span
+              >
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row no-gutters">
+          <div class="col">
+            <div class="mt-2">
+              <div *ngIf="!visitDetails.visit.isAssigned">
+                <div class="badge badge-danger">Unassigned</div>
+              </div>
+            </div>
+            <h6 class="mb-0 mt-2" *ngIf="visitDetails.visit.isAssigned">
+              <span class="text-500 fa fa-calendar"> </span>
+              <span class="ml-2">{{
+                visitDetails.visit.startDateTime | date: "EEE, MMM yy h:mm a"
+              }}</span>
+            </h6>
+            <h6 class="mb-0 mt-2" *ngIf="visitDetails.visit.isAssigned">
+              <span class="text-500 fa fa-user"> </span>
+              <span class="ml-2">{{
+                visitDetails.visit.assignedTo.displayName
+              }}</span>
+            </h6>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col">
-        <button class="btn btn-block btn-sm btn-falcon-success">
-          <i class="fa fa-check"></i> Mark Complete
+        <button
+          class="btn btn-block btn-sm btn-falcon-success"
+          [disabled]="visitDetails.visit.isCompleted"
+        >
+          <i class="fa fa-check mr-1"></i>
+          <span *ngIf="!visitDetails.visit.isCompleted">Mark Complete</span>
+          <span *ngIf="visitDetails.visit.isCompleted">Completed</span>
         </button>
       </div>
       <div class="col">
@@ -55,7 +110,53 @@
         <ul ngbNav #visitDetail="ngbNav" class="nav-tabs">
           <li ngbNavItem>
             <a ngbNavLink>Info</a>
-            <ng-template ngbNavContent>Second content</ng-template>
+            <ng-template ngbNavContent>
+              <div>
+                <div class="row mt-4">
+                  <div class="col text-500">
+                    <h6 class="mb-0">{{ visitDetails.visit.fullTitle }}</h6>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col">
+                    <p class="mb-0 text-500">
+                      <span class="fs--1 font-weight-bold">Instructions</span>
+                    </p>
+                    <p class="mb-0 fs--1">
+                      <span>{{ visitDetails.visit.description }}</span>
+                    </p>
+                    <p class="mt-4 mb-1 text-500">
+                      <span class="fs--1 font-weight-bold">Products</span>
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="row header-row border-bottom bg-light p-2 d-flex align-items-center"
+                >
+                  <div class="col-10">
+                    <h6 class="font-weight-bold mb-0">Products/Services</h6>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <h6 class="font-weight-bold mb-0">Quantity</h6>
+                  </div>
+                </div>
+                <div
+                  class="row p-2 border-bottom hover-shadow d-flex align-items-center pointer"
+                  *ngFor="let item of visitDetails.items; index as i"
+                >
+                  <div class="col-10">
+                    <h6 class="mb-0">
+                      {{ item.product?.name }}
+                    </h6>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <h6 class="mb-0">
+                      {{ item.quantity }}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
           </li>
           <li ngbNavItem>
             <a ngbNavLink>Notes</a>

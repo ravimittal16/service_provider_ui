@@ -3,7 +3,7 @@ import * as fromUsersActions from "./users.actions";
 import { UsersState } from "./users.state";
 import { UserDto } from "@shared/service-proxies/service-proxies";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-export const usersFeatureKey = "__users";
+export const usersFeatureKey = "users";
 
 export function selectUserId(user: UserDto): string {
   return user.userId;

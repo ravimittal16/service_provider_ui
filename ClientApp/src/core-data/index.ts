@@ -7,3 +7,4 @@
 // } from "./register/register.actions";
 
 export { RegsiterFacade } from "./register/register.facade";
+export { JobsFacade } from "./jobs-store/jobs.facade";
