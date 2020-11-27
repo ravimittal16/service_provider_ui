@@ -25,7 +25,6 @@ const _components = [AccountComponent, LoginComponent, RegisterComponent];
     SharedModule.forRoot(),
     ServiceProxyModule,
     AccountRoutingModule,
-    CoreDataModule,
   ],
   declarations: [..._components],
 })

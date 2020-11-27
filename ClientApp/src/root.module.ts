@@ -24,6 +24,7 @@ import { environment } from "./environments/environment";
 import { NgbDate, NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CookieService } from "ngx-cookie-service";
 import { GlobalErrorHandler } from "@shared/infrastructure/GlobalErrorHandler";
+import { CoreDataModule } from "@core-data/core.data.module";
 
 export function convertAbpLocaleToAngularLocale(locale: string): string {
   if (!AppConsts.localeMappings) {
@@ -104,6 +105,7 @@ export function appInitializerFactory(
     ServiceProxyModule,
     RootRoutingModule,
     HttpClientModule,
+    CoreDataModule,
     NgbModule,
   ],
   declarations: [RootComponent],

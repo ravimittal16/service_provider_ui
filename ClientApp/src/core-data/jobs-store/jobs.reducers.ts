@@ -27,6 +27,7 @@ export const initialState: JobsState = adapter.getInitialState({
   jobLineItems: [],
   jobVisits: [],
   actionListenerPayload: null,
+  selectedVisitId: 0,
 });
 
 function insertItem(array, action) {
@@ -89,9 +90,11 @@ const jobsStoreReducer = createReducer(
       actionListenerPayload: props.payload,
     };
   }),
+
   // ==========================================================
   // ON VISIT ADD COMPLETED
   // ==========================================================
+
   on(jobsActions.onVisitAddCompleted, (state, props) => {
     let hasItems = props.visitItems && props.visitItems.length > 0;
     if (props.visitItems && props.visitItems.length > 0) {
@@ -140,6 +143,12 @@ const jobsStoreReducer = createReducer(
       ...state,
       jobLineItems: state.jobLineItems.filter((x) => x.itemId !== props.itemId),
       success: props.success,
+    };
+  }),
+  on(jobsActions.prepareVisitDetailsModalAction, (state, props) => {
+    return {
+      ...state,
+      selectedVisitId: props.visitId,
     };
   })
 );

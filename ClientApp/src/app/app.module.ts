@@ -26,7 +26,7 @@ const _components = [
     SharedModule,
     HttpClientModule,
     FormsModule,
-    CoreDataModule,
+
     AppRoutingModule,
   ],
   providers: [ToastService],

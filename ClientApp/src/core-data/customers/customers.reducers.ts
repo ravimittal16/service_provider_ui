@@ -4,11 +4,9 @@ import { CustomerDto } from "@shared/service-proxies/service-proxies";
 import { CustomerState } from "./customers.state";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 
-export const adapter: EntityAdapter<CustomerDto> = createEntityAdapter<
-  CustomerDto
->();
+export const adapter: EntityAdapter<CustomerDto> = createEntityAdapter<CustomerDto>();
 
-export const customerFeatureKey = "__customers";
+export const customerFeatureKey = "customers";
 
 export const initialState: CustomerState = adapter.getInitialState({
   companyId: 0,

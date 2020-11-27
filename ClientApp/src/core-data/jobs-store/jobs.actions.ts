@@ -86,3 +86,7 @@ export const onMarkVisitAsCompletedActionCompleted = createAction(
   "[Jobs] Mark Visit As Completed Action Completed",
   props<{ visit: JobVisitDto; visitId: number }>()
 );
+export const prepareVisitDetailsModalAction = createAction(
+  "[Jobs] Prepare Visit Details Modal Action",
+  props<{ visitId: number }>()
+);

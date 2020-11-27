@@ -30,4 +30,5 @@ export class JobsState extends BaseState<JobDto> {
   jobLineItems: JobLineItemDto[];
   jobVisits: JobVisitDto[];
   actionListenerPayload: JobActionListenerSchema;
+  selectedVisitId: number;
 }

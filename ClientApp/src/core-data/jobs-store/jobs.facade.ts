@@ -23,6 +23,7 @@ export class JobsFacade implements Facade {
   jobLineItems$: Observable<JobLineItemDto[]>;
   visits$: Observable<JobVisitDto[]>;
   actionListener$: Observable<JobActionListenerSchema>;
+  visitDetails$: Observable<{ visit: JobVisitDto; items: JobLineItemDto[] }>;
   constructor(private _store: Store<JobsState>) {
     this.filters$ = this._store.pipe(
       select(fromJobsSelectors.selectJobsFilter)
@@ -37,6 +38,9 @@ export class JobsFacade implements Facade {
     this.visits$ = this._store.pipe(select(fromJobsSelectors.selectJobVisits));
     this.actionListener$ = this._store.pipe(
       select(fromJobsSelectors.selectActionPayload)
+    );
+    this.visitDetails$ = this._store.pipe(
+      select(fromJobsSelectors.selectVisitDetails)
     );
   }
 
@@ -60,6 +64,12 @@ export class JobsFacade implements Facade {
         jobId: jobId,
         visitId: visitId,
       })
+    );
+  }
+
+  prepareVisitDetails(visitId: number) {
+    this.dispatch(
+      fromJobsActions.prepareVisitDetailsModalAction({ visitId: visitId })
     );
   }
 

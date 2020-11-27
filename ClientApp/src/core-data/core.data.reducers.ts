@@ -61,7 +61,9 @@ export const selectAllJobs = fromJobsSelectors.selectAllJobs;
 export const selectJobsFilter = fromJobsSelectors.selectJobsFilter;
 export const selectJobLineItems = fromJobsSelectors.selectJobLineItems;
 export const selectJobVisits = fromJobsSelectors.selectJobVisits;
-
+export const selectActionPayload = fromJobsSelectors.selectActionPayload;
+export const selectJobDetails = fromJobsSelectors.selectJobDetails;
+export const selectVisitDetails = fromJobsSelectors.selectVisitDetails;
 // ==========================================================
 // REGISTRATION
 // ==========================================================
@@ -91,6 +93,7 @@ export const selectCustomerUiState =
 // ==========================================================
 // PRODUCTS
 // ==========================================================
+
 export const selectAllProducts = fromProductsStateSelectors.selectAllProducts;
 export const selectAllServices = fromProductsStateSelectors.selectAllServices;
 // ==========================================================
