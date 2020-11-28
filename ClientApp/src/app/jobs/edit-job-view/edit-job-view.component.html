@@ -14,44 +14,64 @@
       </div>
       <div class="row">
         <div class="col">
+          <h5 class="mb-2 fs--1">
+            <span class="text-500 mr-2">Created By:</span
+            ><span>{{ details?.createdBy?.displayName }}</span>
+          </h5>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col">
           <h6 class="text-500 font-weight-light">
             {{ details.description }}
           </h6>
         </div>
-      </div>
+      </div> -->
       <div class="row">
         <div class="col">
-          <a class="btn btn-falcon-primary btn-sm" (click)="addNoteClicked()"
+          <a class="btn btn-falcon-primary btn-xs" (click)="addNoteClicked()"
             ><span class="fa fa-lightbulb-o fs--2 mr-1"></span>Add note</a
           >
           <a
-            class="btn btn-falcon-success btn-sm ml-1"
-            (click)="markAsCompleted()"
-            ><span class="fa fa-check fs--2 mr-1"></span>Close job</a
-          >
-          <a
-            class="btn btn-falcon-warning btn-sm ml-1"
+            class="btn btn-falcon-primary btn-xs ml-1"
             (click)="markAsCompleted()"
             ><span class="fa fa-usd fs--2 mr-1"></span>Generate Invoice</a
           >
-          <a class="btn btn-falcon-default btn-sm ml-1"
+          <a
+            class="btn btn-falcon-success btn-xs ml-1"
+            (click)="markAsCompleted()"
+            ><span class="fa fa-check fs--2 mr-1"></span>Close job</a
+          >
+          <a class="btn btn-falcon-warning btn-xs ml-1"
             ><span class="fa fa-pencil fs--2 mr-1"></span>Edit</a
           >
           <button
-            class="btn btn-falcon-default btn-sm dropdown-toggle ml-1 dropdown-caret-none"
+            class="btn btn-falcon-default btn-xs dropdown-toggle ml-1 dropdown-caret-none"
             type="button"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            More actions <i class="fa fa-chevron-down"></i>
+            <i class="fa fa-ellipsis-h mr-1"></i> More actions
+            <i class="fa fa-chevron-down"></i>
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Create Similar Job</a
-            ><a class="dropdown-item" href="#">Report</a
-            ><a class="dropdown-item" href="#">Archive</a>
+            <a class="dropdown-item" href="#">
+              <i class="fa fa-files-o mr-1"></i> Create Similar Job</a
+            ><a class="dropdown-item" href="#">
+              <i class="fa fa-archive mr-1"></i> Archive Job</a
+            >
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item text-danger" href="#">Delete user</a>
+            <a class="dropdown-item" href="#">
+              <i class="fa fa-file-pdf-o mr-1"></i>Download PDF
+            </a>
+            <a class="dropdown-item" href="#">
+              <i class="fa fa-print mr-1"></i>Print
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-danger" href="#">
+              <i class="fa fa-trash mr-1"></i>Delete Job
+            </a>
           </div>
         </div>
       </div>
@@ -66,9 +86,19 @@
           </h6>
           <div class="row">
             <div class="col-5 col-sm-4">
-              <p class="font-weight-semi-bold mb-1">ID</p>
+              <p class="font-weight-semi-bold mb-1"># Job Id</p>
             </div>
             <div class="col">#{{ details?.fullJobNumber }}</div>
+          </div>
+          <div class="row">
+            <div class="col-5 col-sm-4">
+              <p class="font-weight-semi-bold mb-1">Display Name</p>
+            </div>
+            <div class="col">
+              <a class="btn btn-sm btn-link ml-0 pl-0">{{
+                details?.customer?.displayName
+              }}</a>
+            </div>
           </div>
           <div class="row">
             <div class="col-5 col-sm-4">
@@ -78,24 +108,7 @@
               {{ details?.createDate | date: "dd/MM/yyyy hh:mm aa" }}
             </div>
           </div>
-          <div class="row">
-            <div class="col-5 col-sm-4">
-              <p class="font-weight-semi-bold mb-1">Customer Email</p>
-            </div>
-            <div class="col">
-              <a href="mailto:tony@gmail.com">tony@gmail.com</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-5 col-sm-4">
-              <p class="font-weight-semi-bold mb-1">Assigned To</p>
-            </div>
-            <div class="col">
-              <p class="text-400 mb-1">
-                {{ details?.assignedTo?.displayName }}
-              </p>
-            </div>
-          </div>
+
           <div class="row">
             <div class="col-5 col-sm-4">
               <p class="font-weight-semi-bold mb-1">Status</p>
@@ -117,10 +130,12 @@
           </h6>
           <div class="row">
             <div class="col-5 col-sm-4">
-              <p class="font-weight-semi-bold mb-1">Send email to</p>
+              <p class="font-weight-semi-bold mb-1">Contact email</p>
             </div>
             <div class="col">
-              <a href="mailto:tony@gmail.com">tony@gmail.com</a>
+              <a href="mailto:{{ details.contactEmail }}">
+                {{ details.contactEmail }}
+              </a>
             </div>
           </div>
           <div class="row">
@@ -132,7 +147,9 @@
                 {{ details?.jobAddress?.addressLine1 }} <br />{{
                   details?.jobAddress?.city
                 }}, {{ details?.jobAddress?.countrySubDivisionCode }}
-                {{ details?.jobAddress?.postalCode }}
+                <span class="font-weight-semi-bold">{{
+                  details?.jobAddress?.postalCode
+                }}</span>
               </p>
             </div>
           </div>
@@ -141,7 +158,9 @@
               <p class="font-weight-semi-bold mb-1">Phone number</p>
             </div>
             <div class="col">
-              <a href="tel:+12025550110">+1-202-555-0110</a>
+              <a href="tel:+{{ details.contactPhone }}">
+                {{ details.contactPhone }}
+              </a>
             </div>
           </div>
         </div>

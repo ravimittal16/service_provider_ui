@@ -3551,6 +3551,8 @@ export class CreateJobModel implements ICreateJobModel {
     projectId: number | undefined;
     parentJobId: number | undefined;
     jobId: number;
+    contactEmail: string | undefined;
+    contactPhone: string | undefined;
 
     constructor(data?: ICreateJobModel) {
         if (data) {
@@ -3581,6 +3583,8 @@ export class CreateJobModel implements ICreateJobModel {
             this.projectId = _data["projectId"];
             this.parentJobId = _data["parentJobId"];
             this.jobId = _data["jobId"];
+            this.contactEmail = _data["contactEmail"];
+            this.contactPhone = _data["contactPhone"];
         }
     }
 
@@ -3611,6 +3615,8 @@ export class CreateJobModel implements ICreateJobModel {
         data["projectId"] = this.projectId;
         data["parentJobId"] = this.parentJobId;
         data["jobId"] = this.jobId;
+        data["contactEmail"] = this.contactEmail;
+        data["contactPhone"] = this.contactPhone;
         return data; 
     }
 
@@ -3641,6 +3647,8 @@ export interface ICreateJobModel {
     projectId: number | undefined;
     parentJobId: number | undefined;
     jobId: number;
+    contactEmail: string | undefined;
+    contactPhone: string | undefined;
 }
 
 export class CreateJobModelGenericResponse implements ICreateJobModelGenericResponse {
@@ -4341,6 +4349,8 @@ export class JobDto implements IJobDto {
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
+    contactEmail: string | undefined;
+    contactPhone: string | undefined;
     readonly jobStatusText: string | undefined;
 
     constructor(data?: IJobDto) {
@@ -4372,6 +4382,8 @@ export class JobDto implements IJobDto {
             this.jobId = _data["jobId"];
             this.createdBy = _data["createdBy"] ? UserDto.fromJS(_data["createdBy"]) : <any>undefined;
             this.jobStatus = _data["jobStatus"];
+            this.contactEmail = _data["contactEmail"];
+            this.contactPhone = _data["contactPhone"];
             (<any>this).jobStatusText = _data["jobStatusText"];
         }
     }
@@ -4403,6 +4415,8 @@ export class JobDto implements IJobDto {
         data["jobId"] = this.jobId;
         data["createdBy"] = this.createdBy ? this.createdBy.toJSON() : <any>undefined;
         data["jobStatus"] = this.jobStatus;
+        data["contactEmail"] = this.contactEmail;
+        data["contactPhone"] = this.contactPhone;
         data["jobStatusText"] = this.jobStatusText;
         return data; 
     }
@@ -4434,6 +4448,8 @@ export interface IJobDto {
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
+    contactEmail: string | undefined;
+    contactPhone: string | undefined;
     jobStatusText: string | undefined;
 }
 
@@ -4456,6 +4472,8 @@ export class JobDetailsDto implements IJobDetailsDto {
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
+    contactEmail: string | undefined;
+    contactPhone: string | undefined;
     readonly jobStatusText: string | undefined;
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
@@ -4490,6 +4508,8 @@ export class JobDetailsDto implements IJobDetailsDto {
             this.jobId = _data["jobId"];
             this.createdBy = _data["createdBy"] ? UserDto.fromJS(_data["createdBy"]) : <any>undefined;
             this.jobStatus = _data["jobStatus"];
+            this.contactEmail = _data["contactEmail"];
+            this.contactPhone = _data["contactPhone"];
             (<any>this).jobStatusText = _data["jobStatusText"];
             this.createDate = _data["createDate"] ? moment(_data["createDate"].toString()) : <any>undefined;
             if (Array.isArray(_data["lineItems"])) {
@@ -4532,6 +4552,8 @@ export class JobDetailsDto implements IJobDetailsDto {
         data["jobId"] = this.jobId;
         data["createdBy"] = this.createdBy ? this.createdBy.toJSON() : <any>undefined;
         data["jobStatus"] = this.jobStatus;
+        data["contactEmail"] = this.contactEmail;
+        data["contactPhone"] = this.contactPhone;
         data["jobStatusText"] = this.jobStatusText;
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
         if (Array.isArray(this.lineItems)) {
@@ -4574,6 +4596,8 @@ export interface IJobDetailsDto {
     jobId: number;
     createdBy: UserDto;
     jobStatus: JobStatuses;
+    contactEmail: string | undefined;
+    contactPhone: string | undefined;
     jobStatusText: string | undefined;
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
