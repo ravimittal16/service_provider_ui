@@ -18,6 +18,7 @@ export class EditJobViewComponent implements OnInit {
   private _sub = new SubSink();
   selectedJobDetails$: Observable<JobDetailsDto>;
   details: JobDetailsDto = null;
+  detailsLoaded = false;
   constructor(
     private _jobsStoreFacade: JobsFacade,
     private _route: ActivatedRoute
@@ -42,14 +43,17 @@ export class EditJobViewComponent implements OnInit {
         this.jobId = +routeParams["jobId"];
         this._loadJobDetails();
       }),
-      this._jobsStoreFacade.selectedJobDetails$.subscribe((details) => {
-        if (details) {
-          this.details = details;
-          setTimeout(() => {
-            this.itemCounter.nativeElement.innerHTML = `${this.details.lineItems.length}`;
-          }, 100);
-        }
-      })
+      this._jobsStoreFacade.selectedJobDetails$
+        .pipe(finalize(() => {}))
+        .subscribe((details) => {
+          this.detailsLoaded = true;
+          if (details) {
+            this.details = details;
+            setTimeout(() => {
+              this.itemCounter.nativeElement.innerHTML = `${this.details.lineItems.length}`;
+            }, 100);
+          }
+        })
     );
   }
 }
