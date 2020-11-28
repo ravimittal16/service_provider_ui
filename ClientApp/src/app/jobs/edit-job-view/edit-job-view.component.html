@@ -30,20 +30,20 @@
       <div class="row">
         <div class="col">
           <a class="btn btn-falcon-primary btn-xs" (click)="addNoteClicked()"
-            ><span class="fa fa-lightbulb-o fs--2 mr-1"></span>Add note</a
+            ><span class="fa fa-lightbulb-o mr-1"></span>Add note</a
           >
           <a
             class="btn btn-falcon-primary btn-xs ml-1"
             (click)="markAsCompleted()"
-            ><span class="fa fa-usd fs--2 mr-1"></span>Generate Invoice</a
+            ><span class="fa fa-usd mr-1"></span>Generate Invoice</a
           >
           <a
             class="btn btn-falcon-success btn-xs ml-1"
             (click)="markAsCompleted()"
-            ><span class="fa fa-check fs--2 mr-1"></span>Close job</a
+            ><span class="fa fa-check mr-1"></span>Close job</a
           >
           <a class="btn btn-falcon-warning btn-xs ml-1"
-            ><span class="fa fa-pencil fs--2 mr-1"></span>Edit</a
+            ><span class="fa fa-pencil mr-1"></span>Edit</a
           >
           <button
             class="btn btn-falcon-default btn-xs dropdown-toggle ml-1 dropdown-caret-none"
@@ -144,12 +144,24 @@
             </div>
             <div class="col">
               <p class="mb-1">
-                {{ details?.jobAddress?.addressLine1 }} <br />{{
+                <!-- {{ details?.jobAddress?.addressLine1 }} <br />{{
                   details?.jobAddress?.city
                 }}, {{ details?.jobAddress?.countrySubDivisionCode }}
                 <span class="font-weight-semi-bold">{{
                   details?.jobAddress?.postalCode
-                }}</span>
+                }}</span> -->
+                <span>
+                  <address class="mb-0 pb-0">
+                    {{ details?.jobAddress?.addressLine1 }}<br />
+                    {{ details?.jobAddress?.city }},
+                    {{ details?.jobAddress?.countrySubDivisionCode }}
+                    <strong>{{ details?.jobAddress?.postalCode }}</strong
+                    ><br />
+                    <a class="btn btn-link btn-sm pl-0 fs--1">
+                      <span class="fa fa-map-marker mr-1"></span>view map</a
+                    >
+                  </address></span
+                >
               </p>
             </div>
           </div>
@@ -173,7 +185,9 @@
               <p class="font-weight-semi-bold mb-1">Send email to</p>
             </div>
             <div class="col">
-              <a href="mailto:tony@gmail.com">tony@gmail.com</a>
+              <a href="mailto:{{ details.customer?.primaryEmailAddr }}">{{
+                details.customer?.primaryEmailAddr
+              }}</a>
             </div>
           </div>
           <div class="row">
@@ -189,15 +203,9 @@
               <p class="font-weight-semi-bold mb-1">Phone number</p>
             </div>
             <div class="col">
-              <a href="tel:+12025550110">+1-202-555-0110</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-5 col-sm-4">
-              <p class="font-weight-semi-bold mb-0">Invoice prefix</p>
-            </div>
-            <div class="col">
-              <p class="font-weight-semi-bold mb-0">7C23435</p>
+              <a href="tel:+{{ details.customer?.primaryPhone }}">{{
+                details.customer?.primaryPhone
+              }}</a>
             </div>
           </div>
         </div>
