@@ -218,20 +218,24 @@
         <div class="card-body">
           <ul ngbNav #nav="ngbNav" class="nav-tabs">
             <li ngbNavItem>
-              <a ngbNavLink>Job details</a>
+              <a ngbNavLink class="tab-link"
+                ><span class="fa fa-list-alt mr-1"></span>Job details</a
+              >
               <ng-template ngbNavContent>First content</ng-template>
             </li>
             <li ngbNavItem>
-              <a ngbNavLink>Visits</a>
+              <a ngbNavLink class="tab-link">
+                <span class="fa fa-clock-o mr-1"></span>Visits
+              </a>
               <ng-template ngbNavContent>
                 <app-job-visits-view [jobId]="jobId"></app-job-visits-view>
               </ng-template>
             </li>
             <li ngbNavItem>
-              <a ngbNavLink class="d-flex justify-content-center"
-                >Products
+              <a ngbNavLink class="tab-link d-flex align-items-center"
+                ><span class="fa fa-tasks mr-1"></span>Products
                 <span
-                  class="badge badge-pill badge-soft-primary ml-1"
+                  class="badge badge-pill badge-soft-dark ml-1"
                   #itemCounter
                 ></span
               ></a>
@@ -244,15 +248,21 @@
               </ng-template>
             </li>
             <li ngbNavItem>
-              <a ngbNavLink>Job Forms</a>
+              <a ngbNavLink class="tab-link"
+                ><span class="fa fa-wpforms mr-1"></span>Job Forms</a
+              >
               <ng-template ngbNavContent>Second content</ng-template>
             </li>
             <li ngbNavItem>
-              <a ngbNavLink>Attachments</a>
+              <a ngbNavLink class="tab-link">
+                <span class="fa fa-link mr-1"></span>Attachments</a
+              >
               <ng-template ngbNavContent>Second content</ng-template>
             </li>
-            <li ngbNavItem>
-              <a ngbNavLink>Expenses</a>
+            <li ngbNavItem class="tab-link">
+              <a ngbNavLink class="tab-link"
+                ><span class="fa fa-usd mr-1"></span>Expenses</a
+              >
               <ng-template ngbNavContent>Second content</ng-template>
             </li>
           </ul>
