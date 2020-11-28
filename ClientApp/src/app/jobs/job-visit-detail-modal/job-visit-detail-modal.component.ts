@@ -55,6 +55,48 @@ export class JobVisitDetailModalComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
   }
 
+  onDeleteVisitClicked($event: any): void {
+    this._alertsService
+      .showConfirmationActions({
+        heading: "Delete Visit",
+        actions: [
+          { actionClass: "btn-danger", title: "Delete visit only" },
+          { actionClass: "btn-danger", title: "Delete visit and items" },
+        ],
+        destructiveAction: {
+          actionClass: "btn-default",
+          title: "Don't do anything.",
+        },
+        closeOnConfirm: true,
+        titleIcon: "fa-trash text-danger",
+      })
+      .then((index) => {
+        if (index >= 0) {
+          const _deleteItems = index === 1;
+          this._jobFacade.deleteVisit(
+            this.visitDetails.visit.visitId,
+            this.jobId,
+            _deleteItems
+          );
+        }
+      });
+
+    $event.stopPropagation();
+  }
+
+  private __listenEvents() {
+    this._subs.add(
+      this._jobFacade.actionListener$.subscribe((listenerPayload) => {
+        if (listenerPayload !== null) {
+          if (listenerPayload.actionType === "Delete Visit") {
+            this.activeModal.close();
+          }
+          this._jobFacade.clearEventData();
+        }
+      })
+    );
+  }
+
   ngOnDestroy(): void {
     this._subs.unsubscribe();
   }
@@ -68,5 +110,6 @@ export class JobVisitDetailModalComponent implements OnInit, OnDestroy {
         if (details) this.visitDetails = details;
       })
     );
+    this.__listenEvents();
   }
 }

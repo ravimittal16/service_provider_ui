@@ -15,7 +15,7 @@
 <div class="modal-body">
   <div>
     <div class="row">
-      <div class="col-7 border-left">
+      <div class="col-7 border-right">
         <div class="row no-gutters">
           <div class="col">
             <h6 class="mb-0">
@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
       <div class="col">
         <button
           class="btn btn-block btn-sm btn-falcon-success"
@@ -99,7 +99,10 @@
             <i class="fa fa-pencil mr-1"></i>Edit visit</a
           >
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item text-danger" href="#">
+          <a
+            class="dropdown-item text-danger"
+            (click)="onDeleteVisitClicked($event)"
+          >
             <i class="fa fa-trash mr-1"></i>Delete visit
           </a>
         </div>
@@ -140,21 +143,32 @@
                     <h6 class="font-weight-bold mb-0">Quantity</h6>
                   </div>
                 </div>
-                <div
-                  class="row p-2 border-bottom hover-shadow d-flex align-items-center pointer"
-                  *ngFor="let item of visitDetails.items; index as i"
-                >
-                  <div class="col-10">
-                    <h6 class="mb-0">
-                      {{ item.product?.name }}
-                    </h6>
+                <ng-container *ngIf="visitDetails.items.length > 0">
+                  <div
+                    class="row p-2 border-bottom hover-shadow d-flex align-items-center pointer"
+                    *ngFor="let item of visitDetails.items; index as i"
+                  >
+                    <div class="col-10">
+                      <h6 class="mb-0">
+                        {{ item.product?.name }}
+                      </h6>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center">
+                      <h6 class="mb-0">
+                        {{ item.quantity }}
+                      </h6>
+                    </div>
                   </div>
-                  <div class="col-2 d-flex justify-content-center">
-                    <h6 class="mb-0">
-                      {{ item.quantity }}
-                    </h6>
+                </ng-container>
+                <ng-container *ngIf="visitDetails.items.length === 0">
+                  <div
+                    class="row p-2 border-bottom hover-shadow d-flex align-items-center pointer"
+                  >
+                    <div class="col d-flex justify-content-center">
+                      No product attached to this visit.
+                    </div>
                   </div>
-                </div>
+                </ng-container>
               </div>
             </ng-template>
           </li>
