@@ -6,9 +6,13 @@ import { JobConfigurationsComponent } from "./job-configurations/job-configurati
 import { NgxMaskModule } from "ngx-mask";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NewJobFormComponent } from "./new-job-form/new-job-form.component";
+
+export const JobFormsFeatureId = 2;
 
 const routes: Routes = [
   { path: "forms", component: JobFormsComponent },
+  { path: "new-job-form", component: NewJobFormComponent },
   { path: "config", component: JobConfigurationsComponent },
 ];
 @NgModule({
