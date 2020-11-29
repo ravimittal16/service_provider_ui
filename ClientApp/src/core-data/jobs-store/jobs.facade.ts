@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Facade } from "@core-data/iFacade";
 import { Action, select, Store } from "@ngrx/store";
 import {
+  CreateJobNoteModel,
   JobDetailsDto,
   JobDto,
   JobFilterModel,
@@ -46,6 +47,11 @@ export class JobsFacade implements Facade {
 
   fetchJobDetails(jobId: number) {
     this.dispatch(fromJobsActions.fetchJobDetailsAction({ jobId: jobId }));
+  }
+
+  addNewJobNote(content: string, jobId: number, visitId: number) {
+    const __model = { content, jobId, visitId } as CreateJobNoteModel;
+    this.dispatch(fromJobsActions.addJobNoteAction({ model: __model }));
   }
 
   onVisitAddCompleted(visit: JobVisitDto, visitItems?: JobLineItemDto[]) {

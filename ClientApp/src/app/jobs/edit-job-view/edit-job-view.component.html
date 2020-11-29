@@ -29,9 +29,9 @@
       </div> -->
       <div class="row">
         <div class="col">
-          <a class="btn btn-falcon-primary btn-xs" (click)="addNoteClicked()"
-            ><span class="fa fa-lightbulb-o mr-1"></span>Add note</a
-          >
+          <app-add-note-button-popover
+            [jobId]="jobId"
+          ></app-add-note-button-popover>
           <a
             class="btn btn-falcon-primary btn-xs ml-1"
             (click)="markAsCompleted()"
@@ -224,8 +224,11 @@
               <ng-template ngbNavContent>First content</ng-template>
             </li>
             <li ngbNavItem>
-              <a ngbNavLink class="tab-link">
+              <a ngbNavLink class="tab-link d-flex align-items-center">
                 <span class="fa fa-clock-o mr-1"></span>Visits
+                <span class="badge badge-pill badge-soft-dark ml-1" #visitsCount
+                  >4</span
+                >
               </a>
               <ng-template ngbNavContent>
                 <app-job-visits-view [jobId]="jobId"></app-job-visits-view>

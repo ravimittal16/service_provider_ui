@@ -14,6 +14,7 @@ import { SubSink } from "subsink";
 })
 export class EditJobViewComponent implements OnInit {
   @ViewChild("itemCounter") itemCounter: ElementRef;
+  @ViewChild("visitsCount") visitsCountEl: ElementRef;
   jobId: number;
   private _sub = new SubSink();
   selectedJobDetails$: Observable<JobDetailsDto>;
@@ -51,6 +52,7 @@ export class EditJobViewComponent implements OnInit {
             this.details = details;
             setTimeout(() => {
               this.itemCounter.nativeElement.innerHTML = `${this.details.lineItems.length}`;
+              this.visitsCountEl.nativeElement.innerHTML = `${this.details.jobVisits.length}`;
             }, 100);
           }
         })

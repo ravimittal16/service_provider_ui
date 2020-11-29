@@ -1,9 +1,11 @@
 import { createAction, props } from "@ngrx/store";
 import {
+  CreateJobNoteModel,
   JobDetailsDto,
   JobDto,
   JobFilterModel,
   JobLineItemDto,
+  JobNoteDto,
   JobVisitDto,
 } from "@shared/service-proxies/service-proxies";
 import { JobActionListenerSchema } from "./jobs.state";
@@ -89,4 +91,15 @@ export const onMarkVisitAsCompletedActionCompleted = createAction(
 export const prepareVisitDetailsModalAction = createAction(
   "[Jobs] Prepare Visit Details Modal Action",
   props<{ visitId: number }>()
+);
+// ==========================================================
+// JOB NOTE ACTIONS
+// ==========================================================
+export const addJobNoteAction = createAction(
+  "[Jobs] Add new job note action",
+  props<{ model: CreateJobNoteModel }>()
+);
+export const addJobNoteCompletedAction = createAction(
+  "[Jobs] Add new job note completed actions",
+  props<{ responseDto: JobNoteDto; isSuccess: boolean }>()
 );

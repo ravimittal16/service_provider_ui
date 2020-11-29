@@ -10,6 +10,7 @@ import { SharedModule } from "@shared/shared.module";
 import { ColorPickerModule } from "ngx-color-picker";
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { AddJobVisitModalComponent } from "./add-job-visit-modal/add-job-visit-modal.component";
+import { AddNoteButtonPopoverComponent } from "./add-note-button-popover/add-note-button-popover.component";
 import { JobCardListItemComponent } from "./job-card-list-item/job-card-list-item.component";
 import { JobItemsListViewComponent } from "./job-items-list-view/job-items-list-view.component";
 import { JobItemsTableViewComponent } from "./job-items-table-view/job-items-table-view.component";
@@ -31,6 +32,7 @@ const __moduleComponents = [
   JobItemsListViewComponent,
   JobVisitsViewComponent,
   JobItemsTableViewComponent,
+  AddNoteButtonPopoverComponent,
 ];
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],
