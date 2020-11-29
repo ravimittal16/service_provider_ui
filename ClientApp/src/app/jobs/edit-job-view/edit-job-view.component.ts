@@ -34,8 +34,6 @@ export class EditJobViewComponent implements OnInit {
     this.itemCounter.nativeElement.innerHTML = `${details.totalItems}`;
   }
 
-  addNoteClicked() {}
-
   markAsCompleted() {}
 
   ngOnInit(): void {
