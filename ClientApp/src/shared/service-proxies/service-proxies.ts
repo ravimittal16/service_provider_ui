@@ -1359,6 +1359,62 @@ export class JobsServiceProxy {
         }
         return _observableOf<JobVisitDtoGenericResponse>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addJobNote(body: CreateJobNoteModel | undefined): Observable<JobNoteDtoGenericResponse> {
+        let url_ = this.baseUrl + "/api/Jobs/AddJobNote";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddJobNote(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddJobNote(<any>response_);
+                } catch (e) {
+                    return <Observable<JobNoteDtoGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobNoteDtoGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddJobNote(response: HttpResponseBase): Observable<JobNoteDtoGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobNoteDtoGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobNoteDtoGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -4681,6 +4737,187 @@ export interface IOperationResult {
     errors: string[] | undefined;
     warnings: string[] | undefined;
     clientMessages: string[] | undefined;
+}
+
+export class CreateJobNoteModel implements ICreateJobNoteModel {
+    jobId: number;
+    visitId: number | undefined;
+    content: string | undefined;
+
+    constructor(data?: ICreateJobNoteModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.jobId = _data["jobId"];
+            this.visitId = _data["visitId"];
+            this.content = _data["content"];
+        }
+    }
+
+    static fromJS(data: any): CreateJobNoteModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateJobNoteModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["jobId"] = this.jobId;
+        data["visitId"] = this.visitId;
+        data["content"] = this.content;
+        return data; 
+    }
+
+    clone(): CreateJobNoteModel {
+        const json = this.toJSON();
+        let result = new CreateJobNoteModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateJobNoteModel {
+    jobId: number;
+    visitId: number | undefined;
+    content: string | undefined;
+}
+
+export class JobNoteDto implements IJobNoteDto {
+    noteId: number;
+    content: string | undefined;
+    jobId: number | undefined;
+    visitId: number | undefined;
+
+    constructor(data?: IJobNoteDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.noteId = _data["noteId"];
+            this.content = _data["content"];
+            this.jobId = _data["jobId"];
+            this.visitId = _data["visitId"];
+        }
+    }
+
+    static fromJS(data: any): JobNoteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobNoteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["noteId"] = this.noteId;
+        data["content"] = this.content;
+        data["jobId"] = this.jobId;
+        data["visitId"] = this.visitId;
+        return data; 
+    }
+
+    clone(): JobNoteDto {
+        const json = this.toJSON();
+        let result = new JobNoteDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobNoteDto {
+    noteId: number;
+    content: string | undefined;
+    jobId: number | undefined;
+    visitId: number | undefined;
+}
+
+export class JobNoteDtoGenericResponse implements IJobNoteDtoGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: JobNoteDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IJobNoteDtoGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? JobNoteDto.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): JobNoteDtoGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobNoteDtoGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): JobNoteDtoGenericResponse {
+        const json = this.toJSON();
+        let result = new JobNoteDtoGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobNoteDtoGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: JobNoteDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class CreateUserModel implements ICreateUserModel {

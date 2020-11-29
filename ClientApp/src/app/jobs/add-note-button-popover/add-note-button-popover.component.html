@@ -1,0 +1,54 @@
+<button
+  class="btn btn-falcon-primary btn-xs"
+  (click)="addNoteClicked(addNotePopover, $event)"
+  placement="bottom"
+  [ngbPopover]="addNoteForm"
+  [popoverTitle]="addNoteHeader"
+  [autoClose]="'outside'"
+  triggers="manual"
+  #addNotePopover="ngbPopover"
+>
+  <i class="fa fa-sticky-note-o mr-1"></i>Add note
+</button>
+<ng-template #addNoteForm>
+  <ng-container>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label>Note</label>
+          <textarea
+            rows="4"
+            id="contentInput"
+            class="form-control form-control-sm note-form-control"
+            [(ngModel)]="content"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            [disabled]="isBusy"
+            class="btn btn-xs btn-falcon-danger mr-1"
+            (click)="closePopover()"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            [disabled]="isBusy"
+            class="btn btn-xs btn-falcon-primary"
+            (click)="saveNoteClicked()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
+<ng-template #addNoteHeader let-language="language">
+  <h6 class="mb-0 pb-0">Add Note</h6>
+</ng-template>

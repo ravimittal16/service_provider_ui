@@ -23,6 +23,12 @@ export class JobsEffects extends BaseEffect {
     super();
   }
 
+  private __catchError(errorMessage, error) {
+    return jobsActions.jobsLoadedErrorAction({
+      errors: [errorMessage, error],
+    });
+  }
+
   fetchJobDetails$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(jobsActions.fetchJobDetailsAction),
@@ -41,6 +47,29 @@ export class JobsEffects extends BaseEffect {
               })
             );
           })
+        )
+      )
+    );
+  });
+
+  addJobNote$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(jobsActions.addJobNoteAction),
+      mergeMap((action) =>
+        this.jobsServiceProxy.addJobNote(action.model).pipe(
+          map((data) =>
+            jobsActions.addJobNoteCompletedAction({
+              responseDto: data.entity,
+              isSuccess: data.isSuccess,
+            })
+          ),
+          catchError((error) =>
+            of(
+              jobsActions.jobsLoadedErrorAction({
+                errors: ["Error while loading job details.", error],
+              })
+            )
+          )
         )
       )
     );

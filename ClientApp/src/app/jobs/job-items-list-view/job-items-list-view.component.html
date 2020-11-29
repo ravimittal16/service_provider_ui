@@ -129,18 +129,18 @@
         <div class="col-2">
           <div class="d-flex justify-content-end">
             <ng-template #popContent>
-              <div class="row">
-                <div class="col-auto">
+              <div class="row" style="width: 200px">
+                <div class="col">
                   <button
-                    class="btn btn-sm btn-falcon-success"
+                    class="btn btn-block btn-xs btn-falcon-success"
                     (click)="deleteItem($event, i, null, true)"
                   >
                     Yes
                   </button>
                 </div>
-                <div class="col-auto">
+                <div class="col">
                   <button
-                    class="btn btn-sm btn-falcon-danger"
+                    class="btn btn-block btn-xs btn-falcon-danger"
                     (click)="confirmationPopover.close()"
                   >
                     No
@@ -148,7 +148,9 @@
                 </div>
               </div>
             </ng-template>
-            <ng-template #popTitle>Are you sure?</ng-template>
+            <ng-template #popTitle>
+              <h6 class="mb-0 pb-0">Are you sure?</h6>
+            </ng-template>
             <ng-container *ngIf="!isInEditMode(i)">
               <button
                 triggers="manual"
