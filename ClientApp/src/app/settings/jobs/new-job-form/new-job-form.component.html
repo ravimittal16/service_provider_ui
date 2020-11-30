@@ -33,14 +33,99 @@
       <div class="form-group flex-fill">
         <label for="">Form Name</label>
         <input
-          type="email"
+          type="text"
+          formControlName="formName"
           class="form-control"
-          placeholder="Form name e.g. On-site Details Checklist"
-          aria-describedby="emailHelp"
+          placeholder="Form name e.g. Site Inspection Checklist"
+          aria-describedby="formName"
+          #formNameInput
         />
         <small id="emailHelp" class="form-text text-muted"
           >Enter a unique job form name.</small
         >
+      </div>
+      <ng-container formArrayName="sections">
+        <div *ngIf="getSectionsFormArray.controls.length > 0">
+          <div
+            cdkDrag
+            class="ml-4 mr-1 p-2 mt-2 border rounded hover-shadow"
+            *ngFor="let _ of getSectionsFormArray.controls; index as i"
+            [formGroupName]="i"
+          >
+            <div class="row">
+              <div class="col">
+                <div class="form-group flex-fill">
+                  <label for="">Section Name</label>
+                  <input
+                    type="text"
+                    formControlName="sectionName"
+                    class="form-control"
+                    placeholder="Section name.."
+                    aria-describedby="sectionName"
+                  />
+                  <small id="emailHelp" class="form-text text-muted"
+                    >Enter a unique section name.</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col ml-2">
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <h6><span>Add Field:</span></h6>
+                  </li>
+                  <li class="list-inline-item">
+                    <a (click)="addNewField('checkbox', i)">Checkbox</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a (click)="addNewField('date', i)">Date Picker</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a (click)="addNewField('shortAnswer', i)">Short Answer</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a (click)="addNewField('longAnswer', i)">Long Answer</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a (click)="addNewField('choose', i)">Choose One</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a (click)="addNewField('upload', i)">File Upload</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row mt-2">
+        <div class="col">
+          <div class="d-flex justify-content-start">
+            <button
+              class="btn btn-falcon-primary btn-xs mr-1 mb-1"
+              (click)="addNewFormSectionClicked()"
+              type="button"
+            >
+              <i class="fa fa-plus"></i> Add new section
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col ml-1">
+          <div class="custom-control custom-switch">
+            <input
+              class="custom-control-input"
+              id="jobFormsFeatureToggle"
+              formControlName="autoAddToNewJobs"
+              type="checkbox"
+            />
+            <label class="custom-control-label" for="jobFormsFeatureToggle"
+              >Automatically attach to new jobs</label
+            >
+          </div>
+        </div>
       </div>
     </form>
   </div>
