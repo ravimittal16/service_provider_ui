@@ -49,12 +49,30 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getFieldsFormArray(index: number): FormArray {
+    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
+    const __sectionFormGroup = __sectionsArray.controls[index] as FormGroup;
+    return __sectionFormGroup.get("fields") as FormArray;
+  }
+
   addNewField(fieldType: "", sectionIndex: number) {
     const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
     const __sectionFormGroup = __sectionsArray.controls[
       sectionIndex
     ] as FormGroup;
     console.log(__sectionFormGroup.getRawValue());
+    if (__sectionFormGroup) {
+      const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
+      const __fieldGroup = this._fb.group({
+        fieldType: [0],
+        fieldTypeName: [fieldType],
+        fieldQuestion: ["", [Validators.maxLength(200)]],
+        fieldAnswer: [""],
+        isRequired: [false],
+        displayOrder: [0],
+      });
+      __fieldsArray.push(__fieldGroup);
+    }
   }
 
   addNewFormSectionClicked(): void {

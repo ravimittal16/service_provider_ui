@@ -48,7 +48,7 @@
         <div *ngIf="getSectionsFormArray.controls.length > 0">
           <div
             cdkDrag
-            class="ml-4 mr-1 p-2 mt-2 border rounded hover-shadow"
+            class="ml-4 mr-1 p-2 pl-3 pr-3 mt-2 border rounded hover-shadow"
             *ngFor="let _ of getSectionsFormArray.controls; index as i"
             [formGroupName]="i"
           >
@@ -59,7 +59,7 @@
                   <input
                     type="text"
                     formControlName="sectionName"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     placeholder="Section name.."
                     aria-describedby="sectionName"
                   />
@@ -69,8 +69,20 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col ml-2">
+            <ng-container formArrayName="fields">
+              <div *ngIf="getFieldsFormArray(i).controls.length > 0">
+                <div
+                  cdkDrag
+                  class="ml-5 mr-1 p-2 pl-3 pr-3 mt-2 border rounded hover-shadow"
+                  *ngFor="let _ of getFieldsFormArray(i).controls; index as p"
+                  [formGroupName]="p"
+                >
+                  HELLO WORLD
+                </div>
+              </div>
+            </ng-container>
+            <div class="row mt-2">
+              <div class="col ml-1">
                 <ul class="list-inline">
                   <li class="list-inline-item">
                     <h6><span>Add Field:</span></h6>
@@ -128,5 +140,15 @@
         </div>
       </div>
     </form>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col">
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-sm btn-default">Cancel</button>
+          <button type="button" class="btn btn-sm btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
