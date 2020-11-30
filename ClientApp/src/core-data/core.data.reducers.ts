@@ -34,6 +34,14 @@ import * as fromJobsState from "./jobs-store/jobs.state";
 import * as fromJobsReducers from "./jobs-store/jobs.reducers";
 import * as fromJobsSelectors from "./jobs-store/jobs.selectors";
 
+// ==========================================================
+// JOB FORMS STORE
+// ==========================================================
+
+import * as fromJobFormsState from "./job-forms-store/job.forms.state";
+import * as fromJobFromsReducers from "./job-forms-store/job.forms.reducers";
+import * as fromJobFormsSelectors from "./job-forms-store/job.forms.selectors";
+
 export interface AppState {
   accountRegister: fromAccountRegister.AccountRegisterState;
   customers: customerStates.CustomerState;
@@ -42,6 +50,7 @@ export interface AppState {
   users: fromUsersState.UsersState;
   company: fromCompanyState.CompanyState;
   jobs: fromJobsState.JobsState;
+  jobForms: fromJobFormsState.JobFormsState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -52,7 +61,15 @@ export const reducers: ActionReducerMap<AppState> = {
   users: fromUsersReducers.reducer,
   company: fromCompanyReducers.reducer,
   jobs: fromJobsReducers.reducer,
+  jobForms: fromJobFromsReducers.reducer,
 };
+
+// ==========================================================
+// JOB FORMS SELECTORS
+// ==========================================================
+
+export const selectAllDefinations = fromJobFormsSelectors.selectAllDefinations;
+
 // ==========================================================
 // JOBS SELECTORS
 // ==========================================================
@@ -120,3 +137,5 @@ export const copmanyBusinessHoursDetails =
   fromCompanyStateSelectors.companyBusinessHoursSelector;
 export const isBusyStateCompany =
   fromCompanyStateSelectors.copmanyBusyStateSelector;
+export const selectCompanyFeatues =
+  fromCompanyStateSelectors.selectCompanyFeatues;

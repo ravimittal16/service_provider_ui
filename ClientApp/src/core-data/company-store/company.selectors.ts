@@ -30,3 +30,7 @@ export const selectCommonData = createSelector(
   companyFeatureState,
   (s) => s.commonData
 );
+export const selectCompanyFeatues = createSelector(
+  companyFeatureState,
+  (s) => s.features
+);

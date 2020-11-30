@@ -12,6 +12,7 @@ import {
   CompanyServiceProxy,
   TimezoneModel,
   CompanyDetailsModelGenericResponse,
+  SubscribedFeaturesDto,
 } from "@shared/service-proxies/service-proxies";
 
 @Injectable({
@@ -23,6 +24,7 @@ export class CompanyFacade implements Facade {
   copmanyDetails$: Observable<CompanyDetailsModel>;
   commonData$: Observable<CommonDataModel>;
   businessHours$: Observable<CompanyBusinessHourModel[]>;
+  features$: Observable<SubscribedFeaturesDto[]>;
 
   constructor(
     private _store: Store<CompanyState>,
@@ -36,6 +38,9 @@ export class CompanyFacade implements Facade {
     );
     this.commonData$ = this._store.pipe(
       select(fromCompanySelectors.selectCommonData)
+    );
+    this.features$ = this._store.pipe(
+      select(fromCompanySelectors.selectCompanyFeatues)
     );
   }
 
@@ -56,6 +61,12 @@ export class CompanyFacade implements Facade {
 
   getCountryTimezones(countryCode: string): Observable<TimezoneModel[]> {
     return this.companyService.getTimezonesList(countryCode);
+  }
+
+  getFeatues() {
+    this.dispatch(
+      fromCompanyActions.loadCompanySubscribedFeatues({ companyId: 0 })
+    );
   }
 
   dispatch(action: Action) {

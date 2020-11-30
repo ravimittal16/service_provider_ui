@@ -6,6 +6,8 @@ import {
   LookupValueModel,
   TimezoneModel,
   CommonDataModel,
+  SubscribedFeaturesDto,
+  JobFormDefinationDto,
 } from "@shared/service-proxies/service-proxies";
 import { EntityState } from "@ngrx/entity";
 
@@ -20,4 +22,6 @@ export interface CompanyState extends EntityState<CompanyDetailsModel> {
   isBusy: boolean;
   errors: string[];
   success: boolean;
+  features: SubscribedFeaturesDto[];
+  jobFormDefinations: JobFormDefinationDto[];
 }

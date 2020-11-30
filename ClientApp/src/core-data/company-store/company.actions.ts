@@ -2,6 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import {
   CompanyDetailsModel,
   CommonDataModel,
+  SubscribedFeaturesDto,
 } from "@shared/service-proxies/service-proxies";
 
 export const loadCompanyDetailsAction = createAction(
@@ -25,3 +26,17 @@ export const commonDataLoadedAction = createAction(
   "[Company] Common Data Loaded",
   props<{ commonData: CommonDataModel }>()
 );
+// ==========================================================
+// COMPANY FEATURES
+// ==========================================================
+export const loadCompanySubscribedFeatues = createAction(
+  "[Company] Load Subscribed Featues",
+  props<{ companyId: number }>()
+);
+export const companySubscribedFeaturesLoaded = createAction(
+  "[Company] Subscribed Features Loaded",
+  props<{ features: SubscribedFeaturesDto[] }>()
+);
+// ==========================================================
+// JOB FORMS
+// ==========================================================

@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="text-700">
+      <i class="fa fa-wpforms mr-1"></i>
+      <span class="mr-1" *ngIf="isForNewForm">New Job Form</span>
+      <span class="mr-1" *ngIf="!isForNewForm">Job Form</span>
+      <span *ngIf="!isForNewForm" class="text-400"
+        >| {{ currentEditedDefination?.formName }}</span
+      >
+    </h5>
+  </div>
+</div>

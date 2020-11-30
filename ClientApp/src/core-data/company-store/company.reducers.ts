@@ -12,7 +12,7 @@ import { CompanyState } from "./company.state";
 import * as fromCompanyActions from "./company.actions";
 import { createReducer, Action, on } from "@ngrx/store";
 
-export const companyStoreFeatureKey = "__company";
+export const companyStoreFeatureKey = "company";
 
 export function selectCompanyId(a: CompanyDetailsModel): string {
   return a.companyName.toString();
@@ -23,11 +23,11 @@ const _initialCountries: CountryModel[] = [];
 const _initialBusinessHours: CompanyBusinessHourModel[] = [];
 const _initialCompanyAddresses: AddressDto[] = [];
 
-export const adapter: EntityAdapter<CompanyDetailsModel> = createEntityAdapter<
-  CompanyDetailsModel
->({
-  selectId: selectCompanyId,
-});
+export const adapter: EntityAdapter<CompanyDetailsModel> = createEntityAdapter<CompanyDetailsModel>(
+  {
+    selectId: selectCompanyId,
+  }
+);
 export const initialState: CompanyState = adapter.getInitialState({
   businessHours: _initialBusinessHours,
   copmanyDetails: {} as CompanyDetailsModel,
@@ -39,6 +39,8 @@ export const initialState: CompanyState = adapter.getInitialState({
   isBusy: false,
   errors: [],
   success: false,
+  features: [],
+  jobFormDefinations: [],
 });
 
 const companyFeatureReducer = createReducer(
@@ -57,6 +59,10 @@ const companyFeatureReducer = createReducer(
       isBusy: false,
       errors: [],
     })
+  ),
+  on(
+    fromCompanyActions.companySubscribedFeaturesLoaded,
+    (state: CompanyState, props) => ({ ...state, features: props.features })
   ),
   on(
     fromCompanyActions.commonDataLoadedAction,

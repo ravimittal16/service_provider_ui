@@ -10,6 +10,8 @@ import {
   withLatestFrom,
   concatMap,
   filter,
+  mergeMap,
+  map,
 } from "rxjs/operators";
 import { of } from "rxjs";
 import { CompanyState } from "./company.state";
@@ -75,6 +77,24 @@ export class CompanyStoreEffects extends BaseEffect {
               }),
             ];
           })
+        )
+      )
+    );
+  });
+
+  loadSubscribedFeatues$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromCompanyActions.loadCompanySubscribedFeatues),
+      mergeMap((action) =>
+        this.companyService.getSubscribedFeature().pipe(
+          map((data) =>
+            fromCompanyActions.companySubscribedFeaturesLoaded({
+              features: data,
+            })
+          ),
+          catchError((error) =>
+            of(fromCompanyActions.errorsStateAction({ errors: [error] }))
+          )
         )
       )
     );
