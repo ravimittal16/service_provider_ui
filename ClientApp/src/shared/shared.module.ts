@@ -19,6 +19,7 @@ import { EmailAddressLinkCellRenderer } from "./grid-cell-renderers/email.addres
 import { CurrencyValueCellRenderer } from "./grid-cell-renderers/currency.value.cell.renderer";
 import { ToastsGlobalComponent } from "./components/toasts-global/toasts-global.component";
 import { ToastService } from "./services/toast.service";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const sharedDirectives = [BlockDirective, BusyDirective];
 const sharedComponents = [
@@ -32,7 +33,7 @@ const sharedRenderers = [
   CurrencyValueCellRenderer,
 ];
 @NgModule({
-  imports: [CommonModule, NgbModule],
+  imports: [CommonModule, NgbModule, DragDropModule],
   declarations: [
     ...sharedDirectives,
     ...sharedComponents,

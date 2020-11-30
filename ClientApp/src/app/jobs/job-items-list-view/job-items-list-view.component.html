@@ -40,16 +40,23 @@
       </div>
     </div>
 
-    <div formArrayName="lineItems" *ngIf="controlsArray.controls.length > 0">
+    <div
+      formArrayName="lineItems"
+      *ngIf="controlsArray.controls.length > 0"
+      cdkDropList
+      (cdkDropListDropped)="onDragDrop($event)"
+    >
       <div
+        cdkDrag
         class="row p-2 border-bottom hover-shadow d-flex align-items-center pointer"
         *ngFor="let _ of controlsArray.controls; index as i"
         (click)="onRowClicked(i, $event)"
         [formGroupName]="i"
       >
-        <div class="col-5">
+        <div class="col-5" cdkDragHandle>
           <div *ngIf="!isInEditMode(i) as _isInEditMode">
             <h6 class="font-weight-light mb-0">
+              <i class="fa fa-arrows text-400 mr-2"></i>
               {{ productName(i) }}
             </h6>
           </div>

@@ -9,7 +9,13 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import { Guid } from "guid-typescript";
 import {
@@ -24,6 +30,7 @@ import { SubSink } from "subsink";
 import { JobsFacade } from "@core-data/jobs-store/jobs.facade";
 import { finalize, tap } from "rxjs/operators";
 import { JobActionListenerSchema } from "@core-data/jobs-store/jobs.state";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: "app-job-items-list-view",
@@ -71,6 +78,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
       description: [item?.description],
       isServiceType: [item?.product?.isServiceType],
       isInEditMode: [false],
+      displayOrder: [0],
     });
     this.controlsArray.push(__group);
   }
@@ -199,28 +207,6 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
   }
 
-  ngOnDestroy(): void {
-    this.__sub.unsubscribe();
-  }
-
-  ngOnInit(): void {
-    this._initFormControl();
-    this.__sub.add(
-      this._jobFacade.jobLineItems$
-        .pipe(
-          tap((items: JobLineItemDto[]) => {
-            if (!this.__formArrayRendered) {
-              this.__pushItemsToFormArray(items);
-              this.__formArrayRendered = true;
-            }
-            this.onItemAddCompleted.emit({ totalItems: items.length });
-          })
-        )
-        .subscribe()
-    );
-    this.__listenEvents();
-  }
-
   private __clearItemFromFromArray(itemId: number) {
     const __form = this.controlsArray.controls.filter(
       (x) => x.get("itemId").value === itemId
@@ -242,6 +228,22 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
     return "";
   }
 
+  private __updateDisplayOrder() {
+    for (let _i = 0; _i < this.controlsArray.length; _i++) {
+      this.controlsArray.controls[_i].get("displayOrder").patchValue(_i);
+    }
+  }
+
+  onDragDrop(event: CdkDragDrop<AbstractControl[]>): void {
+    console.log(event);
+    moveItemInArray(
+      this.controlsArray.controls,
+      event.previousIndex,
+      event.currentIndex
+    );
+    this.__updateDisplayOrder();
+  }
+
   private __listenEvents() {
     this.__sub.add(
       this._jobFacade.actionListener$.subscribe((listenerPayload) => {
@@ -253,5 +255,27 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  ngOnDestroy(): void {
+    this.__sub.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this._initFormControl();
+    this.__sub.add(
+      this._jobFacade.jobLineItems$
+        .pipe(
+          tap((items: JobLineItemDto[]) => {
+            if (!this.__formArrayRendered) {
+              this.__pushItemsToFormArray(items);
+              this.__formArrayRendered = true;
+            }
+            this.onItemAddCompleted.emit({ totalItems: items.length });
+          })
+        )
+        .subscribe()
+    );
+    this.__listenEvents();
   }
 }
