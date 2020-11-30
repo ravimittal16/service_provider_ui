@@ -20,7 +20,7 @@ import { JobsFilterComponent } from "./jobs-filter/jobs-filter.component";
 import { JobsDataService } from "./jobs.data.service";
 import { JobsModalService } from "./jobs.modal.service";
 import { JobsRoutingModule, routeComponents } from "./jobs.routing.module";
-
+import { DragDropModule } from "@angular/cdk/drag-drop";
 const __modalComponents = [
   AddJobModalComponent,
   JobVisitDetailModalComponent,
@@ -46,6 +46,7 @@ const __moduleComponents = [
     NgbModule,
     JobsRoutingModule,
     SharedUiComponentsModule,
+    DragDropModule,
   ],
   exports: [],
   providers: [JobsDataService, JobsModalService],
