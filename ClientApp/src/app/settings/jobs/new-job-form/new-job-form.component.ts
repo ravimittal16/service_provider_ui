@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
@@ -34,4 +35,5 @@ export class NewJobFormComponent implements OnInit {
       })
     );
   }
+
 }
