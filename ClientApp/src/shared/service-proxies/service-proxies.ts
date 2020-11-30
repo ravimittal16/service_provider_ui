@@ -520,6 +520,116 @@ export class CompanyServiceProxy {
         }
         return _observableOf<TimezoneModel[]>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getSubscribedFeature(): Observable<SubscribedFeaturesDto[]> {
+        let url_ = this.baseUrl + "/api/company/GetSubscribedFeature";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubscribedFeature(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubscribedFeature(<any>response_);
+                } catch (e) {
+                    return <Observable<SubscribedFeaturesDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SubscribedFeaturesDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSubscribedFeature(response: HttpResponseBase): Observable<SubscribedFeaturesDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(SubscribedFeaturesDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubscribedFeaturesDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllFormDefinations(): Observable<JobFormDefinationDto[]> {
+        let url_ = this.baseUrl + "/api/company/GetAllFormDefinations";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllFormDefinations(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllFormDefinations(<any>response_);
+                } catch (e) {
+                    return <Observable<JobFormDefinationDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobFormDefinationDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllFormDefinations(response: HttpResponseBase): Observable<JobFormDefinationDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(JobFormDefinationDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobFormDefinationDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2817,6 +2927,133 @@ export interface ICompanyDetailsModelGenericResponse {
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
+}
+
+export enum EntityStatuses {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    __1 = -1,
+}
+
+export class SubscribedFeaturesDto implements ISubscribedFeaturesDto {
+    featureId: number;
+    id: number;
+    companyId: number;
+    subscriptonId: number;
+    entityStatus: EntityStatuses;
+
+    constructor(data?: ISubscribedFeaturesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.featureId = _data["featureId"];
+            this.id = _data["id"];
+            this.companyId = _data["companyId"];
+            this.subscriptonId = _data["subscriptonId"];
+            this.entityStatus = _data["entityStatus"];
+        }
+    }
+
+    static fromJS(data: any): SubscribedFeaturesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubscribedFeaturesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["featureId"] = this.featureId;
+        data["id"] = this.id;
+        data["companyId"] = this.companyId;
+        data["subscriptonId"] = this.subscriptonId;
+        data["entityStatus"] = this.entityStatus;
+        return data; 
+    }
+
+    clone(): SubscribedFeaturesDto {
+        const json = this.toJSON();
+        let result = new SubscribedFeaturesDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISubscribedFeaturesDto {
+    featureId: number;
+    id: number;
+    companyId: number;
+    subscriptonId: number;
+    entityStatus: EntityStatuses;
+}
+
+export class JobFormDefinationDto implements IJobFormDefinationDto {
+    formId: number;
+    formName: string | undefined;
+    description: string | undefined;
+    autoAddToNewJobs: boolean | undefined;
+    entityStatus: EntityStatuses;
+
+    constructor(data?: IJobFormDefinationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formId = _data["formId"];
+            this.formName = _data["formName"];
+            this.description = _data["description"];
+            this.autoAddToNewJobs = _data["autoAddToNewJobs"];
+            this.entityStatus = _data["entityStatus"];
+        }
+    }
+
+    static fromJS(data: any): JobFormDefinationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormDefinationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formId"] = this.formId;
+        data["formName"] = this.formName;
+        data["description"] = this.description;
+        data["autoAddToNewJobs"] = this.autoAddToNewJobs;
+        data["entityStatus"] = this.entityStatus;
+        return data; 
+    }
+
+    clone(): JobFormDefinationDto {
+        const json = this.toJSON();
+        let result = new JobFormDefinationDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormDefinationDto {
+    formId: number;
+    formName: string | undefined;
+    description: string | undefined;
+    autoAddToNewJobs: boolean | undefined;
+    entityStatus: EntityStatuses;
 }
 
 export class CustomerModel implements ICustomerModel {

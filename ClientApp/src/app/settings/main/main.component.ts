@@ -20,5 +20,6 @@ export class MainComponent implements OnInit {
     // LOADING COMMON DATA
     // ==========================================================
     this._companyFacade.loadApplicationData();
+    this._companyFacade.getFeatues();
   }
 }

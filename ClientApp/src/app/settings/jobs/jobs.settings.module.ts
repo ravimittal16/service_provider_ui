@@ -8,17 +8,29 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NewJobFormComponent } from "./new-job-form/new-job-form.component";
 
+import { SharedModule } from "@shared/shared.module";
+import { JobFormsBannerComponent } from "./job-forms-banner/job-forms-banner.component";
+
+
 export const JobFormsFeatureId = 2;
 
 const routes: Routes = [
   { path: "forms", component: JobFormsComponent },
-  { path: "new-job-form", component: NewJobFormComponent },
+
+  { path: "job-form", component: NewJobFormComponent },
+
   { path: "config", component: JobConfigurationsComponent },
 ];
 @NgModule({
-  declarations: [],
+  declarations: [
+    JobFormsComponent,
+    NewJobFormComponent,
+    JobConfigurationsComponent,
+    JobFormsBannerComponent,
+  ],
   imports: [
     CommonModule,
+    SharedModule,
     NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,

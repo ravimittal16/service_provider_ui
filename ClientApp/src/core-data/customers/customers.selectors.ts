@@ -3,7 +3,6 @@ import { CustomerState } from "./customers.state";
 
 import * as fromCustomerReducers from "./customers.reducers";
 import { customerFeatureKey } from "./customers.reducers";
-import { ProductDto } from "@shared/service-proxies/service-proxies";
 
 export const customerFeatureState = createFeatureSelector<CustomerState>(
   customerFeatureKey

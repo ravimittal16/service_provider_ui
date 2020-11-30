@@ -17,6 +17,7 @@ import { UsersStoreModule } from "./users-store/users.store.module";
 import { CompanyStoreModule } from "./company-store/company.store.module";
 import { JobsStoreModule } from "./jobs-store/jobs.store.module";
 import { reducers } from "./core.data.reducers";
+import { JobFormsStoreModule } from "./job-forms-store/job.forms.feature.store.module";
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { reducers } from "./core.data.reducers";
     CompanyStoreModule,
     JobsStoreModule,
     HttpClientModule,
+    JobFormsStoreModule,
     StoreModule.forRoot([]),
     EffectsModule.forRoot([]),
     environment.production
