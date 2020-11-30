@@ -1,14 +1,47 @@
-
 <div class="card">
   <div class="card-body">
-    <h5 class="text-700">
-      <i class="fa fa-wpforms mr-1"></i>
-      <span class="mr-1" *ngIf="isForNewForm">New Job Form</span>
-      <span class="mr-1" *ngIf="!isForNewForm">Job Form</span>
-      <span *ngIf="!isForNewForm" class="text-400"
-        >| {{ currentEditedDefination?.formName }}</span
-      >
-    </h5>
+    <div class="row no-gutters">
+      <div class="col">
+        <h5 class="text-700">
+          <i class="fa fa-wpforms mr-1"></i>
+          <span class="mr-1" *ngIf="isForNewForm">New Job Form</span>
+          <span class="mr-1" *ngIf="!isForNewForm">Job Form</span>
+          <span *ngIf="!isForNewForm" class="text-400"
+            >| {{ currentEditedDefination?.formName }}
+            <i class="fa fa-pencil"></i
+          ></span>
+        </h5>
+      </div>
+      <div class="col-auto">
+        <button class="mr-2 btn btn-link btn-sm">
+          <span class="fa fa-long-arrow-left"></span> Back to Job Forms
+        </button>
+      </div>
+    </div>
   </div>
 </div>
-
+<div class="card mt-2">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-sm btn-falcon-success">Check it out!!</button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="jobFormGroup">
+      <div class="form-group flex-fill">
+        <label for="">Form Name</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Form name e.g. On-site Details Checklist"
+          aria-describedby="emailHelp"
+        />
+        <small id="emailHelp" class="form-text text-muted"
+          >Enter a unique job form name.</small
+        >
+      </div>
+    </form>
+  </div>
+</div>
