@@ -2,10 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnInit,
+  ViewChild,
+  AfterViewInit,
 } from "@angular/core";
 import {
   AbstractControl,
+  FormArray,
   FormBuilder,
   FormGroup,
   Validators,
@@ -21,11 +25,13 @@ import { SubSink } from "subsink";
   styleUrls: ["./new-job-form.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewJobFormComponent implements OnInit {
+export class NewJobFormComponent implements OnInit, AfterViewInit {
+  @ViewChild("formNameInput", { static: true }) formNameInput: ElementRef;
   private __formId: string;
   private _subs = new SubSink();
   private __definations: JobFormDefinationDto[];
   currentEditedDefination: JobFormDefinationDto;
+
   isForNewForm = false;
   jobFormGroup: FormGroup;
   constructor(
@@ -38,12 +44,36 @@ export class NewJobFormComponent implements OnInit {
   private __initForm() {
     this.jobFormGroup = this._fb.group({
       formName: ["", [Validators.required, Validators.maxLength(200)]],
+      autoAddToNewJobs: [false],
       sections: this._fb.array([]),
     });
   }
 
-  private __getSectionsFormArray(index: number): AbstractControl[] {
-    return null;
+  addNewField(fieldType: "", sectionIndex: number) {
+    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
+    const __sectionFormGroup = __sectionsArray.controls[
+      sectionIndex
+    ] as FormGroup;
+    console.log(__sectionFormGroup.getRawValue());
+  }
+
+  addNewFormSectionClicked(): void {
+    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
+    const _newSection = this._fb.group({
+      sectionName: ["", [Validators.required, Validators.maxLength(200)]],
+      fields: this._fb.array([]),
+    });
+    __sectionsArray.push(_newSection);
+  }
+
+  get getSectionsFormArray(): FormArray {
+    return this.jobFormGroup.get("sections") as FormArray;
+  }
+
+  ngAfterViewInit(): void {
+    if (this.formNameInput) {
+      this.formNameInput.nativeElement.focus();
+    }
   }
 
   ngOnInit(): void {
