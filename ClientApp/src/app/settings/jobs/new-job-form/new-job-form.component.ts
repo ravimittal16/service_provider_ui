@@ -34,6 +34,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
 
   isForNewForm = false;
   jobFormGroup: FormGroup;
+  fieldIndexes: any = [];
   constructor(
     private route: ActivatedRoute,
     private _jobFormsFacade: JobFormsFacade,
@@ -55,12 +56,23 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     return __sectionFormGroup.get("fields") as FormArray;
   }
 
+  getFieldType(sectionIndex: number, fieldIndex: number) {
+    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
+    const __sectionFormGroup = __sectionsArray.controls[
+      sectionIndex
+    ] as FormGroup;
+    const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
+    const __fieldGroup = __fieldsArray.controls[fieldIndex] as FormGroup;
+    const __fieldConfig = __fieldGroup.get("fieldTypeName");
+    return __fieldConfig.value;
+  }
+
   addNewField(fieldType: "", sectionIndex: number) {
     const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
     const __sectionFormGroup = __sectionsArray.controls[
       sectionIndex
     ] as FormGroup;
-    console.log(__sectionFormGroup.getRawValue());
+
     if (__sectionFormGroup) {
       const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
       const __fieldGroup = this._fb.group({
@@ -70,6 +82,12 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
         fieldAnswer: [""],
         isRequired: [false],
         displayOrder: [0],
+        defaultValues: [""],
+      });
+      this.fieldIndexes.push({
+        type: fieldType,
+        sectionIndex: sectionIndex,
+        fieldIndex: __fieldsArray.length,
       });
       __fieldsArray.push(__fieldGroup);
     }
