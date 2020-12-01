@@ -17,6 +17,7 @@ import { SharedDataService } from "./shared.data.service";
 import { ProductSelectorModalComponent } from "./product-selector-modal/product-selector-modal.component";
 import { AgGridModule } from "ag-grid-angular";
 import { ConfirmationActionsModalComponent } from "./confirmation-actions-modal/confirmation-actions-modal.component";
+import { CustomItemsInputComponent } from "./custom-items-input/custom-items-input.component";
 
 const __exportableComponents = [
   CollapsibleCardComponent,
@@ -30,6 +31,7 @@ const __exportableComponents = [
   CustomerAddressSelectorModalComponent,
   ProductSelectorModalComponent,
   ConfirmationActionsModalComponent,
+  CustomItemsInputComponent,
 ];
 
 @NgModule({

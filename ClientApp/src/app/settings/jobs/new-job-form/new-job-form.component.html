@@ -48,14 +48,14 @@
         <div *ngIf="getSectionsFormArray.controls.length > 0">
           <div
             cdkDrag
-            class="ml-4 mr-1 p-2 pl-3 pr-3 mt-2 border rounded hover-shadow"
+            class="ml-4 mr-1 p-3 mt-2 border rounded hover-shadow"
             *ngFor="let _ of getSectionsFormArray.controls; index as i"
             [formGroupName]="i"
           >
             <div class="row">
               <div class="col">
                 <div class="form-group flex-fill">
-                  <label for="">Section Name</label>
+                  <label class="sr-only" for="">Section Name</label>
                   <input
                     type="text"
                     formControlName="sectionName"
@@ -77,7 +77,156 @@
                   *ngFor="let _ of getFieldsFormArray(i).controls; index as p"
                   [formGroupName]="p"
                 >
-                  HELLO WORLD
+                  <div class="row" [ngSwitch]="getFieldType(i, p)">
+                    <!-- CHECKBOX -->
+                    <ng-container *ngSwitchCase="'checkbox'">
+                      <div class="col-auto d-flex align-items-center">
+                        <i class="fa fa-check-square"></i>
+                      </div>
+                      <div class="col-9 pl-0">
+                        <input
+                          type="text"
+                          formControlName="fieldQuestion"
+                          class="form-control form-control-sm"
+                          placeholder="checkbox question here..."
+                          aria-describedby="question-checkbox"
+                        />
+                      </div>
+                      <div class="col-2">
+                        <div class="d-flex justify-content-start">
+                          <ul
+                            class="list-inline mb-0 d-flex aligh-items-center"
+                            style="padding-top: 2px"
+                          >
+                            <li class="list-inline-item">
+                              <span>
+                                <i class="fa fa-arrows text-400 mr-2"></i>
+                              </span>
+                            </li>
+                            <li class="list-inline-item">
+                              <div class="custom-control custom-switch">
+                                <input
+                                  ngbTooltip="Is required"
+                                  class="custom-control-input"
+                                  id="jobFormsFeatureToggle{{ p }}{{ i }}"
+                                  formControlName="isRequired"
+                                  type="checkbox"
+                                />
+                                <label
+                                  ngbTooltip="Is required"
+                                  class="custom-control-label"
+                                  for="jobFormsFeatureToggle{{ p }}{{ i }}"
+                                  >&nbsp;</label
+                                >
+                              </div>
+                            </li>
+
+                            <li class="list-inline-item">
+                              <button
+                                triggers="manual"
+                                class="btn btn-xs btn-falcon-danger"
+                              >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- DATE -->
+                    <ng-container *ngSwitchCase="'date'">
+                      <div class="col-auto d-flex align-items-center">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <div class="col-9 pl-0">
+                        <input
+                          type="text"
+                          formControlName="fieldQuestion"
+                          class="form-control form-control-sm"
+                          placeholder="date-picker question here..."
+                          aria-describedby="question-datePicker"
+                        />
+                      </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'shortAnswer'">
+                      <div class="col-auto d-flex align-items-center">
+                        <i class="fa fa-question"></i>
+                      </div>
+                      <div class="col-9 pl-0">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            formControlName="fieldQuestion"
+                            class="form-control form-control-sm"
+                            placeholder="short answer question here..."
+                            aria-describedby="question"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            readonly
+                            aria-describedby="question"
+                          />
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'longAnswer'">
+                      <div class="col-auto d-flex align-items-center">
+                        <i class="fa fa-question"></i>
+                      </div>
+                      <div class="col-9 pl-0">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            formControlName="fieldQuestion"
+                            class="form-control form-control-sm"
+                            placeholder="short answer question here..."
+                            aria-describedby="question"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <textarea
+                            type="text"
+                            rows="3"
+                            placeholder="long answer question here..."
+                            class="form-control form-control-sm"
+                            readonly
+                            aria-describedby="answer"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'choose'">
+                      <div class="col-auto d-flex align-items-center">
+                        <i class="fa fa-list-alt"></i>
+                      </div>
+                      <div class="col-9 pl-0">
+                        <div class="form-group">
+                          <app-custom-items-input
+                            formControlName="defaultValues"
+                          ></app-custom-items-input>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'upload'">
+                      <div class="col-auto d-flex align-items-center">
+                        <i class="fa fa-upload"></i>
+                      </div>
+                      <div class="col-9 pl-0">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            formControlName="fieldQuestion"
+                            class="form-control form-control-sm"
+                            placeholder="file upload question here..."
+                            aria-describedby="question"
+                          />
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </ng-container>
@@ -88,22 +237,34 @@
                     <h6><span>Add Field:</span></h6>
                   </li>
                   <li class="list-inline-item">
-                    <a (click)="addNewField('checkbox', i)">Checkbox</a>
+                    <a tabindex="-1" (click)="addNewField('checkbox', i)"
+                      >Checkbox</a
+                    >
                   </li>
                   <li class="list-inline-item">
-                    <a (click)="addNewField('date', i)">Date Picker</a>
+                    <a tabindex="-1" (click)="addNewField('date', i)"
+                      >Date Picker</a
+                    >
                   </li>
                   <li class="list-inline-item">
-                    <a (click)="addNewField('shortAnswer', i)">Short Answer</a>
+                    <a tabindex="-1" (click)="addNewField('shortAnswer', i)"
+                      >Short Answer</a
+                    >
                   </li>
                   <li class="list-inline-item">
-                    <a (click)="addNewField('longAnswer', i)">Long Answer</a>
+                    <a tabindex="-1" (click)="addNewField('longAnswer', i)"
+                      >Long Answer</a
+                    >
                   </li>
                   <li class="list-inline-item">
-                    <a (click)="addNewField('choose', i)">Choose One</a>
+                    <a tabindex="-1" (click)="addNewField('choose', i)"
+                      >Choose One</a
+                    >
                   </li>
                   <li class="list-inline-item">
-                    <a (click)="addNewField('upload', i)">File Upload</a>
+                    <a tabindex="-1" (click)="addNewField('upload', i)"
+                      >File Upload</a
+                    >
                   </li>
                 </ul>
               </div>
@@ -152,3 +313,4 @@
     </div>
   </div>
 </div>
+<ng-template #checkbox> HELLO WORLD </ng-template>

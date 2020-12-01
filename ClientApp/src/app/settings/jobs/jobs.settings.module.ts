@@ -10,7 +10,7 @@ import { NewJobFormComponent } from "./new-job-form/new-job-form.component";
 
 import { SharedModule } from "@shared/shared.module";
 import { JobFormsBannerComponent } from "./job-forms-banner/job-forms-banner.component";
-
+import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
 export const JobFormsFeatureId = 2;
 
@@ -31,6 +31,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
+    SharedUiComponentsModule,
     NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
