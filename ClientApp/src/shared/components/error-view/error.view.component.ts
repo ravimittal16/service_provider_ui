@@ -17,6 +17,8 @@ import { distinctUntilChanged } from "rxjs/operators";
 export class AppErrorViewComponent implements OnInit, OnDestroy {
   @Input() errors$: Observable<string[]> | string[];
   @Input() observableDefined: boolean = false;
+  @Input() autoHide: boolean = false;
+  @Input() interval: number = 3000;
   errors: string[] = [];
   private _sink = new SubSink();
 
@@ -27,7 +29,6 @@ export class AppErrorViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.observableDefined);
     if (this.observableDefined && this.errors$) {
       this._sink.add(
         (this.errors$ as Observable<string[]>)

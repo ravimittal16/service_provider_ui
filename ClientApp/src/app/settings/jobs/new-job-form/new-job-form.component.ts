@@ -14,9 +14,15 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
+import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
+import {
+  GenericValidator,
+  ValidationTypes,
+} from "@shared/helpers/GenericValidator";
 import { JobFormDefinationDto } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 
 @Component({
@@ -30,17 +36,27 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   private __formId: string;
   private _subs = new SubSink();
   private __definations: JobFormDefinationDto[];
+  private __errorHandler = new ErrorRenderer();
+  private __validator = new GenericValidator();
+  errors$: Observable<string[]>;
+  validationMessages: { [key: string]: string } = {};
+  sectionValidationErrors: {
+    [index: number]: { [key: string]: string };
+  } = [];
   currentEditedDefination: JobFormDefinationDto;
 
   isForNewForm = false;
   jobFormGroup: FormGroup;
   fieldIndexes: any = [];
   constructor(
+    private _router: Router,
     private route: ActivatedRoute,
     private _jobFormsFacade: JobFormsFacade,
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.errors$ = this.__errorHandler.errors$;
+  }
 
   private __initForm() {
     this.jobFormGroup = this._fb.group({
@@ -48,6 +64,26 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
       autoAddToNewJobs: [false],
       sections: this._fb.array([]),
     });
+    this.__validator.initilizeFormValitorMessages({
+      formName: {
+        fieldName: "Job Form name",
+        validationProps: [
+          { validatorType: ValidationTypes.Required },
+          { validatorType: ValidationTypes.MaxLength, withValue: 200 },
+        ],
+      },
+      sectionName: {
+        fieldName: "Section name",
+        validationProps: [
+          { validatorType: ValidationTypes.Required },
+          { validatorType: ValidationTypes.MaxLength, withValue: 200 },
+        ],
+      },
+    });
+  }
+
+  backToJobForms(): void {
+    this._router.navigate(["app/settings/jobs/forms"]);
   }
 
   getFieldsFormArray(index: number): FormArray {
@@ -82,7 +118,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
         fieldAnswer: [""],
         isRequired: [false],
         displayOrder: [0],
-        defaultValues: [""],
+        defaultValues: ["Option 1,Option 2"],
       });
       this.fieldIndexes.push({
         type: fieldType,
@@ -92,6 +128,23 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
       __fieldsArray.push(__fieldGroup);
     }
   }
+
+  onSaveButtonClicked(): void {
+    console.log(this.jobFormGroup.getRawValue());
+    if (this.jobFormGroup.valid) {
+    } else {
+      this.validationMessages = this.__validator.processMessages(
+        this.jobFormGroup
+      );
+      const __formArray = this.jobFormGroup.get("sections") as FormArray;
+      this.sectionValidationErrors = this.__validator.processValidationOnFormArray(
+        __formArray
+      );
+      this._cdr.detectChanges();
+    }
+  }
+
+  onCancelButtonClicked(): void {}
 
   addNewFormSectionClicked(): void {
     const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;

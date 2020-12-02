@@ -30,6 +30,15 @@ export enum WEEKDAYS {
   FRIDAY,
   SATURDAY,
 }
+
+export enum FieldTypes {
+  CHECKBOX,
+  DATEPICKER,
+  SHORTANSWER,
+  LONGANSWER,
+  CHOOSEONE,
+  FILEUPLOAD,
+}
 export class AppConsts {
   static remoteServiceBaseUrl: string = "http://localhost:2159";
   static appBaseUrl: string = "app/home";
