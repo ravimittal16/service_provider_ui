@@ -13,7 +13,7 @@
         </h5>
       </div>
       <div class="col-auto">
-        <button class="mr-2 btn btn-link btn-sm">
+        <button class="mr-2 btn btn-link btn-sm" (click)="backToJobForms()">
           <span class="fa fa-long-arrow-left"></span> Back to Job Forms
         </button>
       </div>
@@ -29,20 +29,37 @@
         </div>
       </div>
     </div>
+    <div class="mt-2">
+      <app-error-view
+        [errors$]="errors$"
+        [observableDefined]="true"
+        [autoHide]="true"
+      ></app-error-view>
+    </div>
     <form [formGroup]="jobFormGroup">
       <div class="form-group flex-fill">
-        <label for="">Form Name</label>
+        <label for=""
+          >Job Form Name
+          <i
+            class="fa fa-info-circle text-500"
+            ngbTooltip="Job Form name will help you categrid [NEED TO CHANGE]"
+          ></i
+        ></label>
         <input
           type="text"
           formControlName="formName"
           class="form-control"
           placeholder="Form name e.g. Site Inspection Checklist"
           aria-describedby="formName"
+          [ngClass]="{ 'is-invalid': validationMessages.formName }"
           #formNameInput
         />
         <small id="emailHelp" class="form-text text-muted"
           >Enter a unique job form name.</small
         >
+        <div class="invalid-feedback" *ngIf="validationMessages.formName">
+          {{ validationMessages.formName }}
+        </div>
       </div>
       <ng-container formArrayName="sections">
         <div *ngIf="getSectionsFormArray.controls.length > 0">
@@ -62,10 +79,27 @@
                     class="form-control form-control-sm"
                     placeholder="Section name.."
                     aria-describedby="sectionName"
+                    [ngClass]="{
+                      'is-invalid':
+                        sectionValidationErrors[i] &&
+                        sectionValidationErrors[i].sectionName
+                    }"
                   />
                   <small id="emailHelp" class="form-text text-muted"
                     >Enter a unique section name.</small
                   >
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
+                      sectionValidationErrors[i] &&
+                      sectionValidationErrors[i].sectionName
+                    "
+                  >
+                    {{
+                      sectionValidationErrors[i] &&
+                        sectionValidationErrors[i].sectionName
+                    }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -125,6 +159,7 @@
                         <div class="form-group">
                           <input
                             type="text"
+                            tabindex="-1"
                             class="form-control form-control-sm"
                             readonly
                             aria-describedby="question"
@@ -150,6 +185,7 @@
                           <textarea
                             type="text"
                             rows="3"
+                            tabindex="-1"
                             placeholder="long answer question here..."
                             class="form-control form-control-sm"
                             readonly
@@ -205,6 +241,7 @@
                           <li class="list-inline-item">
                             <div class="custom-control custom-switch">
                               <input
+                                tabindex="-1"
                                 ngbTooltip="Is required"
                                 class="custom-control-input"
                                 id="jobFormsFeatureToggle{{ p }}{{ i }}"
@@ -223,6 +260,7 @@
                           <li class="list-inline-item">
                             <button
                               triggers="manual"
+                              tabindex="-1"
                               class="btn btn-xs btn-falcon-danger"
                             >
                               <i class="fa fa-trash"></i>
@@ -311,8 +349,20 @@
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-sm btn-default">Cancel</button>
-          <button type="button" class="btn btn-sm btn-primary">Save</button>
+          <button
+            type="button"
+            class="btn btn-sm btn-default"
+            (click)="onCancelButtonClicked()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-primary"
+            (click)="onSaveButtonClicked()"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
