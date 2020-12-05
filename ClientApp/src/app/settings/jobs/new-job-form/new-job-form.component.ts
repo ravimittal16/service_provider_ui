@@ -21,7 +21,10 @@ import {
   GenericValidator,
   ValidationTypes,
 } from "@shared/helpers/GenericValidator";
-import { JobFormDefinationDto } from "@shared/service-proxies/service-proxies";
+import {
+  JobFormDefinationDto,
+  JobFormModel,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 
@@ -130,8 +133,9 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   }
 
   onSaveButtonClicked(): void {
-    console.log(this.jobFormGroup.getRawValue());
     if (this.jobFormGroup.valid) {
+      const __model = this.jobFormGroup.getRawValue();
+      this._jobFormsFacade.createjobForm(__model as JobFormModel);
     } else {
       this.validationMessages = this.__validator.processMessages(
         this.jobFormGroup
@@ -149,6 +153,8 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   addNewFormSectionClicked(): void {
     const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
     const _newSection = this._fb.group({
+      formSectionId: [0],
+      displayOrder: [0],
       sectionName: ["", [Validators.required, Validators.maxLength(200)]],
       fields: this._fb.array([]),
     });

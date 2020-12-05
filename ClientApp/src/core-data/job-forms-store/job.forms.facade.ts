@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import {
   CompanyServiceProxy,
   JobFormDefinationDto,
+  JobFormModel,
 } from "@shared/service-proxies/service-proxies";
 import { JobFormsState } from "./job.forms.state";
 import * as fromAllActions from "./job.forms.actions";
@@ -24,6 +25,11 @@ export class JobFormsFacade implements Facade {
     this.formDefinations$ = _store.pipe(
       select(fromAllSelectors.selectAllDefinations)
     );
+  }
+
+  createjobForm(model: JobFormModel) {
+    this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(fromAllActions.createJobFormAction({ model: model }));
   }
 
   loadAllFormDefinations() {
