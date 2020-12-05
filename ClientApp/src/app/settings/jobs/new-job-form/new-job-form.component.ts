@@ -133,6 +133,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   }
 
   onSaveButtonClicked(): void {
+    this.__errorHandler.clearErrors();
     if (this.jobFormGroup.valid) {
       const __model = this.jobFormGroup.getRawValue();
       this._jobFormsFacade.createjobForm(__model as JobFormModel);
@@ -183,6 +184,11 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
             (x) => x.formId === +this.__formId
           );
         }
+      })
+    );
+    this._subs.add(
+      this._jobFormsFacade.errors$.subscribe((errors) => {
+        this.__errorHandler.notifyError(errors);
       })
     );
   }

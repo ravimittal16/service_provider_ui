@@ -25,6 +25,8 @@ export class JobFormsFacade implements Facade {
     this.formDefinations$ = _store.pipe(
       select(fromAllSelectors.selectAllDefinations)
     );
+
+    this.errors$ = _store.pipe(select(fromAllSelectors.selectAllErrors));
   }
 
   createjobForm(model: JobFormModel) {
