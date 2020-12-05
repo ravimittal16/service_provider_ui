@@ -575,61 +575,6 @@ export class CompanyServiceProxy {
         }
         return _observableOf<SubscribedFeaturesDto[]>(<any>null);
     }
-
-    /**
-     * @return Success
-     */
-    getAllFormDefinations(): Observable<JobFormDefinationDto[]> {
-        let url_ = this.baseUrl + "/api/company/GetAllFormDefinations";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllFormDefinations(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllFormDefinations(<any>response_);
-                } catch (e) {
-                    return <Observable<JobFormDefinationDto[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<JobFormDefinationDto[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAllFormDefinations(response: HttpResponseBase): Observable<JobFormDefinationDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200.push(JobFormDefinationDto.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<JobFormDefinationDto[]>(<any>null);
-    }
 }
 
 @Injectable()
@@ -979,6 +924,129 @@ export class CustomersServiceProxy {
             }));
         }
         return _observableOf<BatchActionRequestModelGenericResponse>(<any>null);
+    }
+}
+
+@Injectable()
+export class JobFormsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getAllFormDefinations(): Observable<JobFormDefinationDto[]> {
+        let url_ = this.baseUrl + "/api/JobForms/GetAllFormDefinations";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllFormDefinations(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllFormDefinations(<any>response_);
+                } catch (e) {
+                    return <Observable<JobFormDefinationDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobFormDefinationDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllFormDefinations(response: HttpResponseBase): Observable<JobFormDefinationDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(JobFormDefinationDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobFormDefinationDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createJobForm(body: JobFormModel | undefined): Observable<JobFormModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/JobForms/CreateJobForm";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateJobForm(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateJobForm(<any>response_);
+                } catch (e) {
+                    return <Observable<JobFormModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobFormModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateJobForm(response: HttpResponseBase): Observable<JobFormModelGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobFormModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobFormModelGenericResponse>(<any>null);
     }
 }
 
@@ -2997,65 +3065,6 @@ export interface ISubscribedFeaturesDto {
     entityStatus: EntityStatuses;
 }
 
-export class JobFormDefinationDto implements IJobFormDefinationDto {
-    formId: number;
-    formName: string | undefined;
-    description: string | undefined;
-    autoAddToNewJobs: boolean | undefined;
-    entityStatus: EntityStatuses;
-
-    constructor(data?: IJobFormDefinationDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.formId = _data["formId"];
-            this.formName = _data["formName"];
-            this.description = _data["description"];
-            this.autoAddToNewJobs = _data["autoAddToNewJobs"];
-            this.entityStatus = _data["entityStatus"];
-        }
-    }
-
-    static fromJS(data: any): JobFormDefinationDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new JobFormDefinationDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["formId"] = this.formId;
-        data["formName"] = this.formName;
-        data["description"] = this.description;
-        data["autoAddToNewJobs"] = this.autoAddToNewJobs;
-        data["entityStatus"] = this.entityStatus;
-        return data; 
-    }
-
-    clone(): JobFormDefinationDto {
-        const json = this.toJSON();
-        let result = new JobFormDefinationDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IJobFormDefinationDto {
-    formId: number;
-    formName: string | undefined;
-    description: string | undefined;
-    autoAddToNewJobs: boolean | undefined;
-    entityStatus: EntityStatuses;
-}
-
 export class CustomerModel implements ICustomerModel {
     id: number;
     displayName: string | undefined;
@@ -3646,6 +3655,346 @@ export interface IBatchActionRequestModelGenericResponse {
     hasError: boolean;
     isSuccess: boolean;
     entity: BatchActionRequestModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+}
+
+export class JobFormDefinationDto implements IJobFormDefinationDto {
+    formId: number;
+    formName: string | undefined;
+    description: string | undefined;
+    autoAddToNewJobs: boolean | undefined;
+    entityStatus: EntityStatuses;
+
+    constructor(data?: IJobFormDefinationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formId = _data["formId"];
+            this.formName = _data["formName"];
+            this.description = _data["description"];
+            this.autoAddToNewJobs = _data["autoAddToNewJobs"];
+            this.entityStatus = _data["entityStatus"];
+        }
+    }
+
+    static fromJS(data: any): JobFormDefinationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormDefinationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formId"] = this.formId;
+        data["formName"] = this.formName;
+        data["description"] = this.description;
+        data["autoAddToNewJobs"] = this.autoAddToNewJobs;
+        data["entityStatus"] = this.entityStatus;
+        return data; 
+    }
+
+    clone(): JobFormDefinationDto {
+        const json = this.toJSON();
+        let result = new JobFormDefinationDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormDefinationDto {
+    formId: number;
+    formName: string | undefined;
+    description: string | undefined;
+    autoAddToNewJobs: boolean | undefined;
+    entityStatus: EntityStatuses;
+}
+
+export enum FieldTypes {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+}
+
+export class Field implements IField {
+    fieldType: FieldTypes;
+    fieldTypeName: string | undefined;
+    fieldQuestion: string | undefined;
+    fieldAnswer: string | undefined;
+    isRequired: boolean | undefined;
+    displayOrder: number;
+    defaultValues: any | undefined;
+
+    constructor(data?: IField) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fieldType = _data["fieldType"];
+            this.fieldTypeName = _data["fieldTypeName"];
+            this.fieldQuestion = _data["fieldQuestion"];
+            this.fieldAnswer = _data["fieldAnswer"];
+            this.isRequired = _data["isRequired"];
+            this.displayOrder = _data["displayOrder"];
+            this.defaultValues = _data["defaultValues"];
+        }
+    }
+
+    static fromJS(data: any): Field {
+        data = typeof data === 'object' ? data : {};
+        let result = new Field();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fieldType"] = this.fieldType;
+        data["fieldTypeName"] = this.fieldTypeName;
+        data["fieldQuestion"] = this.fieldQuestion;
+        data["fieldAnswer"] = this.fieldAnswer;
+        data["isRequired"] = this.isRequired;
+        data["displayOrder"] = this.displayOrder;
+        data["defaultValues"] = this.defaultValues;
+        return data; 
+    }
+
+    clone(): Field {
+        const json = this.toJSON();
+        let result = new Field();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IField {
+    fieldType: FieldTypes;
+    fieldTypeName: string | undefined;
+    fieldQuestion: string | undefined;
+    fieldAnswer: string | undefined;
+    isRequired: boolean | undefined;
+    displayOrder: number;
+    defaultValues: any | undefined;
+}
+
+export class Section implements ISection {
+    formSectionId: number;
+    displayOrder: number;
+    sectionName: string | undefined;
+    fields: Field[] | undefined;
+
+    constructor(data?: ISection) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formSectionId = _data["formSectionId"];
+            this.displayOrder = _data["displayOrder"];
+            this.sectionName = _data["sectionName"];
+            if (Array.isArray(_data["fields"])) {
+                this.fields = [] as any;
+                for (let item of _data["fields"])
+                    this.fields.push(Field.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Section {
+        data = typeof data === 'object' ? data : {};
+        let result = new Section();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formSectionId"] = this.formSectionId;
+        data["displayOrder"] = this.displayOrder;
+        data["sectionName"] = this.sectionName;
+        if (Array.isArray(this.fields)) {
+            data["fields"] = [];
+            for (let item of this.fields)
+                data["fields"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): Section {
+        const json = this.toJSON();
+        let result = new Section();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISection {
+    formSectionId: number;
+    displayOrder: number;
+    sectionName: string | undefined;
+    fields: Field[] | undefined;
+}
+
+export class JobFormModel implements IJobFormModel {
+    formId: number;
+    formName: string | undefined;
+    autoAddToNewJobs: boolean;
+    allowMultipleVersions: boolean;
+    sections: Section[] | undefined;
+
+    constructor(data?: IJobFormModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formId = _data["formId"];
+            this.formName = _data["formName"];
+            this.autoAddToNewJobs = _data["autoAddToNewJobs"];
+            this.allowMultipleVersions = _data["allowMultipleVersions"];
+            if (Array.isArray(_data["sections"])) {
+                this.sections = [] as any;
+                for (let item of _data["sections"])
+                    this.sections.push(Section.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): JobFormModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formId"] = this.formId;
+        data["formName"] = this.formName;
+        data["autoAddToNewJobs"] = this.autoAddToNewJobs;
+        data["allowMultipleVersions"] = this.allowMultipleVersions;
+        if (Array.isArray(this.sections)) {
+            data["sections"] = [];
+            for (let item of this.sections)
+                data["sections"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): JobFormModel {
+        const json = this.toJSON();
+        let result = new JobFormModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormModel {
+    formId: number;
+    formName: string | undefined;
+    autoAddToNewJobs: boolean;
+    allowMultipleVersions: boolean;
+    sections: Section[] | undefined;
+}
+
+export class JobFormModelGenericResponse implements IJobFormModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: JobFormModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IJobFormModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? JobFormModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): JobFormModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): JobFormModelGenericResponse {
+        const json = this.toJSON();
+        let result = new JobFormModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: JobFormModel;
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
