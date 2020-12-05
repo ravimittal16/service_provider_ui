@@ -5,7 +5,7 @@ import { Store } from "@ngrx/store";
 import { JobFormsServiceProxy } from "@shared/service-proxies/service-proxies";
 import { of } from "rxjs";
 
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, switchMap } from "rxjs/operators";
 import * as fromAllActions from "./job.forms.actions";
 import { JobFormsState } from "./job.forms.state";
 
@@ -45,13 +45,18 @@ export class JobFormsEffects extends BaseEffect {
               isSuccess: data.isSuccess,
             })
           ),
-          catchError((error) =>
-            of(
-              fromAllActions.updateErrorStateAction({
-                errors: ["Error while loading job details.", error],
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                console.log(error);
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [error],
+                  })
+                );
               })
-            )
-          )
+            );
+          })
         )
       )
     );

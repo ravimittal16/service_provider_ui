@@ -14,3 +14,7 @@ const {
 } = adapter.getSelectors();
 
 export const selectAllDefinations = createSelector(jobFormsState, selectAll);
+export const selectAllErrors = createSelector(
+  jobFormsState,
+  (state) => state.errors
+);

@@ -1,6 +1,7 @@
 import { Observable } from "rxjs";
 
 import { switchMap } from "rxjs/operators";
+import { isArray } from "lodash";
 export abstract class BaseEffect {
   static somethingWentWrongErrorMessage = "Something went wrong.";
   blobToText(blob): Observable<any> {
@@ -27,6 +28,15 @@ export abstract class BaseEffect {
           if (errorBody && errorBody["ErrorMessageClient"]) {
             return new Observable(function (observer) {
               observer.next(errorBody["ErrorMessageClient"]);
+              observer.complete();
+            });
+          } else if (
+            errorBody &&
+            errorBody["errors"] &&
+            isArray(errorBody["errors"])
+          ) {
+            return new Observable(function (observer) {
+              observer.next([errorBody.errors]);
               observer.complete();
             });
           } else {

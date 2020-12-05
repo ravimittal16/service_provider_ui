@@ -32,6 +32,11 @@ const createFeatureReducer = createReducer(
     ...state,
     isBusy: props.isBusy,
   })),
+  on(fromAllActions.updateErrorStateAction, (state, props) => ({
+    ...state,
+    isBusy: false,
+    errors: props.errors,
+  })),
   on(
     fromAllActions.allJobFormDefinationsLoadedAction,
     (state: JobFormsState, props) => {
