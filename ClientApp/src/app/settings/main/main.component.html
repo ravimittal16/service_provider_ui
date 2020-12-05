@@ -9,7 +9,11 @@
     >
       <ul class="navbar-nav flex-column">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['company']">
+          <a
+            class="nav-link"
+            [routerLink]="['company']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fa fa-home"></span></span
               ><span class="nav-link-text"> Company Settings</span>
@@ -17,7 +21,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['branding']">
+          <a
+            class="nav-link"
+            [routerLink]="['branding']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fa fa-film"></span></span
               ><span class="nav-link-text"> Branding</span>
@@ -45,27 +53,54 @@
             data-parent="#navbarVerticalCollapse"
           >
             <li class="nav-item">
-              <a class="nav-link" [routerLink]="['products/list']">List</a>
+              <a
+                class="nav-link"
+                [routerLink]="['products/list']"
+                routerLinkActive="active"
+                >List</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" [routerLink]="['products/prdcts-cuspri']"
+              <a
+                class="nav-link"
+                [routerLink]="['products/prdcts-cuspri']"
+                routerLinkActive="active"
                 >Custom Pricing</a
               >
             </li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['cusflds']">
+          <a
+            class="nav-link"
+            [routerLink]="['cusflds']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"
                 ><span class="fa fa-list-alt"></span></span
               ><span class="nav-link-text"> Custom Fields</span>
             </div>
           </a>
-          <a class="nav-link" [routerLink]="['main/dashboard']">
+          <a
+            class="nav-link"
+            [routerLink]="['main/dashboard']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fa fa-gear"></span></span
               ><span class="nav-link-text"> Configurations</span>
+            </div>
+          </a>
+          <a
+            class="nav-link"
+            [routerLink]="['main/dashboard']"
+            routerLinkActive="active"
+          >
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"
+                ><span class="fa fa-bell-o"></span></span
+              ><span class="nav-link-text"> Notifications</span>
             </div>
           </a>
         </li>
@@ -79,21 +114,33 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['main/dashboard']">
+          <a
+            class="nav-link"
+            [routerLink]="['main/dashboard']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"
                 ><span class="fa fa-money"></span></span
               ><span class="nav-link-text"> Expense Tracking</span>
             </div>
           </a>
-          <a class="nav-link" [routerLink]="['main/dashboard']">
+          <a
+            class="nav-link"
+            [routerLink]="['main/dashboard']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"
                 ><span class="fa fa-hdd-o"></span></span
               ><span class="nav-link-text"> Equipment Tracking</span>
             </div>
           </a>
-          <a class="nav-link" [routerLink]="['main/dashboard']">
+          <a
+            class="nav-link"
+            [routerLink]="['main/dashboard']"
+            routerLinkActive="active"
+          >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"
                 ><span class="fa fa-flask"></span></span
@@ -109,15 +156,24 @@
         <li class="nav-item">
           <h6>Jobs</h6>
         </li>
-        <a class="nav-link" [routerLink]="['jobs/config']">
+        <a
+          class="nav-link"
+          [routerLink]="['jobs/config']"
+          routerLinkActive="active"
+        >
           <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            <span class="nav-link-icon"><span class="fa fa-gear"></span></span
             ><span class="nav-link-text"> Job Configurations</span>
           </div>
         </a>
-        <a class="nav-link" [routerLink]="['jobs/forms']">
+        <a
+          class="nav-link"
+          [routerLink]="['jobs/forms']"
+          routerLinkActive="active"
+        >
           <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            <span class="nav-link-icon"
+              ><span class="fa fa-wpforms"></span></span
             ><span class="nav-link-text"> Job Forms</span>
           </div>
         </a>
@@ -129,22 +185,34 @@
         <li class="nav-item">
           <h6>Team Management</h6>
         </li>
-        <a class="nav-link" [routerLink]="['users/list']">
+        <a
+          class="nav-link"
+          [routerLink]="['users/list']"
+          routerLinkActive="active"
+        >
           <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            <span class="nav-link-icon"><span class="fa fa-user"></span></span
             ><span class="nav-link-text"> Manage Users</span>
           </div>
         </a>
-        <a class="nav-link" [routerLink]="['main/dashboard']">
+        <a
+          class="nav-link"
+          [routerLink]="['main/dashboard']"
+          routerLinkActive="active"
+        >
           <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            <span class="nav-link-icon"><span class="fa fa-users"></span></span
             ><span class="nav-link-text"> Manage Teams</span>
           </div>
         </a>
 
-        <a class="nav-link" [routerLink]="['main/dashboard']">
+        <a
+          class="nav-link"
+          [routerLink]="['main/dashboard']"
+          routerLinkActive="active"
+        >
           <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fa fa-flask"></span></span
+            <span class="nav-link-icon"><span class="fa fa-key"></span></span
             ><span class="nav-link-text"> Access Management</span>
           </div>
         </a>
