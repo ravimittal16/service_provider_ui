@@ -34,6 +34,22 @@ export class JobFormsEffects extends BaseEffect {
     );
   });
 
+  deleteJobFormDefination$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.deleteJobFormDefinationAction),
+      mergeMap((action) =>
+        this.jobFormsService.deleteJobFormDefination(action.jobFormId).pipe(
+          map((res) => {
+            return fromAllActions.onDeleteJobFormDefinationCompletedAction({
+              jobFormId: action.jobFormId,
+              isSuccess: res,
+            });
+          })
+        )
+      )
+    );
+  });
+
   createJobForm$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.createJobFormAction),

@@ -29,6 +29,13 @@ export class JobFormsFacade implements Facade {
     this.errors$ = _store.pipe(select(fromAllSelectors.selectAllErrors));
   }
 
+  deleteJobFormDefination(jobFormId: number) {
+    this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(
+      fromAllActions.deleteJobFormDefinationAction({ jobFormId: jobFormId })
+    );
+  }
+
   createjobForm(model: JobFormModel) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(fromAllActions.createJobFormAction({ model: model }));

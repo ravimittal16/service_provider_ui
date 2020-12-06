@@ -23,12 +23,14 @@ export class JobFormsComponent implements OnInit, OnDestroy {
   private _subs = new SubSink();
   private __deletePopover: NgbPopover;
   jobFormDefinations$: Observable<JobFormDefinationDto[]>;
+  isBusy$: Observable<boolean>;
   constructor(
     private _router: Router,
     private _companyFacade: CompanyFacade,
     private _jobFormsFacade: JobFormsFacade
   ) {
     this.jobFormDefinations$ = _jobFormsFacade.formDefinations$;
+    this.isBusy$ = _jobFormsFacade.isBusy$;
   }
 
   ngOnDestroy(): void {
@@ -75,7 +77,7 @@ export class JobFormsComponent implements OnInit, OnDestroy {
     if (!finalClick) {
       this.__deletePopover.open();
     } else {
-      console.log(defination);
+      this._jobFormsFacade.deleteJobFormDefination(defination.formId);
     }
 
     $event.stopPropagation();

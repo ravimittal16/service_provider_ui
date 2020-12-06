@@ -37,3 +37,7 @@ export const deleteJobFormDefinationAction = createAction(
   "[JobForms] Delete Job Form Defination Action",
   props<{ jobFormId: number }>()
 );
+export const onDeleteJobFormDefinationCompletedAction = createAction(
+  "[JobForms] Delete Job Form Defination Completed Action",
+  props<{ jobFormId: number; isSuccess: boolean }>()
+);

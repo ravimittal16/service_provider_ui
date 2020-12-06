@@ -38,6 +38,23 @@ const createFeatureReducer = createReducer(
     errors: props.errors,
   })),
   on(
+    fromAllActions.onDeleteJobFormDefinationCompletedAction,
+    (state: JobFormsState, props) => {
+      if (props.isSuccess) {
+        const __state = adapter.removeOne(props.jobFormId.toString(), state);
+        const __jobForms = __state.jobFormDefinations.filter(
+          (x) => x.formId !== props.jobFormId
+        );
+
+        return {
+          ...__state,
+          isBusy: false,
+          jobFormDefinations: [...__jobForms],
+        };
+      }
+    }
+  ),
+  on(
     fromAllActions.allJobFormDefinationsLoadedAction,
     (state: JobFormsState, props) => {
       const __state = adapter.addMany(props.definations, state);

@@ -7,15 +7,10 @@ import {
   ViewChild,
   AfterViewInit,
 } from "@angular/core";
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
+import { AppConsts } from "@shared/AppConsts";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import {
   GenericValidator,
@@ -48,7 +43,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     [index: number]: { [key: string]: string };
   } = [];
   currentEditedDefination: JobFormDefinationDto;
-
+  readonly MAX_SECTION_ALLOWED = 5;
   isForNewForm = false;
   jobFormGroup: FormGroup;
   fieldIndexes: any = [];
@@ -68,6 +63,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
       formName: ["", [Validators.required, Validators.maxLength(200)]],
       autoAddToNewJobs: [false],
       sections: this._fb.array([]),
+      allowMultipleVersions: [false],
     });
     this.__validator.initilizeFormValitorMessages({
       formName: {
@@ -92,14 +88,14 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   }
 
   getFieldsFormArray(index: number): FormArray {
-    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
-    const __sectionFormGroup = __sectionsArray.controls[index] as FormGroup;
+    const __sectionFormGroup = this.getSectionsFormArray.controls[
+      index
+    ] as FormGroup;
     return __sectionFormGroup.get("fields") as FormArray;
   }
 
   getFieldType(sectionIndex: number, fieldIndex: number) {
-    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
-    const __sectionFormGroup = __sectionsArray.controls[
+    const __sectionFormGroup = this.getSectionsFormArray.controls[
       sectionIndex
     ] as FormGroup;
     const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
@@ -109,17 +105,18 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   }
 
   addNewField(fieldType: string = "", sectionIndex: number) {
-    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
-    const __sectionFormGroup = __sectionsArray.controls[
+    const __sectionFormGroup = this.getSectionsFormArray.controls[
       sectionIndex
     ] as FormGroup;
 
     if (__sectionFormGroup) {
       const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
+      const __fieldTypeNum = AppConsts.JobFormFieldTypes[fieldType];
       const __defaultValues =
-        fieldType === "choose" ? ["Option 1,Option 2"] : null;
+        fieldType === "choose" ? "Option 1,Option 2" : null;
       const __fieldGroup = this._fb.group({
-        fieldType: [0],
+        fieldId: [0],
+        fieldType: [__fieldTypeNum],
         fieldTypeName: [fieldType],
         fieldQuestion: ["", [Validators.maxLength(200)]],
         fieldAnswer: [""],
@@ -137,6 +134,21 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     }
   }
 
+  deleteFieldClicked(fieldIndex: number, sectionIndex: number): void {
+    const __sectionFormGroup = this.getSectionsFormArray.controls[
+      sectionIndex
+    ] as FormGroup;
+    const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
+    const __fieldGroup = __fieldsArray.controls[fieldIndex] as FormGroup;
+    if (__fieldGroup) {
+      const __fieldId = +__fieldGroup.get("fieldId").value;
+      if (__fieldId === 0) {
+        __fieldsArray.removeAt(fieldIndex);
+        this._cdr.detectChanges();
+      }
+    }
+  }
+
   onSaveButtonClicked(): void {
     this.__errorHandler.clearErrors();
     if (this.jobFormGroup.valid) {
@@ -146,25 +158,27 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
       this.validationMessages = this.__validator.processMessages(
         this.jobFormGroup
       );
-      const __formArray = this.jobFormGroup.get("sections") as FormArray;
       this.sectionValidationErrors = this.__validator.processValidationOnFormArray(
-        __formArray
+        this.getSectionsFormArray
       );
       this._cdr.detectChanges();
     }
   }
 
+  deleteSection(sectionIndex: number) {}
+
   onCancelButtonClicked(): void {}
 
   addNewFormSectionClicked(): void {
-    const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
-    const _newSection = this._fb.group({
-      formSectionId: [0],
-      displayOrder: [0],
-      sectionName: ["", [Validators.required, Validators.maxLength(200)]],
-      fields: this._fb.array([]),
-    });
-    __sectionsArray.push(_newSection);
+    if (this.getSectionsFormArray.controls.length <= this.MAX_SECTION_ALLOWED) {
+      const _newSection = this._fb.group({
+        formSectionId: [0],
+        displayOrder: [0],
+        sectionName: ["", [Validators.required, Validators.maxLength(200)]],
+        fields: this._fb.array([]),
+      });
+      this.getSectionsFormArray.push(_newSection);
+    }
   }
 
   get getSectionsFormArray(): FormArray {
