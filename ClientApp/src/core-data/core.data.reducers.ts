@@ -1,5 +1,10 @@
 import { ActionReducerMap } from "@ngrx/store";
 
+// ==========================================================
+// ROUTER REDUCER
+import { RouterReducerState, routerReducer } from "@ngrx/router-store";
+// ==========================================================
+
 import * as fromAccountRegister from "./register/register.reducers";
 import * as fromRegisterStateSelectors from "./register/register.selectors";
 
@@ -41,8 +46,10 @@ import * as fromJobsSelectors from "./jobs-store/jobs.selectors";
 import * as fromJobFormsState from "./job-forms-store/job.forms.state";
 import * as fromJobFromsReducers from "./job-forms-store/job.forms.reducers";
 import * as fromJobFormsSelectors from "./job-forms-store/job.forms.selectors";
+import { MergedRoute } from "./router.reducer";
 
 export interface AppState {
+  router: RouterReducerState<MergedRoute>;
   accountRegister: fromAccountRegister.AccountRegisterState;
   customers: customerStates.CustomerState;
   userAuth: loginStates.LoginState;
@@ -54,6 +61,7 @@ export interface AppState {
 }
 
 export const reducers: ActionReducerMap<AppState> = {
+  router: routerReducer,
   accountRegister: fromAccountRegister.accountRegisterReducer,
   customers: fromCustomers.reducer,
   userAuth: fromLogin.loginReducer,

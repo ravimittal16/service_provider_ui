@@ -235,7 +235,6 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
   }
 
   onDragDrop(event: CdkDragDrop<AbstractControl[]>): void {
-    console.log(event);
     moveItemInArray(
       this.controlsArray.controls,
       event.previousIndex,

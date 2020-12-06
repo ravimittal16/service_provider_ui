@@ -3729,11 +3729,13 @@ export enum FieldTypes {
 }
 
 export class Field implements IField {
+    fieldId: number;
     fieldType: FieldTypes;
     fieldTypeName: string | undefined;
     fieldQuestion: string | undefined;
     fieldAnswer: string | undefined;
     isRequired: boolean | undefined;
+    valueSource: string | undefined;
     displayOrder: number;
     defaultValues: any | undefined;
 
@@ -3748,11 +3750,13 @@ export class Field implements IField {
 
     init(_data?: any) {
         if (_data) {
+            this.fieldId = _data["fieldId"];
             this.fieldType = _data["fieldType"];
             this.fieldTypeName = _data["fieldTypeName"];
             this.fieldQuestion = _data["fieldQuestion"];
             this.fieldAnswer = _data["fieldAnswer"];
             this.isRequired = _data["isRequired"];
+            this.valueSource = _data["valueSource"];
             this.displayOrder = _data["displayOrder"];
             this.defaultValues = _data["defaultValues"];
         }
@@ -3767,11 +3771,13 @@ export class Field implements IField {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["fieldId"] = this.fieldId;
         data["fieldType"] = this.fieldType;
         data["fieldTypeName"] = this.fieldTypeName;
         data["fieldQuestion"] = this.fieldQuestion;
         data["fieldAnswer"] = this.fieldAnswer;
         data["isRequired"] = this.isRequired;
+        data["valueSource"] = this.valueSource;
         data["displayOrder"] = this.displayOrder;
         data["defaultValues"] = this.defaultValues;
         return data; 
@@ -3786,11 +3792,13 @@ export class Field implements IField {
 }
 
 export interface IField {
+    fieldId: number;
     fieldType: FieldTypes;
     fieldTypeName: string | undefined;
     fieldQuestion: string | undefined;
     fieldAnswer: string | undefined;
     isRequired: boolean | undefined;
+    valueSource: string | undefined;
     displayOrder: number;
     defaultValues: any | undefined;
 }
@@ -3861,6 +3869,7 @@ export interface ISection {
 export class JobFormModel implements IJobFormModel {
     formId: number;
     formName: string | undefined;
+    description: string | undefined;
     autoAddToNewJobs: boolean;
     allowMultipleVersions: boolean;
     sections: Section[] | undefined;
@@ -3878,6 +3887,7 @@ export class JobFormModel implements IJobFormModel {
         if (_data) {
             this.formId = _data["formId"];
             this.formName = _data["formName"];
+            this.description = _data["description"];
             this.autoAddToNewJobs = _data["autoAddToNewJobs"];
             this.allowMultipleVersions = _data["allowMultipleVersions"];
             if (Array.isArray(_data["sections"])) {
@@ -3899,6 +3909,7 @@ export class JobFormModel implements IJobFormModel {
         data = typeof data === 'object' ? data : {};
         data["formId"] = this.formId;
         data["formName"] = this.formName;
+        data["description"] = this.description;
         data["autoAddToNewJobs"] = this.autoAddToNewJobs;
         data["allowMultipleVersions"] = this.allowMultipleVersions;
         if (Array.isArray(this.sections)) {
@@ -3920,6 +3931,7 @@ export class JobFormModel implements IJobFormModel {
 export interface IJobFormModel {
     formId: number;
     formName: string | undefined;
+    description: string | undefined;
     autoAddToNewJobs: boolean;
     allowMultipleVersions: boolean;
     sections: Section[] | undefined;

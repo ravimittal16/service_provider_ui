@@ -30,3 +30,10 @@ export const createJobFormCompletedAction = createAction(
   "[JobForms] Create JobForm Completed Action",
   props<{ response: JobFormModelGenericResponse; isSuccess: boolean }>()
 );
+// ==========================================================
+// DELETE JOB FORM ACTION
+// ==========================================================
+export const deleteJobFormDefinationAction = createAction(
+  "[JobForms] Delete Job Form Defination Action",
+  props<{ jobFormId: number }>()
+);

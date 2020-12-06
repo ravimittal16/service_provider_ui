@@ -64,7 +64,42 @@
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-end">
-              <button class="btn btn-sm btn-falcon-danger mr-1">
+              <ng-template #popContent>
+                <div class="row" style="width: 200px">
+                  <div class="col">
+                    <button
+                      class="btn btn-block btn-xs btn-falcon-success"
+                      (click)="deleteJobForm($event, defination, null, true)"
+                    >
+                      Yes
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      class="btn btn-block btn-xs btn-falcon-danger"
+                      (click)="confirmationPopover.close()"
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #popTitle>
+                <h6 class="mb-0 pb-0">Are you sure?</h6>
+              </ng-template>
+              <button
+                #confirmationPopover="ngbPopover"
+                [autoClose]="true"
+                container="body"
+                [closeDelay]="3000"
+                triggers="manual"
+                [ngbPopover]="popContent"
+                [popoverTitle]="popTitle"
+                (click)="
+                  deleteJobForm($event, defination, confirmationPopover, false)
+                "
+                class="btn btn-sm btn-falcon-danger mr-1"
+              >
                 <i class="fa fa-trash"></i>
               </button>
               <button
