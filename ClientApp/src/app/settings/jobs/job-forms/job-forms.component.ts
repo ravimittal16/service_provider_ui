@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CompanyFacade } from "@core-data/company-store/company.facade";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
+import { NgbPopover } from "@ng-bootstrap/ng-bootstrap";
 import {
   JobFormDefinationDto,
   SubscribedFeaturesDto,
@@ -20,6 +21,7 @@ export class JobFormsComponent implements OnInit, OnDestroy {
   jobFormsFeatureStatus: SubscribedFeaturesDto;
   showBanner = true;
   private _subs = new SubSink();
+  private __deletePopover: NgbPopover;
   jobFormDefinations$: Observable<JobFormDefinationDto[]>;
   constructor(
     private _router: Router,
@@ -61,6 +63,22 @@ export class JobFormsComponent implements OnInit, OnDestroy {
         this._jobFormsFacade.loadAllFormDefinations();
       }
     }
+  }
+
+  deleteJobForm(
+    $event: MouseEvent,
+    defination: JobFormDefinationDto,
+    popover: NgbPopover,
+    finalClick: boolean
+  ) {
+    if (popover) this.__deletePopover = popover;
+    if (!finalClick) {
+      this.__deletePopover.open();
+    } else {
+      console.log(defination);
+    }
+
+    $event.stopPropagation();
   }
 
   ngOnInit(): void {

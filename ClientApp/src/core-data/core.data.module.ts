@@ -8,7 +8,6 @@ import { DataPersistence } from "@nrwl/nx";
 import { HttpClientModule } from "@angular/common/http";
 
 import { CustomerStoreModule } from "./customers/customers-store.module";
-
 import { LoginStoreModule } from "./login/login-store.module";
 
 import { RegisterStoreModule } from "./register/register.store.module";
@@ -16,8 +15,10 @@ import { ProductsStoreModule } from "./products-store/products.store.module";
 import { UsersStoreModule } from "./users-store/users.store.module";
 import { CompanyStoreModule } from "./company-store/company.store.module";
 import { JobsStoreModule } from "./jobs-store/jobs.store.module";
-import { reducers } from "./core.data.reducers";
+
 import { JobFormsStoreModule } from "./job-forms-store/job.forms.feature.store.module";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
+import { CustomStateSerializer } from "./router.reducer";
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { JobFormsStoreModule } from "./job-forms-store/job.forms.feature.store.m
     JobFormsStoreModule,
     StoreModule.forRoot([]),
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot({ serializer: CustomStateSerializer }),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 25 }),

@@ -42,6 +42,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   private __errorHandler = new ErrorRenderer();
   private __validator = new GenericValidator();
   errors$: Observable<string[]>;
+  isBusy$: Observable<boolean>;
   validationMessages: { [key: string]: string } = {};
   sectionValidationErrors: {
     [index: number]: { [key: string]: string };
@@ -59,6 +60,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     private _cdr: ChangeDetectorRef
   ) {
     this.errors$ = this.__errorHandler.errors$;
+    this.isBusy$ = this._jobFormsFacade.isBusy$;
   }
 
   private __initForm() {
@@ -106,7 +108,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     return __fieldConfig.value;
   }
 
-  addNewField(fieldType: "", sectionIndex: number) {
+  addNewField(fieldType: string = "", sectionIndex: number) {
     const __sectionsArray = this.jobFormGroup.get("sections") as FormArray;
     const __sectionFormGroup = __sectionsArray.controls[
       sectionIndex
@@ -114,6 +116,8 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
 
     if (__sectionFormGroup) {
       const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
+      const __defaultValues =
+        fieldType === "choose" ? ["Option 1,Option 2"] : null;
       const __fieldGroup = this._fb.group({
         fieldType: [0],
         fieldTypeName: [fieldType],
@@ -121,7 +125,8 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
         fieldAnswer: [""],
         isRequired: [false],
         displayOrder: [0],
-        defaultValues: ["Option 1,Option 2"],
+        defaultValues: [__defaultValues],
+        valueSource: [__defaultValues],
       });
       this.fieldIndexes.push({
         type: fieldType,

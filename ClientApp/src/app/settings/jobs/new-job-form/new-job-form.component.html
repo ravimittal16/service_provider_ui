@@ -320,6 +320,7 @@
           <div class="d-flex justify-content-start">
             <button
               class="btn btn-falcon-primary btn-xs mr-1 mb-1"
+              [disabled]="isBusy$ | async"
               (click)="addNewFormSectionClicked()"
               type="button"
             >
@@ -352,6 +353,7 @@
           <button
             type="button"
             class="btn btn-sm btn-default"
+            [disabled]="isBusy$ | async"
             (click)="onCancelButtonClicked()"
           >
             Cancel
@@ -359,6 +361,7 @@
           <button
             type="button"
             class="btn btn-sm btn-primary"
+            [disabled]="isBusy$ | async"
             (click)="onSaveButtonClicked()"
           >
             Save
