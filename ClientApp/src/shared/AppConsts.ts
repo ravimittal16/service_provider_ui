@@ -39,6 +39,7 @@ export enum FieldTypes {
   CHOOSEONE,
   FILEUPLOAD,
 }
+
 export class AppConsts {
   static remoteServiceBaseUrl: string = "http://localhost:2159";
   static appBaseUrl: string = "app/home";
@@ -71,4 +72,13 @@ export class AppConsts {
     { dayName: "Friday", dayCode: WEEKDAYS.FRIDAY },
     { dayName: "Saturday", dayCode: WEEKDAYS.SATURDAY },
   ];
+
+  static readonly JobFormFieldTypes: { [key: string]: number } = {
+    checkbox: FieldTypes.CHECKBOX,
+    date: FieldTypes.DATEPICKER,
+    shortAnswer: FieldTypes.SHORTANSWER,
+    longAnswer: FieldTypes.LONGANSWER,
+    choose: FieldTypes.CHOOSEONE,
+    upload: FieldTypes.FILEUPLOAD,
+  };
 }
