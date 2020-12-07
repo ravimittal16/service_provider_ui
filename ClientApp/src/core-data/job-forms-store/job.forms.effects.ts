@@ -67,9 +67,8 @@ export class JobFormsEffects extends BaseEffect {
           withLatestFrom(this._store.select(fromAllSelectors.selectRouteFormId))
         )
       ),
-      mergeMap(([action, __details]) => {
-        console.log(action, __details);
-        return this.jobFormsService.getFormDetails(1).pipe(
+      mergeMap(([action, formId]) => {
+        return this.jobFormsService.getFormDetails(+formId).pipe(
           map((data) => {
             console.log(data);
             return fromAllActions.createJobFormCompletedAction({

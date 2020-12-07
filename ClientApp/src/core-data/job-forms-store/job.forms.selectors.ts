@@ -20,10 +20,12 @@ export const selectAllErrors = createSelector(
   (state) => state.errors
 );
 
+// ==========================================================
+// Selecting the route parameter
+// ==========================================================
 export const selectRouteFormId = createSelector(
   fromRouter.getRouterState,
   (routeState) => {
-    console.log(routeState);
     return routeState && routeState.state.queryParams["__formId"];
   }
 );

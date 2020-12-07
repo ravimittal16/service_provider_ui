@@ -71,7 +71,7 @@ export const reducers: ActionReducerMap<AppState> = {
   jobs: fromJobsReducers.reducer,
   jobForms: fromJobFromsReducers.reducer,
 };
-
+export const routerState = routerStateSelector.getRouterState;
 // ==========================================================
 // JOB FORMS SELECTORS
 // ==========================================================

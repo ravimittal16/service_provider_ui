@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
-import { StoreModule } from "@ngrx/store";
+import { ActionReducerMap, StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
@@ -20,8 +20,16 @@ import { JobFormsStoreModule } from "./job-forms-store/job.forms.feature.store.m
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
 import { CustomStateSerializer } from "./router.reducer";
 import { RouterModule } from "@angular/router";
-import { reducers } from "./core.data.reducers";
+import * as routerStateSelector from "./router.reducer";
+import { RouterReducerState, routerReducer } from "@ngrx/router-store";
 
+export interface RootState {
+  routerReducer: routerStateSelector.MergedRouteReducerState;
+}
+
+export const rootReducers: ActionReducerMap<RootState> = {
+  routerReducer: routerReducer,
+};
 @NgModule({
   imports: [
     ServiceProxyModule,
@@ -39,7 +47,7 @@ import { reducers } from "./core.data.reducers";
       stateKey: "routerReducer",
       serializer: CustomStateSerializer,
     }),
-    StoreModule.forRoot([]),
+    StoreModule.forRoot(rootReducers, { metaReducers: [] }),
     EffectsModule.forRoot([]),
     environment.production
       ? []
