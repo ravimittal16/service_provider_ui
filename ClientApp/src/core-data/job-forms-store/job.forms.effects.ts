@@ -5,8 +5,17 @@ import { Store } from "@ngrx/store";
 import { JobFormsServiceProxy } from "@shared/service-proxies/service-proxies";
 import { of } from "rxjs";
 
-import { catchError, map, mergeMap, switchMap } from "rxjs/operators";
+import {
+  catchError,
+  concatMap,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators";
 import * as fromAllActions from "./job.forms.actions";
+import * as fromAllSelectors from "./job.forms.selectors";
 import { JobFormsState } from "./job.forms.state";
 
 @Injectable()
@@ -50,6 +59,36 @@ export class JobFormsEffects extends BaseEffect {
     );
   });
 
+  fetchFormDetails$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.fetchFormDetailsAction),
+      concatMap((action) =>
+        of(action).pipe(
+          withLatestFrom(this._store.select(fromAllSelectors.selectRouteFormId))
+        )
+      ),
+      mergeMap(([action, __details]) => {
+        console.log(action, __details);
+        return this.jobFormsService.getFormDetails(1).pipe(
+          map((data) => {
+            console.log(data);
+            return fromAllActions.createJobFormCompletedAction({
+              response: data,
+              isSuccess: data.isSuccess,
+            });
+          }),
+          catchError((error) =>
+            of(
+              fromAllActions.updateErrorStateAction({
+                errors: [error],
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
   createJobForm$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.createJobFormAction),
@@ -64,7 +103,6 @@ export class JobFormsEffects extends BaseEffect {
           catchError((error) => {
             return this.parseErrorWithAction(error).pipe(
               switchMap((error) => {
-                console.log(error);
                 return of(
                   fromAllActions.updateErrorStateAction({
                     errors: [error],

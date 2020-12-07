@@ -1104,6 +1104,62 @@ export class JobFormsServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
+
+    /**
+     * @param formId (optional) 
+     * @return Success
+     */
+    getFormDetails(formId: number | undefined): Observable<JobFormModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/JobForms/GetFormDetails?";
+        if (formId === null)
+            throw new Error("The parameter 'formId' cannot be null.");
+        else if (formId !== undefined)
+            url_ += "formId=" + encodeURIComponent("" + formId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFormDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFormDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<JobFormModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobFormModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFormDetails(response: HttpResponseBase): Observable<JobFormModelGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobFormModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobFormModelGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -3438,6 +3494,7 @@ export enum EntityTypes {
     _13 = 13,
     _14 = 14,
     _15 = 15,
+    _16 = 16,
     __1 = -1,
 }
 
@@ -3722,6 +3779,7 @@ export class JobFormDefinationDto implements IJobFormDefinationDto {
     description: string | undefined;
     autoAddToNewJobs: boolean | undefined;
     entityStatus: EntityStatuses;
+    allowMultipleVersions: boolean;
 
     constructor(data?: IJobFormDefinationDto) {
         if (data) {
@@ -3739,6 +3797,7 @@ export class JobFormDefinationDto implements IJobFormDefinationDto {
             this.description = _data["description"];
             this.autoAddToNewJobs = _data["autoAddToNewJobs"];
             this.entityStatus = _data["entityStatus"];
+            this.allowMultipleVersions = _data["allowMultipleVersions"];
         }
     }
 
@@ -3756,6 +3815,7 @@ export class JobFormDefinationDto implements IJobFormDefinationDto {
         data["description"] = this.description;
         data["autoAddToNewJobs"] = this.autoAddToNewJobs;
         data["entityStatus"] = this.entityStatus;
+        data["allowMultipleVersions"] = this.allowMultipleVersions;
         return data; 
     }
 
@@ -3773,6 +3833,7 @@ export interface IJobFormDefinationDto {
     description: string | undefined;
     autoAddToNewJobs: boolean | undefined;
     entityStatus: EntityStatuses;
+    allowMultipleVersions: boolean;
 }
 
 export enum FieldTypes {

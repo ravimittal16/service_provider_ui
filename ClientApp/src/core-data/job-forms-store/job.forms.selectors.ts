@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { adapter, jobFormsFeatureKey } from "./job.forms.reducers";
 import { JobFormsState } from "./job.forms.state";
+import * as fromRouter from "../router.reducer";
 
 export const jobFormsState = createFeatureSelector<JobFormsState>(
   jobFormsFeatureKey
@@ -17,4 +18,12 @@ export const selectAllDefinations = createSelector(jobFormsState, selectAll);
 export const selectAllErrors = createSelector(
   jobFormsState,
   (state) => state.errors
+);
+
+export const selectRouteFormId = createSelector(
+  fromRouter.getRouterState,
+  (routeState) => {
+    console.log(routeState);
+    return routeState && routeState.state.queryParams["__formId"];
+  }
 );

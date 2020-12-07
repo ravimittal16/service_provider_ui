@@ -19,6 +19,8 @@ import { JobsStoreModule } from "./jobs-store/jobs.store.module";
 import { JobFormsStoreModule } from "./job-forms-store/job.forms.feature.store.module";
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
 import { CustomStateSerializer } from "./router.reducer";
+import { RouterModule } from "@angular/router";
+import { reducers } from "./core.data.reducers";
 
 @NgModule({
   imports: [
@@ -32,9 +34,13 @@ import { CustomStateSerializer } from "./router.reducer";
     JobsStoreModule,
     HttpClientModule,
     JobFormsStoreModule,
+    RouterModule,
+    StoreRouterConnectingModule.forRoot({
+      stateKey: "routerReducer",
+      serializer: CustomStateSerializer,
+    }),
     StoreModule.forRoot([]),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot({ serializer: CustomStateSerializer }),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 25 }),

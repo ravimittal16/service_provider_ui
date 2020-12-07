@@ -21,8 +21,12 @@ export interface MergedRoute {
 
 export type MergedRouteReducerState = RouterReducerState<MergedRoute>;
 
+export interface State {
+  router: RouterReducerState<MergedRoute>;
+}
+
 export const getRouterState = createFeatureSelector<MergedRouteReducerState>(
-  "router"
+  "routerReducer"
 );
 
 @Injectable()
