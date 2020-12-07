@@ -3,6 +3,7 @@ import { ActionReducerMap } from "@ngrx/store";
 // ==========================================================
 // ROUTER REDUCER
 import { RouterReducerState, routerReducer } from "@ngrx/router-store";
+import * as routerStateSelector from "./router.reducer";
 // ==========================================================
 
 import * as fromAccountRegister from "./register/register.reducers";
@@ -46,10 +47,9 @@ import * as fromJobsSelectors from "./jobs-store/jobs.selectors";
 import * as fromJobFormsState from "./job-forms-store/job.forms.state";
 import * as fromJobFromsReducers from "./job-forms-store/job.forms.reducers";
 import * as fromJobFormsSelectors from "./job-forms-store/job.forms.selectors";
-import { MergedRoute } from "./router.reducer";
 
 export interface AppState {
-  router: RouterReducerState<MergedRoute>;
+  router: routerStateSelector.MergedRouteReducerState;
   accountRegister: fromAccountRegister.AccountRegisterState;
   customers: customerStates.CustomerState;
   userAuth: loginStates.LoginState;
@@ -71,12 +71,14 @@ export const reducers: ActionReducerMap<AppState> = {
   jobs: fromJobsReducers.reducer,
   jobForms: fromJobFromsReducers.reducer,
 };
-
+export const routerState = routerStateSelector.getRouterState;
 // ==========================================================
 // JOB FORMS SELECTORS
 // ==========================================================
 
 export const selectAllDefinations = fromJobFormsSelectors.selectAllDefinations;
+export const selectAllErrors = fromJobFormsSelectors.selectAllErrors;
+export const selectRouteFormId = fromJobFormsSelectors.selectRouteFormId;
 
 // ==========================================================
 // JOBS SELECTORS

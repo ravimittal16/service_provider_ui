@@ -1,414 +1,418 @@
-<div class="card">
-  <div class="card-body">
-    <div class="row no-gutters">
-      <div class="col">
-        <h5 class="text-700">
-          <i class="fa fa-wpforms mr-1"></i>
-          <span class="mr-1" *ngIf="isForNewForm">New Job Form</span>
-          <span class="mr-1" *ngIf="!isForNewForm">Job Form</span>
-          <span *ngIf="!isForNewForm" class="text-400"
-            >| {{ currentEditedDefination?.formName }}
-            <i class="fa fa-pencil"></i
-          ></span>
-        </h5>
-      </div>
-      <div class="col-auto">
-        <button class="mr-2 btn btn-link btn-sm" (click)="backToJobForms()">
-          <span class="fa fa-long-arrow-left"></span> Back to Job Forms
-        </button>
+<ng-container>
+  <div class="card">
+    <div class="card-body">
+      <div class="row no-gutters">
+        <div class="col">
+          <h5 class="text-700">
+            <i class="fa fa-wpforms mr-1"></i>
+            <span class="mr-1" *ngIf="isForNewForm">New Job Form</span>
+            <span class="mr-1" *ngIf="!isForNewForm">Job Form</span>
+            <span *ngIf="!isForNewForm" class="text-400"
+              >| {{ currentEditedDefination?.formName }}
+              <i class="fa fa-pencil"></i
+            ></span>
+          </h5>
+        </div>
+        <div class="col-auto">
+          <button class="mr-2 btn btn-link btn-sm" (click)="backToJobForms()">
+            <span class="fa fa-long-arrow-left"></span> Back to Job Forms
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="card mt-2">
-  <div class="card-body">
-    <div class="row">
-      <div class="col">
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-sm btn-falcon-success">Check it out!!</button>
-        </div>
-      </div>
-    </div>
-    <div class="mt-2">
-      <app-error-view
-        [errors$]="errors$"
-        [observableDefined]="true"
-        [autoHide]="true"
-      ></app-error-view>
-    </div>
-    <form [formGroup]="jobFormGroup">
-      <div class="form-group flex-fill">
-        <label for=""
-          >Job Form Name*
-          <i
-            class="fa fa-info-circle text-500"
-            ngbTooltip="Job Form name will help you categrid [NEED TO CHANGE]"
-          ></i
-        ></label>
-        <input
-          type="text"
-          formControlName="formName"
-          class="form-control"
-          placeholder="Job form name e.g. Site Inspection Checklist"
-          aria-describedby="formName"
-          [ngClass]="{ 'is-invalid': validationMessages.formName }"
-          #formNameInput
-        />
-        <small id="emailHelp" class="form-text text-muted"
-          >Enter a unique job form name.</small
-        >
-        <div class="invalid-feedback" *ngIf="validationMessages.formName">
-          {{ validationMessages.formName }}
-        </div>
-      </div>
-      <ng-container formArrayName="sections">
-        <div *ngIf="getSectionsFormArray.controls.length > 0">
-          <div
-            cdkDrag
-            class="ml-4 mr-1 p-3 mt-2 border rounded hover-shadow"
-            *ngFor="let _ of getSectionsFormArray.controls; index as i"
-            [formGroupName]="i"
-          >
-            <div class="row">
-              <div class="col">
-                <div class="form-group flex-fill">
-                  <label class="sr-only" for="">Section Name*</label>
-                  <input
-                    type="text"
-                    formControlName="sectionName"
-                    class="form-control form-control-sm"
-                    placeholder="Section name.."
-                    aria-describedby="sectionName"
-                    [ngClass]="{
-                      'is-invalid':
-                        sectionValidationErrors[i] &&
-                        sectionValidationErrors[i].sectionName
-                    }"
-                  />
-                  <small id="emailHelp" class="form-text text-muted"
-                    >Enter a unique section name.</small
-                  >
-                  <div
-                    class="invalid-feedback"
-                    *ngIf="
-                      sectionValidationErrors[i] &&
-                      sectionValidationErrors[i].sectionName
-                    "
-                  >
-                    {{
-                      sectionValidationErrors[i] &&
-                        sectionValidationErrors[i].sectionName
-                    }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-auto">
-                <div>
-                  <button
-                    class="btn btn-xs btn-falcon-danger btn-block"
-                    type="button"
-                    (click)="deleteSection(i)"
-                  >
-                    Delete Section
-                  </button>
-                </div>
-              </div>
-            </div>
-            <ng-container formArrayName="fields">
-              <div *ngIf="getFieldsFormArray(i).controls.length > 0">
-                <div
-                  cdkDrag
-                  class="ml-5 mr-1 p-2 pl-3 pr-3 mt-2 border rounded hover-shadow"
-                  *ngFor="let _ of getFieldsFormArray(i).controls; index as p"
-                  [formGroupName]="p"
-                >
-                  <div class="row" [ngSwitch]="getFieldType(i, p)">
-                    <!-- CHECKBOX -->
-                    <ng-container *ngSwitchCase="'checkbox'">
-                      <div class="col-auto d-flex align-items-center">
-                        <i class="fa fa-check-square"></i>
-                      </div>
-                      <div class="col-9 pl-0">
-                        <input
-                          type="text"
-                          formControlName="fieldQuestion"
-                          class="form-control form-control-sm"
-                          placeholder="checkbox question here..."
-                          aria-describedby="question-checkbox"
-                        />
-                      </div>
-                    </ng-container>
-                    <!-- DATE -->
-                    <ng-container *ngSwitchCase="'date'">
-                      <div class="col-auto d-flex align-items-center">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                      <div class="col-9 pl-0">
-                        <input
-                          type="text"
-                          formControlName="fieldQuestion"
-                          class="form-control form-control-sm"
-                          placeholder="date-picker question here..."
-                          aria-describedby="question-datePicker"
-                        />
-                      </div>
-                    </ng-container>
-                    <!-- SHORT ANSWER -->
-                    <ng-container *ngSwitchCase="'shortAnswer'">
-                      <div class="col-auto d-flex align-items-center mn-w-46">
-                        <i class="fa fa-question"></i>
-                      </div>
-                      <div class="col-9 pl-0">
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            formControlName="fieldQuestion"
-                            class="form-control form-control-sm"
-                            placeholder="short answer question here..."
-                            aria-describedby="question"
-                          />
-                        </div>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            tabindex="-1"
-                            class="form-control form-control-sm"
-                            readonly
-                            aria-describedby="question"
-                          />
-                        </div>
-                      </div>
-                    </ng-container>
-                    <!-- LONG ANSWER -->
-                    <ng-container *ngSwitchCase="'longAnswer'">
-                      <div class="col-auto d-flex align-items-center mn-w-46">
-                        <i class="fa fa-question"></i>
-                      </div>
-                      <div class="col-9 pl-0">
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            formControlName="fieldQuestion"
-                            class="form-control form-control-sm"
-                            placeholder="short answer question here..."
-                            aria-describedby="question"
-                          />
-                        </div>
-                        <div class="form-group">
-                          <textarea
-                            type="text"
-                            rows="3"
-                            tabindex="-1"
-                            placeholder="long answer question here..."
-                            class="form-control form-control-sm"
-                            readonly
-                            aria-describedby="answer"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </ng-container>
-                    <!-- CHOSSE ONE -->
-                    <ng-container *ngSwitchCase="'choose'">
-                      <div class="col-auto d-flex align-items-center">
-                        <i class="fa fa-list-alt"></i>
-                      </div>
-                      <div class="col-9 pl-0">
-                        <div class="form-group">
-                          <app-custom-items-input
-                            formControlName="valueSource"
-                          ></app-custom-items-input>
-                          <small id="emailHelp" class="form-text text-muted"
-                            >Press <strong>enter</strong> to add item. You can
-                            add upto <strong>10</strong> items.</small
-                          >
-                        </div>
-                      </div>
-                    </ng-container>
-                    <!-- FILE UPLOAD -->
-                    <ng-container *ngSwitchCase="'upload'">
-                      <div class="col-auto d-flex align-items-center">
-                        <i class="fa fa-upload"></i>
-                      </div>
-                      <div class="col-9 pl-0">
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            formControlName="fieldQuestion"
-                            class="form-control form-control-sm"
-                            placeholder="file upload question here..."
-                            aria-describedby="question"
-                          />
-                        </div>
-                      </div>
-                    </ng-container>
-                    <div class="col-2">
-                      <div class="d-flex justify-content-start">
-                        <ul
-                          class="list-inline mb-0 d-flex aligh-items-center"
-                          style="padding-top: 2px"
-                        >
-                          <li class="list-inline-item">
-                            <span>
-                              <i class="fa fa-arrows text-400 mr-2"></i>
-                            </span>
-                          </li>
-                          <li class="list-inline-item">
-                            <div
-                              class="custom-control custom-switch"
-                              container="body"
-                              ngbTooltip="Check if the field is required to be filled in. [NEED TO CHANGE]"
-                            >
-                              <input
-                                tabindex="-1"
-                                class="custom-control-input"
-                                id="jobFormsFeatureToggle{{ p }}{{ i }}"
-                                formControlName="isRequired"
-                                type="checkbox"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for="jobFormsFeatureToggle{{ p }}{{ i }}"
-                                >&nbsp;</label
-                              >
-                            </div>
-                          </li>
-
-                          <li class="list-inline-item">
-                            <button
-                              triggers="manual"
-                              tabindex="-1"
-                              class="btn btn-xs btn-falcon-danger"
-                              (click)="deleteFieldClicked(p, i)"
-                            >
-                              <i class="fa fa-trash"></i>
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-            <div class="row mt-2">
-              <div class="col ml-1">
-                <ul class="list-inline">
-                  <li class="list-inline-item">
-                    <h6><span>Add Field:</span></h6>
-                  </li>
-                  <li class="list-inline-item">
-                    <a tabindex="-1" (click)="addNewField('checkbox', i)"
-                      >Checkbox</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a tabindex="-1" (click)="addNewField('date', i)"
-                      >Date Picker</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a tabindex="-1" (click)="addNewField('shortAnswer', i)"
-                      >Short Answer</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a tabindex="-1" (click)="addNewField('longAnswer', i)"
-                      >Long Answer</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a tabindex="-1" (click)="addNewField('choose', i)"
-                      >Choose One</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a tabindex="-1" (click)="addNewField('upload', i)"
-                      >File Upload</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-      <div class="row mt-2">
+  <div class="card mt-2">
+    <div class="card-body">
+      <div class="row">
         <div class="col">
-          <div class="d-flex justify-content-start">
-            <button
-              class="btn btn-falcon-primary btn-xs mr-1 mb-1"
-              [disabled]="
-                (isBusy$ | async) ||
-                getSectionsFormArray.controls.length >= MAX_SECTION_ALLOWED
-              "
-              (click)="addNewFormSectionClicked()"
-              type="button"
-            >
-              <i class="fa fa-plus"></i> Add new section
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-falcon-success">
+              Check it out!!
             </button>
           </div>
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-auto ml-1">
-          <div class="custom-control custom-switch">
-            <input
-              class="custom-control-input"
-              id="jobFormsFeatureToggle"
-              formControlName="autoAddToNewJobs"
-              type="checkbox"
-            />
-            <label
-              class="custom-control-label"
-              for="jobFormsFeatureToggle"
-              placement="bottom"
-              ngbTooltip="Job form will be attach to every new job created. [NEED TO CHANGE]"
-              >Automatically attach to new jobs</label
-            >
-          </div>
-        </div>
-        <div class="col-auto ml-1">
-          <div class="custom-control custom-switch">
-            <input
-              class="custom-control-input"
-              id="jobFormsVersionToggle"
-              formControlName="allowMultipleVersions"
-              type="checkbox"
-            />
-            <label
-              class="custom-control-label"
-              for="jobFormsVersionToggle"
-              placement="bottom"
-              ngbTooltip="This will allow user to create multiple versions of same job form on each job. [NEED TO CHANGE]"
-              >Allow multiple versions</label
-            >
-          </div>
-        </div>
+      <div class="mt-2">
+        <app-error-view
+          [errors$]="errors$"
+          [observableDefined]="true"
+          [autoHide]="true"
+        ></app-error-view>
       </div>
-    </form>
-  </div>
-  <div class="card-footer">
-    <div class="row">
-      <div class="col">
-        <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            class="btn btn-sm btn-default"
-            [disabled]="isBusy$ | async"
-            (click)="onCancelButtonClicked()"
+      <form [formGroup]="jobFormGroup">
+        <div class="form-group flex-fill">
+          <label for=""
+            >Job Form Name*
+            <i
+              class="fa fa-info-circle text-500"
+              ngbTooltip="Job Form name will help you categrid [NEED TO CHANGE]"
+            ></i
+          ></label>
+          <input
+            type="text"
+            formControlName="formName"
+            class="form-control"
+            placeholder="Job form name e.g. Site Inspection Checklist"
+            aria-describedby="formName"
+            [ngClass]="{ 'is-invalid': validationMessages.formName }"
+            #formNameInput
+          />
+          <small id="emailHelp" class="form-text text-muted"
+            >Enter a unique job form name.</small
           >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="btn btn-sm btn-primary"
-            [disabled]="isBusy$ | async"
-            (click)="onSaveButtonClicked()"
-          >
-            Save
-          </button>
+          <div class="invalid-feedback" *ngIf="validationMessages.formName">
+            {{ validationMessages.formName }}
+          </div>
+        </div>
+        <ng-container formArrayName="sections">
+          <div *ngIf="getSectionsFormArray.controls.length > 0">
+            <div
+              cdkDrag
+              class="ml-4 mr-1 p-3 mt-2 border rounded hover-shadow"
+              *ngFor="let _ of getSectionsFormArray.controls; index as i"
+              [formGroupName]="i"
+            >
+              <div class="row">
+                <div class="col">
+                  <div class="form-group flex-fill">
+                    <label class="sr-only" for="">Section Name*</label>
+                    <input
+                      type="text"
+                      formControlName="sectionName"
+                      class="form-control form-control-sm"
+                      placeholder="Section name.."
+                      aria-describedby="sectionName"
+                      [ngClass]="{
+                        'is-invalid':
+                          sectionValidationErrors[i] &&
+                          sectionValidationErrors[i].sectionName
+                      }"
+                    />
+                    <small id="emailHelp" class="form-text text-muted"
+                      >Enter a unique section name.</small
+                    >
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="
+                        sectionValidationErrors[i] &&
+                        sectionValidationErrors[i].sectionName
+                      "
+                    >
+                      {{
+                        sectionValidationErrors[i] &&
+                          sectionValidationErrors[i].sectionName
+                      }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div>
+                    <button
+                      class="btn btn-xs btn-falcon-danger btn-block"
+                      type="button"
+                      (click)="deleteSection(i)"
+                    >
+                      Delete Section
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <ng-container formArrayName="fields">
+                <div *ngIf="getFieldsFormArray(i).controls.length > 0">
+                  <div
+                    cdkDrag
+                    class="ml-5 mr-1 p-2 pl-3 pr-3 mt-2 border rounded hover-shadow"
+                    *ngFor="let _ of getFieldsFormArray(i).controls; index as p"
+                    [formGroupName]="p"
+                  >
+                    <div class="row" [ngSwitch]="getFieldType(i, p)">
+                      <!-- CHECKBOX -->
+                      <ng-container *ngSwitchCase="'checkbox'">
+                        <div class="col-auto d-flex align-items-center">
+                          <i class="fa fa-check-square"></i>
+                        </div>
+                        <div class="col-9 pl-0">
+                          <input
+                            type="text"
+                            formControlName="fieldQuestion"
+                            class="form-control form-control-sm"
+                            placeholder="checkbox question here..."
+                            aria-describedby="question-checkbox"
+                          />
+                        </div>
+                      </ng-container>
+                      <!-- DATE -->
+                      <ng-container *ngSwitchCase="'date'">
+                        <div class="col-auto d-flex align-items-center">
+                          <i class="fa fa-calendar"></i>
+                        </div>
+                        <div class="col-9 pl-0">
+                          <input
+                            type="text"
+                            formControlName="fieldQuestion"
+                            class="form-control form-control-sm"
+                            placeholder="date-picker question here..."
+                            aria-describedby="question-datePicker"
+                          />
+                        </div>
+                      </ng-container>
+                      <!-- SHORT ANSWER -->
+                      <ng-container *ngSwitchCase="'shortAnswer'">
+                        <div class="col-auto d-flex align-items-center mn-w-46">
+                          <i class="fa fa-question"></i>
+                        </div>
+                        <div class="col-9 pl-0">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              formControlName="fieldQuestion"
+                              class="form-control form-control-sm"
+                              placeholder="short answer question here..."
+                              aria-describedby="question"
+                            />
+                          </div>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              tabindex="-1"
+                              class="form-control form-control-sm"
+                              readonly
+                              aria-describedby="question"
+                            />
+                          </div>
+                        </div>
+                      </ng-container>
+                      <!-- LONG ANSWER -->
+                      <ng-container *ngSwitchCase="'longAnswer'">
+                        <div class="col-auto d-flex align-items-center mn-w-46">
+                          <i class="fa fa-question"></i>
+                        </div>
+                        <div class="col-9 pl-0">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              formControlName="fieldQuestion"
+                              class="form-control form-control-sm"
+                              placeholder="long answer question here..."
+                              aria-describedby="question"
+                            />
+                          </div>
+                          <div class="form-group">
+                            <textarea
+                              type="text"
+                              rows="3"
+                              tabindex="-1"
+                              placeholder="long answer question here..."
+                              class="form-control form-control-sm"
+                              readonly
+                              aria-describedby="answer"
+                            ></textarea>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <!-- CHOSSE ONE -->
+                      <ng-container *ngSwitchCase="'choose'">
+                        <div class="col-auto d-flex align-items-center">
+                          <i class="fa fa-list-alt"></i>
+                        </div>
+                        <div class="col-9 pl-0">
+                          <div class="form-group">
+                            <app-custom-items-input
+                              formControlName="valueSource"
+                            ></app-custom-items-input>
+                            <small id="emailHelp" class="form-text text-muted"
+                              >Press <strong>enter</strong> to add item. You can
+                              add upto <strong>10</strong> items.</small
+                            >
+                          </div>
+                        </div>
+                      </ng-container>
+                      <!-- FILE UPLOAD -->
+                      <ng-container *ngSwitchCase="'upload'">
+                        <div class="col-auto d-flex align-items-center">
+                          <i class="fa fa-upload"></i>
+                        </div>
+                        <div class="col-9 pl-0">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              formControlName="fieldQuestion"
+                              class="form-control form-control-sm"
+                              placeholder="file upload question here..."
+                              aria-describedby="question"
+                            />
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="col-2">
+                        <div class="d-flex justify-content-start">
+                          <ul
+                            class="list-inline mb-0 d-flex aligh-items-center"
+                            style="padding-top: 2px"
+                          >
+                            <li class="list-inline-item">
+                              <span>
+                                <i class="fa fa-arrows text-400 mr-2"></i>
+                              </span>
+                            </li>
+                            <li class="list-inline-item">
+                              <div
+                                class="custom-control custom-switch"
+                                container="body"
+                                ngbTooltip="Check if the field is required to be filled in. [NEED TO CHANGE]"
+                              >
+                                <input
+                                  tabindex="-1"
+                                  class="custom-control-input"
+                                  id="jobFormsFeatureToggle{{ p }}{{ i }}"
+                                  formControlName="isRequired"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="custom-control-label"
+                                  for="jobFormsFeatureToggle{{ p }}{{ i }}"
+                                  >&nbsp;</label
+                                >
+                              </div>
+                            </li>
+
+                            <li class="list-inline-item">
+                              <button
+                                triggers="manual"
+                                tabindex="-1"
+                                class="btn btn-xs btn-falcon-danger"
+                                (click)="deleteFieldClicked(p, i)"
+                              >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row mt-2">
+                <div class="col ml-1">
+                  <ul class="list-inline">
+                    <li class="list-inline-item">
+                      <h6><span>Add Field:</span></h6>
+                    </li>
+                    <li class="list-inline-item">
+                      <a tabindex="-1" (click)="addNewField('checkbox', i)"
+                        >Checkbox</a
+                      >
+                    </li>
+                    <li class="list-inline-item">
+                      <a tabindex="-1" (click)="addNewField('date', i)"
+                        >Date Picker</a
+                      >
+                    </li>
+                    <li class="list-inline-item">
+                      <a tabindex="-1" (click)="addNewField('shortAnswer', i)"
+                        >Short Answer</a
+                      >
+                    </li>
+                    <li class="list-inline-item">
+                      <a tabindex="-1" (click)="addNewField('longAnswer', i)"
+                        >Long Answer</a
+                      >
+                    </li>
+                    <li class="list-inline-item">
+                      <a tabindex="-1" (click)="addNewField('choose', i)"
+                        >Choose One</a
+                      >
+                    </li>
+                    <li class="list-inline-item">
+                      <a tabindex="-1" (click)="addNewField('upload', i)"
+                        >File Upload</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="row mt-2">
+          <div class="col">
+            <div class="d-flex justify-content-start">
+              <button
+                class="btn btn-falcon-primary btn-xs mr-1 mb-1"
+                [disabled]="
+                  (isBusy$ | async) ||
+                  getSectionsFormArray.controls.length >= MAX_SECTION_ALLOWED
+                "
+                (click)="addNewFormSectionClicked()"
+                type="button"
+              >
+                <i class="fa fa-plus"></i> Add new section
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-auto ml-1">
+            <div class="custom-control custom-switch">
+              <input
+                class="custom-control-input"
+                id="jobFormsFeatureToggle"
+                formControlName="autoAddToNewJobs"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="jobFormsFeatureToggle"
+                placement="bottom"
+                ngbTooltip="Job form will be attach to every new job created. [NEED TO CHANGE]"
+                >Automatically attach to new jobs</label
+              >
+            </div>
+          </div>
+          <div class="col-auto ml-1">
+            <div class="custom-control custom-switch">
+              <input
+                class="custom-control-input"
+                id="jobFormsVersionToggle"
+                formControlName="allowMultipleVersions"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="jobFormsVersionToggle"
+                placement="bottom"
+                ngbTooltip="This will allow user to create multiple versions of same job form on each job. [NEED TO CHANGE]"
+                >Allow multiple versions</label
+              >
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col">
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-sm btn-default"
+              [disabled]="isBusy$ | async"
+              (click)="onCancelButtonClicked()"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-primary"
+              [disabled]="isBusy$ | async"
+              (click)="onSaveButtonClicked()"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>

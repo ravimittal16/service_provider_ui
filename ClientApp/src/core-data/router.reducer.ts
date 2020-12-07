@@ -10,25 +10,34 @@ import {
   RouterStateSnapshot,
 } from "@angular/router";
 import { Injectable } from "@angular/core";
-import { createFeatureSelector } from "@ngrx/store";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
 
-export interface MergedRoute {
+export interface RouterStateUrl {
   url: string;
   queryParams: Params;
   params: Params;
   data?: Data;
 }
 
-export type MergedRouteReducerState = RouterReducerState<MergedRoute>;
+export type MergedRouteReducerState = RouterReducerState<RouterStateUrl>;
+
+export interface State {
+  router: RouterReducerState<RouterStateUrl>;
+}
 
 export const getRouterState = createFeatureSelector<MergedRouteReducerState>(
-  "router"
+  "routerReducer"
 );
+
+// export const getRouterState = createSelector(
+//   (state: State) => state.router,
+//   (value) => value
+// );
 
 @Injectable()
 export class CustomStateSerializer
-  implements RouterStateSerializer<MergedRoute> {
-  serialize(routerState: RouterStateSnapshot): MergedRoute {
+  implements RouterStateSerializer<RouterStateUrl> {
+  serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     const {
       url,
       root: { queryParams },

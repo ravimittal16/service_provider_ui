@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
-import { StoreModule } from "@ngrx/store";
+import { ActionReducerMap, StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { ServiceProxyModule } from "@shared/service-proxies/service-proxy.module";
@@ -19,7 +19,17 @@ import { JobsStoreModule } from "./jobs-store/jobs.store.module";
 import { JobFormsStoreModule } from "./job-forms-store/job.forms.feature.store.module";
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
 import { CustomStateSerializer } from "./router.reducer";
+import { RouterModule } from "@angular/router";
+import * as routerStateSelector from "./router.reducer";
+import { RouterReducerState, routerReducer } from "@ngrx/router-store";
 
+export interface RootState {
+  routerReducer: routerStateSelector.MergedRouteReducerState;
+}
+
+export const rootReducers: ActionReducerMap<RootState> = {
+  routerReducer: routerReducer,
+};
 @NgModule({
   imports: [
     ServiceProxyModule,
@@ -32,9 +42,13 @@ import { CustomStateSerializer } from "./router.reducer";
     JobsStoreModule,
     HttpClientModule,
     JobFormsStoreModule,
-    StoreModule.forRoot([]),
+    RouterModule,
+    StoreRouterConnectingModule.forRoot({
+      stateKey: "routerReducer",
+      serializer: CustomStateSerializer,
+    }),
+    StoreModule.forRoot(rootReducers, { metaReducers: [] }),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot({ serializer: CustomStateSerializer }),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 25 }),

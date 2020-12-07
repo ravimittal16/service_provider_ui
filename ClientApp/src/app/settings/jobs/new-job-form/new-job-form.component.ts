@@ -193,18 +193,8 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.__initForm();
-    this.__formId = this.route.snapshot.queryParamMap.get("__formId");
-    this.isForNewForm = this.__formId === null;
-    this._subs.add(
-      this._jobFormsFacade.formDefinations$.subscribe((definations) => {
-        this.__definations = definations;
-        if (this.__formId) {
-          this.currentEditedDefination = this.__definations.find(
-            (x) => x.formId === +this.__formId
-          );
-        }
-      })
-    );
+    this._jobFormsFacade.fetchJobFormDetails();
+    this.isForNewForm = false;
     this._subs.add(
       this._jobFormsFacade.errors$.subscribe((errors) => {
         this.__errorHandler.notifyError(errors);
