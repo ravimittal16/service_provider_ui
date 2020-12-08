@@ -20,9 +20,11 @@ import {
 import {
   JobFormDefinationDto,
   JobFormModel,
+  Section,
 } from "@shared/service-proxies/service-proxies";
+
 import { Observable } from "rxjs";
-import { withLatestFrom } from "rxjs/operators";
+import { takeLast, withLatestFrom, take, first } from "rxjs/operators";
 import { SubSink } from "subsink";
 
 @Component({
@@ -62,6 +64,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private __initForm() {
     this.jobFormGroup = this._fb.group({
+      formId: [0],
       formName: ["", [Validators.required, Validators.maxLength(200)]],
       autoAddToNewJobs: [false],
       sections: this._fb.array([]),
@@ -124,7 +127,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
         fieldAnswer: [""],
         isRequired: [false],
         displayOrder: [0],
-        defaultValues: [__defaultValues],
+        defaultValue: [__defaultValues],
         valueSource: [__defaultValues],
       });
       this.fieldIndexes.push({
@@ -172,14 +175,23 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
   onCancelButtonClicked(): void {}
 
   addNewFormSectionClicked(): void {
+    this.__addNewSectionFormGroup(null);
+  }
+
+  private __addNewSectionFormGroup(section?: Section): FormGroup {
+    const __isSectionDefined = section !== null && section !== undefined;
     if (this.getSectionsFormArray.controls.length <= this.MAX_SECTION_ALLOWED) {
       const _newSection = this._fb.group({
-        formSectionId: [0],
-        displayOrder: [0],
-        sectionName: ["", [Validators.required, Validators.maxLength(200)]],
+        formSectionId: [__isSectionDefined ? section.formSectionId : 0],
+        displayOrder: [__isSectionDefined ? section.displayOrder : 0],
+        sectionName: [
+          __isSectionDefined ? section.sectionName : "",
+          [Validators.required, Validators.maxLength(200)],
+        ],
         fields: this._fb.array([]),
       });
       this.getSectionsFormArray.push(_newSection);
+      return _newSection;
     }
   }
 
@@ -197,17 +209,49 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private __patchValues(form: FormGroup, valObj: any): void {
+    const __keys = Object.keys(valObj);
+    for (let i = 0; i < __keys.length; i++) {
+      const __value = valObj[__keys[i]];
+      if (typeof __value !== "object") {
+        this.jobFormGroup.get(__keys[i]).patchValue(__value);
+      }
+    }
+  }
+
+  private __bindJobFormData() {
+    if (this.currentEditedDefination) {
+      const _d: JobFormModel = this.currentEditedDefination;
+      this.__patchValues(this.jobFormGroup, _d);
+
+      if (_d.sections) {
+        for (let i = 0; i < _d.sections.length; i++) {
+          const _section = _d.sections[i];
+          this.__addNewSectionFormGroup(_section);
+          for (let f = 0; f < _section.fields.length; f++) {
+            const field = _section.fields[f];
+          }
+        }
+      }
+      this._cdr.detectChanges();
+    }
+  }
+
   ngOnInit(): void {
     this.__initForm();
-    this._jobFormsFacade.fetchJobFormDetails();
     this._subs.add(
       this._jobFormsFacade.formDetails$.subscribe((details) => {
+        console.log(details);
         this.isForNewForm = details === null;
-        this.currentEditedDefination = details;
+        if (details !== null) {
+          this.currentEditedDefination = details;
+          this.__bindJobFormData();
+        }
       }),
       this._jobFormsFacade.errors$.subscribe((errors) => {
         this.__errorHandler.notifyError(errors);
       })
     );
+    this._jobFormsFacade.fetchJobFormDetails(0);
   }
 }

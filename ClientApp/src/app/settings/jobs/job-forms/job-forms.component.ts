@@ -84,6 +84,7 @@ export class JobFormsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._jobFormsFacade.clearJobFormDetail();
     this._subs.add(
       this._companyFacade.features$.subscribe((features) => {
         if (features) {
