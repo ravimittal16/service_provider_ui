@@ -24,6 +24,7 @@ export const initialState: JobFormsState = adapter.getInitialState({
   errors: [],
   success: false,
   items: [],
+  selectedDetails: null,
 });
 
 const createFeatureReducer = createReducer(
@@ -36,6 +37,19 @@ const createFeatureReducer = createReducer(
     ...state,
     isBusy: false,
     errors: props.errors,
+  })),
+  on(fromAllActions.clearFormDetailsAction, (state, props) => ({
+    ...state,
+    isBusy: false,
+    errors: [],
+    selectedDetails: null,
+  })),
+  on(fromAllActions.formDetailsFetchedAction, (state, props) => ({
+    ...state,
+    isBusy: false,
+    errors: [],
+    success: props.isSuccess,
+    selectedDetails: props.details,
   })),
   on(
     fromAllActions.onDeleteJobFormDefinationCompletedAction,
