@@ -10,6 +10,8 @@ import {
 import { JobFormsState } from "./job.forms.state";
 import * as fromAllActions from "./job.forms.actions";
 import * as fromAllSelectors from "./job.forms.selectors";
+import { first, take, takeLast } from "rxjs/operators";
+
 @Injectable({
   providedIn: "root",
 })
@@ -29,9 +31,13 @@ export class JobFormsFacade implements Facade {
     );
   }
 
-  fetchJobFormDetails() {
+  clearJobFormDetail() {
+    this.dispatch(fromAllActions.clearFormDetailsAction());
+  }
+
+  fetchJobFormDetails(formId: number) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
-    this.dispatch(fromAllActions.fetchFormDetailsAction({ formId: 0 }));
+    this.dispatch(fromAllActions.fetchFormDetailsAction({ formId: formId }));
   }
 
   deleteJobFormDefination(jobFormId: number) {

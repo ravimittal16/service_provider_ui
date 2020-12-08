@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BaseEffect } from "@core-data/base.effect";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { JobFormsServiceProxy } from "@shared/service-proxies/service-proxies";
 import { Observable, of } from "rxjs";
 
@@ -58,25 +58,25 @@ export class JobFormsEffects extends BaseEffect {
       )
     );
   });
-
+  //TODO: NEED TO CHECK THE MULTIPLE LOADING ISSUE
   fetchFormDetails$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.fetchFormDetailsAction),
-      concatMap((action) =>
-        of(action).pipe(
+      concatMap((action) => {
+        return of(action).pipe(
           withLatestFrom(this._store.select(fromAllSelectors.selectRouteFormId))
-        )
-      ),
+        );
+      }),
       mergeMap(([action, formId]) => {
         return !formId
           ? of(fromAllActions.clearFormDetailsAction())
           : this.jobFormsService.getFormDetails(+formId).pipe(
-              map((data) =>
-                fromAllActions.formDetailsFetchedAction({
+              map((data) => {
+                return fromAllActions.formDetailsFetchedAction({
                   details: data.entity,
                   isSuccess: data.isSuccess,
-                })
-              ),
+                });
+              }),
               catchError((error) =>
                 of(
                   fromAllActions.updateErrorStateAction({
