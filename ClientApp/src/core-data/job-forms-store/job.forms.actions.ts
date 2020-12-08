@@ -48,3 +48,10 @@ export const fetchFormDetailsAction = createAction(
   "[JobForms] Fetch Job Form details action.",
   props<{ formId: number }>()
 );
+export const formDetailsFetchedAction = createAction(
+  "[JobForms] Form details fetch completed action.",
+  props<{ details: JobFormModel; isSuccess: boolean }>()
+);
+export const clearFormDetailsAction = createAction(
+  "[JobForms] Clear Job Form details action."
+);

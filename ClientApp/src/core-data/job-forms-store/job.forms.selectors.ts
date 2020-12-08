@@ -19,6 +19,10 @@ export const selectAllErrors = createSelector(
   jobFormsState,
   (state) => state.errors
 );
+export const selectEditedJobFormDetails = createSelector(
+  jobFormsState,
+  (state) => state.selectedDetails
+);
 
 // ==========================================================
 // Selecting the route parameter

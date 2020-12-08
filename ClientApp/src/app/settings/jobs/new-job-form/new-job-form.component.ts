@@ -6,9 +6,10 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
+  OnDestroy,
 } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
 import { AppConsts } from "@shared/AppConsts";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
@@ -21,6 +22,7 @@ import {
   JobFormModel,
 } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { withLatestFrom } from "rxjs/operators";
 import { SubSink } from "subsink";
 
 @Component({
@@ -29,27 +31,27 @@ import { SubSink } from "subsink";
   styleUrls: ["./new-job-form.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewJobFormComponent implements OnInit, AfterViewInit {
+export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("formNameInput", { static: true }) formNameInput: ElementRef;
   private __formId: string;
   private _subs = new SubSink();
-  private __definations: JobFormDefinationDto[];
+
   private __errorHandler = new ErrorRenderer();
   private __validator = new GenericValidator();
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
+
   validationMessages: { [key: string]: string } = {};
   sectionValidationErrors: {
     [index: number]: { [key: string]: string };
   } = [];
-  currentEditedDefination: JobFormDefinationDto;
+  currentEditedDefination: JobFormModel;
   readonly MAX_SECTION_ALLOWED = 5;
   isForNewForm = false;
   jobFormGroup: FormGroup;
   fieldIndexes: any = [];
   constructor(
     private _router: Router,
-    private route: ActivatedRoute,
     private _jobFormsFacade: JobFormsFacade,
     private _fb: FormBuilder,
     private _cdr: ChangeDetectorRef
@@ -185,6 +187,10 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
     return this.jobFormGroup.get("sections") as FormArray;
   }
 
+  ngOnDestroy(): void {
+    this._subs.unsubscribe();
+  }
+
   ngAfterViewInit(): void {
     if (this.formNameInput) {
       this.formNameInput.nativeElement.focus();
@@ -194,8 +200,11 @@ export class NewJobFormComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.__initForm();
     this._jobFormsFacade.fetchJobFormDetails();
-    this.isForNewForm = false;
     this._subs.add(
+      this._jobFormsFacade.formDetails$.subscribe((details) => {
+        this.isForNewForm = details === null;
+        this.currentEditedDefination = details;
+      }),
       this._jobFormsFacade.errors$.subscribe((errors) => {
         this.__errorHandler.notifyError(errors);
       })

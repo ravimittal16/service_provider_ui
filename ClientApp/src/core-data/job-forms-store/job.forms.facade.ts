@@ -4,7 +4,6 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import {
-  CompanyServiceProxy,
   JobFormDefinationDto,
   JobFormModel,
 } from "@shared/service-proxies/service-proxies";
@@ -18,15 +17,16 @@ export class JobFormsFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   formDefinations$: Observable<JobFormDefinationDto[]>;
-  constructor(
-    private _store: Store<JobFormsState>,
-    private companyService: CompanyServiceProxy
-  ) {
+  formDetails$: Observable<JobFormModel>;
+  constructor(private _store: Store<JobFormsState>) {
     this.formDefinations$ = _store.pipe(
       select(fromAllSelectors.selectAllDefinations)
     );
 
     this.errors$ = _store.pipe(select(fromAllSelectors.selectAllErrors));
+    this.formDetails$ = _store.pipe(
+      select(fromAllSelectors.selectEditedJobFormDetails)
+    );
   }
 
   fetchJobFormDetails() {
