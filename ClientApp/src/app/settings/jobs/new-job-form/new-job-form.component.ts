@@ -11,13 +11,14 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
-import { AppConsts } from "@shared/AppConsts";
+import { AppConsts, FieldTypes } from "@shared/AppConsts";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import {
   GenericValidator,
   ValidationTypes,
 } from "@shared/helpers/GenericValidator";
 import {
+  Field,
   JobFormDefinationDto,
   JobFormModel,
   Section,
@@ -109,7 +110,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     return __fieldConfig.value;
   }
 
-  addNewField(fieldType: string = "", sectionIndex: number) {
+  addNewField(fieldType: string = "", sectionIndex: number, field?: Field) {
     const __sectionFormGroup = this.getSectionsFormArray.controls[
       sectionIndex
     ] as FormGroup;
@@ -120,14 +121,17 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
       const __defaultValues =
         fieldType === "choose" ? "Option 1,Option 2" : null;
       const __fieldGroup = this._fb.group({
-        fieldId: [0],
+        fieldId: [field?.fieldId || 0],
         fieldType: [__fieldTypeNum],
         fieldTypeName: [fieldType],
-        fieldQuestion: ["", [Validators.maxLength(200)]],
+        fieldQuestion: [
+          field?.fieldQuestion || "",
+          [Validators.maxLength(200)],
+        ],
         fieldAnswer: [""],
-        isRequired: [false],
-        displayOrder: [0],
-        defaultValue: [__defaultValues],
+        isRequired: [field?.isRequired || false],
+        displayOrder: [field?.displayOrder || 0],
+        defaultValue: [""],
         valueSource: [__defaultValues],
       });
       this.fieldIndexes.push({
@@ -219,17 +223,35 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  getFieldTypeName(keyValue: number) {
+    switch (keyValue) {
+      case FieldTypes.CHECKBOX:
+        return "checkbox";
+      case FieldTypes.CHOOSEONE:
+        return "date";
+      case FieldTypes.DATEPICKER:
+        return "shortAnswer";
+      case FieldTypes.FILEUPLOAD:
+        return "longAnswer";
+      case FieldTypes.LONGANSWER:
+        return "choose";
+      case FieldTypes.SHORTANSWER:
+        return "upload";
+    }
+  }
+
   private __bindJobFormData() {
     if (this.currentEditedDefination) {
       const _d: JobFormModel = this.currentEditedDefination;
       this.__patchValues(this.jobFormGroup, _d);
-
       if (_d.sections) {
         for (let i = 0; i < _d.sections.length; i++) {
           const _section = _d.sections[i];
           this.__addNewSectionFormGroup(_section);
           for (let f = 0; f < _section.fields.length; f++) {
             const field = _section.fields[f];
+            const __fieldName = this.getFieldTypeName(field.fieldType);
+            this.addNewField(__fieldName, i, field);
           }
         }
       }
@@ -241,7 +263,6 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.__initForm();
     this._subs.add(
       this._jobFormsFacade.formDetails$.subscribe((details) => {
-        console.log(details);
         this.isForNewForm = details === null;
         if (details !== null) {
           this.currentEditedDefination = details;
