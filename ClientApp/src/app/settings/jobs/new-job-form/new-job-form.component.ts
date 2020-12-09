@@ -263,7 +263,6 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.__initForm();
     this._subs.add(
       this._jobFormsFacade.formDetails$.subscribe((details) => {
-        console.log(details);
         this.isForNewForm = details === null;
         if (details !== null) {
           this.currentEditedDefination = details;
