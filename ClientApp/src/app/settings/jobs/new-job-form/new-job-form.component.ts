@@ -63,6 +63,11 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isBusy$ = this._jobFormsFacade.isBusy$;
   }
 
+  get formId(): number {
+    const formIdField = this.jobFormGroup.get("formId");
+    return formIdField.value;
+  }
+
   private __initForm() {
     this.jobFormGroup = this._fb.group({
       formId: [0],
