@@ -393,6 +393,13 @@
     <div class="card-footer">
       <div class="row">
         <div class="col">
+          <div class="d-flex justify-content-start">
+            <button class="btn btn-sm btn-danger" *ngIf="formId > 0">
+              Delete
+            </button>
+          </div>
+        </div>
+        <div class="col">
           <div class="d-flex justify-content-end">
             <button
               type="button"
@@ -404,11 +411,21 @@
             </button>
             <button
               type="button"
+              *ngIf="formId <= 0"
               class="btn btn-sm btn-primary"
               [disabled]="isBusy$ | async"
               (click)="onSaveButtonClicked()"
             >
               Save
+            </button>
+            <button
+              type="button"
+              *ngIf="formId > 0"
+              class="btn btn-sm btn-primary"
+              [disabled]="isBusy$ | async"
+              (click)="onSaveButtonClicked()"
+            >
+              Update
             </button>
           </div>
         </div>
