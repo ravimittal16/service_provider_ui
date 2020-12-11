@@ -4,6 +4,7 @@ import {
   JobFormModel,
   JobFormModelGenericResponse,
 } from "@shared/service-proxies/service-proxies";
+import { JobFormsActionListenerSchema } from "./job.forms.state";
 export const uiStateBusyAction = createAction(
   "[JobForms] UI State Busy",
   props<{ isBusy: boolean }>()
@@ -41,6 +42,14 @@ export const onDeleteJobFormDefinationCompletedAction = createAction(
   "[JobForms] Delete Job Form Defination Completed Action",
   props<{ jobFormId: number; isSuccess: boolean }>()
 );
+export const deleteJobFormSectionAction = createAction(
+  "[JobForms] Delete Job Form Section Action",
+  props<{ sectionId: number }>()
+);
+export const deleteJobFormSectionCompletedAction = createAction(
+  "[JobForms] Delete Job Form Section Action Completed",
+  props<{ sectionId: number; isSuccess: boolean }>()
+);
 // ==========================================================
 // FETCH JOB FORM DETAILS ACTIONS
 // ==========================================================
@@ -50,8 +59,14 @@ export const fetchFormDetailsAction = createAction(
 );
 export const formDetailsFetchedAction = createAction(
   "[JobForms] Form details fetch completed action.",
-  props<{ details: JobFormModel; isSuccess: boolean }>()
+  props<{ details: JobFormModel; isSuccess: boolean; formId: number }>()
 );
 export const clearFormDetailsAction = createAction(
   "[JobForms] Clear Job Form details action."
+);
+export const eventCompleteListenerAction = createAction(
+  "[JobForms] Actions Completed",
+  props<{
+    payload: JobFormsActionListenerSchema;
+  }>()
 );
