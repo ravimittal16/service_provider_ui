@@ -7,7 +7,6 @@ import {
   JobLineItemDto,
   JobVisitDto,
 } from "@shared/service-proxies/service-proxies";
-import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 
 @Component({

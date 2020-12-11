@@ -21,6 +21,7 @@ import { JobsDataService } from "./jobs.data.service";
 import { JobsModalService } from "./jobs.modal.service";
 import { JobsRoutingModule, routeComponents } from "./jobs.routing.module";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { JobFormsListViewComponent } from "./job-forms-list-view/job-forms-list-view.component";
 const __modalComponents = [
   AddJobModalComponent,
   JobVisitDetailModalComponent,
@@ -33,6 +34,7 @@ const __moduleComponents = [
   JobVisitsViewComponent,
   JobItemsTableViewComponent,
   AddNoteButtonPopoverComponent,
+  JobFormsListViewComponent,
 ];
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],

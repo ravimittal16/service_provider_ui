@@ -7,7 +7,7 @@ import {
   JobFormDefinationDto,
   JobFormModel,
 } from "@shared/service-proxies/service-proxies";
-import { JobFormsState } from "./job.forms.state";
+import { JobFormsActionListenerSchema, JobFormsState } from "./job.forms.state";
 import * as fromAllActions from "./job.forms.actions";
 import * as fromAllSelectors from "./job.forms.selectors";
 import { first, take, takeLast } from "rxjs/operators";
@@ -20,6 +20,7 @@ export class JobFormsFacade implements Facade {
   isBusy$: Observable<boolean>;
   formDefinations$: Observable<JobFormDefinationDto[]>;
   formDetails$: Observable<JobFormModel>;
+  actionListener$: Observable<JobFormsActionListenerSchema>;
   constructor(private _store: Store<JobFormsState>) {
     this.formDefinations$ = _store.pipe(
       select(fromAllSelectors.selectAllDefinations)
@@ -28,6 +29,10 @@ export class JobFormsFacade implements Facade {
     this.errors$ = _store.pipe(select(fromAllSelectors.selectAllErrors));
     this.formDetails$ = _store.pipe(
       select(fromAllSelectors.selectEditedJobFormDetails)
+    );
+
+    this.actionListener$ = this._store.pipe(
+      select(fromAllSelectors.selectActionPayload)
     );
   }
 
@@ -38,6 +43,19 @@ export class JobFormsFacade implements Facade {
   fetchJobFormDetails(formId: number) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(fromAllActions.fetchFormDetailsAction({ formId: formId }));
+  }
+
+  clearEventData() {
+    this.dispatch(
+      fromAllActions.eventCompleteListenerAction({ payload: null })
+    );
+  }
+
+  deleteJobFormAction(sectionId: number) {
+    this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(
+      fromAllActions.deleteJobFormSectionAction({ sectionId: sectionId })
+    );
   }
 
   deleteJobFormDefination(jobFormId: number) {

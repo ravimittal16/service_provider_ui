@@ -70,6 +70,7 @@ export interface IConfirmationActionModel {
 export class ConfirmationActionsModel {
   closeOnConfirm?: boolean;
   actions: IConfirmationActionModel[];
+  actionClass?: "danger" | "primary" | "info" | "warning";
   destructiveAction: IConfirmationActionModel;
   heading: string;
   message?: string;

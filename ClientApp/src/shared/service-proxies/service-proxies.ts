@@ -1160,6 +1160,62 @@ export class JobFormsServiceProxy {
         }
         return _observableOf<JobFormModelGenericResponse>(<any>null);
     }
+
+    /**
+     * @param sectionId (optional) 
+     * @return Success
+     */
+    deleteJobFormSection(sectionId: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/JobForms/DeleteJobFormSection?";
+        if (sectionId === null)
+            throw new Error("The parameter 'sectionId' cannot be null.");
+        else if (sectionId !== undefined)
+            url_ += "sectionId=" + encodeURIComponent("" + sectionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteJobFormSection(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteJobFormSection(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteJobFormSection(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable()
@@ -3854,6 +3910,7 @@ export class Field implements IField {
     isRequired: boolean | undefined;
     valueSource: string | undefined;
     displayOrder: number;
+    sectionId: number;
     defaultValues: any | undefined;
 
     constructor(data?: IField) {
@@ -3875,6 +3932,7 @@ export class Field implements IField {
             this.isRequired = _data["isRequired"];
             this.valueSource = _data["valueSource"];
             this.displayOrder = _data["displayOrder"];
+            this.sectionId = _data["sectionId"];
             this.defaultValues = _data["defaultValues"];
         }
     }
@@ -3896,6 +3954,7 @@ export class Field implements IField {
         data["isRequired"] = this.isRequired;
         data["valueSource"] = this.valueSource;
         data["displayOrder"] = this.displayOrder;
+        data["sectionId"] = this.sectionId;
         data["defaultValues"] = this.defaultValues;
         return data; 
     }
@@ -3917,6 +3976,7 @@ export interface IField {
     isRequired: boolean | undefined;
     valueSource: string | undefined;
     displayOrder: number;
+    sectionId: number;
     defaultValues: any | undefined;
 }
 

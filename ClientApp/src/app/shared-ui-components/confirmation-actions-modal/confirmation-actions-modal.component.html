@@ -9,6 +9,17 @@
 </div>
 
 <div class="modal-body">
+  <div class="row" *ngIf="dialogConfig.message">
+    <div class="col">
+      <div
+        class="d-flex justify-content-center p-2 alert alert-{{
+          dialogConfig.actionClass
+        }}"
+      >
+        <h6 class="text-700">{{ dialogConfig.message }}</h6>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <button

@@ -10,22 +10,22 @@ import {
 } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { UiAlertsService } from "@app/shared-ui-components/ui.alerts.service";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
 import { AppConsts, FieldTypes } from "@shared/AppConsts";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
+import { Location } from "@angular/common";
 import {
   GenericValidator,
   ValidationTypes,
 } from "@shared/helpers/GenericValidator";
 import {
   Field,
-  JobFormDefinationDto,
   JobFormModel,
   Section,
 } from "@shared/service-proxies/service-proxies";
 
 import { Observable } from "rxjs";
-import { takeLast, withLatestFrom, take, first } from "rxjs/operators";
 import { SubSink } from "subsink";
 
 @Component({
@@ -56,7 +56,9 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private _router: Router,
     private _jobFormsFacade: JobFormsFacade,
+    private _alertsService: UiAlertsService,
     private _fb: FormBuilder,
+    private location: Location,
     private _cdr: ChangeDetectorRef
   ) {
     this.errors$ = this.__errorHandler.errors$;
@@ -124,7 +126,11 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
       const __fieldsArray = __sectionFormGroup.get("fields") as FormArray;
       const __fieldTypeNum = AppConsts.JobFormFieldTypes[fieldType];
       const __defaultValues =
-        fieldType === "choose" ? "Option 1,Option 2" : null;
+        fieldType === "choose"
+          ? field
+            ? field.valueSource
+            : "Option 1,Option 2"
+          : null;
       const __fieldGroup = this._fb.group({
         fieldId: [field?.fieldId || 0],
         fieldType: [__fieldTypeNum],
@@ -158,9 +164,10 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
       const __fieldId = +__fieldGroup.get("fieldId").value;
       if (__fieldId === 0) {
         __fieldsArray.removeAt(fieldIndex);
-        this._cdr.detectChanges();
+      } else {
       }
     }
+    this._cdr.detectChanges();
   }
 
   onSaveButtonClicked(): void {
@@ -179,7 +186,39 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  deleteSection(sectionIndex: number) {}
+  deleteSection(sectionIndex: number) {
+    const __sectionFormGroup = this.getSectionsFormArray.controls[sectionIndex];
+    if (__sectionFormGroup) {
+      const sectionId = __sectionFormGroup.get("formSectionId").value;
+      const fieldsCount = __sectionFormGroup.get("fields") as FormArray;
+      if (sectionId > 0 || (fieldsCount && fieldsCount.controls.length > 0)) {
+        this._alertsService
+          .showConfirmationActions({
+            heading: "Delete Job Form Section",
+            actionClass: "danger",
+            actions: [
+              { actionClass: "btn-danger", title: "Yes! Delete section" },
+            ],
+            destructiveAction: {
+              actionClass: "btn-default",
+              title: "Don't do anything",
+            },
+            message:
+              "Once you delete a section, there is no going back. Please be certain. [NEED TO CHANGE]",
+            closeOnConfirm: true,
+            titleIcon: "fa-trash text-danger",
+          })
+          .then((index) => {
+            if (index >= 0) {
+              this._jobFormsFacade.deleteJobFormAction(sectionId);
+            }
+          });
+      } else {
+        this.getSectionsFormArray.removeAt(sectionIndex);
+      }
+      this._cdr.detectChanges();
+    }
+  }
 
   onCancelButtonClicked(): void {}
 
@@ -233,15 +272,15 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
       case FieldTypes.CHECKBOX:
         return "checkbox";
       case FieldTypes.CHOOSEONE:
-        return "date";
-      case FieldTypes.DATEPICKER:
-        return "shortAnswer";
-      case FieldTypes.FILEUPLOAD:
-        return "longAnswer";
-      case FieldTypes.LONGANSWER:
         return "choose";
-      case FieldTypes.SHORTANSWER:
+      case FieldTypes.DATEPICKER:
+        return "date";
+      case FieldTypes.FILEUPLOAD:
         return "upload";
+      case FieldTypes.LONGANSWER:
+        return "longAsnwer";
+      case FieldTypes.SHORTANSWER:
+        return "shortAnswer";
     }
   }
 
@@ -266,6 +305,7 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.__initForm();
+    this.__listenEvents();
     this._subs.add(
       this._jobFormsFacade.formDetails$.subscribe((details) => {
         this.isForNewForm = details === null;
@@ -279,5 +319,24 @@ export class NewJobFormComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
     this._jobFormsFacade.fetchJobFormDetails(0);
+  }
+
+  private __listenEvents() {
+    this._subs.add(
+      this._jobFormsFacade.actionListener$.subscribe((listenerPayload) => {
+        if (listenerPayload !== null) {
+          if (
+            (listenerPayload.actionType === "Add Job Form" ||
+              listenerPayload.actionType === "Update Job Form") &&
+            listenerPayload.success
+          ) {
+            this.location.back();
+            this._jobFormsFacade.clearEventData();
+          } else {
+            this._jobFormsFacade.clearEventData();
+          }
+        }
+      })
+    );
   }
 }

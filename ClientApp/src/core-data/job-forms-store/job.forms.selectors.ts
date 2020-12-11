@@ -24,6 +24,11 @@ export const selectEditedJobFormDetails = createSelector(
   (state) => state.selectedDetails
 );
 
+export const selectActionPayload = createSelector(
+  jobFormsState,
+  (state) => state.actionListenerPayload
+);
+
 // ==========================================================
 // Selecting the route parameter
 // ==========================================================

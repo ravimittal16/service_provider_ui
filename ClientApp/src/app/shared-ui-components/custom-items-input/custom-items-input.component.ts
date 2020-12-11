@@ -35,14 +35,27 @@ export class CustomItemsInputComponent implements OnInit, ControlValueAccessor {
       this.__defaultValues = obj;
     }
   }
-  registerOnChange(fn: any): void {}
+  registerOnChange(fn: any): void {
+    this.onChange = (value) => {
+      return fn(value);
+    };
+  }
   registerOnTouched(fn: any): void {}
   setDisabledState?(isDisabled: boolean): void {}
+
+  private __updateFormControlSelection() {
+    const values = this.choices.getValue(true) as string[];
+    console.log(values);
+    if (values) {
+      const __values = values.join(",");
+      console.log(__values);
+      this.onChange(__values);
+    }
+  }
 
   private __setChoicesElement() {
     setTimeout(() => {
       this.__inputElement = document.getElementById(this.elementId);
-      console.log(this.__inputElement);
       this.choices = new Choices(this.__inputElement as HTMLInputElement, {
         items: this.__defaultValues.split(","),
         delimiter: ",",
@@ -50,6 +63,13 @@ export class CustomItemsInputComponent implements OnInit, ControlValueAccessor {
         maxItemCount: 10,
         removeItemButton: true,
       });
+      this.choices.passedElement.element.addEventListener("addItem", (event) =>
+        this.__updateFormControlSelection()
+      );
+      this.choices.passedElement.element.addEventListener(
+        "removeItem",
+        (event) => this.__updateFormControlSelection()
+      );
     }, 100);
   }
 

@@ -58,7 +58,25 @@ export class JobFormsEffects extends BaseEffect {
       )
     );
   });
-  //TODO: NEED TO CHECK THE MULTIPLE LOADING ISSUE
+
+  deleteJobFormSection$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.deleteJobFormSectionAction),
+      mergeMap((action) =>
+        this.jobFormsService.deleteJobFormSection(action.sectionId).pipe(
+          map((res) => {
+            if (res) {
+              return fromAllActions.fetchFormDetailsAction({ formId: 0 });
+            }
+            return fromAllActions.updateErrorStateAction({
+              errors: ["Error while deleting the section."],
+            });
+          })
+        )
+      )
+    );
+  });
+
   fetchFormDetails$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.fetchFormDetailsAction),
@@ -75,6 +93,7 @@ export class JobFormsEffects extends BaseEffect {
                 return fromAllActions.formDetailsFetchedAction({
                   details: data.entity,
                   isSuccess: data.isSuccess,
+                  formId: formId,
                 });
               }),
               catchError((error) =>
@@ -94,12 +113,21 @@ export class JobFormsEffects extends BaseEffect {
       ofType(fromAllActions.createJobFormAction),
       mergeMap((action) =>
         this.jobFormsService.createJobForm(action.model).pipe(
-          map((data) =>
+          switchMap((data) => [
             fromAllActions.createJobFormCompletedAction({
               response: data,
               isSuccess: data.isSuccess,
-            })
-          ),
+            }),
+            fromAllActions.eventCompleteListenerAction({
+              payload: {
+                actionType:
+                  action.model.formId === 0
+                    ? "Add Job Form"
+                    : "Update Job Form",
+                success: data.isSuccess,
+              },
+            }),
+          ]),
           catchError((error) => {
             return this.parseErrorWithAction(error).pipe(
               switchMap((error) => {

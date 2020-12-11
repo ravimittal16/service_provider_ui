@@ -258,7 +258,11 @@
               <a ngbNavLink class="tab-link"
                 ><span class="fa fa-wpforms mr-1"></span>Job Forms</a
               >
-              <ng-template ngbNavContent>Second content</ng-template>
+              <ng-template ngbNavContent>
+                <app-job-forms-list-view
+                  [jobId]="jobId"
+                ></app-job-forms-list-view>
+              </ng-template>
             </li>
             <li ngbNavItem>
               <a ngbNavLink class="tab-link">
