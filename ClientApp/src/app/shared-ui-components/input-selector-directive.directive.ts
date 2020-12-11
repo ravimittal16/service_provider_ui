@@ -85,7 +85,7 @@ export class InputSelectorDirectiveDirective
                 setTimeout(() => {
                   const __valD = (this.el.nativeElement as HTMLSelectElement)
                     .value;
-                  if (__valD) {
+                  if (__valD && __valD !== "") {
                     this.onChange(JSON.parse(__valD));
                   }
                 }, 100);
