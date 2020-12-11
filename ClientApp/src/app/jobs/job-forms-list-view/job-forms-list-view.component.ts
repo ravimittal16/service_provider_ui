@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { JobsModalService } from "../jobs.modal.service";
 
 @Component({
   selector: "app-job-forms-list-view",
@@ -7,7 +8,11 @@ import { Component, Input, OnInit } from "@angular/core";
 })
 export class JobFormsListViewComponent implements OnInit {
   @Input() jobId: number;
-  constructor() {}
+  constructor(private _jobsModalService: JobsModalService) {}
+
+  attachNewJobFormClicked(): void {
+    const modelRef = this._jobsModalService.openJobFormListModal(this.jobId);
+  }
 
   ngOnInit(): void {}
 }
