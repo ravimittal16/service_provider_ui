@@ -5,6 +5,7 @@ import { BehaviorSubject } from "rxjs";
 
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { AddJobVisitModalComponent } from "./add-job-visit-modal/add-job-visit-modal.component";
+import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-list-modal.component";
 import { JobVisitDetailModalComponent } from "./job-visit-detail-modal/job-visit-detail-modal.component";
 export class JobVerticalModalModel {
   jobDto?: JobDto;
@@ -12,9 +13,9 @@ export class JobVerticalModalModel {
 }
 @Injectable()
 export class JobsModalService {
-  private jobVerticalModalBehaviour: BehaviorSubject<
-    JobVerticalModalModel
-  > = new BehaviorSubject<JobVerticalModalModel>(null);
+  private jobVerticalModalBehaviour: BehaviorSubject<JobVerticalModalModel> = new BehaviorSubject<JobVerticalModalModel>(
+    null
+  );
   private modalConfig: any = {
     size: "lg",
     keyboard: false,
@@ -44,6 +45,17 @@ export class JobsModalService {
       this.modalConfig
     );
     modalRef.componentInstance.job = job;
+    return modalRef;
+  }
+
+  openJobFormListModal(jobId: number): NgbModalRef {
+    console.log("HELLO WORLD");
+    this.modalConfig.size = "md";
+    const modalRef = this.modalService.open(
+      JobFormsListModalComponent,
+      this.modalConfig
+    );
+    modalRef.componentInstance.jobId = jobId;
     return modalRef;
   }
 
