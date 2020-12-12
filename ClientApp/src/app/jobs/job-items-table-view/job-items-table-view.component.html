@@ -95,6 +95,12 @@
         </div>
         <div class="col-1">
           <button
+            class="btn btn-sm btn-falcon-default"
+            (click)="deleteItem(i, false)"
+          >
+            <i class="fa fa-pencil"></i>
+          </button>
+          <button
             class="btn btn-sm btn-falcon-danger"
             (click)="deleteItem(i, false)"
           >
