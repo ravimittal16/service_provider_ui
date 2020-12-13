@@ -8,6 +8,7 @@ import { Observable, of } from "rxjs";
 import {
   catchError,
   concatMap,
+  filter,
   map,
   mergeMap,
   switchMap,
@@ -31,6 +32,10 @@ export class JobFormsEffects extends BaseEffect {
   loadAllFormsDefinations$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.loadAllJobFormDefinationAction),
+      withLatestFrom(this._store.select(fromAllSelectors.selectAllDefinations)),
+      filter(([action, commonData]) => {
+        return Object.keys(commonData).length === 0;
+      }),
       mergeMap((action) =>
         this.jobFormsService.getAllFormDefinations().pipe(
           map((res) =>
