@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import {
+  ActionReturnCode,
   JobFormDefinationDto,
   JobFormModel,
 } from "@shared/service-proxies/service-proxies";
@@ -21,6 +22,7 @@ export class JobFormsFacade implements Facade {
   formDefinations$: Observable<JobFormDefinationDto[]>;
   formDetails$: Observable<JobFormModel>;
   actionListener$: Observable<JobFormsActionListenerSchema>;
+  actionReturnCode$: Observable<ActionReturnCode>;
   constructor(private _store: Store<JobFormsState>) {
     this.formDefinations$ = _store.pipe(
       select(fromAllSelectors.selectAllDefinations)
@@ -33,6 +35,9 @@ export class JobFormsFacade implements Facade {
 
     this.actionListener$ = this._store.pipe(
       select(fromAllSelectors.selectActionPayload)
+    );
+    this.actionReturnCode$ = this._store.pipe(
+      select(fromAllSelectors.selectActionReturnCode)
     );
   }
 
@@ -48,6 +53,13 @@ export class JobFormsFacade implements Facade {
   clearEventData() {
     this.dispatch(
       fromAllActions.eventCompleteListenerAction({ payload: null })
+    );
+  }
+
+  attachJobFormToJobAction(formId: number, jobid: number) {
+    this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(
+      fromAllActions.attachJobFormToJobAction({ formId: formId, jobId: jobid })
     );
   }
 

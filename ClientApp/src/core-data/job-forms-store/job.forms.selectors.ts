@@ -28,6 +28,10 @@ export const selectActionPayload = createSelector(
   jobFormsState,
   (state) => state.actionListenerPayload
 );
+export const selectActionReturnCode = createSelector(
+  jobFormsState,
+  (state) => state.actionReturnCode
+);
 
 // ==========================================================
 // Selecting the route parameter

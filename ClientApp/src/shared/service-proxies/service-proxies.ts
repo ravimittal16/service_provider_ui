@@ -1216,6 +1216,67 @@ export class JobFormsServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
+
+    /**
+     * @param formId (optional) 
+     * @param jobId (optional) 
+     * @return Success
+     */
+    attachJobFormToJob(formId: number | undefined, jobId: number | undefined): Observable<OperationResult> {
+        let url_ = this.baseUrl + "/api/JobForms/AttachJobFormToJob?";
+        if (formId === null)
+            throw new Error("The parameter 'formId' cannot be null.");
+        else if (formId !== undefined)
+            url_ += "formId=" + encodeURIComponent("" + formId) + "&";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAttachJobFormToJob(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAttachJobFormToJob(<any>response_);
+                } catch (e) {
+                    return <Observable<OperationResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OperationResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAttachJobFormToJob(response: HttpResponseBase): Observable<OperationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OperationResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OperationResult>(<any>null);
+    }
 }
 
 @Injectable()
@@ -4189,6 +4250,93 @@ export interface IJobFormModelGenericResponse {
     actionReturnCode: ActionReturnCode;
 }
 
+export class OperationResult implements IOperationResult {
+    isSuccess: boolean;
+    isWarning: boolean;
+    errors: string[] | undefined;
+    warnings: string[] | undefined;
+    clientMessages: string[] | undefined;
+    returnCode: ActionReturnCode;
+
+    constructor(data?: IOperationResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isSuccess = _data["isSuccess"];
+            this.isWarning = _data["isWarning"];
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            if (Array.isArray(_data["warnings"])) {
+                this.warnings = [] as any;
+                for (let item of _data["warnings"])
+                    this.warnings.push(item);
+            }
+            if (Array.isArray(_data["clientMessages"])) {
+                this.clientMessages = [] as any;
+                for (let item of _data["clientMessages"])
+                    this.clientMessages.push(item);
+            }
+            this.returnCode = _data["returnCode"] ? ActionReturnCode.fromJS(_data["returnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): OperationResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new OperationResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess;
+        data["isWarning"] = this.isWarning;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        if (Array.isArray(this.warnings)) {
+            data["warnings"] = [];
+            for (let item of this.warnings)
+                data["warnings"].push(item);
+        }
+        if (Array.isArray(this.clientMessages)) {
+            data["clientMessages"] = [];
+            for (let item of this.clientMessages)
+                data["clientMessages"].push(item);
+        }
+        data["returnCode"] = this.returnCode ? this.returnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): OperationResult {
+        const json = this.toJSON();
+        let result = new OperationResult();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOperationResult {
+    isSuccess: boolean;
+    isWarning: boolean;
+    errors: string[] | undefined;
+    warnings: string[] | undefined;
+    clientMessages: string[] | undefined;
+    returnCode: ActionReturnCode;
+}
+
 export class ProductDto implements IProductDto {
     productId: number;
     name: string | undefined;
@@ -5433,85 +5581,6 @@ export interface IJobDetailsDto {
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
     jobVisits: JobVisitDto[] | undefined;
-}
-
-export class OperationResult implements IOperationResult {
-    isSuccess: boolean;
-    errors: string[] | undefined;
-    warnings: string[] | undefined;
-    clientMessages: string[] | undefined;
-
-    constructor(data?: IOperationResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.isSuccess = _data["isSuccess"];
-            if (Array.isArray(_data["errors"])) {
-                this.errors = [] as any;
-                for (let item of _data["errors"])
-                    this.errors.push(item);
-            }
-            if (Array.isArray(_data["warnings"])) {
-                this.warnings = [] as any;
-                for (let item of _data["warnings"])
-                    this.warnings.push(item);
-            }
-            if (Array.isArray(_data["clientMessages"])) {
-                this.clientMessages = [] as any;
-                for (let item of _data["clientMessages"])
-                    this.clientMessages.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): OperationResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new OperationResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isSuccess"] = this.isSuccess;
-        if (Array.isArray(this.errors)) {
-            data["errors"] = [];
-            for (let item of this.errors)
-                data["errors"].push(item);
-        }
-        if (Array.isArray(this.warnings)) {
-            data["warnings"] = [];
-            for (let item of this.warnings)
-                data["warnings"].push(item);
-        }
-        if (Array.isArray(this.clientMessages)) {
-            data["clientMessages"] = [];
-            for (let item of this.clientMessages)
-                data["clientMessages"].push(item);
-        }
-        return data; 
-    }
-
-    clone(): OperationResult {
-        const json = this.toJSON();
-        let result = new OperationResult();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IOperationResult {
-    isSuccess: boolean;
-    errors: string[] | undefined;
-    warnings: string[] | undefined;
-    clientMessages: string[] | undefined;
 }
 
 export class CreateJobNoteModel implements ICreateJobNoteModel {

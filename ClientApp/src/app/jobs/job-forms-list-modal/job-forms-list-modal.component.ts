@@ -21,7 +21,9 @@ export class JobFormsListModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  attachJobFormToJob(form: JobFormDefinationDto): void {}
+  attachJobFormToJob(form: JobFormDefinationDto): void {
+    this._jobFormFacade.attachJobFormToJobAction(form.formId, this.jobId);
+  }
 
   onCloseClicked(): void {
     this.activeModal.close();

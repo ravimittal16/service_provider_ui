@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import {
+  ActionReturnCode,
   JobFormDefinationDto,
   JobFormModel,
   JobFormModelGenericResponse,
@@ -68,5 +69,20 @@ export const eventCompleteListenerAction = createAction(
   "[JobForms] Actions Completed",
   props<{
     payload: JobFormsActionListenerSchema;
+  }>()
+);
+// ==========================================================
+// ATTACH JOB FORM TO JOB
+// ==========================================================
+export const attachJobFormToJobAction = createAction(
+  "[JobForms] Attach Job Form to Job",
+  props<{ formId: number; jobId: number }>()
+);
+export const attachJobFormToJobCompletedAction = createAction(
+  "[JobForms] Attach Job Form to Job Completed Action",
+  props<{
+    errors: string[];
+    isSuccess: boolean;
+    returnCode?: ActionReturnCode;
   }>()
 );
