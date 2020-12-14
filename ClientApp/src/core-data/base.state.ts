@@ -1,4 +1,5 @@
 import { EntityState, Dictionary } from "@ngrx/entity";
+import { ActionReturnCode } from "@shared/service-proxies/service-proxies";
 
 export class BaseState<TEntity> implements EntityState<TEntity> {
   ids: string[] | number[];
@@ -7,4 +8,5 @@ export class BaseState<TEntity> implements EntityState<TEntity> {
   errors: string[];
   success: boolean;
   items: TEntity[];
+  actionReturnCode?: ActionReturnCode;
 }

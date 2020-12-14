@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseEffect } from "@core-data/base.effect";
+import { reducers } from "@core-data/core.data.reducers";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { select, Store } from "@ngrx/store";
 import { JobFormsServiceProxy } from "@shared/service-proxies/service-proxies";
@@ -60,6 +61,25 @@ export class JobFormsEffects extends BaseEffect {
             });
           })
         )
+      )
+    );
+  });
+
+  attachJobFormToJobAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.attachJobFormToJobAction),
+      mergeMap((action) =>
+        this.jobFormsService
+          .attachJobFormToJob(action.formId, action.jobId)
+          .pipe(
+            map((res) => {
+              return fromAllActions.attachJobFormToJobCompletedAction({
+                errors: res.clientMessages,
+                isSuccess: res.isSuccess,
+                returnCode: res.returnCode,
+              });
+            })
+          )
       )
     );
   });
