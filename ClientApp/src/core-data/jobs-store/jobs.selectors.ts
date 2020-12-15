@@ -42,6 +42,12 @@ export const selectActionPayload = createSelector(
   jobsFeatureState,
   (state: JobsState) => state.actionListenerPayload
 );
+
+export const selectJobForms = createSelector(
+  jobsFeatureState,
+  (state: JobsState) => state.jobForms
+);
+
 export const selectVisitDetails = createSelector(
   jobsFeatureState,
   selectJobVisits,

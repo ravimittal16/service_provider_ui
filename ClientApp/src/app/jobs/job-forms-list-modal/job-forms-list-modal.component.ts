@@ -1,7 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { JobFormsFacade } from "@core-data/job-forms-store/job.forms.facade";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { JobFormDefinationDto } from "@shared/service-proxies/service-proxies";
+import {
+  ActionReturnCode,
+  JobFormDefinationDto,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 
 @Component({
@@ -12,11 +15,13 @@ import { Observable } from "rxjs";
 export class JobFormsListModalComponent implements OnInit, OnDestroy {
   @Input() jobId: number;
   jobForms$: Observable<JobFormDefinationDto[]>;
+  actionResponseCode$: Observable<ActionReturnCode>;
   constructor(
     public activeModal: NgbActiveModal,
     private _jobFormFacade: JobFormsFacade
   ) {
     this.jobForms$ = this._jobFormFacade.formDefinations$;
+    this.actionResponseCode$ = this._jobFormFacade.actionReturnCode$;
   }
 
   ngOnDestroy(): void {}

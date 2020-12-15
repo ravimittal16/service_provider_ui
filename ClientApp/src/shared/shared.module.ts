@@ -20,12 +20,14 @@ import { CurrencyValueCellRenderer } from "./grid-cell-renderers/currency.value.
 import { ToastsGlobalComponent } from "./components/toasts-global/toasts-global.component";
 import { ToastService } from "./services/toast.service";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { ActionCodeUiRendererComponent } from "./components/action-code-ui-renderer/action-code-ui-renderer.component";
 
 const sharedDirectives = [BlockDirective, BusyDirective];
 const sharedComponents = [
   AppLogoComponent,
   AppErrorViewComponent,
   ToastsGlobalComponent,
+  ActionCodeUiRendererComponent,
 ];
 const sharedPipes = [LocalizePipe, CurrencySymbolPipe];
 const sharedRenderers = [

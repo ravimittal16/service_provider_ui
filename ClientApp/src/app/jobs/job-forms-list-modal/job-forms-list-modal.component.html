@@ -11,6 +11,10 @@
 </div>
 
 <div class="modal-body">
+  <app-action-code-ui-renderer
+    autoClose="true"
+    [actionResponseCode$]="actionResponseCode$"
+  ></app-action-code-ui-renderer>
   <div class="p-2">
     <div
       class="row border-bottom hover-shadow visit-row p-3"
