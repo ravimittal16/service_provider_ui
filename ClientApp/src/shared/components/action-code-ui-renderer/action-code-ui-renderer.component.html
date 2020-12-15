@@ -1,0 +1,10 @@
+<ng-container *ngIf="returnCode">
+  <ngb-alert
+    class="fs--1"
+    [dismissible]="false"
+    [type]="alertType"
+    #selfClosingAlert
+  >
+    <strong>SP{{ returnCode.code }}:</strong> {{ returnCode.clientMessage }}
+  </ngb-alert>
+</ng-container>
