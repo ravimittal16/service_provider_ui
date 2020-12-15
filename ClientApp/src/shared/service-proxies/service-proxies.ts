@@ -5432,6 +5432,61 @@ export interface IJobDto {
     jobStatusText: string | undefined;
 }
 
+export class JobFormDto implements IJobFormDto {
+    formId: number;
+    formName: string | undefined;
+    hasMultipleVersions: boolean | undefined;
+    allowMultipleVersions: boolean | undefined;
+
+    constructor(data?: IJobFormDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formId = _data["formId"];
+            this.formName = _data["formName"];
+            this.hasMultipleVersions = _data["hasMultipleVersions"];
+            this.allowMultipleVersions = _data["allowMultipleVersions"];
+        }
+    }
+
+    static fromJS(data: any): JobFormDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formId"] = this.formId;
+        data["formName"] = this.formName;
+        data["hasMultipleVersions"] = this.hasMultipleVersions;
+        data["allowMultipleVersions"] = this.allowMultipleVersions;
+        return data; 
+    }
+
+    clone(): JobFormDto {
+        const json = this.toJSON();
+        let result = new JobFormDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormDto {
+    formId: number;
+    formName: string | undefined;
+    hasMultipleVersions: boolean | undefined;
+    allowMultipleVersions: boolean | undefined;
+}
+
 export class JobDetailsDto implements IJobDetailsDto {
     customer: CustomerDto;
     jobAddress: AddressDto;
@@ -5457,6 +5512,7 @@ export class JobDetailsDto implements IJobDetailsDto {
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
     jobVisits: JobVisitDto[] | undefined;
+    jobForms: JobFormDto[] | undefined;
 
     constructor(data?: IJobDetailsDto) {
         if (data) {
@@ -5500,6 +5556,11 @@ export class JobDetailsDto implements IJobDetailsDto {
                 this.jobVisits = [] as any;
                 for (let item of _data["jobVisits"])
                     this.jobVisits.push(JobVisitDto.fromJS(item));
+            }
+            if (Array.isArray(_data["jobForms"])) {
+                this.jobForms = [] as any;
+                for (let item of _data["jobForms"])
+                    this.jobForms.push(JobFormDto.fromJS(item));
             }
         }
     }
@@ -5545,6 +5606,11 @@ export class JobDetailsDto implements IJobDetailsDto {
             for (let item of this.jobVisits)
                 data["jobVisits"].push(item.toJSON());
         }
+        if (Array.isArray(this.jobForms)) {
+            data["jobForms"] = [];
+            for (let item of this.jobForms)
+                data["jobForms"].push(item.toJSON());
+        }
         return data; 
     }
 
@@ -5581,6 +5647,7 @@ export interface IJobDetailsDto {
     createDate: moment.Moment | undefined;
     lineItems: JobLineItemDto[] | undefined;
     jobVisits: JobVisitDto[] | undefined;
+    jobForms: JobFormDto[] | undefined;
 }
 
 export class CreateJobNoteModel implements ICreateJobNoteModel {

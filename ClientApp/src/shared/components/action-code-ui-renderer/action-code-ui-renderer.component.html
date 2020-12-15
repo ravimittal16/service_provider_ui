@@ -5,6 +5,7 @@
     [type]="alertType"
     #selfClosingAlert
   >
-    <strong>SP{{ returnCode.code }}:</strong> {{ returnCode.clientMessage }}
+    <strong *ngIf="returnCode.codeType !== 3">SP{{ returnCode.code }}:</strong>
+    {{ returnCode.clientMessage }}
   </ngb-alert>
 </ng-container>

@@ -133,8 +133,8 @@
               <p class="font-weight-semi-bold mb-1">Contact email</p>
             </div>
             <div class="col">
-              <a href="mailto:{{ details.contactEmail }}">
-                {{ details.contactEmail }}
+              <a href="mailto:{{ details?.contactEmail }}">
+                {{ details?.contactEmail }}
               </a>
             </div>
           </div>
@@ -255,12 +255,17 @@
               </ng-template>
             </li>
             <li ngbNavItem>
-              <a ngbNavLink class="tab-link"
-                ><span class="fa fa-wpforms mr-1"></span>Job Forms</a
-              >
+              <a ngbNavLink class="tab-link d-flex align-items-center"
+                ><span class="fa fa-wpforms mr-1"></span>Job Forms
+                <span
+                  class="badge badge-pill badge-soft-dark ml-1"
+                  #jobFormsCounter
+                ></span
+              ></a>
               <ng-template ngbNavContent>
                 <app-job-forms-list-view
                   [jobId]="jobId"
+                  [countEl]="jobFormsCounter"
                 ></app-job-forms-list-view>
               </ng-template>
             </li>

@@ -6,6 +6,7 @@ import {
   JobDetailsDto,
   JobDto,
   JobFilterModel,
+  JobFormDto,
   JobLineItemDto,
   JobVisitDto,
 } from "@shared/service-proxies/service-proxies";
@@ -23,6 +24,7 @@ export class JobsFacade implements Facade {
   selectedJobDetails$: Observable<JobDetailsDto>;
   jobLineItems$: Observable<JobLineItemDto[]>;
   visits$: Observable<JobVisitDto[]>;
+  jobForms$: Observable<JobFormDto[]>;
   actionListener$: Observable<JobActionListenerSchema>;
   visitDetails$: Observable<{ visit: JobVisitDto; items: JobLineItemDto[] }>;
   constructor(private _store: Store<JobsState>) {
@@ -43,6 +45,7 @@ export class JobsFacade implements Facade {
     this.visitDetails$ = this._store.pipe(
       select(fromJobsSelectors.selectVisitDetails)
     );
+    this.jobForms$ = this._store.pipe(select(fromJobsSelectors.selectJobForms));
   }
 
   fetchJobDetails(jobId: number) {

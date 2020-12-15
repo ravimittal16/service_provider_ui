@@ -28,6 +28,7 @@ export const initialState: JobsState = adapter.getInitialState({
   jobVisits: [],
   actionListenerPayload: null,
   selectedVisitId: 0,
+  jobForms: [],
 });
 
 function insertItem(array, action) {
@@ -63,6 +64,7 @@ const jobsStoreReducer = createReducer(
       selectedJobDetails: props.details,
       jobLineItems: props.details?.lineItems,
       jobVisits: props.details?.jobVisits,
+      jobForms: props.details?.jobForms,
       success: true,
     };
   }),
