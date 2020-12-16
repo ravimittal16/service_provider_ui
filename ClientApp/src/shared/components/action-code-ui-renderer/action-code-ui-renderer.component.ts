@@ -35,17 +35,19 @@ export class ActionCodeUiRendererComponent implements OnInit, OnDestroy {
     if (this.actionResponseCode$) {
       this.__subs.add(
         this.actionResponseCode$.subscribe((returnCode) => {
-          this.returnCode = returnCode;
-          if (this.autoClose) {
-            this.__clearAlert();
-          }
           if (returnCode) {
-            this.alertType =
-              returnCode.codeType === 1
-                ? "warning"
-                : returnCode.codeType === 2
-                ? "error"
-                : "success";
+            this.returnCode = returnCode;
+            if (this.autoClose) {
+              this.__clearAlert();
+            }
+            if (returnCode) {
+              this.alertType =
+                returnCode.codeType === 1
+                  ? "warning"
+                  : returnCode.codeType === 2
+                  ? "error"
+                  : "success";
+            }
           }
         })
       );
