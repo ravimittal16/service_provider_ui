@@ -28,6 +28,7 @@ export const initialState: JobFormsState = adapter.getInitialState({
   selectedFormId: 0,
   actionListenerPayload: null,
   actionReturnCode: null,
+  selectedJobFormDataDetails: null,
 });
 
 const createFeatureReducer = createReducer(
@@ -45,6 +46,12 @@ const createFeatureReducer = createReducer(
     return {
       ...state,
       actionListenerPayload: props.payload,
+    };
+  }),
+  on(fromAllActions.fetchJobFormDataDetailsCompletedAction, (state, props) => {
+    return {
+      ...state,
+      selectedJobFormDataDetails: props.details,
     };
   }),
   on(fromAllActions.attachJobFormToJobCompletedAction, (state, props) => {

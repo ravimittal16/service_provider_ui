@@ -1277,6 +1277,72 @@ export class JobFormsServiceProxy {
         }
         return _observableOf<OperationResult>(<any>null);
     }
+
+    /**
+     * @param jobId (optional) 
+     * @param formId (optional) 
+     * @param recordId (optional) 
+     * @return Success
+     */
+    getJobFormData(jobId: number | undefined, formId: number | undefined, recordId: number | undefined): Observable<JobFormDataDetailSingleGenericResponse> {
+        let url_ = this.baseUrl + "/api/JobForms/GetJobFormData?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        if (formId === null)
+            throw new Error("The parameter 'formId' cannot be null.");
+        else if (formId !== undefined)
+            url_ += "formId=" + encodeURIComponent("" + formId) + "&";
+        if (recordId === null)
+            throw new Error("The parameter 'recordId' cannot be null.");
+        else if (recordId !== undefined)
+            url_ += "recordId=" + encodeURIComponent("" + recordId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetJobFormData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetJobFormData(<any>response_);
+                } catch (e) {
+                    return <Observable<JobFormDataDetailSingleGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<JobFormDataDetailSingleGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetJobFormData(response: HttpResponseBase): Observable<JobFormDataDetailSingleGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = JobFormDataDetailSingleGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<JobFormDataDetailSingleGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -4337,6 +4403,195 @@ export interface IOperationResult {
     returnCode: ActionReturnCode;
 }
 
+export class JobFormDataModel implements IJobFormDataModel {
+    fieldId: number;
+    fieldType: FieldTypes;
+    fieldData: string | undefined;
+    dataId: number;
+    formSectionId: number;
+
+    constructor(data?: IJobFormDataModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fieldId = _data["fieldId"];
+            this.fieldType = _data["fieldType"];
+            this.fieldData = _data["fieldData"];
+            this.dataId = _data["dataId"];
+            this.formSectionId = _data["formSectionId"];
+        }
+    }
+
+    static fromJS(data: any): JobFormDataModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormDataModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fieldId"] = this.fieldId;
+        data["fieldType"] = this.fieldType;
+        data["fieldData"] = this.fieldData;
+        data["dataId"] = this.dataId;
+        data["formSectionId"] = this.formSectionId;
+        return data; 
+    }
+
+    clone(): JobFormDataModel {
+        const json = this.toJSON();
+        let result = new JobFormDataModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormDataModel {
+    fieldId: number;
+    fieldType: FieldTypes;
+    fieldData: string | undefined;
+    dataId: number;
+    formSectionId: number;
+}
+
+export class JobFormDataDetailSingle implements IJobFormDataDetailSingle {
+    formModel: JobFormModel;
+    fieldsData: JobFormDataModel[] | undefined;
+
+    constructor(data?: IJobFormDataDetailSingle) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.formModel = _data["formModel"] ? JobFormModel.fromJS(_data["formModel"]) : <any>undefined;
+            if (Array.isArray(_data["fieldsData"])) {
+                this.fieldsData = [] as any;
+                for (let item of _data["fieldsData"])
+                    this.fieldsData.push(JobFormDataModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): JobFormDataDetailSingle {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormDataDetailSingle();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["formModel"] = this.formModel ? this.formModel.toJSON() : <any>undefined;
+        if (Array.isArray(this.fieldsData)) {
+            data["fieldsData"] = [];
+            for (let item of this.fieldsData)
+                data["fieldsData"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): JobFormDataDetailSingle {
+        const json = this.toJSON();
+        let result = new JobFormDataDetailSingle();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormDataDetailSingle {
+    formModel: JobFormModel;
+    fieldsData: JobFormDataModel[] | undefined;
+}
+
+export class JobFormDataDetailSingleGenericResponse implements IJobFormDataDetailSingleGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: JobFormDataDetailSingle;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IJobFormDataDetailSingleGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? JobFormDataDetailSingle.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): JobFormDataDetailSingleGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new JobFormDataDetailSingleGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): JobFormDataDetailSingleGenericResponse {
+        const json = this.toJSON();
+        let result = new JobFormDataDetailSingleGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IJobFormDataDetailSingleGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: JobFormDataDetailSingle;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+}
+
 export class ProductDto implements IProductDto {
     productId: number;
     name: string | undefined;
@@ -5513,6 +5768,8 @@ export class JobDetailsDto implements IJobDetailsDto {
     lineItems: JobLineItemDto[] | undefined;
     jobVisits: JobVisitDto[] | undefined;
     jobForms: JobFormDto[] | undefined;
+    attachedBy: string | undefined;
+    attachedOn: moment.Moment | undefined;
 
     constructor(data?: IJobDetailsDto) {
         if (data) {
@@ -5562,6 +5819,8 @@ export class JobDetailsDto implements IJobDetailsDto {
                 for (let item of _data["jobForms"])
                     this.jobForms.push(JobFormDto.fromJS(item));
             }
+            this.attachedBy = _data["attachedBy"];
+            this.attachedOn = _data["attachedOn"] ? moment(_data["attachedOn"].toString()) : <any>undefined;
         }
     }
 
@@ -5611,6 +5870,8 @@ export class JobDetailsDto implements IJobDetailsDto {
             for (let item of this.jobForms)
                 data["jobForms"].push(item.toJSON());
         }
+        data["attachedBy"] = this.attachedBy;
+        data["attachedOn"] = this.attachedOn ? this.attachedOn.toISOString() : <any>undefined;
         return data; 
     }
 
@@ -5648,6 +5909,8 @@ export interface IJobDetailsDto {
     lineItems: JobLineItemDto[] | undefined;
     jobVisits: JobVisitDto[] | undefined;
     jobForms: JobFormDto[] | undefined;
+    attachedBy: string | undefined;
+    attachedOn: moment.Moment | undefined;
 }
 
 export class CreateJobNoteModel implements ICreateJobNoteModel {

@@ -32,6 +32,10 @@ export const selectActionReturnCode = createSelector(
   jobFormsState,
   (state) => state.actionReturnCode
 );
+export const selectedJobFormDataDetails = createSelector(
+  jobFormsState,
+  (state) => state.selectedJobFormDataDetails
+);
 
 // ==========================================================
 // Selecting the route parameter
