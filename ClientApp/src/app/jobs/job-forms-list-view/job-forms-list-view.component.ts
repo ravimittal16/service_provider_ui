@@ -22,6 +22,14 @@ export class JobFormsListViewComponent implements OnInit {
     private _jobFormFacade: JobFormsFacade
   ) {}
 
+  onDetailsButtonClicked(form: JobFormDto): void {
+    const _modal = this._jobsModalService.openJobFormDetailsForm(
+      form.formId,
+      this.jobId,
+      0
+    );
+  }
+
   attachNewJobFormClicked(): void {
     const modelRef = this._jobsModalService.openJobFormListModal(this.jobId);
   }

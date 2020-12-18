@@ -1,4 +1,5 @@
 import {
+  JobFormDataDetailSingle,
   JobFormDefinationDto,
   JobFormModel,
 } from "@shared/service-proxies/service-proxies";
@@ -22,4 +23,5 @@ export interface JobFormsState extends BaseState<JobFormDefinationDto> {
   jobFormDefinations: JobFormDefinationDto[];
   selectedDetails: JobFormModel;
   actionListenerPayload: JobFormsActionListenerSchema;
+  selectedJobFormDataDetails: JobFormDataDetailSingle;
 }

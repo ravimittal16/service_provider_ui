@@ -65,6 +65,23 @@ export class JobFormsEffects extends BaseEffect {
     );
   });
 
+  fetchJobFormDetailsAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.fetchJobFormDataDetailsAction),
+      mergeMap((action) =>
+        this.jobFormsService
+          .getJobFormData(action.jobId, action.formId, action.recordId)
+          .pipe(
+            map((res) => {
+              return fromAllActions.fetchJobFormDataDetailsCompletedAction({
+                details: res?.entity,
+              });
+            })
+          )
+      )
+    );
+  });
+
   attachJobFormToJobAction$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.attachJobFormToJobAction),

@@ -1,6 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import {
   ActionReturnCode,
+  JobFormDataDetailSingle,
   JobFormDefinationDto,
   JobFormModel,
   JobFormModelGenericResponse,
@@ -85,4 +86,15 @@ export const attachJobFormToJobCompletedAction = createAction(
     isSuccess: boolean;
     returnCode?: ActionReturnCode;
   }>()
+);
+// ==========================================================
+// JOB FORM DETAILS
+// ==========================================================
+export const fetchJobFormDataDetailsAction = createAction(
+  "[Jobs] Fetch Job Form Details Action",
+  props<{ jobId: number; formId: number; recordId: number }>()
+);
+export const fetchJobFormDataDetailsCompletedAction = createAction(
+  "[Jobs] Fetch Job Form Details Completed Action",
+  props<{ details: JobFormDataDetailSingle }>()
 );

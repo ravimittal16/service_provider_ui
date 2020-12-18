@@ -5,6 +5,7 @@ import { BehaviorSubject } from "rxjs";
 
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { AddJobVisitModalComponent } from "./add-job-visit-modal/add-job-visit-modal.component";
+import { JobFormsDetailModalComponent } from "./job-forms-detail-modal/job-forms-detail-modal.component";
 import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-list-modal.component";
 import { JobVisitDetailModalComponent } from "./job-visit-detail-modal/job-visit-detail-modal.component";
 export class JobVerticalModalModel {
@@ -49,13 +50,28 @@ export class JobsModalService {
   }
 
   openJobFormListModal(jobId: number): NgbModalRef {
-    console.log("HELLO WORLD");
     this.modalConfig.size = "md";
     const modalRef = this.modalService.open(
       JobFormsListModalComponent,
       this.modalConfig
     );
     modalRef.componentInstance.jobId = jobId;
+    return modalRef;
+  }
+
+  openJobFormDetailsForm(
+    formId: number,
+    jobId: number,
+    recordId: number
+  ): NgbModalRef {
+    this.modalConfig.size = "md";
+    const modalRef = this.modalService.open(
+      JobFormsDetailModalComponent,
+      this.modalConfig
+    );
+    modalRef.componentInstance.jobId = jobId;
+    modalRef.componentInstance.formId = formId;
+    modalRef.componentInstance.recordId = recordId;
     return modalRef;
   }
 

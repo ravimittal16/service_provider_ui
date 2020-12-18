@@ -23,11 +23,13 @@ import { JobsRoutingModule, routeComponents } from "./jobs.routing.module";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { JobFormsListViewComponent } from "./job-forms-list-view/job-forms-list-view.component";
 import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-list-modal.component";
+import { JobFormsDetailModalComponent } from "./job-forms-detail-modal/job-forms-detail-modal.component";
 const __modalComponents = [
   AddJobModalComponent,
   JobVisitDetailModalComponent,
   AddJobVisitModalComponent,
   JobFormsListModalComponent,
+  JobFormsDetailModalComponent,
 ];
 const __moduleComponents = [
   JobsFilterComponent,
@@ -52,7 +54,7 @@ const __moduleComponents = [
     SharedUiComponentsModule,
     DragDropModule,
   ],
-  exports: [],
+  exports: [...__modalComponents],
   providers: [JobsDataService, JobsModalService],
 })
 export class JobsModule {}
