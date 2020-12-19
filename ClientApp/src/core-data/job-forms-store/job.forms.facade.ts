@@ -66,6 +66,12 @@ export class JobFormsFacade implements Facade {
     );
   }
 
+  clearJobFormDataStateObject() {
+    this._store.dispatch(
+      fromAllActions.fetchJobFormDataDetailsCompletedAction({ details: null })
+    );
+  }
+
   clearEventData() {
     this.dispatch(
       fromAllActions.eventCompleteListenerAction({ payload: null })
