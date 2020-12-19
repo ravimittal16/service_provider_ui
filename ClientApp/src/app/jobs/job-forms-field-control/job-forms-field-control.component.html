@@ -1,0 +1,74 @@
+<div class="form-group">
+  <label
+    class="fs--2"
+    [ngClass]="{
+      'sr-only':
+        fieldProps?.fieldQuestion === null ||
+        fieldProps?.fieldQuestion === '' ||
+        fieldProps?.fieldType === 0
+    }"
+    >{{ fieldProps?.fieldQuestion }}</label
+  >
+  <div [ngSwitch]="fieldProps?.fieldType">
+    <div
+      class="custom-control custom-checkbox"
+      *ngSwitchCase="0"
+      data-field-role="CHECKBOX"
+    >
+      <input
+        class="custom-control-input"
+        [id]="fieldProps?.fieldId"
+        type="checkbox"
+        (change)="onValueChanged($event)"
+        [(ngModel)]="fieldValue"
+      />
+      <label class="custom-control-label fs--2" [for]="fieldProps?.fieldId">{{
+        fieldProps?.fieldQuestion
+      }}</label>
+    </div>
+    <div class="input-group" data-field-role="DATEPICKER" *ngSwitchCase="1">
+      <input
+        class="form-control form-control-sm"
+        placeholder="yyyy-mm-dd"
+        ngbDatepicker
+        (dateSelect)="onDateSelect($event)"
+        [(ngModel)]="fieldValue"
+        #picker="ngbDatepicker"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary btn-sm"
+          (click)="picker.toggle()"
+          type="button"
+        >
+          <i class="fa fa-calendar"></i>
+        </button>
+      </div>
+    </div>
+    <div data-field-role="SHORTANSWER" *ngSwitchCase="2">
+      <input
+        class="form-control form-control-sm"
+        (change)="onValueChanged($event)"
+        [(ngModel)]="fieldValue"
+        type="text"
+      />
+    </div>
+    <div data-field-role="LONGANSWER" *ngSwitchCase="3">
+      <textarea
+        [(ngModel)]="fieldValue"
+        (change)="onValueChanged($event)"
+        class="form-control form-control-sm"
+        rows="3"
+      ></textarea>
+    </div>
+    <div data-field-role="CHOOSEONE" *ngSwitchCase="4">
+      <select
+        class="form-control form-control-sm"
+        [(ngModel)]="fieldValue"
+        (change)="onValueChanged($event)"
+      >
+        <option *ngFor="let c of valueSource" [ngValue]="c">{{ c }}</option>
+      </select>
+    </div>
+  </div>
+</div>

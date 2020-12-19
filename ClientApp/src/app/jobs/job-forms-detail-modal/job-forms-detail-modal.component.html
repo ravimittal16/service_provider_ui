@@ -1,25 +1,60 @@
 <div class="modal-header">
-  <h5 class="modal-title">Job Form Details</h5>
+  <h5 class="modal-title">{{ title }}</h5>
 </div>
 
-<div class="modal-body">BODY</div>
-<div class="modal-footer">
-  <div class="row no-gutters">
-    <div class="col d-flex justify-content-end">
-      <button
-        type="button"
-        class="btn btn-xs btn-danger mr-1"
-        (click)="onCloseButtonClicked()"
-      >
-        Close
-      </button>
-      <button
-        type="submit"
-        class="btn btn-xs btn-primary"
-        (click)="onSaveChangesClicked()"
-      >
-        Save Changes
-      </button>
+<form [formGroup]="jobDetailsFormGroup">
+  <div class="modal-body">
+    <ng-container formArrayName="sections">
+      <div *ngIf="sectionsArray.controls.length > 0">
+        <div
+          class="p-2"
+          *ngFor="let _ of sectionsArray.controls; index as section"
+          [ngClass]="{ 'mt-2': section > 0 }"
+          [formGroupName]="section"
+        >
+          <h6 class="text-500">{{ getSectionName(section) }}</h6>
+          <div class="row">
+            <div class="col">
+              <ng-container formArrayName="fields">
+                <div *ngIf="getFieldsFormArray(section).controls.length > 0">
+                  <div
+                    *ngFor="
+                      let _ of getFieldsFormArray(section).controls;
+                      index as p
+                    "
+                    [ngClass]="{ 'mt-2': p > 0 }"
+                    [formGroupName]="p"
+                  >
+                    <app-job-forms-field-control
+                      [fieldProps]="getFieldProps(section, p)"
+                      formControlName="fieldValue"
+                    ></app-job-forms-field-control>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div></div
+    ></ng-container>
+  </div>
+  <div class="modal-footer">
+    <div class="row no-gutters">
+      <div class="col d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-xs btn-danger mr-1"
+          (click)="onCloseButtonClicked()"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-xs btn-primary"
+          (click)="onSaveChangesClicked()"
+        >
+          Save Changes
+        </button>
+      </div>
     </div>
   </div>
-</div>
+</form>

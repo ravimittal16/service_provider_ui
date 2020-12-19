@@ -24,6 +24,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { JobFormsListViewComponent } from "./job-forms-list-view/job-forms-list-view.component";
 import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-list-modal.component";
 import { JobFormsDetailModalComponent } from "./job-forms-detail-modal/job-forms-detail-modal.component";
+import { JobFormsFieldControlComponent } from "./job-forms-field-control/job-forms-field-control.component";
 const __modalComponents = [
   AddJobModalComponent,
   JobVisitDetailModalComponent,
@@ -39,6 +40,7 @@ const __moduleComponents = [
   JobItemsTableViewComponent,
   AddNoteButtonPopoverComponent,
   JobFormsListViewComponent,
+  JobFormsFieldControlComponent,
 ];
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],

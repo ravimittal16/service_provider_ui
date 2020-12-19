@@ -51,6 +51,7 @@ const createFeatureReducer = createReducer(
   on(fromAllActions.fetchJobFormDataDetailsCompletedAction, (state, props) => {
     return {
       ...state,
+      isBusy: false,
       selectedJobFormDataDetails: props.details,
     };
   }),
