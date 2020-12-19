@@ -11,7 +11,7 @@
   >
   <div [ngSwitch]="fieldProps?.fieldType">
     <div
-      class="custom-control custom-checkbox"
+      class="custom-control custom-checkbox mt-2"
       *ngSwitchCase="0"
       data-field-role="CHECKBOX"
     >
@@ -29,6 +29,7 @@
     <div class="input-group" data-field-role="DATEPICKER" *ngSwitchCase="1">
       <input
         class="form-control form-control-sm"
+        readonly
         placeholder="yyyy-mm-dd"
         ngbDatepicker
         (dateSelect)="onDateSelect($event)"
@@ -37,6 +38,7 @@
       />
       <div class="input-group-append">
         <button
+          tabindex="-1"
           class="btn btn-outline-secondary btn-sm"
           (click)="picker.toggle()"
           type="button"
@@ -48,6 +50,7 @@
     <div data-field-role="SHORTANSWER" *ngSwitchCase="2">
       <input
         class="form-control form-control-sm"
+        maxlength="500"
         (change)="onValueChanged($event)"
         [(ngModel)]="fieldValue"
         type="text"
@@ -57,6 +60,7 @@
       <textarea
         [(ngModel)]="fieldValue"
         (change)="onValueChanged($event)"
+        maxlength="2000"
         class="form-control form-control-sm"
         rows="3"
       ></textarea>
