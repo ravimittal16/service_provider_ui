@@ -9,3 +9,4 @@
 export { RegsiterFacade } from "./register/register.facade";
 export { JobsFacade } from "./jobs-store/jobs.facade";
 export { JobFormsFacade } from "./job-forms-store/job.forms.facade";
+export { CompanyFacade } from "./company-store/company.facade";

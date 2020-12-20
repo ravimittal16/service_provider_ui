@@ -12,7 +12,7 @@ import { SharedModule } from "@shared/shared.module";
 import { JobFormsBannerComponent } from "./job-forms-banner/job-forms-banner.component";
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
-export const JobFormsFeatureId = 2;
+export const JOB_FORMS_FEATURE_ID = 2;
 
 const routes: Routes = [
   { path: "forms", component: JobFormsComponent },

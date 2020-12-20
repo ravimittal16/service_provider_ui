@@ -73,6 +73,10 @@ export class AppConsts {
     { dayName: "Saturday", dayCode: WEEKDAYS.SATURDAY },
   ];
 
+  static readonly FeatureKeys: { [key: string]: number } = {
+    EXPENSE_TRACKING_FEATURE_ID: 1,
+  };
+
   static readonly JobFormFieldTypes: { [key: string]: number } = {
     checkbox: FieldTypes.CHECKBOX,
     date: FieldTypes.DATEPICKER,

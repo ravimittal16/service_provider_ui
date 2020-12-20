@@ -63,6 +63,16 @@ export class CompanyFacade implements Facade {
     return this.companyService.getTimezonesList(countryCode);
   }
 
+  updateFeatureSubscription(featureId: number, isActive: boolean) {
+    this.dispatch(fromCompanyActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(
+      fromCompanyActions.updateFeatureSubscriptionAction({
+        featureId: featureId,
+        isActive: isActive,
+      })
+    );
+  }
+
   getFeatues() {
     this.dispatch(
       fromCompanyActions.loadCompanySubscribedFeatues({ companyId: 0 })

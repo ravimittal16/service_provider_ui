@@ -34,6 +34,13 @@ const routes: Routes = [
             (module) => module.ManageUsersModuleModule
           ),
       },
+      {
+        path: "expense",
+        loadChildren: () =>
+          import("./expense-tracking/expense-tracking.module").then(
+            (module) => module.ExpenseTrackingModule
+          ),
+      },
     ],
   },
 ];

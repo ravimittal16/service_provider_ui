@@ -1,1 +1,17 @@
-<p>expense-codes works!</p>
+<div class="card">
+  <div class="card-body">
+    <div class="row no-gutters">
+      <div class="col">
+        <h5 class="text-700">
+          <i class="fa fa-money mr-1"></i>Expense Tracking
+          <br *ngIf="!showBanner" />
+          <small class="text-500" *ngIf="!showBanner"
+            >Record expenses for each job and categorize them by creating
+            accounting codes
+          </small>
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<app-expense-tracking-banner *ngIf="showBanner"></app-expense-tracking-banner>

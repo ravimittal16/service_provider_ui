@@ -575,6 +575,67 @@ export class CompanyServiceProxy {
         }
         return _observableOf<SubscribedFeaturesDto[]>(<any>null);
     }
+
+    /**
+     * @param featureId (optional) 
+     * @param activate (optional) 
+     * @return Success
+     */
+    activateDeactivateFeature(featureId: number | undefined, activate: boolean | undefined): Observable<OperationResult> {
+        let url_ = this.baseUrl + "/api/company/ActivateDeactivateFeature?";
+        if (featureId === null)
+            throw new Error("The parameter 'featureId' cannot be null.");
+        else if (featureId !== undefined)
+            url_ += "featureId=" + encodeURIComponent("" + featureId) + "&";
+        if (activate === null)
+            throw new Error("The parameter 'activate' cannot be null.");
+        else if (activate !== undefined)
+            url_ += "activate=" + encodeURIComponent("" + activate) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivateDeactivateFeature(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivateDeactivateFeature(<any>response_);
+                } catch (e) {
+                    return <Observable<OperationResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OperationResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processActivateDeactivateFeature(response: HttpResponseBase): Observable<OperationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OperationResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OperationResult>(<any>null);
+    }
 }
 
 @Injectable()
@@ -3360,6 +3421,93 @@ export interface ISubscribedFeaturesDto {
     entityStatus: EntityStatuses;
 }
 
+export class OperationResult implements IOperationResult {
+    isSuccess: boolean;
+    isWarning: boolean;
+    errors: string[] | undefined;
+    warnings: string[] | undefined;
+    clientMessages: string[] | undefined;
+    returnCode: ActionReturnCode;
+
+    constructor(data?: IOperationResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isSuccess = _data["isSuccess"];
+            this.isWarning = _data["isWarning"];
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            if (Array.isArray(_data["warnings"])) {
+                this.warnings = [] as any;
+                for (let item of _data["warnings"])
+                    this.warnings.push(item);
+            }
+            if (Array.isArray(_data["clientMessages"])) {
+                this.clientMessages = [] as any;
+                for (let item of _data["clientMessages"])
+                    this.clientMessages.push(item);
+            }
+            this.returnCode = _data["returnCode"] ? ActionReturnCode.fromJS(_data["returnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): OperationResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new OperationResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess;
+        data["isWarning"] = this.isWarning;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        if (Array.isArray(this.warnings)) {
+            data["warnings"] = [];
+            for (let item of this.warnings)
+                data["warnings"].push(item);
+        }
+        if (Array.isArray(this.clientMessages)) {
+            data["clientMessages"] = [];
+            for (let item of this.clientMessages)
+                data["clientMessages"].push(item);
+        }
+        data["returnCode"] = this.returnCode ? this.returnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): OperationResult {
+        const json = this.toJSON();
+        let result = new OperationResult();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOperationResult {
+    isSuccess: boolean;
+    isWarning: boolean;
+    errors: string[] | undefined;
+    warnings: string[] | undefined;
+    clientMessages: string[] | undefined;
+    returnCode: ActionReturnCode;
+}
+
 export class CustomerModel implements ICustomerModel {
     id: number;
     displayName: string | undefined;
@@ -4314,93 +4462,6 @@ export interface IJobFormModelGenericResponse {
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
-}
-
-export class OperationResult implements IOperationResult {
-    isSuccess: boolean;
-    isWarning: boolean;
-    errors: string[] | undefined;
-    warnings: string[] | undefined;
-    clientMessages: string[] | undefined;
-    returnCode: ActionReturnCode;
-
-    constructor(data?: IOperationResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.isSuccess = _data["isSuccess"];
-            this.isWarning = _data["isWarning"];
-            if (Array.isArray(_data["errors"])) {
-                this.errors = [] as any;
-                for (let item of _data["errors"])
-                    this.errors.push(item);
-            }
-            if (Array.isArray(_data["warnings"])) {
-                this.warnings = [] as any;
-                for (let item of _data["warnings"])
-                    this.warnings.push(item);
-            }
-            if (Array.isArray(_data["clientMessages"])) {
-                this.clientMessages = [] as any;
-                for (let item of _data["clientMessages"])
-                    this.clientMessages.push(item);
-            }
-            this.returnCode = _data["returnCode"] ? ActionReturnCode.fromJS(_data["returnCode"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): OperationResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new OperationResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isSuccess"] = this.isSuccess;
-        data["isWarning"] = this.isWarning;
-        if (Array.isArray(this.errors)) {
-            data["errors"] = [];
-            for (let item of this.errors)
-                data["errors"].push(item);
-        }
-        if (Array.isArray(this.warnings)) {
-            data["warnings"] = [];
-            for (let item of this.warnings)
-                data["warnings"].push(item);
-        }
-        if (Array.isArray(this.clientMessages)) {
-            data["clientMessages"] = [];
-            for (let item of this.clientMessages)
-                data["clientMessages"].push(item);
-        }
-        data["returnCode"] = this.returnCode ? this.returnCode.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): OperationResult {
-        const json = this.toJSON();
-        let result = new OperationResult();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IOperationResult {
-    isSuccess: boolean;
-    isWarning: boolean;
-    errors: string[] | undefined;
-    warnings: string[] | undefined;
-    clientMessages: string[] | undefined;
-    returnCode: ActionReturnCode;
 }
 
 export class JobFormDataModel implements IJobFormDataModel {

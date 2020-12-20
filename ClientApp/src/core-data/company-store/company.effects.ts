@@ -61,6 +61,29 @@ export class CompanyStoreEffects extends BaseEffect {
     );
   });
 
+  updateFeatureSubscription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromCompanyActions.updateFeatureSubscriptionAction),
+      mergeMap((action) =>
+        this.companyService
+          .activateDeactivateFeature(action.featureId, action.isActive)
+          .pipe(
+            map((data) => {
+              if (data.isSuccess) {
+                return fromCompanyActions.loadCompanySubscribedFeatues({
+                  companyId: 0,
+                });
+              } else {
+              }
+            }),
+            catchError((error) =>
+              of(fromCompanyActions.errorsStateAction({ errors: [error] }))
+            )
+          )
+      )
+    );
+  });
+
   loadCommonData$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromCompanyActions.loadCommonDataAction),
