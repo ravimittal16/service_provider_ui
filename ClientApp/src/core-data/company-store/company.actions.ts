@@ -3,6 +3,7 @@ import {
   CompanyDetailsModel,
   CommonDataModel,
   SubscribedFeaturesDto,
+  ActionReturnCode,
 } from "@shared/service-proxies/service-proxies";
 
 export const loadCompanyDetailsAction = createAction(
@@ -29,6 +30,16 @@ export const commonDataLoadedAction = createAction(
 // ==========================================================
 // COMPANY FEATURES
 // ==========================================================
+
+export const updateFeatureSubscriptionAction = createAction(
+  "[Company] Update feature subscription action",
+  props<{ featureId: number; isActive: boolean }>()
+);
+export const updateFeatureSubscriptionCompletedAction = createAction(
+  "[Company] Update feature subscription completed action",
+  props<{ returnCode: ActionReturnCode }>()
+);
+
 export const loadCompanySubscribedFeatues = createAction(
   "[Company] Load Subscribed Featues",
   props<{ companyId: number }>()
