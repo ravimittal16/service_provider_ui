@@ -22,6 +22,8 @@ export class ExpenseCodesComponent implements OnInit, OnDestroy {
     this.features$ = _companyFacde.features$;
   }
 
+  addNewExpenseCode() {}
+
   private __checkFeatureSubscription() {
     this._subs.add(
       this.features$.subscribe((features) => {
