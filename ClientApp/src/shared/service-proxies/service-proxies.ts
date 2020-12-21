@@ -989,6 +989,73 @@ export class CustomersServiceProxy {
 }
 
 @Injectable()
+export class ExpenseServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getExpenseCodes(): Observable<ExpenseCodeModel[]> {
+        let url_ = this.baseUrl + "/api/expense/GetExpenseCodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetExpenseCodes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExpenseCodes(<any>response_);
+                } catch (e) {
+                    return <Observable<ExpenseCodeModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ExpenseCodeModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetExpenseCodes(response: HttpResponseBase): Observable<ExpenseCodeModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ExpenseCodeModel.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ExpenseCodeModel[]>(<any>null);
+    }
+}
+
+@Injectable()
 export class JobFormsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -3826,6 +3893,7 @@ export enum EntityTypes {
     _14 = 14,
     _15 = 15,
     _16 = 16,
+    _17 = 17,
     __1 = -1,
 }
 
@@ -4102,6 +4170,53 @@ export interface IBatchActionRequestModelGenericResponse {
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
+}
+
+export class ExpenseCodeModel implements IExpenseCodeModel {
+    expenseCodeId: number;
+    codeName: string | undefined;
+
+    constructor(data?: IExpenseCodeModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.expenseCodeId = _data["expenseCodeId"];
+            this.codeName = _data["codeName"];
+        }
+    }
+
+    static fromJS(data: any): ExpenseCodeModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExpenseCodeModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["expenseCodeId"] = this.expenseCodeId;
+        data["codeName"] = this.codeName;
+        return data; 
+    }
+
+    clone(): ExpenseCodeModel {
+        const json = this.toJSON();
+        let result = new ExpenseCodeModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IExpenseCodeModel {
+    expenseCodeId: number;
+    codeName: string | undefined;
 }
 
 export class JobFormDefinationDto implements IJobFormDefinationDto {
