@@ -14,6 +14,7 @@ import { TaxSettingsCardComponent } from "./tax-settings-card/tax-settings-card.
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
 import { SharedModule } from "@shared/shared.module";
+import { SettingsModalService } from "./settings.modal.service";
 
 @NgModule({
   declarations: [
@@ -33,5 +34,6 @@ import { SharedModule } from "@shared/shared.module";
     NgbModule,
     SharedUiComponentsModule,
   ],
+  providers: [SettingsModalService],
 })
 export class SettingsModule {}
