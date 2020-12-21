@@ -39,8 +39,10 @@ const createFeatureReducer = createReducer(
     errors: props.errors,
   })),
   on(fromAllActions.fetchAllExpenseCodesCompletedAction, (state, props) => {
+    const __state = adapter.addMany(props.codes, state);
     return {
-      ...state,
+      ...__state,
+      isBusy: false,
     };
   })
 );

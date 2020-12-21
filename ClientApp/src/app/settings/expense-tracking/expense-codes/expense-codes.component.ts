@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { SettingsModalService } from "@app/settings/settings.modal.service";
 import { CompanyFacade, ExpenseFacade } from "@core-data/index";
 import { AppConsts } from "@shared/AppConsts";
 
@@ -17,12 +18,15 @@ export class ExpenseCodesComponent implements OnInit, OnDestroy {
   private _subs = new SubSink();
   constructor(
     private _companyFacde: CompanyFacade,
-    private _expenseFacade: ExpenseFacade
+    private _expenseFacade: ExpenseFacade,
+    private _settingsModalService: SettingsModalService
   ) {
     this.features$ = _companyFacde.features$;
   }
 
-  addNewExpenseCode() {}
+  addNewExpenseCode() {
+    const _modal = this._settingsModalService.openExpenseCodeModal();
+  }
 
   private __checkFeatureSubscription() {
     this._subs.add(

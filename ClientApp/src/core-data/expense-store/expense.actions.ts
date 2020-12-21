@@ -19,3 +19,13 @@ export const fetchAllExpenseCodesCompletedAction = createAction(
   "[Expense] Fetch all expense codes completed action",
   props<{ codes: ExpenseCodeModel[] }>()
 );
+// ==========================================================
+// ADD UPDATE EXPENSE ACTIONS
+// ==========================================================
+export const triggerAddUpdateExpenseCodeAction = createAction(
+  "[Expense] Add update expense code action",
+  props<{ model: ExpenseCodeModel }>()
+);
+export const triggerAddUpdateExpenseCodeCompletedAction = createAction(
+  "[Expense] Add update expense code action"
+);

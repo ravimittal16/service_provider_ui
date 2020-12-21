@@ -15,6 +15,13 @@ export class ExpenseFacade implements Facade {
   expenseCodes$: Observable<ExpenseCodeModel[]>;
   constructor(private _store: Store<ExpenseState>) {}
 
+  addUpdateExpenseCode(model: ExpenseCodeModel) {
+    this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
+    this.dispatch(
+      fromAllActions.triggerAddUpdateExpenseCodeAction({ model: model })
+    );
+  }
+
   fetchAllExpenseCodes() {
     this.dispatch(fromAllActions.fetchAllExpenseCodes());
   }
