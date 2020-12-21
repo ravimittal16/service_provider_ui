@@ -22,6 +22,7 @@ import { CustomStateSerializer } from "./router.reducer";
 import { RouterModule } from "@angular/router";
 import * as routerStateSelector from "./router.reducer";
 import { RouterReducerState, routerReducer } from "@ngrx/router-store";
+import { ExpenseStoreModule } from "./expense-store/expense.feature.store.module";
 
 export interface RootState {
   routerReducer: routerStateSelector.MergedRouteReducerState;
@@ -42,6 +43,7 @@ export const rootReducers: ActionReducerMap<RootState> = {
     JobsStoreModule,
     HttpClientModule,
     JobFormsStoreModule,
+    ExpenseStoreModule,
     RouterModule,
     StoreRouterConnectingModule.forRoot({
       stateKey: "routerReducer",

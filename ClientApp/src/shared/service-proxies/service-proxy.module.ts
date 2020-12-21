@@ -14,6 +14,7 @@ import { HttpReqInterceptor } from "@shared/infrastructure/request.interceptor";
     ApiServiceProxies.CompanyServiceProxy,
     ApiServiceProxies.JobsServiceProxy,
     ApiServiceProxies.JobFormsServiceProxy,
+    ApiServiceProxies.ExpenseServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: HttpReqInterceptor, multi: true },
   ],
 })
