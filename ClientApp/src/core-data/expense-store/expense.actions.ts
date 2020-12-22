@@ -2,12 +2,12 @@ import { createAction, props } from "@ngrx/store";
 import { ExpenseCodeModel } from "@shared/service-proxies/service-proxies";
 
 export const uiStateBusyAction = createAction(
-  "[JobForms] UI State Busy",
+  "[Expense] UI State Busy",
   props<{ isBusy: boolean }>()
 );
 
 export const updateErrorStateAction = createAction(
-  "[JobForms] Error state",
+  "[Expense] Error state",
   props<{ errors: string[] }>()
 );
 
@@ -27,5 +27,6 @@ export const triggerAddUpdateExpenseCodeAction = createAction(
   props<{ model: ExpenseCodeModel }>()
 );
 export const triggerAddUpdateExpenseCodeCompletedAction = createAction(
-  "[Expense] Add update expense code action"
+  "[Expense] Add update expense code action",
+  props<{ entity: ExpenseCodeModel; isSuccess: boolean }>()
 );

@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Facade } from "@core-data/iFacade";
-import { Action, Store } from "@ngrx/store";
+import { Action, select, Store } from "@ngrx/store";
 import { ExpenseCodeModel } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { ExpenseState } from "./expense.state";
 import * as fromAllActions from "./expense.actions";
+import * as fromAllSelectors from "./expense.selectors";
 
 @Injectable({
   providedIn: "root",
@@ -13,9 +14,19 @@ export class ExpenseFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   expenseCodes$: Observable<ExpenseCodeModel[]>;
-  constructor(private _store: Store<ExpenseState>) {}
+  constructor(private _store: Store<ExpenseState>) {
+    this.expenseCodes$ = this._store.pipe(
+      select(fromAllSelectors.selectAllExpenseCodes)
+    );
+    this.errors$ = this._store.pipe(select(fromAllSelectors.selectAllErrors));
+  }
+
+  clearAllErrors() {
+    this.dispatch(fromAllActions.updateErrorStateAction({ errors: null }));
+  }
 
   addUpdateExpenseCode(model: ExpenseCodeModel) {
+    this.clearAllErrors();
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(
       fromAllActions.triggerAddUpdateExpenseCodeAction({ model: model })
