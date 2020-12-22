@@ -36,7 +36,7 @@ export abstract class BaseEffect {
             isArray(errorBody["errors"])
           ) {
             return new Observable(function (observer) {
-              observer.next([errorBody.errors]);
+              observer.next([...errorBody.errors]);
               observer.complete();
             });
           } else {
