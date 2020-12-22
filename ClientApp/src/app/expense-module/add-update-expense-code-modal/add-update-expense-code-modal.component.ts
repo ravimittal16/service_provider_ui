@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ExpenseFacade } from "@core-data/index";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { ExpenseCodeModel } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-add-update-expense-code-modal",
@@ -10,11 +12,14 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 })
 export class AddUpdateExpenseCodeModalComponent implements OnInit {
   expenseCodeFormGroup: FormGroup;
+  errors$: Observable<string[]>;
   constructor(
     private _expenseFacade: ExpenseFacade,
     private _activateModal: NgbActiveModal,
     private _fb: FormBuilder
-  ) {}
+  ) {
+    this.errors$ = _expenseFacade.errors$;
+  }
 
   onCancelClicked(): void {
     this._activateModal.close(null);
@@ -22,6 +27,8 @@ export class AddUpdateExpenseCodeModalComponent implements OnInit {
 
   onSaveButtonClicked() {
     if (this.expenseCodeFormGroup.valid) {
+      const _model = this.expenseCodeFormGroup.getRawValue() as ExpenseCodeModel;
+      this._expenseFacade.addUpdateExpenseCode(_model);
     }
   }
 
@@ -33,6 +40,7 @@ export class AddUpdateExpenseCodeModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._expenseFacade.clearAllErrors();
     this.__initExpenseCodeForm();
   }
 }

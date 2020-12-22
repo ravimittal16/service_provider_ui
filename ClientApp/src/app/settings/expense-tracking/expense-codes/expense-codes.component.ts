@@ -3,7 +3,10 @@ import { SettingsModalService } from "@app/settings/settings.modal.service";
 import { CompanyFacade, ExpenseFacade } from "@core-data/index";
 import { AppConsts } from "@shared/AppConsts";
 
-import { SubscribedFeaturesDto } from "@shared/service-proxies/service-proxies";
+import {
+  ExpenseCodeModel,
+  SubscribedFeaturesDto,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 
@@ -16,12 +19,14 @@ export class ExpenseCodesComponent implements OnInit, OnDestroy {
   features$: Observable<SubscribedFeaturesDto[]>;
   showBanner = false;
   private _subs = new SubSink();
+  expenseCodes$: Observable<ExpenseCodeModel[]>;
   constructor(
     private _companyFacde: CompanyFacade,
     private _expenseFacade: ExpenseFacade,
     private _settingsModalService: SettingsModalService
   ) {
     this.features$ = _companyFacde.features$;
+    this.expenseCodes$ = _expenseFacade.expenseCodes$;
   }
 
   addNewExpenseCode() {

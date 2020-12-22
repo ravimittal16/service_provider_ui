@@ -1000,6 +1000,62 @@ export class ExpenseServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addUpdateExpenseCode(body: ExpenseCodeModel | undefined): Observable<ExpenseCodeModelGenericResponse> {
+        let url_ = this.baseUrl + "/api/expense/AddUpdateExpenseCode";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddUpdateExpenseCode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddUpdateExpenseCode(<any>response_);
+                } catch (e) {
+                    return <Observable<ExpenseCodeModelGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ExpenseCodeModelGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddUpdateExpenseCode(response: HttpResponseBase): Observable<ExpenseCodeModelGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ExpenseCodeModelGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ExpenseCodeModelGenericResponse>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     getExpenseCodes(): Observable<ExpenseCodeModel[]> {
@@ -4217,6 +4273,81 @@ export class ExpenseCodeModel implements IExpenseCodeModel {
 export interface IExpenseCodeModel {
     expenseCodeId: number;
     codeName: string | undefined;
+}
+
+export class ExpenseCodeModelGenericResponse implements IExpenseCodeModelGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: ExpenseCodeModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IExpenseCodeModelGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? ExpenseCodeModel.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ExpenseCodeModelGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExpenseCodeModelGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): ExpenseCodeModelGenericResponse {
+        const json = this.toJSON();
+        let result = new ExpenseCodeModelGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IExpenseCodeModelGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: ExpenseCodeModel;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class JobFormDefinationDto implements IJobFormDefinationDto {

@@ -3,6 +3,10 @@
 </div>
 <form [formGroup]="expenseCodeFormGroup">
   <div class="modal-body">
+    <app-error-view
+      [errors$]="errors$"
+      observableDefined="true"
+    ></app-error-view>
     <div class="form-group">
       <label>Expense Code</label>
       <input

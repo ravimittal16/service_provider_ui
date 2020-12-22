@@ -7,7 +7,15 @@ import { ExpenseState } from "./expense.state";
 import * as fromAllSelectors from "./expense.selectors";
 
 import * as fromAllActions from "./expense.actions";
-import { filter, map, mergeMap, withLatestFrom } from "rxjs/operators";
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  withLatestFrom,
+} from "rxjs/operators";
+import { of } from "rxjs";
 
 @Injectable()
 export class ExpenseStoreEffects extends BaseEffect {
@@ -18,6 +26,33 @@ export class ExpenseStoreEffects extends BaseEffect {
   ) {
     super();
   }
+
+  addUpdateExpenseCode$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.triggerAddUpdateExpenseCodeAction),
+      mergeMap((action) =>
+        this.expenseService.addUpdateExpenseCode(action.model).pipe(
+          map((data) =>
+            fromAllActions.triggerAddUpdateExpenseCodeCompletedAction({
+              entity: data.entity,
+              isSuccess: data.isSuccess,
+            })
+          ),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [...error],
+                  })
+                );
+              })
+            );
+          })
+        )
+      )
+    );
+  });
 
   loadAllFormsDefinations$ = createEffect(() => {
     return this.actions$.pipe(

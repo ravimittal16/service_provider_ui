@@ -29,5 +29,70 @@
         </div>
       </div>
     </div>
+    <ng-container *ngIf="expenseCodes$ | async as codes">
+      <div class="row mt-4" *ngIf="codes.length === 0">
+        <div class="col d-flex justify-content-center">
+          <div>
+            <p class="mb-0 pb-0">
+              <span>
+                <i class="fa fa-money mr-1"></i>No expense codes found.</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="codes.length > 0"
+        class="row no-gutters header-row border-bottom bg-light p-3 mt-2 d-flex align-items-center"
+      >
+        <div class="col-10">
+          <h6 class="font-weight-bold mb-0">Expense code</h6>
+        </div>
+
+        <div class="col-2">
+          <h6 class="font-weight-bold">&nbsp;</h6>
+        </div>
+      </div>
+      <div
+        class="row no-gutters p-3 border-bottom hover-shadow d-flex align-items-center pointer"
+        *ngFor="let exCode of codes"
+      >
+        <div class="col-10 pointer">
+          <h6 class="mb-0 font-weight-semi-bold fs-0">
+            {{ exCode.codeName }}
+          </h6>
+        </div>
+        <div class="col-2">
+          <div class="d-flex justify-content-end">
+            <button
+              class="btn btn-sm btn-falcon-primary mr-1"
+              ngbTooltip="Create clone of this job form."
+            >
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-falcon-danger mr-1"
+              ngbTooltip="Create clone of this job form."
+            >
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row mt-2">
+      <div class="col ml-2">
+        <div class="custom-control custom-switch">
+          <input
+            class="custom-control-input"
+            id="jobFormsFeatureToggle"
+            type="checkbox"
+          />
+          <label class="custom-control-label" for="jobFormsFeatureToggle"
+            >Turn Off Expense Tracking</label
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </div>
