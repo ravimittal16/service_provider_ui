@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { ExpenseState } from "./expense.state";
 import * as fromAllActions from "./expense.actions";
 import * as fromAllSelectors from "./expense.selectors";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: "root",
@@ -25,8 +26,9 @@ export class ExpenseFacade implements Facade {
     this.dispatch(fromAllActions.updateErrorStateAction({ errors: null }));
   }
 
-  addUpdateExpenseCode(model: ExpenseCodeModel) {
+  addUpdateExpenseCode(model: ExpenseCodeModel, modal: NgbActiveModal) {
     this.clearAllErrors();
+    this.dispatch(fromAllActions.setActiveModalRef({ modal: modal }));
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: true }));
     this.dispatch(
       fromAllActions.triggerAddUpdateExpenseCodeAction({ model: model })

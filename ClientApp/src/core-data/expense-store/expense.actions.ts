@@ -1,3 +1,4 @@
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { createAction, props } from "@ngrx/store";
 import { ExpenseCodeModel } from "@shared/service-proxies/service-proxies";
 
@@ -27,6 +28,10 @@ export const triggerAddUpdateExpenseCodeAction = createAction(
   props<{ model: ExpenseCodeModel }>()
 );
 export const triggerAddUpdateExpenseCodeCompletedAction = createAction(
-  "[Expense] Add update expense code action",
-  props<{ entity: ExpenseCodeModel; isSuccess: boolean }>()
+  "[Expense] Add update expense code completed action",
+  props<{ entity: ExpenseCodeModel; isSuccess: boolean; isAdded: boolean }>()
+);
+export const setActiveModalRef = createAction(
+  "[Expense] set active modal ref action",
+  props<{ modal: NgbActiveModal }>()
 );

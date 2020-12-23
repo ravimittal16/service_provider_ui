@@ -66,13 +66,14 @@
           <div class="d-flex justify-content-end">
             <button
               class="btn btn-sm btn-falcon-primary mr-1"
-              ngbTooltip="Create clone of this job form."
+              ngbTooltip="Edit expense code."
+              (click)="onEditButtonClicked(exCode)"
             >
               <i class="fa fa-pencil"></i>
             </button>
             <button
               class="btn btn-sm btn-falcon-danger mr-1"
-              ngbTooltip="Create clone of this job form."
+              ngbTooltip="Remove expense code."
             >
               <i class="fa fa-trash"></i>
             </button>
