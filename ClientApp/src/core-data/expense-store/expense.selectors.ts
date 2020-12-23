@@ -18,3 +18,7 @@ export const selectAllErrors = createSelector(
   jobFormsState,
   (state) => state.errors
 );
+export const selectActiveModal = createSelector(
+  jobFormsState,
+  (state) => state.activeModal
+);

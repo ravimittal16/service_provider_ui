@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ExpenseFacade } from "@core-data/index";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -12,6 +12,7 @@ import { Observable } from "rxjs";
 })
 export class AddUpdateExpenseCodeModalComponent implements OnInit {
   expenseCodeFormGroup: FormGroup;
+  @Input() editedModel: ExpenseCodeModel;
   errors$: Observable<string[]>;
   constructor(
     private _expenseFacade: ExpenseFacade,
@@ -28,14 +29,19 @@ export class AddUpdateExpenseCodeModalComponent implements OnInit {
   onSaveButtonClicked() {
     if (this.expenseCodeFormGroup.valid) {
       const _model = this.expenseCodeFormGroup.getRawValue() as ExpenseCodeModel;
-      this._expenseFacade.addUpdateExpenseCode(_model);
+      this._expenseFacade.addUpdateExpenseCode(_model, this._activateModal);
     }
   }
 
   private __initExpenseCodeForm() {
+    const __isForNew =
+      this.editedModel === null || this.editedModel === undefined;
     this.expenseCodeFormGroup = this._fb.group({
-      expenseCodeId: [0],
-      codeName: ["", [Validators.required, Validators.maxLength(200)]],
+      expenseCodeId: [__isForNew ? 0 : this.editedModel.expenseCodeId],
+      codeName: [
+        __isForNew ? "" : this.editedModel.codeName,
+        [Validators.required, Validators.maxLength(200)],
+      ],
     });
   }
 

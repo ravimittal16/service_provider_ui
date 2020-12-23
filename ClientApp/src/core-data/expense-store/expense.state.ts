@@ -1,5 +1,6 @@
 import { ExpenseCodeModel } from "@shared/service-proxies/service-proxies";
 import { BaseState } from "@core-data/base.state";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 export class ExpenseActionListenerSchema {
   actionType: string;
@@ -11,4 +12,6 @@ export class ExpenseActionListenerSchema {
   fieldId?: number;
 }
 
-export interface ExpenseState extends BaseState<ExpenseCodeModel> {}
+export interface ExpenseState extends BaseState<ExpenseCodeModel> {
+  activeModal: NgbActiveModal;
+}

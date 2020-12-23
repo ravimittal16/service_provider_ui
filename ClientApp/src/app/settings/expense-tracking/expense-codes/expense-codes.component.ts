@@ -30,7 +30,11 @@ export class ExpenseCodesComponent implements OnInit, OnDestroy {
   }
 
   addNewExpenseCode() {
-    const _modal = this._settingsModalService.openExpenseCodeModal();
+    this._settingsModalService.openExpenseCodeModal(null);
+  }
+
+  onEditButtonClicked(model: ExpenseCodeModel) {
+    this._settingsModalService.openExpenseCodeModal(model);
   }
 
   private __checkFeatureSubscription() {
