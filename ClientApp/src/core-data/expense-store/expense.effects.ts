@@ -27,6 +27,40 @@ export class ExpenseStoreEffects extends BaseEffect {
     super();
   }
 
+  addUpdateExpense$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.triggerAddUpdateExpenseAction),
+      withLatestFrom(
+        this._store.pipe(select(fromAllSelectors.selectActiveModal))
+      ),
+      mergeMap(([action, modal]) =>
+        this.expenseService.addUpdateExpense(action.model).pipe(
+          map((data) => {
+            if (data.isSuccess && modal) {
+              modal.close(true);
+            }
+            return fromAllActions.triggerAddUpdateExpenseCompletedAction({
+              entity: data.entity,
+              isSuccess: data.isSuccess,
+              isForAdd: action.model.expenseId === 0,
+            });
+          }),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [...error],
+                  })
+                );
+              })
+            );
+          })
+        )
+      )
+    );
+  });
+
   addUpdateExpenseCode$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.triggerAddUpdateExpenseCodeAction),

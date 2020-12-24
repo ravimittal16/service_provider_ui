@@ -1056,6 +1056,62 @@ export class ExpenseServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addUpdateExpense(body: CreateExpenseModel | undefined): Observable<ExpenseDtoGenericResponse> {
+        let url_ = this.baseUrl + "/api/expense/AddUpdateExpense";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddUpdateExpense(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddUpdateExpense(<any>response_);
+                } catch (e) {
+                    return <Observable<ExpenseDtoGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ExpenseDtoGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddUpdateExpense(response: HttpResponseBase): Observable<ExpenseDtoGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ExpenseDtoGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ExpenseDtoGenericResponse>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     getExpenseCodes(): Observable<ExpenseCodeModel[]> {
@@ -4350,6 +4406,353 @@ export interface IExpenseCodeModelGenericResponse {
     actionReturnCode: ActionReturnCode;
 }
 
+export enum EmployeeTypes {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+    _7 = 7,
+}
+
+export enum EmployeeStatuses {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+}
+
+export class TeamDto implements ITeamDto {
+    teamId: number;
+    teamName: string | undefined;
+    description: string | undefined;
+    employees: EmployeeDto[] | undefined;
+
+    constructor(data?: ITeamDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.teamId = _data["teamId"];
+            this.teamName = _data["teamName"];
+            this.description = _data["description"];
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees.push(EmployeeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TeamDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TeamDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["teamId"] = this.teamId;
+        data["teamName"] = this.teamName;
+        data["description"] = this.description;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): TeamDto {
+        const json = this.toJSON();
+        let result = new TeamDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITeamDto {
+    teamId: number;
+    teamName: string | undefined;
+    description: string | undefined;
+    employees: EmployeeDto[] | undefined;
+}
+
+export class EmployeeDto implements IEmployeeDto {
+    title: string | undefined;
+    givenName: string | undefined;
+    displayName: string | undefined;
+    email: string | undefined;
+    employeeType: EmployeeTypes;
+    status: EmployeeStatuses;
+    employeeId: number;
+    team: TeamDto;
+    readonly fullDisplayName: string | undefined;
+
+    constructor(data?: IEmployeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.givenName = _data["givenName"];
+            this.displayName = _data["displayName"];
+            this.email = _data["email"];
+            this.employeeType = _data["employeeType"];
+            this.status = _data["status"];
+            this.employeeId = _data["employeeId"];
+            this.team = _data["team"] ? TeamDto.fromJS(_data["team"]) : <any>undefined;
+            (<any>this).fullDisplayName = _data["fullDisplayName"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["givenName"] = this.givenName;
+        data["displayName"] = this.displayName;
+        data["email"] = this.email;
+        data["employeeType"] = this.employeeType;
+        data["status"] = this.status;
+        data["employeeId"] = this.employeeId;
+        data["team"] = this.team ? this.team.toJSON() : <any>undefined;
+        data["fullDisplayName"] = this.fullDisplayName;
+        return data; 
+    }
+
+    clone(): EmployeeDto {
+        const json = this.toJSON();
+        let result = new EmployeeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEmployeeDto {
+    title: string | undefined;
+    givenName: string | undefined;
+    displayName: string | undefined;
+    email: string | undefined;
+    employeeType: EmployeeTypes;
+    status: EmployeeStatuses;
+    employeeId: number;
+    team: TeamDto;
+    fullDisplayName: string | undefined;
+}
+
+export class CreateExpenseModel implements ICreateExpenseModel {
+    companyId: number;
+    userId: string | undefined;
+    expenseId: number;
+    expenseDate: moment.Moment;
+    title: string | undefined;
+    description: string | undefined;
+    amount: number;
+    reimburseToEmployeeId: EmployeeDto;
+    jobId: number | undefined;
+    expenseCode: ExpenseCodeModel;
+
+    constructor(data?: ICreateExpenseModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.userId = _data["userId"];
+            this.expenseId = _data["expenseId"];
+            this.expenseDate = _data["expenseDate"] ? moment(_data["expenseDate"].toString()) : <any>undefined;
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.amount = _data["amount"];
+            this.reimburseToEmployeeId = _data["reimburseToEmployeeId"] ? EmployeeDto.fromJS(_data["reimburseToEmployeeId"]) : <any>undefined;
+            this.jobId = _data["jobId"];
+            this.expenseCode = _data["expenseCode"] ? ExpenseCodeModel.fromJS(_data["expenseCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateExpenseModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateExpenseModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["userId"] = this.userId;
+        data["expenseId"] = this.expenseId;
+        data["expenseDate"] = this.expenseDate ? this.expenseDate.toISOString() : <any>undefined;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["amount"] = this.amount;
+        data["reimburseToEmployeeId"] = this.reimburseToEmployeeId ? this.reimburseToEmployeeId.toJSON() : <any>undefined;
+        data["jobId"] = this.jobId;
+        data["expenseCode"] = this.expenseCode ? this.expenseCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): CreateExpenseModel {
+        const json = this.toJSON();
+        let result = new CreateExpenseModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateExpenseModel {
+    companyId: number;
+    userId: string | undefined;
+    expenseId: number;
+    expenseDate: moment.Moment;
+    title: string | undefined;
+    description: string | undefined;
+    amount: number;
+    reimburseToEmployeeId: EmployeeDto;
+    jobId: number | undefined;
+    expenseCode: ExpenseCodeModel;
+}
+
+export class ExpenseDto implements IExpenseDto {
+
+    constructor(data?: IExpenseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): ExpenseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExpenseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+
+    clone(): ExpenseDto {
+        const json = this.toJSON();
+        let result = new ExpenseDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IExpenseDto {
+}
+
+export class ExpenseDtoGenericResponse implements IExpenseDtoGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: ExpenseDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IExpenseDtoGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? ExpenseDto.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ExpenseDtoGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ExpenseDtoGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): ExpenseDtoGenericResponse {
+        const json = this.toJSON();
+        let result = new ExpenseDtoGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IExpenseDtoGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: ExpenseDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+}
+
 export class JobFormDefinationDto implements IJobFormDefinationDto {
     formId: number;
     formName: string | undefined;
@@ -5265,162 +5668,6 @@ export interface ICreateJobModelGenericResponse {
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
-}
-
-export enum EmployeeTypes {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-    _4 = 4,
-    _5 = 5,
-    _6 = 6,
-    _7 = 7,
-}
-
-export enum EmployeeStatuses {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-}
-
-export class TeamDto implements ITeamDto {
-    teamId: number;
-    teamName: string | undefined;
-    description: string | undefined;
-    employees: EmployeeDto[] | undefined;
-
-    constructor(data?: ITeamDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.teamId = _data["teamId"];
-            this.teamName = _data["teamName"];
-            this.description = _data["description"];
-            if (Array.isArray(_data["employees"])) {
-                this.employees = [] as any;
-                for (let item of _data["employees"])
-                    this.employees.push(EmployeeDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TeamDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TeamDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["teamId"] = this.teamId;
-        data["teamName"] = this.teamName;
-        data["description"] = this.description;
-        if (Array.isArray(this.employees)) {
-            data["employees"] = [];
-            for (let item of this.employees)
-                data["employees"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): TeamDto {
-        const json = this.toJSON();
-        let result = new TeamDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITeamDto {
-    teamId: number;
-    teamName: string | undefined;
-    description: string | undefined;
-    employees: EmployeeDto[] | undefined;
-}
-
-export class EmployeeDto implements IEmployeeDto {
-    title: string | undefined;
-    givenName: string | undefined;
-    displayName: string | undefined;
-    email: string | undefined;
-    employeeType: EmployeeTypes;
-    status: EmployeeStatuses;
-    employeeId: number;
-    team: TeamDto;
-    readonly fullDisplayName: string | undefined;
-
-    constructor(data?: IEmployeeDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.title = _data["title"];
-            this.givenName = _data["givenName"];
-            this.displayName = _data["displayName"];
-            this.email = _data["email"];
-            this.employeeType = _data["employeeType"];
-            this.status = _data["status"];
-            this.employeeId = _data["employeeId"];
-            this.team = _data["team"] ? TeamDto.fromJS(_data["team"]) : <any>undefined;
-            (<any>this).fullDisplayName = _data["fullDisplayName"];
-        }
-    }
-
-    static fromJS(data: any): EmployeeDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EmployeeDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["title"] = this.title;
-        data["givenName"] = this.givenName;
-        data["displayName"] = this.displayName;
-        data["email"] = this.email;
-        data["employeeType"] = this.employeeType;
-        data["status"] = this.status;
-        data["employeeId"] = this.employeeId;
-        data["team"] = this.team ? this.team.toJSON() : <any>undefined;
-        data["fullDisplayName"] = this.fullDisplayName;
-        return data; 
-    }
-
-    clone(): EmployeeDto {
-        const json = this.toJSON();
-        let result = new EmployeeDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IEmployeeDto {
-    title: string | undefined;
-    givenName: string | undefined;
-    displayName: string | undefined;
-    email: string | undefined;
-    employeeType: EmployeeTypes;
-    status: EmployeeStatuses;
-    employeeId: number;
-    team: TeamDto;
-    fullDisplayName: string | undefined;
 }
 
 export class JobLineItemDto implements IJobLineItemDto {

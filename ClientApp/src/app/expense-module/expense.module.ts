@@ -8,6 +8,7 @@ import { AddExpenseButtonComponent } from "./add-expense-button/add-expense-butt
 import { AddExpenseModalComponent } from "./add-expense-modal/add-expense-modal.component";
 import { ExpenseListComponent } from "./expense-list/expense-list.component";
 import { ExpenseService } from "./expense.service";
+import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
 const __modalComponent = [
   AddUpdateExpenseCodeModalComponent,
@@ -18,7 +19,13 @@ const __otherComponents = [AddExpenseButtonComponent, ExpenseListComponent];
 @NgModule({
   declarations: [...__modalComponent, ...__otherComponents],
   exports: [...__modalComponent, ...__otherComponents],
-  imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    SharedUiComponentsModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [ExpenseService],
 })
 export class ExpenseModule {}
