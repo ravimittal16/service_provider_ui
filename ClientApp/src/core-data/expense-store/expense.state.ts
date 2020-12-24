@@ -13,5 +13,5 @@ export class ExpenseActionListenerSchema {
 }
 
 export interface ExpenseState extends BaseState<ExpenseCodeModel> {
-  activeModal: NgbActiveModal;
+  expenseCodeModal: NgbActiveModal;
 }

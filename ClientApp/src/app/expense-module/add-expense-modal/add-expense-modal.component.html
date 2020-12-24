@@ -1,0 +1,70 @@
+<div class="modal-header">
+  <h5 class="modal-title">Add Expense</h5>
+</div>
+
+<form [formGroup]="expenseFormGroup">
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Title</label>
+      <input class="form-control form-control-sm" formControlName="title" />
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        class="form-control form-control-sm"
+        formControlName="description"
+        rows="3"
+      >
+      </textarea>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label>Amount</label>
+          <input
+            type="number"
+            formControlName="amount"
+            class="form-control form-control-sm"
+            placeholder="Amount"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label>Date</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            placeholder="Last name"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Reimburse To</label>
+      <input class="form-control form-control-sm" formControlName="title" />
+    </div>
+    <div class="form-group">
+      <label>Job</label>
+      <input class="form-control form-control-sm" formControlName="title" />
+    </div>
+    <div class="form-group">
+      <label>Accounting Code</label>
+      <input class="form-control form-control-sm" formControlName="title" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-xs btn-danger mr-1" (click)="onCancelClicked()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn btn-xs btn-primary"
+        (click)="onSaveButtonClicked()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</form>
