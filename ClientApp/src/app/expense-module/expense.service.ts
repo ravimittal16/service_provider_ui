@@ -19,6 +19,7 @@ export class ExpenseService {
       AddExpenseModalComponent,
       this.modalConfig
     );
+    modalRef.componentInstance.jobId = jobId;
     return modalRef;
   }
 }
