@@ -1,5 +1,4 @@
-import { Observable } from "rxjs";
-import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { Observable, BehaviorSubject } from "rxjs";
 
 export class ErrorRenderer {
   private errorsSubject = new BehaviorSubject<string[]>([]);

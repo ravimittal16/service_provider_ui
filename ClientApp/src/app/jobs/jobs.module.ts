@@ -25,6 +25,7 @@ import { JobFormsListViewComponent } from "./job-forms-list-view/job-forms-list-
 import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-list-modal.component";
 import { JobFormsDetailModalComponent } from "./job-forms-detail-modal/job-forms-detail-modal.component";
 import { JobFormsFieldControlComponent } from "./job-forms-field-control/job-forms-field-control.component";
+import { ExpenseModule } from "@app/expense-module/expense.module";
 const __modalComponents = [
   AddJobModalComponent,
   JobVisitDetailModalComponent,
@@ -52,6 +53,7 @@ const __moduleComponents = [
     ReactiveFormsModule,
     ColorPickerModule,
     NgbModule,
+    ExpenseModule,
     JobsRoutingModule,
     SharedUiComponentsModule,
     DragDropModule,

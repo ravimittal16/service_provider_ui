@@ -20,5 +20,5 @@ export const selectAllErrors = createSelector(
 );
 export const selectActiveModal = createSelector(
   jobFormsState,
-  (state) => state.activeModal
+  (state) => state.expenseCodeModal
 );

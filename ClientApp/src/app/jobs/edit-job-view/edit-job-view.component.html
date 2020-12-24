@@ -279,7 +279,20 @@
               <a ngbNavLink class="tab-link"
                 ><span class="fa fa-usd mr-1"></span>Expenses</a
               >
-              <ng-template ngbNavContent>Second content</ng-template>
+              <ng-template ngbNavContent>
+                <div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex justify-content-end">
+                        <app-add-expense-button
+                          [jobId]="jobId"
+                        ></app-add-expense-button>
+                      </div>
+                    </div>
+                  </div>
+                  <app-expense-list></app-expense-list>
+                </div>
+              </ng-template>
             </li>
           </ul>
           <div class="p-2" [ngbNavOutlet]="nav"></div>

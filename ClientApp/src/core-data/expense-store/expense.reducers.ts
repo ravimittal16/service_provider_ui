@@ -26,7 +26,7 @@ export const initialState: ExpenseState = adapter.getInitialState({
   errors: [],
   success: false,
   items: [],
-  activeModal: null,
+  expenseCodeModal: null,
 });
 
 const createFeatureReducer = createReducer(
@@ -37,7 +37,7 @@ const createFeatureReducer = createReducer(
   })),
   on(fromAllActions.setActiveModalRef, (state, props) => ({
     ...state,
-    activeModal: props.modal,
+    expenseCodeModal: props.modal,
   })),
   on(fromAllActions.updateErrorStateAction, (state, props) => ({
     ...state,
@@ -61,6 +61,7 @@ const createFeatureReducer = createReducer(
       }
       return {
         ...__state,
+        expenseCodeModal: null,
         isBusy: false,
         errors: [],
       };
