@@ -12,6 +12,11 @@ export class NavMenuComponent {
     this.isExpanded = false;
   }
 
+  addNewJobClicked(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   toggle() {
     this.isExpanded = !this.isExpanded;
   }

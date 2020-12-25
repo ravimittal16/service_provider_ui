@@ -113,13 +113,11 @@ export class AddJobVisitModalComponent implements OnInit {
 
   onSubmitButtonClicked(): void {
     const _model = this.newVistFormGroup.getRawValue();
-    console.log(_model);
     if (this.newVistFormGroup.invalid) {
       this.validationMessages = this.__validator.processMessages(
         this.newVistFormGroup
       );
       this._cdr.detectChanges();
-      console.log(this.validationMessages);
     } else {
       this.isBusy = true;
       this.__subs.add(
