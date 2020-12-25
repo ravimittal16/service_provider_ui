@@ -1,3 +1,36 @@
-<div class="row mt-2">
-  <div class="col">Expense list will be shown here</div>
-</div>
+<ng-container *ngIf="jobExpenses$ | async as expenses">
+  <div class="row p-3 border-bottom" *ngIf="expenses.length === 0">
+    <div class="col d-flex justify-content-center">
+      <h6 class="font-weight-normal mb-0 text-500">
+        <i class="fa fa-money"></i> No expenses added.
+      </h6>
+    </div>
+  </div>
+  <div
+    class="row header-row border-bottom bg-light p-2 mt-2 d-flex align-items-center"
+  >
+    <div class="col-8">
+      <h6 class="font-weight-bold mb-0">Expense</h6>
+    </div>
+    <div class="col-2 d-flex justify-content-center">
+      <h6 class="font-weight-bold mb-0">Amount</h6>
+    </div>
+    <div class="col-2">
+      <h6 class="font-weight-bold">&nbsp;</h6>
+    </div>
+  </div>
+  <div
+    class="row p-2 py-3 border-bottom hover-shadow d-flex align-items-center pointer"
+    *ngFor="let expense of expenses; index as i"
+  >
+    <div class="col-8">
+      <h6 class="font-weight-light mb-0">
+        {{ expense.title }}<br />
+        <small class="text-500">{{ expense.description }}</small>
+      </h6>
+    </div>
+    <div class="col-2 d-flex justify-content-center">
+      <h6 class="text-500">{{ expense.amount | currency }}</h6>
+    </div>
+  </div>
+</ng-container>
