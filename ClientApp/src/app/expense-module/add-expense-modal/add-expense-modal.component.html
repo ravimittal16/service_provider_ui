@@ -6,7 +6,14 @@
   <div class="modal-body">
     <div class="form-group">
       <label>Title</label>
-      <input class="form-control form-control-sm" formControlName="title" />
+      <input
+        class="form-control form-control-sm"
+        formControlName="title"
+        [ngClass]="{ 'is-invalid': validationMessages.title }"
+      />
+      <div class="invalid-feedback show-error" *ngIf="validationMessages.title">
+        {{ validationMessages.title }}
+      </div>
     </div>
     <div class="form-group">
       <label>Description</label>
@@ -31,12 +38,18 @@
       </div>
       <div class="col">
         <div class="form-group">
-          <label>Date</label>
-          <input
-            type="text"
-            class="form-control form-control-sm"
-            placeholder="Last name"
-          />
+          <app-datetime-picker
+            selectorType="date"
+            formControlName="expenseDate"
+            title="Date"
+            [ngClass]="{ 'is-invalid': validationMessages.expenseDate }"
+          ></app-datetime-picker>
+          <div
+            class="invalid-feedback show-error"
+            *ngIf="validationMessages.expenseDate"
+          >
+            {{ validationMessages.expenseDate }}
+          </div>
         </div>
       </div>
     </div>
@@ -46,6 +59,7 @@
         formControlName="reimburseToEmployeeId"
         class="form-control form-control-sm js-choice"
         choices=""
+        [ngClass]="{ 'is-invalid': validationMessages.reimburseToEmployeeId }"
       >
         <optgroup *ngFor="let team of teams$ | async" [label]="team.teamName">
           <option
@@ -57,6 +71,12 @@
           </option>
         </optgroup>
       </select>
+      <div
+        class="invalid-feedback show-error"
+        *ngIf="validationMessages.reimburseToEmployeeId"
+      >
+        {{ validationMessages.reimburseToEmployeeId }}
+      </div>
     </div>
     <div class="form-group">
       <label>Job</label>
@@ -67,11 +87,18 @@
       <select
         class="form-control form-control-sm"
         formControlName="expenseCode"
+        [ngClass]="{ 'is-invalid': validationMessages.expenseCode }"
       >
         <option *ngFor="let c of expenseCodes$ | async" [ngValue]="c">
           {{ c.codeName }}
         </option>
       </select>
+      <div
+        class="invalid-feedback show-error"
+        *ngIf="validationMessages.expenseCode"
+      >
+        {{ validationMessages.expenseCode }}
+      </div>
     </div>
     [TO DO | UPLOAD RECEIPT]
   </div>

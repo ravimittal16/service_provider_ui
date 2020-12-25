@@ -48,6 +48,6 @@ export const triggerAddUpdateExpenseAction = createAction(
   props<{ model: CreateExpenseModel }>()
 );
 export const triggerAddUpdateExpenseCompletedAction = createAction(
-  "[Expense] Add update expense.",
+  "[Expense] Add update expense completed action.",
   props<{ entity: ExpenseDto; isSuccess: boolean; isForAdd: boolean }>()
 );

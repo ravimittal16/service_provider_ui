@@ -8,6 +8,7 @@ export enum ValidationTypes {
   MinLength,
   Email,
   Pattern,
+  Min,
 }
 // ==========================================================
 // this will auto papulate the messages based on the validator type
