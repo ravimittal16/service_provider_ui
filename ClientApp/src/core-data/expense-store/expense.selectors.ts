@@ -1,24 +1,38 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { expenseStoreFeatureKey, adapter } from "./expense.reducers";
-import { ExpenseState } from "./expense.state";
+import {
+  expenseStoreFeatureKey,
+  expenseAdapter,
+  expenseCodeAdapter,
+} from "./expense.reducers";
+import { ExpenseStoreState } from "./expense.state";
 
-export const jobFormsState = createFeatureSelector<ExpenseState>(
+export const expenseStoreState = createFeatureSelector<ExpenseStoreState>(
   expenseStoreFeatureKey
 );
 
 const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal,
-} = adapter.getSelectors();
+  selectAll: allExpenseCodes,
+} = expenseCodeAdapter.getSelectors<ExpenseStoreState>(
+  (x) => x.expenseCodesState
+);
 
-export const selectAllExpenseCodes = createSelector(jobFormsState, selectAll);
+const {
+  selectAll: selectAllExpenses,
+} = expenseAdapter.getSelectors<ExpenseStoreState>((x) => x.expenseState);
+
+export const selectAllJobExpenses = createSelector(
+  expenseStoreState,
+  selectAllExpenses
+);
+export const selectAllExpenseCodes = createSelector(
+  expenseStoreState,
+  allExpenseCodes
+);
 export const selectAllErrors = createSelector(
-  jobFormsState,
+  expenseStoreState,
   (state) => state.errors
 );
 export const selectActiveModal = createSelector(
-  jobFormsState,
-  (state) => state.expenseCodeModal
+  expenseStoreState,
+  (state) => state.expenseCodesState?.expenseCodeModal
 );

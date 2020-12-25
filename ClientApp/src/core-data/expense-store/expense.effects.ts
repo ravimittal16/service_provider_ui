@@ -3,7 +3,7 @@ import { BaseEffect } from "@core-data/base.effect";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { select, Store } from "@ngrx/store";
 import { ExpenseServiceProxy } from "@shared/service-proxies/service-proxies";
-import { ExpenseState } from "./expense.state";
+import { ExpenseCodeState } from "./expense.state";
 import * as fromAllSelectors from "./expense.selectors";
 
 import * as fromAllActions from "./expense.actions";
@@ -20,7 +20,7 @@ import { of } from "rxjs";
 @Injectable()
 export class ExpenseStoreEffects extends BaseEffect {
   constructor(
-    private _store: Store<ExpenseState>,
+    private _store: Store<ExpenseCodeState>,
     private expenseService: ExpenseServiceProxy,
     private actions$: Actions
   ) {
@@ -95,7 +95,30 @@ export class ExpenseStoreEffects extends BaseEffect {
     );
   });
 
-  loadAllFormsDefinations$ = createEffect(() => {
+  loadAllExpenses$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.fetchAllJobExpenseAction),
+      withLatestFrom(this._store.select(fromAllSelectors.selectAllJobExpenses)),
+      filter(([action, expenses]) => {
+        console.log(action, expenses);
+        return (
+          expenses === null || expenses === undefined || expenses.length === 0
+        );
+      }),
+      mergeMap((action) => {
+        const _action = action[0];
+        return this.expenseService.getAllExpenses(_action.jobId).pipe(
+          map((res) =>
+            fromAllActions.fetchAllJobExpenseCompletedAction({
+              expenses: res,
+            })
+          )
+        );
+      })
+    );
+  });
+
+  loadAllExpenseCodes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.fetchAllExpenseCodes),
       withLatestFrom(

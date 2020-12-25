@@ -1112,6 +1112,66 @@ export class ExpenseServiceProxy {
     }
 
     /**
+     * @param jobId (optional) 
+     * @return Success
+     */
+    getAllExpenses(jobId: number | undefined): Observable<ExpenseDto[]> {
+        let url_ = this.baseUrl + "/api/expense/GetAllExpenses?";
+        if (jobId === null)
+            throw new Error("The parameter 'jobId' cannot be null.");
+        else if (jobId !== undefined)
+            url_ += "jobId=" + encodeURIComponent("" + jobId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllExpenses(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllExpenses(<any>response_);
+                } catch (e) {
+                    return <Observable<ExpenseDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ExpenseDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllExpenses(response: HttpResponseBase): Observable<ExpenseDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ExpenseDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ExpenseDto[]>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     getExpenseCodes(): Observable<ExpenseCodeModel[]> {
@@ -4642,6 +4702,18 @@ export interface ICreateExpenseModel {
 }
 
 export class ExpenseDto implements IExpenseDto {
+    expenseId: number;
+    title: string | undefined;
+    description: string | undefined;
+    amount: number;
+    expenseDate: moment.Moment;
+    jobId: number | undefined;
+    createdByName: string | undefined;
+    reimburseDisplayName: string | undefined;
+    reimburseToEmployeeId: number;
+    isApproved: boolean;
+    approvedBy: string | undefined;
+    expenseCodeName: string | undefined;
 
     constructor(data?: IExpenseDto) {
         if (data) {
@@ -4653,6 +4725,20 @@ export class ExpenseDto implements IExpenseDto {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.expenseId = _data["expenseId"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.amount = _data["amount"];
+            this.expenseDate = _data["expenseDate"] ? moment(_data["expenseDate"].toString()) : <any>undefined;
+            this.jobId = _data["jobId"];
+            this.createdByName = _data["createdByName"];
+            this.reimburseDisplayName = _data["reimburseDisplayName"];
+            this.reimburseToEmployeeId = _data["reimburseToEmployeeId"];
+            this.isApproved = _data["isApproved"];
+            this.approvedBy = _data["approvedBy"];
+            this.expenseCodeName = _data["expenseCodeName"];
+        }
     }
 
     static fromJS(data: any): ExpenseDto {
@@ -4664,6 +4750,18 @@ export class ExpenseDto implements IExpenseDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["expenseId"] = this.expenseId;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["amount"] = this.amount;
+        data["expenseDate"] = this.expenseDate ? this.expenseDate.toISOString() : <any>undefined;
+        data["jobId"] = this.jobId;
+        data["createdByName"] = this.createdByName;
+        data["reimburseDisplayName"] = this.reimburseDisplayName;
+        data["reimburseToEmployeeId"] = this.reimburseToEmployeeId;
+        data["isApproved"] = this.isApproved;
+        data["approvedBy"] = this.approvedBy;
+        data["expenseCodeName"] = this.expenseCodeName;
         return data; 
     }
 
@@ -4676,6 +4774,18 @@ export class ExpenseDto implements IExpenseDto {
 }
 
 export interface IExpenseDto {
+    expenseId: number;
+    title: string | undefined;
+    description: string | undefined;
+    amount: number;
+    expenseDate: moment.Moment;
+    jobId: number | undefined;
+    createdByName: string | undefined;
+    reimburseDisplayName: string | undefined;
+    reimburseToEmployeeId: number;
+    isApproved: boolean;
+    approvedBy: string | undefined;
+    expenseCodeName: string | undefined;
 }
 
 export class ExpenseDtoGenericResponse implements IExpenseDtoGenericResponse {

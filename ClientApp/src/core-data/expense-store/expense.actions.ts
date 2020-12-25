@@ -35,7 +35,7 @@ export const triggerAddUpdateExpenseCodeCompletedAction = createAction(
   "[Expense] Add update expense code completed action",
   props<{ entity: ExpenseCodeModel; isSuccess: boolean; isAdded: boolean }>()
 );
-export const setActiveModalRef = createAction(
+export const setExpenseCodeModalRef = createAction(
   "[Expense] set active modal ref action",
   props<{ modal: NgbActiveModal }>()
 );
@@ -50,4 +50,15 @@ export const triggerAddUpdateExpenseAction = createAction(
 export const triggerAddUpdateExpenseCompletedAction = createAction(
   "[Expense] Add update expense completed action.",
   props<{ entity: ExpenseDto; isSuccess: boolean; isForAdd: boolean }>()
+);
+// ==========================================================
+// EXPENSE DTO
+// ==========================================================
+export const fetchAllJobExpenseAction = createAction(
+  "[Expense] Fetch all job expense action",
+  props<{ jobId: number }>()
+);
+export const fetchAllJobExpenseCompletedAction = createAction(
+  "[Expense] Fetch all job expense completed action",
+  props<{ expenses: ExpenseDto[] }>()
 );
