@@ -74,34 +74,16 @@
         </li>
         <li class="nav-item">
           <a
-            class="nav-link dropdown-indicator"
-            href="#pages-errors"
-            data-toggle="collapse"
-            role="button"
-            aria-expanded="false"
-            aria-controls="pages-errors"
-            >Calendar</a
+            class="nav-link"
+            [routerLink]="['jobs/calView']"
+            routerLinkActive="active"
           >
-          <ul class="nav collapse" id="pages-errors" data-parent="#pages">
-            <li class="nav-item">
-              <a class="nav-link" href="../pages/activity.html">
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-icon"
-                    ><span class="fa fa-users"></span></span
-                  ><span class="nav-link-text"> Jobs - Team View</span>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../pages/activity.html">
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-icon"
-                    ><span class="fa fa-users"></span></span
-                  ><span class="nav-link-text"> Jobs - Full View</span>
-                </div>
-              </a>
-            </li>
-          </ul>
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"
+                ><span class="fa fa-calendar"></span></span
+              ><span class="nav-link-text"> Calendar</span>
+            </div>
+          </a>
         </li>
       </ul>
     </li>
