@@ -140,6 +140,26 @@ const createFeatureReducer = createReducer(
       expenseState: _expenseState,
       isBusy: false,
     };
+  }),
+  on(fromAllActions.triggerAddUpdateExpenseCompletedAction, (state, props) => {
+    let _expenseState = state.expenseState;
+    if (props.isForAdd) {
+      _expenseState = expenseAdapter.addOne(props.entity, _expenseState);
+    } else {
+      const editSubmission: Update<ExpenseDto> = {
+        id: props.entity.expenseId,
+        changes: {
+          title: props.entity.title,
+          description: props.entity.description,
+        },
+      };
+      _expenseState = expenseAdapter.updateOne(editSubmission, _expenseState);
+    }
+    return {
+      ...state,
+      expenseState: _expenseState,
+      isBusy: false,
+    };
   })
 );
 

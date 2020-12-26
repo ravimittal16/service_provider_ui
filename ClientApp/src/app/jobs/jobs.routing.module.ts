@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { EditJobViewComponent } from "./edit-job-view/edit-job-view.component";
+import { JobsCalendarViewComponent } from "./jobs-calendar-view/jobs-calendar-view.component";
 
 import { JobsKanbanViewComponent } from "./jobs-kanban-view/jobs-kanban-view.component";
 import { JobsMainComponent } from "./jobs-main/jobs.main.component";
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: "view", component: JobsViewComponent },
       { path: "mapView", component: JobsMapViewComponent },
       { path: "kanbanView", component: JobsKanbanViewComponent },
+      { path: "calView", component: JobsCalendarViewComponent },
       { path: "editJob/:jobId", component: EditJobViewComponent },
     ],
   },
@@ -33,5 +35,6 @@ export const routeComponents = [
   JobsViewComponent,
   JobsMapViewComponent,
   JobsKanbanViewComponent,
+  JobsCalendarViewComponent,
   EditJobViewComponent,
 ];

@@ -8,6 +8,15 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { SharedModule } from "@shared/shared.module";
 import { ColorPickerModule } from "ngx-color-picker";
+// ==========================================================
+// FULL CAL INTERGARION
+
+import { FullCalendarModule } from "@fullcalendar/angular";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGrigPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+// ==========================================================
 import { AddJobModalComponent } from "./add-job-modal/add-job-modal.component";
 import { AddJobVisitModalComponent } from "./add-job-visit-modal/add-job-visit-modal.component";
 import { AddNoteButtonPopoverComponent } from "./add-note-button-popover/add-note-button-popover.component";
@@ -20,6 +29,7 @@ import { JobsFilterComponent } from "./jobs-filter/jobs-filter.component";
 import { JobsDataService } from "./jobs.data.service";
 import { JobsModalService } from "./jobs.modal.service";
 import { JobsRoutingModule, routeComponents } from "./jobs.routing.module";
+
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { JobFormsListViewComponent } from "./job-forms-list-view/job-forms-list-view.component";
 import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-list-modal.component";
@@ -43,6 +53,13 @@ const __moduleComponents = [
   JobFormsListViewComponent,
   JobFormsFieldControlComponent,
 ];
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  timeGrigPlugin,
+  interactionPlugin,
+  listPlugin,
+]);
 @NgModule({
   declarations: [routeComponents, ...__modalComponents, ...__moduleComponents],
   imports: [
@@ -57,6 +74,7 @@ const __moduleComponents = [
     JobsRoutingModule,
     SharedUiComponentsModule,
     DragDropModule,
+    FullCalendarModule,
   ],
   exports: [...__modalComponents],
   providers: [JobsDataService, JobsModalService],
