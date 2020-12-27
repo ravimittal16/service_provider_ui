@@ -16,9 +16,9 @@
       <div class="col">
         <form [formGroup]="customFieldDetailGroup">
           <div class="form-row">
-            <div class="col">
+            <div class="col-8">
               <div class="form-group form-group-sm flex-fill">
-                <label for="staticEmail2" class="sr-only">Entity Type</label>
+                <label for="staticEmail2">Add Custom Field for</label>
                 <select
                   class="form-control form-control-sm"
                   aria-placeholder=""
@@ -27,26 +27,29 @@
                   formControlName="entityType"
                 >
                   <option value="">Select Type</option>
-                  <option value="3">Customer</option>
-                  <option value="15">Employee</option>
-                  <option value="7">Estimate</option>
-                  <option value="13">Job</option>
-                  <option value="6">Product</option>
-                  <option value="5">User</option>
+                  <option *ngFor="let c of entityTypes$ | async" [ngValue]="c">
+                    {{ c.entityName }}
+                  </option>
                 </select>
               </div>
             </div>
-            <div class="col">
-              <button
-                class="btn btn-falcon-success btn-sm"
-                type="button"
-                (click)="addNewCustomTypeClicked()"
-              >
-                <span class="fa fa-plus"></span> Add new custom type
-              </button>
-            </div>
           </div>
         </form>
+      </div>
+    </div>
+    <div class="row mt-3" *ngIf="selectedEntityType$ | async as selectedType">
+      <div class="col">
+        <h5 class="text-500">
+          Custom fields for {{ selectedType.entityName }}
+        </h5>
+      </div>
+      <div class="col">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-xs btn-falcon-primary">
+            <i class="fa fa-plus"></i> Add custom field for
+            {{ selectedType.entityName }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
