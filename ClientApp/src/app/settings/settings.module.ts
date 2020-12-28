@@ -15,6 +15,9 @@ import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-co
 
 import { SharedModule } from "@shared/shared.module";
 import { SettingsModalService } from "./settings.modal.service";
+import { AddUpdateCustomFieldModalComponent } from "./custom-fields/add-update-custom-field-modal/add-update-custom-field-modal.component";
+
+const __modalComponents = [AddUpdateCustomFieldModalComponent];
 
 @NgModule({
   declarations: [
@@ -24,6 +27,7 @@ import { SettingsModalService } from "./settings.modal.service";
     CustomFieldsComponent,
     BusinessHoursCardComponent,
     TaxSettingsCardComponent,
+    ...__modalComponents,
   ],
   imports: [
     CommonModule,

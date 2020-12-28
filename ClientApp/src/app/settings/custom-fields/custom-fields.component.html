@@ -45,7 +45,10 @@
       </div>
       <div class="col">
         <div class="d-flex justify-content-end">
-          <button class="btn btn-xs btn-falcon-primary">
+          <button
+            class="btn btn-xs btn-falcon-primary"
+            (click)="addNewCustomTypeClicked()"
+          >
             <i class="fa fa-plus"></i> Add custom field for
             {{ selectedType.entityName }}
           </button>
