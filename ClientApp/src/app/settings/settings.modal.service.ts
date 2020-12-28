@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AddUpdateExpenseCodeModalComponent } from "@app/expense-module/add-update-expense-code-modal/add-update-expense-code-modal.component";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ExpenseCodeModel } from "@shared/service-proxies/service-proxies";
+import { AddUpdateCustomFieldModalComponent } from "./custom-fields/add-update-custom-field-modal/add-update-custom-field-modal.component";
 
 @Injectable({ providedIn: "root" })
 export class SettingsModalService {
@@ -18,6 +19,16 @@ export class SettingsModalService {
       this.modalConfig
     );
     modalRef.componentInstance.editedModel = editedModel;
+    return modalRef;
+  }
+
+  openCustomFieldDefinationModal() {
+    this.modalConfig.size = "md";
+    const modalRef = this.modalService.open(
+      AddUpdateCustomFieldModalComponent,
+      this.modalConfig
+    );
+    //modalRef.componentInstance.editedModel = editedModel;
     return modalRef;
   }
 }

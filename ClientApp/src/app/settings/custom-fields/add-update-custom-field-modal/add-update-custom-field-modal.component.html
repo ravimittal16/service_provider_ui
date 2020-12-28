@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h5 class="modal-title">title</h5>
+</div>
+
+<form [formGroup]="customFieldDefinationFormGroup">
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Field Type</label>
+      <select
+        class="form-control form-control-sm"
+        formControlName="fieldTypeId"
+      ></select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-xs btn-danger mr-1" (click)="onCancelClicked()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn btn-xs btn-primary"
+        (click)="onSaveButtonClicked()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</form>

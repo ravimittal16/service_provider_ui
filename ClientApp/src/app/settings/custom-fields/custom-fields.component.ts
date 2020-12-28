@@ -5,6 +5,7 @@ import { NgbAccordion } from "@ng-bootstrap/ng-bootstrap";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import { CustomFieldEntityType } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { SettingsModalService } from "../settings.modal.service";
 
 @Component({
   selector: "app-custom-fields",
@@ -20,7 +21,8 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
   selectedEntityType$: Observable<CustomFieldEntityType>;
   constructor(
     private _fb: FormBuilder,
-    private _customFieldsFacade: CustomFieldsFacade
+    private _customFieldsFacade: CustomFieldsFacade,
+    private _settingsModalService: SettingsModalService
   ) {
     this.errors$ = this.__errorRenderer.errors$;
     this.entityTypes$ = _customFieldsFacade.entityTypes$;
@@ -44,7 +46,9 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  addNewCustomTypeClicked(): void {}
+  addNewCustomTypeClicked(): void {
+    const _modalRef = this._settingsModalService.openCustomFieldDefinationModal();
+  }
 
   ngOnInit(): void {
     this._initFormControl();
