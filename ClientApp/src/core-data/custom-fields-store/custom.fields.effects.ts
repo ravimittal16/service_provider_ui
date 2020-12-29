@@ -35,7 +35,7 @@ export class CustomFieldsStoreEffects extends BaseEffect {
         this.dataService.addUpdateCustomField(action.model).pipe(
           map((data) => {
             if (data.isSuccess && action.modal) {
-              action.modal.close(true);
+              action.modal.close(data.isSuccess);
             }
             return fromAllActions.addUpdateCustomFieldCompletedAction({
               entity: data.entity,
@@ -59,6 +59,20 @@ export class CustomFieldsStoreEffects extends BaseEffect {
     );
   });
 
+  fetchAllCustomFieldsByEntityType$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.fetchCustomFieldsByEntityTypeAction),
+      mergeMap((action) =>
+        this.dataService.getAllCustomFieldDefinations(action.entityType).pipe(
+          map((res) =>
+            fromAllActions.fetchCustomFieldsByEntityTypeCompletedAction({
+              customFields: res,
+            })
+          )
+        )
+      )
+    );
+  });
   fetchAllEntityTypesAndFieldTypes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.fetchCustomFieldTypesAction),

@@ -2,6 +2,7 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { createAction, props } from "@ngrx/store";
 import {
   CustomFieldDefinationModel,
+  CustomFieldDto,
   CustomFieldEntityType,
   CustomFieldType,
 } from "@shared/service-proxies/service-proxies";
@@ -39,5 +40,16 @@ export const addUpdateCustomFieldAction = createAction(
 );
 export const addUpdateCustomFieldCompletedAction = createAction(
   "[Custom Fields] Add update custom field completed action",
-  props<{ entity: any; isSuccess: boolean; isForAdd: boolean }>()
+  props<{ entity: CustomFieldDto; isSuccess: boolean; isForAdd: boolean }>()
+);
+// ==========================================================
+// CUSTOM FIELDS DTO ACTIONS
+// ==========================================================
+export const fetchCustomFieldsByEntityTypeAction = createAction(
+  "[Custom Fields] Fetch Custom Fields by entity types.",
+  props<{ entityType: number }>()
+);
+export const fetchCustomFieldsByEntityTypeCompletedAction = createAction(
+  "[Custom Fields] Fetch Custom Fields by entity types completed.",
+  props<{ customFields: CustomFieldDto[] }>()
 );

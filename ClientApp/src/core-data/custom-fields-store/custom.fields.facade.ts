@@ -49,6 +49,12 @@ export class CustomFieldsFacade implements Facade {
     this.dispatch(
       fromAllActions.setSelectedEntityType({ entityType: entityType })
     );
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.fetchCustomFieldsByEntityTypeAction({
+        entityType: entityType.entityType,
+      })
+    );
   }
 
   fetchAllEntityTypesAndFieldTypes() {

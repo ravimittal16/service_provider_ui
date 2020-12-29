@@ -1,16 +1,17 @@
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { Action, createReducer, on } from "@ngrx/store";
-import { CustomFieldDefinationModel } from "@shared/service-proxies/service-proxies";
+import { CustomFieldDto } from "@shared/service-proxies/service-proxies";
 import { CustomFieldsState } from "./custom.fields.state";
 import * as fromAllActions from "./custom.fields.actions";
+import { adapter } from "@core-data/register/register.reducers";
 
 export const customFieldsStoreFeatureKey = "customFields";
 
-export function selectDefinationId(a: CustomFieldDefinationModel): string {
+export function selectDefinationId(a: CustomFieldDto): string {
   return a.definationId.toString();
 }
 
-export const customFieldsAdapter: EntityAdapter<CustomFieldDefinationModel> = createEntityAdapter<CustomFieldDefinationModel>(
+export const customFieldsAdapter: EntityAdapter<CustomFieldDto> = createEntityAdapter<CustomFieldDto>(
   {
     selectId: selectDefinationId,
   }
@@ -35,6 +36,17 @@ const createFeatureReducer = createReducer(
     fieldTypes: props.fieldTypes,
     isBusy: false,
   })),
+  on(
+    fromAllActions.fetchCustomFieldsByEntityTypeCompletedAction,
+    (state, props) => {
+      const _newState = customFieldsAdapter.addMany(props.customFields, state);
+      return {
+        ..._newState,
+        isBusy: false,
+      };
+    }
+  ),
+
   on(fromAllActions.setSelectedEntityType, (state, props) => ({
     ...state,
     selectedEntityType: props.entityType,

@@ -1003,7 +1003,7 @@ export class CustomFieldsServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    addUpdateCustomField(body: CustomFieldDefinationModel | undefined): Observable<CustomFieldDefinationModelGenericResponse> {
+    addUpdateCustomField(body: CustomFieldDefinationModel | undefined): Observable<CustomFieldDtoGenericResponse> {
         let url_ = this.baseUrl + "/api/customFields/AddUpdateCustomField";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1026,14 +1026,14 @@ export class CustomFieldsServiceProxy {
                 try {
                     return this.processAddUpdateCustomField(<any>response_);
                 } catch (e) {
-                    return <Observable<CustomFieldDefinationModelGenericResponse>><any>_observableThrow(e);
+                    return <Observable<CustomFieldDtoGenericResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<CustomFieldDefinationModelGenericResponse>><any>_observableThrow(response_);
+                return <Observable<CustomFieldDtoGenericResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processAddUpdateCustomField(response: HttpResponseBase): Observable<CustomFieldDefinationModelGenericResponse> {
+    protected processAddUpdateCustomField(response: HttpResponseBase): Observable<CustomFieldDtoGenericResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1044,7 +1044,7 @@ export class CustomFieldsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomFieldDefinationModelGenericResponse.fromJS(resultData200);
+            result200 = CustomFieldDtoGenericResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1052,7 +1052,67 @@ export class CustomFieldsServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<CustomFieldDefinationModelGenericResponse>(<any>null);
+        return _observableOf<CustomFieldDtoGenericResponse>(<any>null);
+    }
+
+    /**
+     * @param entityType (optional) 
+     * @return Success
+     */
+    getAllCustomFieldDefinations(entityType: number | undefined): Observable<CustomFieldDto[]> {
+        let url_ = this.baseUrl + "/api/customFields/GetAllCustomFieldDefinations?";
+        if (entityType === null)
+            throw new Error("The parameter 'entityType' cannot be null.");
+        else if (entityType !== undefined)
+            url_ += "entityType=" + encodeURIComponent("" + entityType) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllCustomFieldDefinations(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCustomFieldDefinations(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomFieldDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomFieldDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllCustomFieldDefinations(response: HttpResponseBase): Observable<CustomFieldDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(CustomFieldDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomFieldDto[]>(<any>null);
     }
 
     /**
@@ -4550,16 +4610,115 @@ export interface ICustomFieldDefinationModel {
     displayOrder: number;
 }
 
-export class CustomFieldDefinationModelGenericResponse implements ICustomFieldDefinationModelGenericResponse {
+export class CustomFieldDto implements ICustomFieldDto {
+    definationId: number;
+    label: string | undefined;
+    isRequired: boolean | undefined;
+    isTransferable: boolean | undefined;
+    defaultValue: string | undefined;
+    createdById: string | undefined;
+    createdByName: string | undefined;
+    createDate: moment.Moment;
+    entityStatus: EntityStatuses;
+    displayOrder: number | undefined;
+    defaultValue2: string | undefined;
+    valueType: string | undefined;
+    customFieldTypeId: number | undefined;
+    fieldName: string | undefined;
+    isCustomType: boolean | undefined;
+
+    constructor(data?: ICustomFieldDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.definationId = _data["definationId"];
+            this.label = _data["label"];
+            this.isRequired = _data["isRequired"];
+            this.isTransferable = _data["isTransferable"];
+            this.defaultValue = _data["defaultValue"];
+            this.createdById = _data["createdById"];
+            this.createdByName = _data["createdByName"];
+            this.createDate = _data["createDate"] ? moment(_data["createDate"].toString()) : <any>undefined;
+            this.entityStatus = _data["entityStatus"];
+            this.displayOrder = _data["displayOrder"];
+            this.defaultValue2 = _data["defaultValue2"];
+            this.valueType = _data["valueType"];
+            this.customFieldTypeId = _data["customFieldTypeId"];
+            this.fieldName = _data["fieldName"];
+            this.isCustomType = _data["isCustomType"];
+        }
+    }
+
+    static fromJS(data: any): CustomFieldDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomFieldDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["definationId"] = this.definationId;
+        data["label"] = this.label;
+        data["isRequired"] = this.isRequired;
+        data["isTransferable"] = this.isTransferable;
+        data["defaultValue"] = this.defaultValue;
+        data["createdById"] = this.createdById;
+        data["createdByName"] = this.createdByName;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        data["entityStatus"] = this.entityStatus;
+        data["displayOrder"] = this.displayOrder;
+        data["defaultValue2"] = this.defaultValue2;
+        data["valueType"] = this.valueType;
+        data["customFieldTypeId"] = this.customFieldTypeId;
+        data["fieldName"] = this.fieldName;
+        data["isCustomType"] = this.isCustomType;
+        return data; 
+    }
+
+    clone(): CustomFieldDto {
+        const json = this.toJSON();
+        let result = new CustomFieldDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICustomFieldDto {
+    definationId: number;
+    label: string | undefined;
+    isRequired: boolean | undefined;
+    isTransferable: boolean | undefined;
+    defaultValue: string | undefined;
+    createdById: string | undefined;
+    createdByName: string | undefined;
+    createDate: moment.Moment;
+    entityStatus: EntityStatuses;
+    displayOrder: number | undefined;
+    defaultValue2: string | undefined;
+    valueType: string | undefined;
+    customFieldTypeId: number | undefined;
+    fieldName: string | undefined;
+    isCustomType: boolean | undefined;
+}
+
+export class CustomFieldDtoGenericResponse implements ICustomFieldDtoGenericResponse {
     httpStatusCode: number;
     readonly hasError: boolean;
     isSuccess: boolean;
-    entity: CustomFieldDefinationModel;
+    entity: CustomFieldDto;
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
 
-    constructor(data?: ICustomFieldDefinationModelGenericResponse) {
+    constructor(data?: ICustomFieldDtoGenericResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4573,7 +4732,7 @@ export class CustomFieldDefinationModelGenericResponse implements ICustomFieldDe
             this.httpStatusCode = _data["httpStatusCode"];
             (<any>this).hasError = _data["hasError"];
             this.isSuccess = _data["isSuccess"];
-            this.entity = _data["entity"] ? CustomFieldDefinationModel.fromJS(_data["entity"]) : <any>undefined;
+            this.entity = _data["entity"] ? CustomFieldDto.fromJS(_data["entity"]) : <any>undefined;
             if (Array.isArray(_data["errors"])) {
                 this.errors = [] as any;
                 for (let item of _data["errors"])
@@ -4584,9 +4743,9 @@ export class CustomFieldDefinationModelGenericResponse implements ICustomFieldDe
         }
     }
 
-    static fromJS(data: any): CustomFieldDefinationModelGenericResponse {
+    static fromJS(data: any): CustomFieldDtoGenericResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new CustomFieldDefinationModelGenericResponse();
+        let result = new CustomFieldDtoGenericResponse();
         result.init(data);
         return result;
     }
@@ -4607,19 +4766,19 @@ export class CustomFieldDefinationModelGenericResponse implements ICustomFieldDe
         return data; 
     }
 
-    clone(): CustomFieldDefinationModelGenericResponse {
+    clone(): CustomFieldDtoGenericResponse {
         const json = this.toJSON();
-        let result = new CustomFieldDefinationModelGenericResponse();
+        let result = new CustomFieldDtoGenericResponse();
         result.init(json);
         return result;
     }
 }
 
-export interface ICustomFieldDefinationModelGenericResponse {
+export interface ICustomFieldDtoGenericResponse {
     httpStatusCode: number;
     hasError: boolean;
     isSuccess: boolean;
-    entity: CustomFieldDefinationModel;
+    entity: CustomFieldDto;
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;
