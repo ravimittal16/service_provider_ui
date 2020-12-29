@@ -6,9 +6,11 @@ import { CustomFieldsState } from "./custom.fields.state";
 import * as fromAllActions from "./custom.fields.actions";
 import * as fromAllSelectors from "./custom.fields.selectors";
 import {
+  CustomFieldDefinationModel,
   CustomFieldEntityType,
   CustomFieldType,
 } from "@shared/service-proxies/service-proxies";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({ providedIn: "root" })
 export class CustomFieldsFacade implements Facade {
@@ -31,6 +33,16 @@ export class CustomFieldsFacade implements Facade {
 
   private _setBusy(isBusy: boolean) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: isBusy }));
+  }
+
+  addUpdateCustomField(
+    model: CustomFieldDefinationModel,
+    modal: NgbActiveModal
+  ) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.addUpdateCustomFieldAction({ model: model, modal: modal })
+    );
   }
 
   setSelectedEntityType(entityType: CustomFieldEntityType) {
