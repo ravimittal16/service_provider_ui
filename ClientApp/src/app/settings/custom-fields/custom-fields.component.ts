@@ -5,6 +5,7 @@ import { NgbAccordion } from "@ng-bootstrap/ng-bootstrap";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
 import { CustomFieldEntityType } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { SubSink } from "subsink";
 import { SettingsModalService } from "../settings.modal.service";
 
 @Component({
@@ -19,6 +20,7 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
   disableButton = false;
   entityTypes$: Observable<CustomFieldEntityType[]>;
   selectedEntityType$: Observable<CustomFieldEntityType>;
+  private _subs = new SubSink();
   constructor(
     private _fb: FormBuilder,
     private _customFieldsFacade: CustomFieldsFacade,
@@ -48,6 +50,13 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
 
   addNewCustomTypeClicked(): void {
     const _modalRef = this._settingsModalService.openCustomFieldDefinationModal();
+    this._subs.add(
+      _modalRef.closed.subscribe((result) => {
+        if (result) {
+          console.log(result);
+        }
+      })
+    );
   }
 
   ngOnInit(): void {

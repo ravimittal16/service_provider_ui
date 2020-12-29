@@ -1,12 +1,11 @@
 import { BaseState } from "@core-data/base.state";
 import {
-  CustomFieldDefinationModel,
+  CustomFieldDto,
   CustomFieldEntityType,
   CustomFieldType,
 } from "@shared/service-proxies/service-proxies";
 
-export interface CustomFieldsState
-  extends BaseState<CustomFieldDefinationModel> {
+export interface CustomFieldsState extends BaseState<CustomFieldDto> {
   entityTypes: CustomFieldEntityType[];
   fieldTypes: CustomFieldType[];
   selectedEntityType: CustomFieldEntityType;
