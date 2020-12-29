@@ -4472,6 +4472,8 @@ export class CustomFieldDefinationModel implements ICustomFieldDefinationModel {
     isRequired: boolean | undefined;
     isTransferable: boolean | undefined;
     defaultValue: string | undefined;
+    defaultValue2: string | undefined;
+    valueType: string | undefined;
     fieldTypeId: number;
     displayOrder: number;
 
@@ -4494,6 +4496,8 @@ export class CustomFieldDefinationModel implements ICustomFieldDefinationModel {
             this.isRequired = _data["isRequired"];
             this.isTransferable = _data["isTransferable"];
             this.defaultValue = _data["defaultValue"];
+            this.defaultValue2 = _data["defaultValue2"];
+            this.valueType = _data["valueType"];
             this.fieldTypeId = _data["fieldTypeId"];
             this.displayOrder = _data["displayOrder"];
         }
@@ -4516,6 +4520,8 @@ export class CustomFieldDefinationModel implements ICustomFieldDefinationModel {
         data["isRequired"] = this.isRequired;
         data["isTransferable"] = this.isTransferable;
         data["defaultValue"] = this.defaultValue;
+        data["defaultValue2"] = this.defaultValue2;
+        data["valueType"] = this.valueType;
         data["fieldTypeId"] = this.fieldTypeId;
         data["displayOrder"] = this.displayOrder;
         return data; 
@@ -4538,6 +4544,8 @@ export interface ICustomFieldDefinationModel {
     isRequired: boolean | undefined;
     isTransferable: boolean | undefined;
     defaultValue: string | undefined;
+    defaultValue2: string | undefined;
+    valueType: string | undefined;
     fieldTypeId: number;
     displayOrder: number;
 }

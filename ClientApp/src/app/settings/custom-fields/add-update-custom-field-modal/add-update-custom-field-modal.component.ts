@@ -2,7 +2,11 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CustomFieldsFacade } from "@core-data/index";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { CustomFieldEntityType } from "@shared/service-proxies/service-proxies";
+import {
+  CustomFieldDefinationModel,
+  CustomFieldEntityType,
+  CustomFieldType,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 
@@ -13,7 +17,9 @@ import { SubSink } from "subsink";
 })
 export class AddUpdateCustomFieldModalComponent implements OnInit, OnDestroy {
   selectedEntityType$: Observable<CustomFieldEntityType>;
+  fieldTypes$: Observable<CustomFieldType[]>;
   customFieldDefinationFormGroup: FormGroup;
+  title: string;
   private _subs = new SubSink();
   constructor(
     private _fb: FormBuilder,
@@ -21,13 +27,27 @@ export class AddUpdateCustomFieldModalComponent implements OnInit, OnDestroy {
     private _activeModal: NgbActiveModal
   ) {
     this.selectedEntityType$ = _customFieldsFacade.selectedEntityType$;
+    this.fieldTypes$ = _customFieldsFacade.fieldTypes$;
   }
 
   onCancelClicked(): void {
     this._activeModal.dismiss(null);
   }
 
-  onSaveButtonClicked(): void {}
+  onSaveButtonClicked(): void {
+    const __data = this.customFieldDefinationFormGroup.getRawValue() as CustomFieldDefinationModel;
+    if (__data) {
+      this._customFieldsFacade.addUpdateCustomField(__data, this._activeModal);
+    }
+  }
+
+  get selectedFieldTypeId(): number {
+    const __formFieldTypeVal = this.customFieldDefinationFormGroup.get(
+      "fieldTypeId"
+    ).value;
+    if (__formFieldTypeVal) return __formFieldTypeVal;
+    return -1;
+  }
 
   private _initCustomFieldFormGroup(
     customFieldEntityType: CustomFieldEntityType
@@ -38,7 +58,9 @@ export class AddUpdateCustomFieldModalComponent implements OnInit, OnDestroy {
       label: ["", [Validators.required, Validators.maxLength(100)]],
       isRequired: [false],
       isTransferable: [false],
-      defaultValue: [null],
+      defaultValue: [null, [Validators.maxLength(500)]],
+      defaultValue2: [null, [Validators.maxLength(500)]],
+      valueType: [null, [Validators.maxLength(50)]],
       fieldTypeId: [null],
       displayOrder: [0],
     });
@@ -53,10 +75,8 @@ export class AddUpdateCustomFieldModalComponent implements OnInit, OnDestroy {
       this.selectedEntityType$.subscribe((entityType) => {
         if (entityType) {
           this._initCustomFieldFormGroup(entityType);
+          this.title = `Add custom field for ${entityType.entityName}`;
         }
-      }),
-      this._customFieldsFacade.fieldTypes$.subscribe((fieldTypes) => {
-        console.log(fieldTypes);
       })
     );
   }

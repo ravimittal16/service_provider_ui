@@ -4,9 +4,17 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { CustomFieldsServiceProxy } from "@shared/service-proxies/service-proxies";
 import { CustomFieldsState } from "./custom.fields.state";
-import { filter, map, mergeMap, withLatestFrom } from "rxjs/operators";
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  withLatestFrom,
+} from "rxjs/operators";
 import * as fromAllActions from "./custom.fields.actions";
 import * as fromAllSelectors from "./custom.fields.selectors";
+import { of } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -19,6 +27,37 @@ export class CustomFieldsStoreEffects extends BaseEffect {
   ) {
     super();
   }
+
+  addUpdateCustomField$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.addUpdateCustomFieldAction),
+      mergeMap((action) =>
+        this.dataService.addUpdateCustomField(action.model).pipe(
+          map((data) => {
+            if (data.isSuccess && action.modal) {
+              action.modal.close(true);
+            }
+            return fromAllActions.addUpdateCustomFieldCompletedAction({
+              entity: data.entity,
+              isSuccess: data.isSuccess,
+              isForAdd: action.model.definationId === 0,
+            });
+          }),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [...error],
+                  })
+                );
+              })
+            );
+          })
+        )
+      )
+    );
+  });
 
   fetchAllEntityTypesAndFieldTypes$ = createEffect(() => {
     return this.actions$.pipe(

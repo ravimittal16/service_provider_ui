@@ -1,5 +1,7 @@
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { createAction, props } from "@ngrx/store";
 import {
+  CustomFieldDefinationModel,
   CustomFieldEntityType,
   CustomFieldType,
 } from "@shared/service-proxies/service-proxies";
@@ -27,4 +29,15 @@ export const fetchCustomFieldTypesCompletedAction = createAction(
 export const setSelectedEntityType = createAction(
   "[Custom Fields] Set selected entity type.",
   props<{ entityType: CustomFieldEntityType }>()
+);
+// ==========================================================
+// ADD UPDATE CUSTOM FIELD
+// ==========================================================
+export const addUpdateCustomFieldAction = createAction(
+  "[Custom Fields] Add update custom field action",
+  props<{ model: CustomFieldDefinationModel; modal: NgbActiveModal }>()
+);
+export const addUpdateCustomFieldCompletedAction = createAction(
+  "[Custom Fields] Add update custom field completed action",
+  props<{ entity: any; isSuccess: boolean; isForAdd: boolean }>()
 );
