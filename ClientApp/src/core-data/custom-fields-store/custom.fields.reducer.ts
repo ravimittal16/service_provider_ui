@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
+import { createEntityAdapter, EntityAdapter, Update } from "@ngrx/entity";
 import { Action, createReducer, on } from "@ngrx/store";
 import { CustomFieldDto } from "@shared/service-proxies/service-proxies";
 import { CustomFieldsState } from "./custom.fields.state";
@@ -27,6 +27,7 @@ const customFieldsInitialState: CustomFieldsState = customFieldsAdapter.getIniti
     fieldTypes: [],
     selectedEntityType: null,
     customFields: [],
+    totalCustomFields: 0,
   }
 );
 const createFeatureReducer = createReducer(
@@ -45,6 +46,7 @@ const createFeatureReducer = createReducer(
       return {
         ...finalState,
         isBusy: false,
+        totalCustomFields: props.customFields.length,
         customFields: props.customFields,
       };
     }
@@ -53,6 +55,21 @@ const createFeatureReducer = createReducer(
     let finalState = state;
     if (props.isForAdd) {
       finalState = customFieldsAdapter.addOne(props.entity, state);
+      finalState.totalCustomFields = state.totalCustomFields + 1;
+    } else {
+      const editSubmission: Update<CustomFieldDto> = {
+        id: props.entity.definationId,
+        changes: {
+          label: props.entity.label,
+          isRequired: props.entity.isRequired,
+          defaultValue: props.entity.defaultValue,
+          defaultValue2: props.entity.defaultValue2,
+          valueType: props.entity.valueType,
+          fieldName: props.entity.fieldName,
+          customFieldTypeId: props.entity.customFieldTypeId,
+        },
+      };
+      finalState = customFieldsAdapter.updateOne(editSubmission, finalState);
     }
     return {
       ...finalState,

@@ -8,6 +8,7 @@
       <div class="col">
         <app-error-view
           [errors$]="errors$"
+          [alertType]="alertType"
           [observableDefined]="true"
         ></app-error-view>
       </div>
@@ -47,6 +48,7 @@
         <div class="d-flex justify-content-end">
           <button
             class="btn btn-xs btn-falcon-primary"
+            [disabled]="hasReachedToMaxLimit"
             (click)="addNewCustomTypeClicked()"
           >
             <i class="fa fa-plus"></i> Add custom field for
@@ -88,15 +90,12 @@
 
                 <div>
                   <small class="mr-2"
-                    ><strong class="mr-1">Is Required:</strong
+                    ><strong class="text-500 mr-1">Is Required:</strong
                     >{{ field.isRequired ? "Yes" : "No" }}</small
                   >
+
                   <small class="mr-2"
-                    ><strong class="mr-1">Default Value:</strong
-                    >{{ field.defaultValue }}</small
-                  >
-                  <small class="mr-2"
-                    ><strong class="mr-1">Added By:</strong
+                    ><strong class="text-500 mr-1">Added By:</strong
                     >{{ field.createdByName }}
                     <strong class="ml-1 mr-1">on</strong
                     ><span>{{ field.createDate | date }}</span></small
@@ -108,7 +107,11 @@
               <h6 class="text-500">{{ field.fieldName }}</h6>
             </div>
             <div class="col-2 d-flex justify-content-center">
-              <button class="btn btn-sm btn-falcon-default mr-1" type="button">
+              <button
+                class="btn btn-sm btn-falcon-default mr-1"
+                type="button"
+                (click)="onEditButtonClicked(field, $event)"
+              >
                 <i class="fa fa-pencil"></i>
               </button>
               <button class="btn btn-sm btn-falcon-danger" type="button">

@@ -1,7 +1,14 @@
 <div class="row" *ngIf="errors && errors.length > 0">
   <div class="col-md-12">
-    <div class="alert alert-danger">
-      <p *ngFor="let item of errors">{{item}}</p>
+    <div
+      class="alert"
+      [ngClass]="{
+        'alert-danger': alertType === 'error',
+        'alert-warning': alertType === 'warning',
+        'alert-success': alertType === 'success'
+      }"
+    >
+      <p class="mb-0 pb-0 fs--1" *ngFor="let item of errors">{{ item }}</p>
     </div>
   </div>
 </div>

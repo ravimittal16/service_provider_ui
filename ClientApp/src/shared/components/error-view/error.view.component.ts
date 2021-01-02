@@ -15,6 +15,7 @@ import { distinctUntilChanged } from "rxjs/operators";
   styleUrls: ["./error.view.component.scss"],
 })
 export class AppErrorViewComponent implements OnInit, OnDestroy {
+  @Input() alertType: "error" | "success" | "warning" = "error";
   @Input() errors$: Observable<string[]> | string[];
   @Input() observableDefined: boolean = false;
   @Input() autoHide: boolean = false;
