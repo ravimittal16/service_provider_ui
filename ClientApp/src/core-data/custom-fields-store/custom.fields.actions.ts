@@ -53,3 +53,11 @@ export const fetchCustomFieldsByEntityTypeCompletedAction = createAction(
   "[Custom Fields] Fetch Custom Fields by entity types completed.",
   props<{ customFields: CustomFieldDto[] }>()
 );
+export const deleteCustomFieldAction = createAction(
+  "[Custom Fields] delete custom field action",
+  props<{ definationId: number }>()
+);
+export const deleteCustomFieldCompletedAction = createAction(
+  "[Custom Fields] delete custom field completed action",
+  props<{ isSuccess: boolean; definationId: number }>()
+);
