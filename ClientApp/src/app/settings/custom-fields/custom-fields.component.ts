@@ -3,7 +3,10 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CustomFieldsFacade } from "@core-data/index";
 import { NgbAccordion } from "@ng-bootstrap/ng-bootstrap";
 import { ErrorRenderer } from "@shared/helpers/ErrorRenderer";
-import { CustomFieldEntityType } from "@shared/service-proxies/service-proxies";
+import {
+  CustomFieldDto,
+  CustomFieldEntityType,
+} from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 import { SettingsModalService } from "../settings.modal.service";
@@ -20,6 +23,8 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
   disableButton = false;
   entityTypes$: Observable<CustomFieldEntityType[]>;
   selectedEntityType$: Observable<CustomFieldEntityType>;
+  isSelectedEntityType = false;
+  fields$: Observable<CustomFieldDto[]>;
   private _subs = new SubSink();
   constructor(
     private _fb: FormBuilder,
@@ -29,6 +34,7 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
     this.errors$ = this.__errorRenderer.errors$;
     this.entityTypes$ = _customFieldsFacade.entityTypes$;
     this.selectedEntityType$ = _customFieldsFacade.selectedEntityType$;
+    this.fields$ = _customFieldsFacade.customFields$;
   }
 
   ngAfterViewInit(): void {}
@@ -42,7 +48,7 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
   onEntityTypeSelected(): void {
     const _selectedType = this.customFieldDetailGroup.get("entityType").value;
     this.disableButton = _selectedType === null || _selectedType === "";
-
+    this.isSelectedEntityType = !this.disableButton;
     this._customFieldsFacade.setSelectedEntityType(
       _selectedType === null || _selectedType === "" ? null : _selectedType
     );

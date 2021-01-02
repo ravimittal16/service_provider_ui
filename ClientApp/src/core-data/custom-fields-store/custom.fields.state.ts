@@ -9,4 +9,5 @@ export interface CustomFieldsState extends BaseState<CustomFieldDto> {
   entityTypes: CustomFieldEntityType[];
   fieldTypes: CustomFieldType[];
   selectedEntityType: CustomFieldEntityType;
+  customFields: CustomFieldDto[];
 }

@@ -26,6 +26,7 @@ const customFieldsInitialState: CustomFieldsState = customFieldsAdapter.getIniti
     entityTypes: [],
     fieldTypes: [],
     selectedEntityType: null,
+    customFields: [],
   }
 );
 const createFeatureReducer = createReducer(
@@ -39,16 +40,28 @@ const createFeatureReducer = createReducer(
   on(
     fromAllActions.fetchCustomFieldsByEntityTypeCompletedAction,
     (state, props) => {
-      const _newState = customFieldsAdapter.addMany(props.customFields, state);
+      let finalState = customFieldsAdapter.removeAll(state);
+      finalState = customFieldsAdapter.addMany(props.customFields, finalState);
       return {
-        ..._newState,
+        ...finalState,
         isBusy: false,
+        customFields: props.customFields,
       };
     }
   ),
-
+  on(fromAllActions.addUpdateCustomFieldCompletedAction, (state, props) => {
+    let finalState = state;
+    if (props.isForAdd) {
+      finalState = customFieldsAdapter.addOne(props.entity, state);
+    }
+    return {
+      ...finalState,
+      isBusy: false,
+    };
+  }),
   on(fromAllActions.setSelectedEntityType, (state, props) => ({
     ...state,
+
     selectedEntityType: props.entityType,
   }))
 );

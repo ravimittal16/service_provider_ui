@@ -7,6 +7,7 @@ import * as fromAllActions from "./custom.fields.actions";
 import * as fromAllSelectors from "./custom.fields.selectors";
 import {
   CustomFieldDefinationModel,
+  CustomFieldDto,
   CustomFieldEntityType,
   CustomFieldType,
 } from "@shared/service-proxies/service-proxies";
@@ -19,6 +20,7 @@ export class CustomFieldsFacade implements Facade {
   entityTypes$: Observable<CustomFieldEntityType[]>;
   fieldTypes$: Observable<CustomFieldType[]>;
   selectedEntityType$: Observable<CustomFieldEntityType>;
+  customFields$: Observable<CustomFieldDto[]>;
   constructor(private _store: Store<CustomFieldsState>) {
     this.entityTypes$ = this._store.pipe(
       select(fromAllSelectors.selectCustomFieldsEntityTypes)
@@ -28,6 +30,9 @@ export class CustomFieldsFacade implements Facade {
     );
     this.selectedEntityType$ = this._store.pipe(
       select(fromAllSelectors.selectSelectedEntityType)
+    );
+    this.customFields$ = this._store.pipe(
+      select(fromAllSelectors.selectCustomFields)
     );
   }
 

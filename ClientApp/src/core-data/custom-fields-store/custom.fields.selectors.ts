@@ -32,3 +32,4 @@ export const selectSelectedEntityType = createSelector(
   customFieldsState,
   (state: CustomFieldsState) => state.selectedEntityType
 );
+export const selectCustomFields = createSelector(customFieldsState, selectAll);
