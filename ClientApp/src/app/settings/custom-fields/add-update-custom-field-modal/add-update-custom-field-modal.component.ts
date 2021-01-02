@@ -54,7 +54,7 @@ export class AddUpdateCustomFieldModalComponent implements OnInit, OnDestroy {
   ) {
     this.customFieldDefinationFormGroup = this._fb.group({
       definationId: [0],
-      appliesToCustomTypeId: [customFieldEntityType.entityId],
+      appliesToCustomTypeId: [customFieldEntityType.entityType],
       label: ["", [Validators.required, Validators.maxLength(100)]],
       isRequired: [false],
       isTransferable: [false],
