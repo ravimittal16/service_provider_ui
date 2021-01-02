@@ -28,6 +28,34 @@ export class CustomFieldsStoreEffects extends BaseEffect {
     super();
   }
 
+  deleteCustomFieldDefination$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.deleteCustomFieldAction),
+      mergeMap((action) =>
+        this.dataService.deleteCustomFieldDefination(action.definationId).pipe(
+          map((data) =>
+            fromAllActions.deleteCustomFieldCompletedAction({
+              isSuccess: data.isSuccess,
+              definationId: action.definationId,
+              returnCode: data.returnCode,
+            })
+          ),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [...error],
+                  })
+                );
+              })
+            );
+          })
+        )
+      )
+    );
+  });
+
   addUpdateCustomField$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.addUpdateCustomFieldAction),

@@ -1,6 +1,7 @@
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { createAction, props } from "@ngrx/store";
 import {
+  ActionReturnCode,
   CustomFieldDefinationModel,
   CustomFieldDto,
   CustomFieldEntityType,
@@ -59,5 +60,9 @@ export const deleteCustomFieldAction = createAction(
 );
 export const deleteCustomFieldCompletedAction = createAction(
   "[Custom Fields] delete custom field completed action",
-  props<{ isSuccess: boolean; definationId: number }>()
+  props<{
+    isSuccess: boolean;
+    definationId: number;
+    returnCode: ActionReturnCode;
+  }>()
 );

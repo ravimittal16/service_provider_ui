@@ -1165,6 +1165,62 @@ export class CustomFieldsServiceProxy {
         }
         return _observableOf<CustomFieldTypesResult>(<any>null);
     }
+
+    /**
+     * @param definationId (optional) 
+     * @return Success
+     */
+    deleteCustomFieldDefination(definationId: number | undefined): Observable<OperationResult> {
+        let url_ = this.baseUrl + "/api/customFields/DeleteCustomFieldDefination?";
+        if (definationId === null)
+            throw new Error("The parameter 'definationId' cannot be null.");
+        else if (definationId !== undefined)
+            url_ += "definationId=" + encodeURIComponent("" + definationId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteCustomFieldDefination(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteCustomFieldDefination(<any>response_);
+                } catch (e) {
+                    return <Observable<OperationResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OperationResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteCustomFieldDefination(response: HttpResponseBase): Observable<OperationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OperationResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OperationResult>(<any>null);
+    }
 }
 
 @Injectable()

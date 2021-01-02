@@ -114,9 +114,13 @@
               >
                 <i class="fa fa-pencil"></i>
               </button>
-              <button class="btn btn-sm btn-falcon-danger" type="button">
+              <!-- <button class="btn btn-sm btn-falcon-danger" type="button">
                 <i class="fa fa-trash"></i>
-              </button>
+              </button> -->
+              <app-delete-button
+                iconOnly="true"
+                (onConfirmation)="onDeleteClicked(field)"
+              ></app-delete-button>
             </div>
           </div>
         </ng-container>
