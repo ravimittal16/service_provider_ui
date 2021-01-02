@@ -73,6 +73,7 @@ export class CustomFieldsStoreEffects extends BaseEffect {
       )
     );
   });
+
   fetchAllEntityTypesAndFieldTypes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.fetchCustomFieldTypesAction),
