@@ -33,3 +33,9 @@ export const selectSelectedEntityType = createSelector(
   (state: CustomFieldsState) => state.selectedEntityType
 );
 export const selectCustomFields = createSelector(customFieldsState, selectAll);
+
+export const hasReachedToMaxLimit = createSelector(customFieldsState, (state) =>
+  state.selectedEntityType
+    ? state.customFields.length === state.selectedEntityType?.maxFieldsAllowed
+    : false
+);

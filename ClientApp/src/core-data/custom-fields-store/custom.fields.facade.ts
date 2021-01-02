@@ -21,6 +21,7 @@ export class CustomFieldsFacade implements Facade {
   fieldTypes$: Observable<CustomFieldType[]>;
   selectedEntityType$: Observable<CustomFieldEntityType>;
   customFields$: Observable<CustomFieldDto[]>;
+  hasReachedToMaxLimit$: Observable<boolean>;
   constructor(private _store: Store<CustomFieldsState>) {
     this.entityTypes$ = this._store.pipe(
       select(fromAllSelectors.selectCustomFieldsEntityTypes)
@@ -33,6 +34,9 @@ export class CustomFieldsFacade implements Facade {
     );
     this.customFields$ = this._store.pipe(
       select(fromAllSelectors.selectCustomFields)
+    );
+    this.hasReachedToMaxLimit$ = this._store.pipe(
+      select(fromAllSelectors.hasReachedToMaxLimit)
     );
   }
 
@@ -57,7 +61,7 @@ export class CustomFieldsFacade implements Facade {
     this._setBusy(true);
     this.dispatch(
       fromAllActions.fetchCustomFieldsByEntityTypeAction({
-        entityType: entityType.entityType,
+        entityType: entityType.entityId,
       })
     );
   }

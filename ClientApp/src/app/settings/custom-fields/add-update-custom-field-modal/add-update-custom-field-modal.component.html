@@ -10,11 +10,12 @@
       <label>Field type</label>
       <select
         class="form-control form-control-sm"
+        (change)="onFieldTypeSelectionChanged()"
         formControlName="fieldTypeId"
       >
         <option
-          *ngFor="let fieldType of fieldTypes$ | async"
-          [value]="fieldType.fieldType"
+          *ngFor="let fieldType of fieldTypes"
+          [value]="fieldType.customTypeFieldId"
         >
           {{ fieldType.fieldName }}
         </option>
