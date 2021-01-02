@@ -76,9 +76,21 @@ const createFeatureReducer = createReducer(
       isBusy: false,
     };
   }),
+  on(fromAllActions.deleteCustomFieldCompletedAction, (state, props) => {
+    let finalState = state;
+    if (props.isSuccess) {
+      finalState = customFieldsAdapter.removeOne(
+        props.definationId,
+        finalState
+      );
+    }
+    return {
+      ...finalState,
+      isBusy: false,
+    };
+  }),
   on(fromAllActions.setSelectedEntityType, (state, props) => ({
     ...state,
-
     selectedEntityType: props.entityType,
   }))
 );

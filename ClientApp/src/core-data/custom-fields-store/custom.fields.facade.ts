@@ -54,6 +54,15 @@ export class CustomFieldsFacade implements Facade {
     );
   }
 
+  deleteCustomField(definationId: number) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.deleteCustomFieldAction({
+        definationId: definationId,
+      })
+    );
+  }
+
   setSelectedEntityType(entityType: CustomFieldEntityType) {
     this.dispatch(
       fromAllActions.setSelectedEntityType({ entityType: entityType })

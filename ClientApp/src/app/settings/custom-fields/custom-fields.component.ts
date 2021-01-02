@@ -93,6 +93,10 @@ export class CustomFieldsComponent implements OnInit, AfterViewInit {
     );
   }
 
+  onDeleteClicked(fieldInfo: CustomFieldDto) {
+    this._customFieldsFacade.deleteCustomField(fieldInfo.definationId);
+  }
+
   private _setSelectedEntityType(type: CustomFieldEntityType): void {
     if (type) {
       const _selectedTypeField = this.customFieldDetailGroup.get("entityType");

@@ -1,0 +1,36 @@
+<ng-template #popContent>
+  <div class="row" style="width: 200px">
+    <div class="col">
+      <button
+        class="btn btn-block btn-xs btn-falcon-success"
+        (click)="onDeleteClicked($event, null, true)"
+      >
+        Yes
+      </button>
+    </div>
+    <div class="col">
+      <button
+        class="btn btn-block btn-xs btn-falcon-danger"
+        (click)="confirmationPopover.close()"
+      >
+        No
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #popTitle>
+  <h6 class="mb-0 pb-0">Are you sure?</h6>
+</ng-template>
+<button
+  triggers="manual"
+  class="btn btn-sm btn-falcon-danger"
+  #confirmationPopover="ngbPopover"
+  [autoClose]="true"
+  container="body"
+  [closeDelay]="3000"
+  [ngbPopover]="popContent"
+  [popoverTitle]="popTitle"
+  (click)="onDeleteClicked($event, confirmationPopover, false)"
+>
+  <i class="fa fa-trash" *ngIf="iconOnly"></i>
+</button>
