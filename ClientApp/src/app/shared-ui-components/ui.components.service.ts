@@ -38,6 +38,7 @@ export class UiComponentsService {
   openProductSelectorModal(
     showAll: boolean,
     title: string,
+    showQuantityPopover: boolean = false,
     callback?: (product: ProductDto) => void
   ) {
     this._modalStyle.size = "lg";
@@ -47,6 +48,7 @@ export class UiComponentsService {
     );
     _modal.componentInstance.showAllProducts = showAll;
     _modal.componentInstance.title = title;
+    _modal.componentInstance.showQuantityPopover = showQuantityPopover;
     _modal.componentInstance.selectionCallback = callback;
     return _modal;
   }

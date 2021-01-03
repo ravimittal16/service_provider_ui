@@ -75,6 +75,7 @@ export class AppConsts {
 
   static readonly FeatureKeys: { [key: string]: number } = {
     EXPENSE_TRACKING_FEATURE_ID: 1,
+    CUSTOM_PRICING: 3,
   };
 
   static readonly JobFormFieldTypes: { [key: string]: number } = {
