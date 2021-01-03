@@ -15,11 +15,11 @@
     </div>
   </div>
 </div>
-<div class="card mt-1">
+<div class="card mt-1" *ngIf="!showBanner">
   <div class="card-body">
     <ul ngbNav #nav="ngbNav" class="nav-tabs">
       <li ngbNavItem>
-        <a class="tab-link" ngbNavLink>Pricing Groups</a>
+        <a class="tab-link" ngbNavLink>Group Pricing</a>
         <ng-template ngbNavContent>
           <app-groups-pricing></app-groups-pricing>
         </ng-template>
@@ -34,3 +34,4 @@
     <div [ngbNavOutlet]="nav" class="py-2"></div>
   </div>
 </div>
+<app-custom-pricing-banner *ngIf="showBanner"></app-custom-pricing-banner>

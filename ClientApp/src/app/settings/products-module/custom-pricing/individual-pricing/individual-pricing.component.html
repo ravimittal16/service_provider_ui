@@ -1,9 +1,19 @@
 <div class="row">
   <div class="col">
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-xs btn-falcon-primary">
+    <div class="d-flex justify-content-start">
+      <button
+        class="btn btn-xs btn-falcon-primary"
+        (click)="addProductClicked()"
+      >
         <i class="fa fa-plus mr-1"></i>Add Products
+      </button>
+      <button
+        class="btn btn-xs btn-falcon-default ml-1"
+        (click)="exportListClicked()"
+      >
+        <i class="fa fa-cloud-download mr-1"></i>Export
       </button>
     </div>
   </div>
+  <div class="col-3">HELLO WORLD</div>
 </div>

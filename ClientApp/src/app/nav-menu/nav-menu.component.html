@@ -133,9 +133,8 @@
         aria-controls="authentication"
       >
         <div class="d-flex align-items-center">
-          <span class="nav-link-icon"
-            ><span class="fa fa-unlock-alt"></span></span
-          ><span class="nav-link-text">Reports</span>
+          <span class="nav-link-icon"><span class="fa fa-gear"></span></span
+          ><span class="nav-link-text">Settings</span>
         </div>
       </a>
       <ul
@@ -151,7 +150,7 @@
             role="button"
             aria-expanded="false"
             aria-controls="authentication-basic"
-            >Basic</a
+            >Company</a
           >
           <ul
             class="nav collapse"
@@ -159,46 +158,31 @@
             data-parent="#authentication"
           >
             <li class="nav-item">
-              <a class="nav-link" href="../authentication/basic/login.html"
-                >Login</a
+              <a
+                class="nav-link"
+                [routerLink]="['settings/company']"
+                routerLinkActive="active"
+                ><span class="fa fa-gear mr-1"></span>Company Settings</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../authentication/basic/logout.html"
-                >Logout</a
+              <a
+                class="nav-link"
+                [routerLink]="['settings/branding']"
+                routerLinkActive="active"
+                ><span class="fa fa-film mr-1"></span>Branding</a
               >
             </li>
             <li class="nav-item">
               <a class="nav-link" href="../authentication/basic/register.html"
-                >Register</a
+                >Custom Fields</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link"
                 href="../authentication/basic/forgot-password.html"
-                >Forgot password</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="../authentication/basic/reset-password.html"
-                >Reset password</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="../authentication/basic/confirm-mail.html"
-                >Confirm mail</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="../authentication/basic/lock-screen.html"
-                >Lock screen</a
+                >Other Configurations</a
               >
             </li>
           </ul>

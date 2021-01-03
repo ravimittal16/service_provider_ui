@@ -28,6 +28,7 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
   @Input() showAllProducts: boolean;
   @Input() title: string;
   @Input() selectionCallback: (product: ProductDto) => void;
+  @Input() showQuantityPopover: boolean = true;
   @ViewChild("quantityInput") quantityInput: ElementRef;
   products: ProductDto[];
   groups: { groupName: string; checked?: boolean }[] = [];
@@ -77,8 +78,8 @@ export class ProductSelectorModalComponent implements OnInit, OnDestroy {
       __product.quantity = 0;
       this.selectionCallback(__product as ProductDto);
     } else {
-      if (!final) {
-        this.selectedProduct = product;
+      this.selectedProduct = product;
+      if (!final && this.showQuantityPopover) {
         quantityPopover.open();
         setTimeout(() => {
           const __inputBox = document.getElementById("quantityInput");

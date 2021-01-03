@@ -167,6 +167,7 @@ export class JobItemsListViewComponent implements OnInit, OnDestroy {
       this._uiComponentsService.openProductSelectorModal(
         true,
         "Add Product",
+        true,
         (product: ProductDto) => {
           this.__sub.add(
             this._jobDataService
