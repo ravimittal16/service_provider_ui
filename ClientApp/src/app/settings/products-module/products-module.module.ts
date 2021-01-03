@@ -12,6 +12,8 @@ import { TrueFalseValueCellRenderer } from "@shared/grid-cell-renderers/true.fal
 import { CurrencyValueCellRenderer } from "@shared/grid-cell-renderers/currency.value.cell.renderer";
 import { ProductNameCellRenderer } from "./grid-cell-renderers/product.name.cell.renderer";
 import { ProductActionsCellRenderer } from "./grid-cell-renderers/product.action.cell.renderer";
+import { IndividualPricingComponent } from "./custom-pricing/individual-pricing/individual-pricing.component";
+import { GroupsPricingComponent } from "./custom-pricing/groups-pricing/groups-pricing.component";
 
 const routes: Routes = [
   { path: "list", component: ListComponentComponent },
@@ -20,16 +22,18 @@ const routes: Routes = [
 
 const _gridCellRenderers = [
   TrueFalseValueCellRenderer,
-
   ProductNameCellRenderer,
   ProductActionsCellRenderer,
 ];
 const sharedRenderers = [CurrencyValueCellRenderer];
+
+const __otherComponents = [IndividualPricingComponent, GroupsPricingComponent];
 @NgModule({
   declarations: [
     ListComponentComponent,
     CustomPricingComponent,
     ..._gridCellRenderers,
+    ...__otherComponents,
   ],
   imports: [
     CommonModule,

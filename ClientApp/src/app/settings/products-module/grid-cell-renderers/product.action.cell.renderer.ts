@@ -1,5 +1,5 @@
 import { ICellRendererAngularComp } from "ag-grid-angular";
-import { Component, OnDestroy } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   ICellRendererParams,
   IAfterGuiAttachedParams,

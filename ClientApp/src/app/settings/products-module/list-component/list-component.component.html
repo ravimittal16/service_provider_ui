@@ -2,29 +2,42 @@
   <div class="card-body">
     <div class="row justify-content-between align-items-center">
       <div class="col-md">
-        <h5>
-          <span>Products & Services</span>
+        <h5 class="fs-0">
+          <span class="text-500"
+            >Products & Services | <span class="text-primary">List</span></span
+          >
         </h5>
       </div>
       <div class="col-auto">
-        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="addNewProductClick()"><span
-            class="fa fa-plus"></span> New
-          Product</button>
-        <button class="btn btn-falcon-default btn-sm mr-2" role="button" (click)="importProducts()"><span
-            class="fa fa-cloud-download"></span> Import</button>
+        <button
+          class="btn btn-falcon-primary btn-sm mr-2"
+          role="button"
+          (click)="addNewProductClick()"
+        >
+          <span class="fa fa-plus"></span> New Product
+        </button>
+        <button
+          class="btn btn-falcon-default btn-sm mr-2"
+          role="button"
+          (click)="importProducts()"
+        >
+          <span class="fa fa-cloud-download"></span> Import
+        </button>
       </div>
     </div>
   </div>
 </div>
 <div class="card mt-1">
   <div class="card-header p-b-p5">
-    <div class="row no-gutters align-items-center">
-
-    </div>
+    <div class="row no-gutters align-items-center"></div>
   </div>
   <div class="card-body">
-    <ag-grid-angular style="width: 100%; height: calc(100vh - 13.2rem);" class="ag-theme-alpine"
-      [gridOptions]="gridOptions" [rowData]="products$ | async">
+    <ag-grid-angular
+      style="width: 100%; height: calc(100vh - 13.2rem)"
+      class="ag-theme-alpine"
+      [gridOptions]="gridOptions"
+      [rowData]="products$ | async"
+    >
     </ag-grid-angular>
   </div>
 </div>
