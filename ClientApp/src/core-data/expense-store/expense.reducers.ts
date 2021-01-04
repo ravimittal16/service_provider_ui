@@ -1,7 +1,6 @@
 import {
   ExpenseCodeModel,
   ExpenseDto,
-  JobFormDefinationDto,
 } from "@shared/service-proxies/service-proxies";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 
@@ -46,6 +45,7 @@ const _expenseCodesState: ExpenseCodeState = expenseCodeAdapter.getInitialState(
     jobExpenses: [],
   }
 );
+
 const _expenseState: ExpenseState = expenseAdapter.getInitialState({
   isBusy: false,
   items: [],

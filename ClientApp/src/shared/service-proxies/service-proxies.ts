@@ -1224,6 +1224,129 @@ export class CustomFieldsServiceProxy {
 }
 
 @Injectable()
+export class CustompricingServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getAllIndividualPricingList(): Observable<IndividualPricingDto[]> {
+        let url_ = this.baseUrl + "/api/custompricing/GetAllIndividualPricingList";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllIndividualPricingList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllIndividualPricingList(<any>response_);
+                } catch (e) {
+                    return <Observable<IndividualPricingDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<IndividualPricingDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllIndividualPricingList(response: HttpResponseBase): Observable<IndividualPricingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(IndividualPricingDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<IndividualPricingDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addUpdateIndividualPricing(body: IndividualPricingModel | undefined): Observable<IndividualPricingDtoGenericResponse> {
+        let url_ = this.baseUrl + "/api/custompricing/AddUpdateIndividualPricing";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddUpdateIndividualPricing(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddUpdateIndividualPricing(<any>response_);
+                } catch (e) {
+                    return <Observable<IndividualPricingDtoGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<IndividualPricingDtoGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddUpdateIndividualPricing(response: HttpResponseBase): Observable<IndividualPricingDtoGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = IndividualPricingDtoGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<IndividualPricingDtoGenericResponse>(<any>null);
+    }
+}
+
+@Injectable()
 export class ExpenseServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5011,6 +5134,215 @@ export class CustomFieldTypesResult implements ICustomFieldTypesResult {
 export interface ICustomFieldTypesResult {
     customFieldEntityTypes: CustomFieldEntityType[] | undefined;
     customFieldTypes: CustomFieldType[] | undefined;
+}
+
+export class IndividualPricingDto implements IIndividualPricingDto {
+    pricingId: number;
+    productId: number;
+    productName: string | undefined;
+    productDescription: string | undefined;
+    actualPrice: number | undefined;
+    unitPrice: number | undefined;
+    addedByName: string | undefined;
+    addedById: string | undefined;
+    createDate: moment.Moment | undefined;
+
+    constructor(data?: IIndividualPricingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pricingId = _data["pricingId"];
+            this.productId = _data["productId"];
+            this.productName = _data["productName"];
+            this.productDescription = _data["productDescription"];
+            this.actualPrice = _data["actualPrice"];
+            this.unitPrice = _data["unitPrice"];
+            this.addedByName = _data["addedByName"];
+            this.addedById = _data["addedById"];
+            this.createDate = _data["createDate"] ? moment(_data["createDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): IndividualPricingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IndividualPricingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pricingId"] = this.pricingId;
+        data["productId"] = this.productId;
+        data["productName"] = this.productName;
+        data["productDescription"] = this.productDescription;
+        data["actualPrice"] = this.actualPrice;
+        data["unitPrice"] = this.unitPrice;
+        data["addedByName"] = this.addedByName;
+        data["addedById"] = this.addedById;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): IndividualPricingDto {
+        const json = this.toJSON();
+        let result = new IndividualPricingDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIndividualPricingDto {
+    pricingId: number;
+    productId: number;
+    productName: string | undefined;
+    productDescription: string | undefined;
+    actualPrice: number | undefined;
+    unitPrice: number | undefined;
+    addedByName: string | undefined;
+    addedById: string | undefined;
+    createDate: moment.Moment | undefined;
+}
+
+export class IndividualPricingModel implements IIndividualPricingModel {
+    companyId: number;
+    userId: string | undefined;
+    pricingId: number;
+    unitPrice: number;
+    productId: number;
+
+    constructor(data?: IIndividualPricingModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.userId = _data["userId"];
+            this.pricingId = _data["pricingId"];
+            this.unitPrice = _data["unitPrice"];
+            this.productId = _data["productId"];
+        }
+    }
+
+    static fromJS(data: any): IndividualPricingModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new IndividualPricingModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["userId"] = this.userId;
+        data["pricingId"] = this.pricingId;
+        data["unitPrice"] = this.unitPrice;
+        data["productId"] = this.productId;
+        return data; 
+    }
+
+    clone(): IndividualPricingModel {
+        const json = this.toJSON();
+        let result = new IndividualPricingModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIndividualPricingModel {
+    companyId: number;
+    userId: string | undefined;
+    pricingId: number;
+    unitPrice: number;
+    productId: number;
+}
+
+export class IndividualPricingDtoGenericResponse implements IIndividualPricingDtoGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: IndividualPricingDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IIndividualPricingDtoGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? IndividualPricingDto.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): IndividualPricingDtoGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new IndividualPricingDtoGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): IndividualPricingDtoGenericResponse {
+        const json = this.toJSON();
+        let result = new IndividualPricingDtoGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIndividualPricingDtoGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: IndividualPricingDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
 }
 
 export class ExpenseCodeModel implements IExpenseCodeModel {

@@ -24,6 +24,7 @@ import * as routerStateSelector from "./router.reducer";
 import { RouterReducerState, routerReducer } from "@ngrx/router-store";
 import { ExpenseStoreModule } from "./expense-store/expense.feature.store.module";
 import { CustomFieldsStoreModule } from "./custom-fields-store/custom.fields.store.module";
+import { CustomPricingStoreModule } from "./custom-pricing-store/custom.pricing.store.module";
 
 export interface RootState {
   routerReducer: routerStateSelector.MergedRouteReducerState;
@@ -46,6 +47,7 @@ export const rootReducers: ActionReducerMap<RootState> = {
     JobFormsStoreModule,
     ExpenseStoreModule,
     CustomFieldsStoreModule,
+    CustomPricingStoreModule,
     RouterModule,
     StoreRouterConnectingModule.forRoot({
       stateKey: "routerReducer",

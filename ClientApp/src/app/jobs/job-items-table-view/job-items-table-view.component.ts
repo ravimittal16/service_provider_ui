@@ -100,6 +100,7 @@ export class JobItemsTableViewComponent implements OnInit {
       this._uiComponentsService.openProductSelectorModal(
         true,
         "Add product to visit",
+        true,
         (product: ProductDto) => this._addProductToForm(product)
       );
     }
