@@ -46,9 +46,8 @@ export class ProductSelectorInputComponent
   // default this will show only services, pass [onlyServices]="false" if you want all products
   // ==========================================================
   @Input() onlyServices: boolean = true;
-  @Output() onSelectionChanged: EventEmitter<ProductDto> = new EventEmitter<
-    ProductDto
-  >();
+  @Output()
+  onSelectionChanged: EventEmitter<ProductDto> = new EventEmitter<ProductDto>();
   id: string;
   public value: ProductDto;
   products: ProductDto[];
@@ -72,6 +71,8 @@ export class ProductSelectorInputComponent
       }
     });
   }
+
+  showListButtonClicked() {}
 
   searchResultFormatter = (state: ProductDto) =>
     this.onlyServices

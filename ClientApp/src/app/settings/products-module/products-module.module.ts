@@ -15,6 +15,8 @@ import { ProductActionsCellRenderer } from "./grid-cell-renderers/product.action
 import { IndividualPricingComponent } from "./custom-pricing/individual-pricing/individual-pricing.component";
 import { GroupsPricingComponent } from "./custom-pricing/groups-pricing/groups-pricing.component";
 import { CustomPricingBannerComponent } from "./custom-pricing/custom-pricing-banner/custom-pricing-banner.component";
+import { AddUpdateIndividualPricingModalComponent } from "./custom-pricing/individual-pricing/add-update-individual-pricing-modal/add-update-individual-pricing-modal.component";
+import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 
 const routes: Routes = [
   { path: "list", component: ListComponentComponent },
@@ -34,6 +36,7 @@ const __otherComponents = [
   CustomPricingBannerComponent,
   IndividualPricingComponent,
   GroupsPricingComponent,
+  AddUpdateIndividualPricingModalComponent,
 ];
 @NgModule({
   declarations: [
@@ -43,10 +46,11 @@ const __otherComponents = [
   ],
   imports: [
     CommonModule,
-    NgxMaskModule.forRoot(),
-    AgGridModule.withComponents([...__gridCellRenderers, ...sharedRenderers]),
     FormsModule,
     ReactiveFormsModule,
+    NgxMaskModule.forRoot(),
+    SharedUiComponentsModule,
+    AgGridModule.withComponents([...__gridCellRenderers, ...sharedRenderers]),
     NgbModule,
     RouterModule.forChild(routes),
   ],
