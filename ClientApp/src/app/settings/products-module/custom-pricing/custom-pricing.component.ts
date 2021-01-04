@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { CompanyFacade } from "@core-data/index";
+import { CompanyFacade, CustomPricingFacade } from "@core-data/index";
+import { ProductsFacade } from "@core-data/products-store/products.facade";
 import { AppConsts } from "@shared/AppConsts";
 import { SubscribedFeaturesDto } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
@@ -14,7 +15,11 @@ export class CustomPricingComponent implements OnInit {
   features$: Observable<SubscribedFeaturesDto[]>;
   showBanner = false;
   private _subs = new SubSink();
-  constructor(private _companyFacde: CompanyFacade) {
+  constructor(
+    private _productsFacade: ProductsFacade,
+    private _companyFacde: CompanyFacade,
+    private _customPricingFacde: CustomPricingFacade
+  ) {
     this.features$ = _companyFacde.features$;
   }
 
@@ -28,6 +33,10 @@ export class CustomPricingComponent implements OnInit {
               x.subscriptonId > 0
           );
           this.showBanner = __featureSubscriptionStatus === undefined;
+          if (!this.showBanner) {
+            this._customPricingFacde.fetchAllIndividualPricing();
+            this._productsFacade.loadProducts();
+          }
         }
       })
     );
