@@ -21,6 +21,7 @@ import {
   map,
 } from "rxjs/operators";
 import { SubSink } from "subsink";
+import { UiComponentsService } from "../ui.components.service";
 
 @Component({
   selector: "app-product-selector-input",
@@ -56,7 +57,8 @@ export class ProductSelectorInputComponent
   constructor(
     private _renderer: Renderer2,
     private _elementRef: ElementRef,
-    private _productsFacade: ProductsFacade
+    private _productsFacade: ProductsFacade,
+    private _componentService: UiComponentsService
   ) {}
 
   onChange: (_: any) => {};
@@ -72,7 +74,18 @@ export class ProductSelectorInputComponent
     });
   }
 
-  showListButtonClicked() {}
+  showListButtonClicked() {
+    const _modal = this._componentService.openProductSelectorModal(
+      true,
+      "Select Product",
+      false,
+      (product: ProductDto) => {
+        this.writeValue(product);
+        this.onSelectionChanged.emit(product);
+        _modal.close();
+      }
+    );
+  }
 
   searchResultFormatter = (state: ProductDto) =>
     this.onlyServices
