@@ -40,9 +40,37 @@ export const initialState: CustomPricingStoreState = {
 const createFeatureReducer = createReducer(
   initialState,
   on(
+    fromAllActions.addUpdateIndividualPricingCompletedAction,
+    (state, props) => {
+      let __individualPricingState = state.individualPricingState;
+      if (props.success) {
+        if (props.isFromAdd) {
+          __individualPricingState = individualPricingAdapter.addOne(
+            props.entity,
+            __individualPricingState
+          );
+        }
+      }
+      return {
+        ...state,
+        isBusy: false,
+        individualPricingState: __individualPricingState,
+      };
+    }
+  ),
+  on(
     fromAllActions.onFetchAllIndividualPricingListCompletedAction,
     (state, props) => {
-      return { ...state, isBusy: false };
+      let __individualPricingState = state.individualPricingState;
+      __individualPricingState = individualPricingAdapter.addMany(
+        props.list,
+        __individualPricingState
+      );
+      return {
+        ...state,
+        individualPricingState: __individualPricingState,
+        isBusy: false,
+      };
     }
   )
 );

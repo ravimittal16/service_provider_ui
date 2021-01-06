@@ -5,7 +5,11 @@ import { Observable } from "rxjs";
 import { CustomPricingStoreState } from "./custom.pricing.state";
 import * as fromAllActions from "./custom.pricing.actions";
 import * as fromAllSelectors from "./custom.pricing.selectors";
-import { IndividualPricingDto } from "@shared/service-proxies/service-proxies";
+import {
+  IndividualPricingDto,
+  IndividualPricingModel,
+} from "@shared/service-proxies/service-proxies";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: "root",
@@ -22,6 +26,16 @@ export class CustomPricingFacade implements Facade {
 
   private _setBusy(isBusy: boolean) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: isBusy }));
+  }
+
+  addUpdateIndividualPricing(
+    model: IndividualPricingModel,
+    modal: NgbActiveModal
+  ) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.addUpdateIndividualPricing({ model: model, modal: modal })
+    );
   }
 
   fetchAllIndividualPricing() {

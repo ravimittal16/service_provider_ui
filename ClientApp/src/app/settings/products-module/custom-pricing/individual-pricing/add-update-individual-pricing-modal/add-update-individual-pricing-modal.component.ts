@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { CustomPricingFacade } from "@core-data/index";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
   IndividualPricingModel,
@@ -14,7 +15,11 @@ import {
 export class AddUpdateIndividualPricingModalComponent implements OnInit {
   @ViewChild("unitPriceInput") unitPriceInputElRef: ElementRef;
   pricingFormGroup: FormGroup;
-  constructor(private _fb: FormBuilder, private _activeModal: NgbActiveModal) {}
+  constructor(
+    private _fb: FormBuilder,
+    private _activeModal: NgbActiveModal,
+    private _customPricingFacade: CustomPricingFacade
+  ) {}
 
   onCancelClicked() {
     this._activeModal.dismiss();
@@ -23,7 +28,10 @@ export class AddUpdateIndividualPricingModalComponent implements OnInit {
   onSaveButtonClicked() {
     if (this.pricingFormGroup.valid) {
       const __model: IndividualPricingModel = this.pricingFormGroup.getRawValue();
-      console.log(__model);
+      this._customPricingFacade.addUpdateIndividualPricing(
+        __model,
+        this._activeModal
+      );
     }
   }
 
