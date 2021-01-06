@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { ProductDto } from "@shared/service-proxies/service-proxies";
+import {
+  IndividualPricingModel,
+  ProductDto,
+} from "@shared/service-proxies/service-proxies";
 
 @Component({
   selector: "app-add-update-individual-pricing-modal",
@@ -17,7 +20,12 @@ export class AddUpdateIndividualPricingModalComponent implements OnInit {
     this._activeModal.dismiss();
   }
 
-  onSaveButtonClicked() {}
+  onSaveButtonClicked() {
+    if (this.pricingFormGroup.valid) {
+      const __model: IndividualPricingModel = this.pricingFormGroup.getRawValue();
+      console.log(__model);
+    }
+  }
 
   onItemSelectionChanged(product: ProductDto) {
     if (product) {
