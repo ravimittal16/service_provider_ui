@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
+import { CustomPricingFacade } from "@core-data/index";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ProductDto } from "@shared/service-proxies/service-proxies";
+import { IndividualPricingDto } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
+
+import { SubSink } from "subsink";
 import { AddUpdateIndividualPricingModalComponent } from "./add-update-individual-pricing-modal/add-update-individual-pricing-modal.component";
 
 @Component({
@@ -10,10 +14,18 @@ import { AddUpdateIndividualPricingModalComponent } from "./add-update-individua
   styleUrls: ["./individual-pricing.component.scss"],
 })
 export class IndividualPricingComponent implements OnInit, OnDestroy {
+  private _subs = new SubSink();
+  individualPricingList$: Observable<IndividualPricingDto[]>;
   constructor(
-    private _uiComponentsService: UiComponentsService,
-    private modalService: NgbModal
-  ) {}
+    private modalService: NgbModal,
+    private _customPricingFacade: CustomPricingFacade
+  ) {
+    this.individualPricingList$ = _customPricingFacade.individualPricingList$;
+  }
+
+  onDeleteClicked(item: IndividualPricingDto) {}
+
+  onEditButtonClicked(item: IndividualPricingDto) {}
 
   addProductClicked(): void {
     const modalRef = this.modalService.open(
@@ -24,12 +36,18 @@ export class IndividualPricingComponent implements OnInit, OnDestroy {
         backdrop: "static",
       }
     );
+    this._subs.add(
+      modalRef.closed.subscribe((success?: boolean) => {
+        if (success) {
+        }
+      })
+    );
   }
 
   exportListClicked(): void {}
 
   ngOnDestroy(): void {
-    console.log("Method not implemented.");
+    this._subs.unsubscribe();
   }
 
   ngOnInit(): void {}

@@ -1,3 +1,4 @@
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { createAction, props } from "@ngrx/store";
 import {
   IndividualPricingDto,
@@ -26,7 +27,7 @@ export const onFetchAllIndividualPricingListCompletedAction = createAction(
 // ==========================================================
 export const addUpdateIndividualPricing = createAction(
   "[Custom Pricing] Add Update Individual Pricing Action",
-  props<{ model: IndividualPricingModel }>()
+  props<{ model: IndividualPricingModel; modal: NgbActiveModal }>()
 );
 export const addUpdateIndividualPricingCompletedAction = createAction(
   "[Custom Pricing] Add Update Individual Pricing Completed Action",

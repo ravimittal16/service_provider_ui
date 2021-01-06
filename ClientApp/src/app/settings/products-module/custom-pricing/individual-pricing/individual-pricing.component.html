@@ -5,7 +5,7 @@
         class="btn btn-xs btn-falcon-primary"
         (click)="addProductClicked()"
       >
-        <i class="fa fa-plus mr-1"></i>Add Products
+        <i class="fa fa-plus mr-1"></i>Add Custom Pricing
       </button>
       <button
         class="btn btn-xs btn-falcon-default ml-1"
@@ -15,5 +15,88 @@
       </button>
     </div>
   </div>
-  <div class="col-3">HELLO WORLD</div>
+  <div class="col-3">
+    <form class="form-inline search-box">
+      <input
+        class="form-control form-control-sm rounded-pill search-input"
+        type="search"
+        placeholder="Search product..."
+        aria-label="Search"
+      />
+    </form>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col">
+    <ng-container *ngIf="individualPricingList$ | async as list">
+      <div class="row mt-2" *ngIf="list.length === 0">
+        <div class="col">
+          <div class="d-flex justify-content-center">
+            <h6 class="text-500">No custom pricing defined.</h6>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="list.length > 0">
+        <div
+          class="row header-row border-bottom bg-light py-3 d-flex align-items-center"
+        >
+          <div class="col-4">
+            <h6 class="font-weight-bold mb-0">Product Name</h6>
+          </div>
+          <div class="col-2 d-flex justify-content-center">
+            <h6 class="font-weight-bold mb-0">Original Price</h6>
+          </div>
+          <div class="col-2 d-flex justify-content-center">
+            <h6 class="font-weight-bold mb-0">Custom Price</h6>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <h6 class="font-weight-bold mb-0">Actions</h6>
+          </div>
+        </div>
+        <div
+          class="row p-2 py-3 border-bottom hover-shadow d-flex align-items-center pointer"
+          *ngFor="let _i of list; index as i"
+        >
+          <div class="col-4">
+            <h6 class="font-weight-light mb-0">
+              {{ _i.productName }}
+              <br />
+              <small class="text-500"> {{ _i.productDescription }}</small>
+            </h6>
+          </div>
+
+          <div class="col-2 d-flex justify-content-center">
+            <h6 class="font-weight-light text-500">
+              {{ _i.actualPrice | currency }}
+            </h6>
+          </div>
+          <div class="col-2 d-flex justify-content-center">
+            <h6 class="font-weight-bold">
+              <span
+                [ngClass]="{
+                  'text-danger': _i.unitPrice < _i.actualPrice,
+                  'text-success': _i.unitPrice > _i.actualPrice
+                }"
+              >
+                {{ _i.unitPrice | currency }}</span
+              >
+            </h6>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <button
+              class="btn btn-sm btn-falcon-default mr-1"
+              type="button"
+              (click)="onEditButtonClicked(_i)"
+            >
+              <i class="fa fa-pencil"></i>
+            </button>
+            <app-delete-button
+              iconOnly="true"
+              (onConfirmation)="onDeleteClicked(_i)"
+            ></app-delete-button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
 </div>
