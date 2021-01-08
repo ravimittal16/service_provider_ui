@@ -1,7 +1,13 @@
 import { BaseState } from "@core-data/base.state";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { IndividualPricingDto } from "@shared/service-proxies/service-proxies";
+import {
+  IndividualPricingDto,
+  PricingGroupDto,
+} from "@shared/service-proxies/service-proxies";
 
+export interface GroupPricingState extends BaseState<PricingGroupDto> {
+  modalRef: NgbActiveModal;
+}
 export interface IndividualPricingState
   extends BaseState<IndividualPricingDto> {
   modalRef: NgbActiveModal;
@@ -12,4 +18,5 @@ export interface CustomPricingStoreState {
   errors: [];
   isSuccess: boolean;
   individualPricingState: IndividualPricingState;
+  groupPricingState: GroupPricingState;
 }

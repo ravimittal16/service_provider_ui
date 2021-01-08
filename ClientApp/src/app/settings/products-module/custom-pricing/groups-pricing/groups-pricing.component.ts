@@ -1,4 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { CustomPricingFacade } from "@core-data/index";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { PricingGroupDto } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
+import { SubSink } from "subsink";
+import { AddPricingGroupModalComponent } from "./add-pricing-group-modal/add-pricing-group-modal.component";
 
 @Component({
   selector: "app-groups-pricing",
@@ -6,8 +12,35 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
   styleUrls: ["./groups-pricing.component.scss"],
 })
 export class GroupsPricingComponent implements OnInit, OnDestroy {
-  constructor() {}
-  ngOnDestroy(): void {}
+  private _subs = new SubSink();
+  pricingGroupsList$: Observable<PricingGroupDto[]>;
+  constructor(
+    private modalService: NgbModal,
+    private _customPricingFacade: CustomPricingFacade
+  ) {
+    this.pricingGroupsList$ = _customPricingFacade.pricingGroupsList$;
+  }
+
+  ngOnDestroy(): void {
+    this._subs.unsubscribe();
+  }
+
+  onEditButtonClicked(group: PricingGroupDto): void {}
+  onDeleteClicked(group: PricingGroupDto): void {}
+
+  onAddPricingGroupClicked() {
+    const modalRef = this.modalService.open(AddPricingGroupModalComponent, {
+      size: "md",
+      keyboard: false,
+      backdrop: "static",
+    });
+    this._subs.add(
+      modalRef.closed.subscribe((success?: boolean) => {
+        if (success) {
+        }
+      })
+    );
+  }
 
   ngOnInit(): void {}
 }

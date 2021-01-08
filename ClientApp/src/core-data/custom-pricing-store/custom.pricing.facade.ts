@@ -8,6 +8,8 @@ import * as fromAllSelectors from "./custom.pricing.selectors";
 import {
   IndividualPricingDto,
   IndividualPricingModel,
+  PricingGroupDto,
+  PricingGroupModel,
 } from "@shared/service-proxies/service-proxies";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
@@ -18,14 +20,26 @@ export class CustomPricingFacade implements Facade {
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
   individualPricingList$: Observable<IndividualPricingDto[]>;
+  pricingGroupsList$: Observable<PricingGroupDto[]>;
   constructor(private _store: Store<CustomPricingStoreState>) {
     this.individualPricingList$ = this._store.pipe(
       select(fromAllSelectors.selectAllIndividualPricingList)
+    );
+
+    this.pricingGroupsList$ = this._store.pipe(
+      select(fromAllSelectors.selectAllPricingGroupsList)
     );
   }
 
   private _setBusy(isBusy: boolean) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: isBusy }));
+  }
+
+  addUpdatePricingGroup(model: PricingGroupModel, modal: NgbActiveModal) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.addUpdatePricingGrpup({ model: model, modal: modal })
+    );
   }
 
   addUpdateIndividualPricing(
@@ -36,6 +50,11 @@ export class CustomPricingFacade implements Facade {
     this.dispatch(
       fromAllActions.addUpdateIndividualPricing({ model: model, modal: modal })
     );
+  }
+
+  fetchAllPricingGrpups() {
+    this._setBusy(true);
+    this.dispatch(fromAllActions.fetchAllPricingGrpupsAction());
   }
 
   fetchAllIndividualPricing() {

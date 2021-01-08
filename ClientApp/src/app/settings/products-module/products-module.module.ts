@@ -17,6 +17,7 @@ import { GroupsPricingComponent } from "./custom-pricing/groups-pricing/groups-p
 import { CustomPricingBannerComponent } from "./custom-pricing/custom-pricing-banner/custom-pricing-banner.component";
 import { AddUpdateIndividualPricingModalComponent } from "./custom-pricing/individual-pricing/add-update-individual-pricing-modal/add-update-individual-pricing-modal.component";
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
+import { AddPricingGroupModalComponent } from "./custom-pricing/groups-pricing/add-pricing-group-modal/add-pricing-group-modal.component";
 
 const routes: Routes = [
   { path: "list", component: ListComponentComponent },
@@ -37,6 +38,7 @@ const __otherComponents = [
   IndividualPricingComponent,
   GroupsPricingComponent,
   AddUpdateIndividualPricingModalComponent,
+  AddPricingGroupModalComponent,
 ];
 @NgModule({
   declarations: [
