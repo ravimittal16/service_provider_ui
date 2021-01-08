@@ -3,6 +3,8 @@ import { createAction, props } from "@ngrx/store";
 import {
   IndividualPricingDto,
   IndividualPricingModel,
+  PricingGroupDto,
+  PricingGroupModel,
 } from "@shared/service-proxies/service-proxies";
 
 export const uiStateBusyAction = createAction(
@@ -34,6 +36,31 @@ export const addUpdateIndividualPricingCompletedAction = createAction(
   props<{
     success: boolean;
     entity: IndividualPricingDto;
+    isFromAdd: boolean;
+  }>()
+);
+// ==========================================================
+// GROUP PRICING ACTION
+// ==========================================================
+export const fetchAllPricingGrpupsAction = createAction(
+  "[Custom Pricing] fetch All pricing groups."
+);
+export const fetchAllPricingGroupCompletedAction = createAction(
+  "[Custom Pricing] Fetch All groups completed action",
+  props<{ groups: PricingGroupDto[] }>()
+);
+// ==========================================================
+// ADD PRICING GROUP
+// ==========================================================
+export const addUpdatePricingGrpup = createAction(
+  "[Custom Pricing] Add Update Pricing Group Action",
+  props<{ model: PricingGroupModel; modal: NgbActiveModal }>()
+);
+export const addUpdatePricingGrpupCompletedAction = createAction(
+  "[Custom Pricing] Add Update Pricing Group Completed Action",
+  props<{
+    success: boolean;
+    entity: PricingGroupDto;
     isFromAdd: boolean;
   }>()
 );

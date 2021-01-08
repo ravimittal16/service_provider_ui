@@ -1,9 +1,60 @@
 <div class="row">
   <div class="col">
     <div class="d-flex justify-content-start">
-      <button class="btn btn-xs btn-falcon-primary">
+      <button
+        class="btn btn-xs btn-falcon-primary"
+        (click)="onAddPricingGroupClicked()"
+      >
         <i class="fa fa-plus mr-1"></i>Add pricing group
       </button>
     </div>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col">
+    <ng-container *ngIf="pricingGroupsList$ | async as list">
+      <div class="row mt-2" *ngIf="list.length === 0">
+        <div class="col">
+          <div class="d-flex justify-content-center">
+            <h6 class="text-500">No custom pricing group found.</h6>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="list.length > 0">
+        <div
+          class="row header-row border-bottom bg-light py-3 d-flex align-items-center"
+        >
+          <div class="col-4">
+            <h6 class="font-weight-bold mb-0">Pricing Group Name</h6>
+          </div>
+        </div>
+        <div
+          class="row p-2 py-3 border-bottom hover-shadow d-flex align-items-center pointer"
+          *ngFor="let _i of list; index as i"
+        >
+          <div class="col-4">
+            <h6 class="font-weight-light mb-0">
+              {{ _i.groupName }}
+              <br />
+              <!-- <small class="text-500"> {{ _i.productDescription }}</small> -->
+            </h6>
+          </div>
+
+          <div class="col d-flex justify-content-center">
+            <button
+              class="btn btn-sm btn-falcon-default mr-1"
+              type="button"
+              (click)="onEditButtonClicked(_i)"
+            >
+              <i class="fa fa-pencil"></i>
+            </button>
+            <app-delete-button
+              iconOnly="true"
+              (onConfirmation)="onDeleteClicked(_i)"
+            ></app-delete-button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
   </div>
 </div>

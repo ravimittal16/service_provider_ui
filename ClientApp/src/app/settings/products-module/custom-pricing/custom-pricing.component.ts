@@ -34,6 +34,7 @@ export class CustomPricingComponent implements OnInit {
           );
           this.showBanner = __featureSubscriptionStatus === undefined;
           if (!this.showBanner) {
+            this._customPricingFacde.fetchAllPricingGrpups();
             this._customPricingFacde.fetchAllIndividualPricing();
             this._productsFacade.loadProducts();
           }

@@ -26,6 +26,36 @@ export class CustomPricingEffects extends BaseEffect {
     super();
   }
 
+  addUpdatePricingGroup$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.addUpdatePricingGrpup),
+      mergeMap((action) =>
+        this._dataService.addUpdatePricingGroup(action.model).pipe(
+          map((data) => {
+            if (data.isSuccess && action.modal) {
+              action.modal.close(data.isSuccess);
+            }
+            return fromAllActions.addUpdatePricingGrpupCompletedAction({
+              entity: data.entity,
+              success: data.isSuccess,
+              isFromAdd: action.model.pricingGroupId === 0,
+            });
+          }),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [...error],
+                  })
+                );
+              })
+            );
+          })
+        )
+      )
+    );
+  });
   addUpdateIndividualPricing$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.addUpdateIndividualPricing),
@@ -71,6 +101,27 @@ export class CustomPricingEffects extends BaseEffect {
           map((res) =>
             fromAllActions.onFetchAllIndividualPricingListCompletedAction({
               list: res,
+            })
+          )
+        )
+      )
+    );
+  });
+
+  fetchAllPricingGroups$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.fetchAllPricingGrpupsAction),
+      withLatestFrom(
+        this._store.select(fromAllSelectors.selectAllPricingGroupsList)
+      ),
+      filter(([action, commonData]) => {
+        return Object.keys(commonData).length === 0;
+      }),
+      mergeMap((action) =>
+        this._dataService.allPricingGroups().pipe(
+          map((res) =>
+            fromAllActions.fetchAllPricingGroupCompletedAction({
+              groups: res,
             })
           )
         )
