@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h5 class="modal-title">Edit Pricing group</h5>
+</div>
+
+<div class="modal-body">
+  <div class="py-2">
+    <h5>
+      {{ selectedPricingGroup?.groupName }}
+      <a><span class="fa fa-pencil"></span></a>
+    </h5>
+  </div>
+  <div>
+    <ul ngbNav #nav="ngbNav" class="nav-tabs">
+      <li ngbNavItem>
+        <a class="tab-link" ngbNavLink>Products</a>
+        <ng-template ngbNavContent> HELLO </ng-template>
+      </li>
+      <li ngbNavItem>
+        <a class="tab-link" ngbNavLink>Customers</a>
+        <ng-template ngbNavContent> CUSTOMERS </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="py-2"></div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-xs btn-danger mr-1" (click)="onCancelClicked()">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-xs btn-primary"
+      (click)="onSaveButtonClicked()"
+    >
+      Save
+    </button>
+  </div>
+</div>
