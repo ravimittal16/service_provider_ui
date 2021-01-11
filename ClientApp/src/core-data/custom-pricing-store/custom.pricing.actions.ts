@@ -3,6 +3,7 @@ import { createAction, props } from "@ngrx/store";
 import {
   IndividualPricingDto,
   IndividualPricingModel,
+  PricingGroupDetailDto,
   PricingGroupDto,
   PricingGroupModel,
 } from "@shared/service-proxies/service-proxies";
@@ -63,4 +64,12 @@ export const addUpdatePricingGrpupCompletedAction = createAction(
     entity: PricingGroupDto;
     isFromAdd: boolean;
   }>()
+);
+export const fetchPricingGroupDetailsAction = createAction(
+  "[Custom Pricing] Fetch pricing group details action.",
+  props<{ pricingGroupId: number }>()
+);
+export const fetchPricingGroupDetailCompletedAction = createAction(
+  "[Custom Pricing] Fetch pricing group details completed action.",
+  props<{ details: PricingGroupDetailDto }>()
 );

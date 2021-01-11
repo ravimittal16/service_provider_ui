@@ -8,6 +8,7 @@ import * as fromAllSelectors from "./custom.pricing.selectors";
 import {
   IndividualPricingDto,
   IndividualPricingModel,
+  PricingGroupDetailDto,
   PricingGroupDto,
   PricingGroupModel,
 } from "@shared/service-proxies/service-proxies";
@@ -21,6 +22,7 @@ export class CustomPricingFacade implements Facade {
   isBusy$: Observable<boolean>;
   individualPricingList$: Observable<IndividualPricingDto[]>;
   pricingGroupsList$: Observable<PricingGroupDto[]>;
+  selectGroupDetails$: Observable<PricingGroupDetailDto>;
   constructor(private _store: Store<CustomPricingStoreState>) {
     this.individualPricingList$ = this._store.pipe(
       select(fromAllSelectors.selectAllIndividualPricingList)
@@ -29,10 +31,22 @@ export class CustomPricingFacade implements Facade {
     this.pricingGroupsList$ = this._store.pipe(
       select(fromAllSelectors.selectAllPricingGroupsList)
     );
+    this.selectGroupDetails$ = this._store.pipe(
+      select(fromAllSelectors.selectGroupDetails)
+    );
   }
 
   private _setBusy(isBusy: boolean) {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: isBusy }));
+  }
+
+  fetchGroupDetails(pricingGroupId: number) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.fetchPricingGroupDetailsAction({
+        pricingGroupId: pricingGroupId,
+      })
+    );
   }
 
   addUpdatePricingGroup(model: PricingGroupModel, modal: NgbActiveModal) {

@@ -1,6 +1,13 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { PricingGroupDto } from "@shared/service-proxies/service-proxies";
+import { CustomPricingFacade } from "@core-data/index";
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import {
+  PricingGroupDetailDto,
+  PricingGroupDto,
+} from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
+import { SubSink } from "subsink";
+import { AddUpdateIndividualPricingModalComponent } from "../../individual-pricing/add-update-individual-pricing-modal/add-update-individual-pricing-modal.component";
 
 @Component({
   selector: "app-edit-pricing-group-modal",
@@ -9,7 +16,32 @@ import { PricingGroupDto } from "@shared/service-proxies/service-proxies";
 })
 export class EditPricingGroupModalComponent implements OnInit {
   @Input() selectedPricingGroup: PricingGroupDto;
-  constructor(private activeModal: NgbActiveModal) {}
+  private _subs = new SubSink();
+  groupDetails$: Observable<PricingGroupDetailDto>;
+  constructor(
+    private activeModal: NgbActiveModal,
+    private modalService: NgbModal,
+    private _customPricingFacade: CustomPricingFacade
+  ) {
+    this.groupDetails$ = _customPricingFacade.selectGroupDetails$;
+  }
+
+  addProductClicked(): void {
+    const modalRef = this.modalService.open(
+      AddUpdateIndividualPricingModalComponent,
+      {
+        size: "md",
+        keyboard: false,
+        backdrop: "static",
+      }
+    );
+    this._subs.add(
+      modalRef.closed.subscribe((success?: boolean) => {
+        if (success) {
+        }
+      })
+    );
+  }
 
   onCancelClicked() {
     this.activeModal.dismiss(false);
@@ -17,5 +49,9 @@ export class EditPricingGroupModalComponent implements OnInit {
 
   onSaveButtonClicked() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._customPricingFacade.fetchGroupDetails(
+      this.selectedPricingGroup?.pricingGroupId
+    );
+  }
 }

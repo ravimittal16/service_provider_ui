@@ -3,25 +3,60 @@
 </div>
 
 <div class="modal-body">
-  <div class="py-2">
-    <h5>
-      {{ selectedPricingGroup?.groupName }}
-      <a><span class="fa fa-pencil"></span></a>
-    </h5>
-  </div>
-  <div>
-    <ul ngbNav #nav="ngbNav" class="nav-tabs">
-      <li ngbNavItem>
-        <a class="tab-link" ngbNavLink>Products</a>
-        <ng-template ngbNavContent> HELLO </ng-template>
-      </li>
-      <li ngbNavItem>
-        <a class="tab-link" ngbNavLink>Customers</a>
-        <ng-template ngbNavContent> CUSTOMERS </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="nav" class="py-2"></div>
-  </div>
+  <ng-container *ngIf="groupDetails$ | async as details">
+    <div class="py-2">
+      <h5>
+        {{ details?.group.groupName }}
+        <a class="pointer"><span class="text-400 fa fa-pencil"></span></a>
+        <br />
+        <small class="text-500 fs--2"
+          ><span>Created By </span
+          ><strong>{{ details?.group.createdByName }}</strong></small
+        >
+      </h5>
+    </div>
+    <div>
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <a class="tab-link" ngbNavLink>Products</a>
+          <ng-template ngbNavContent>
+            <div>
+              <div class="row">
+                <div class="col">
+                  <div class="d-flex justify-content-start">
+                    <button
+                      class="btn btn-xs btn-falcon-primary"
+                      (click)="addProductClicked()"
+                    >
+                      <i class="fa fa-plus mr-1"></i>Add Custom Pricing
+                    </button>
+                    <button class="btn btn-xs btn-falcon-warning ml-1">
+                      <i class="fa fa-cloud-upload mr-1"></i>Upload
+                    </button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <form class="form-inline search-box">
+                    <input
+                      class="form-control form-control-sm rounded-pill search-input"
+                      type="search"
+                      placeholder="Search product..."
+                      aria-label="Search"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        <li ngbNavItem>
+          <a class="tab-link" ngbNavLink>Customers</a>
+          <ng-template ngbNavContent> CUSTOMERS </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" class="py-2"></div>
+    </div>
+  </ng-container>
 </div>
 <div class="modal-footer">
   <div class="d-flex justify-content-end">
