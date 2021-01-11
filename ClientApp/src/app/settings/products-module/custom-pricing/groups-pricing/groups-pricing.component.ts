@@ -5,6 +5,7 @@ import { PricingGroupDto } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { SubSink } from "subsink";
 import { AddPricingGroupModalComponent } from "./add-pricing-group-modal/add-pricing-group-modal.component";
+import { EditPricingGroupModalComponent } from "./edit-pricing-group-modal/edit-pricing-group-modal.component";
 
 @Component({
   selector: "app-groups-pricing",
@@ -25,7 +26,21 @@ export class GroupsPricingComponent implements OnInit, OnDestroy {
     this._subs.unsubscribe();
   }
 
-  onEditButtonClicked(group: PricingGroupDto): void {}
+  onEditButtonClicked(group: PricingGroupDto): void {
+    const modalRef = this.modalService.open(EditPricingGroupModalComponent, {
+      size: "lg",
+      keyboard: false,
+      backdrop: "static",
+    });
+    modalRef.componentInstance.selectedPricingGroup = group;
+    this._subs.add(
+      modalRef.closed.subscribe((success?: boolean) => {
+        if (success) {
+        }
+      })
+    );
+  }
+
   onDeleteClicked(group: PricingGroupDto): void {}
 
   onAddPricingGroupClicked() {
