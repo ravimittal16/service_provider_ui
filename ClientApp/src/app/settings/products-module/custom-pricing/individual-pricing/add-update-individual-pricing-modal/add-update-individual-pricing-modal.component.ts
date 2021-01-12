@@ -14,6 +14,7 @@ import {
 })
 export class AddUpdateIndividualPricingModalComponent implements OnInit {
   @ViewChild("unitPriceInput") unitPriceInputElRef: ElementRef;
+  @Input() editedModel?: IndividualPricingModel;
   @Input() pricingGroupId: number;
   pricingFormGroup: FormGroup;
   constructor(
@@ -60,6 +61,10 @@ export class AddUpdateIndividualPricingModalComponent implements OnInit {
       productId: [null, [Validators.required]],
       product: [null, [Validators.required]],
     });
+    if (this.editedModel) {
+      console.log(this.editedModel);
+      this.pricingFormGroup.get("product").disable();
+    }
   }
 
   ngOnInit(): void {

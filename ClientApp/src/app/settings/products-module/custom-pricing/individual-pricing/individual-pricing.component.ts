@@ -25,7 +25,23 @@ export class IndividualPricingComponent implements OnInit, OnDestroy {
 
   onDeleteClicked(item: IndividualPricingDto) {}
 
-  onEditButtonClicked(item: IndividualPricingDto) {}
+  onEditButtonClicked(item: IndividualPricingDto) {
+    const modalRef = this.modalService.open(
+      AddUpdateIndividualPricingModalComponent,
+      {
+        size: "md",
+        keyboard: false,
+        backdrop: "static",
+      }
+    );
+    modalRef.componentInstance.editedModel = item;
+    this._subs.add(
+      modalRef.closed.subscribe((success?: boolean) => {
+        if (success) {
+        }
+      })
+    );
+  }
 
   addProductClicked(): void {
     const modalRef = this.modalService.open(
