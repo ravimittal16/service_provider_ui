@@ -50,6 +50,7 @@ export class ProductSelectorInputComponent
   @Output()
   onSelectionChanged: EventEmitter<ProductDto> = new EventEmitter<ProductDto>();
   id: string;
+  buttonId: string;
   public value: ProductDto;
   products: ProductDto[];
   private _subs = new SubSink();
@@ -130,6 +131,7 @@ export class ProductSelectorInputComponent
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
+    console.log(isDisabled);
     if (this._elementRef?.nativeElement) {
       this._renderer.setProperty(
         this._elementRef.nativeElement,
@@ -137,6 +139,17 @@ export class ProductSelectorInputComponent
         isDisabled
       );
     }
+    setTimeout(() => {
+      const _inputEl = document.getElementById(this.id);
+      const _buttonEl = document.getElementById(this.buttonId);
+      if (isDisabled && _inputEl) {
+        this._renderer.setProperty(_inputEl, "disabled", "disabled");
+        this._renderer.setProperty(_buttonEl, "disabled", "disabled");
+      } else {
+        this._renderer.setProperty(_inputEl, "disabled", null);
+        this._renderer.setProperty(_buttonEl, "disabled", null);
+      }
+    }, 100);
   }
 
   private _subcribeToProducts() {
@@ -164,6 +177,7 @@ export class ProductSelectorInputComponent
 
   ngOnInit(): void {
     this.id = Guid.create().toString();
+    this.buttonId = `${this.id}__button`;
     this._subcribeToProducts();
     this.setFocus();
   }
