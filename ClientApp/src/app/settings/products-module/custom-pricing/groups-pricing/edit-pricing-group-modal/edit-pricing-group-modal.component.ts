@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { CustomPricingFacade } from "@core-data/index";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import {
+  IndividualPricingDto,
   PricingGroupDetailDto,
   PricingGroupDto,
 } from "@shared/service-proxies/service-proxies";
@@ -35,6 +36,7 @@ export class EditPricingGroupModalComponent implements OnInit {
         backdrop: "static",
       }
     );
+    modalRef.componentInstance.pricingGroupId = this.selectedPricingGroup.pricingGroupId;
     this._subs.add(
       modalRef.closed.subscribe((success?: boolean) => {
         if (success) {
@@ -42,6 +44,10 @@ export class EditPricingGroupModalComponent implements OnInit {
       })
     );
   }
+
+  onDeleteClicked(item: IndividualPricingDto) {}
+
+  onEditButtonClicked(item: IndividualPricingDto) {}
 
   onCancelClicked() {
     this.activeModal.dismiss(false);

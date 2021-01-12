@@ -5314,6 +5314,7 @@ export class IndividualPricingDto implements IIndividualPricingDto {
     addedByName: string | undefined;
     addedById: string | undefined;
     createDate: moment.Moment | undefined;
+    pricingGroupId: number | undefined;
 
     constructor(data?: IIndividualPricingDto) {
         if (data) {
@@ -5335,6 +5336,7 @@ export class IndividualPricingDto implements IIndividualPricingDto {
             this.addedByName = _data["addedByName"];
             this.addedById = _data["addedById"];
             this.createDate = _data["createDate"] ? moment(_data["createDate"].toString()) : <any>undefined;
+            this.pricingGroupId = _data["pricingGroupId"];
         }
     }
 
@@ -5356,6 +5358,7 @@ export class IndividualPricingDto implements IIndividualPricingDto {
         data["addedByName"] = this.addedByName;
         data["addedById"] = this.addedById;
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        data["pricingGroupId"] = this.pricingGroupId;
         return data; 
     }
 
@@ -5377,6 +5380,7 @@ export interface IIndividualPricingDto {
     addedByName: string | undefined;
     addedById: string | undefined;
     createDate: moment.Moment | undefined;
+    pricingGroupId: number | undefined;
 }
 
 export class IndividualPricingModel implements IIndividualPricingModel {
@@ -5385,6 +5389,7 @@ export class IndividualPricingModel implements IIndividualPricingModel {
     pricingId: number;
     unitPrice: number;
     productId: number;
+    pricingGroupId: number | undefined;
 
     constructor(data?: IIndividualPricingModel) {
         if (data) {
@@ -5402,6 +5407,7 @@ export class IndividualPricingModel implements IIndividualPricingModel {
             this.pricingId = _data["pricingId"];
             this.unitPrice = _data["unitPrice"];
             this.productId = _data["productId"];
+            this.pricingGroupId = _data["pricingGroupId"];
         }
     }
 
@@ -5419,6 +5425,7 @@ export class IndividualPricingModel implements IIndividualPricingModel {
         data["pricingId"] = this.pricingId;
         data["unitPrice"] = this.unitPrice;
         data["productId"] = this.productId;
+        data["pricingGroupId"] = this.pricingGroupId;
         return data; 
     }
 
@@ -5436,6 +5443,7 @@ export interface IIndividualPricingModel {
     pricingId: number;
     unitPrice: number;
     productId: number;
+    pricingGroupId: number | undefined;
 }
 
 export class IndividualPricingDtoGenericResponse implements IIndividualPricingDtoGenericResponse {

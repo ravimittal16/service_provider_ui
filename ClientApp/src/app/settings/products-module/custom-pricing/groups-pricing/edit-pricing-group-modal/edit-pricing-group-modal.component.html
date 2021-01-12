@@ -18,7 +18,12 @@
     <div>
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
         <li ngbNavItem>
-          <a class="tab-link" ngbNavLink>Products</a>
+          <a class="tab-link" ngbNavLink
+            >Products
+            <span class="ml-2 badge badge-info">{{
+              details.products.length
+            }}</span></a
+          >
           <ng-template ngbNavContent>
             <div>
               <div class="row">
@@ -46,12 +51,122 @@
                   </form>
                 </div>
               </div>
+              <div class="row mt-4" *ngIf="details.products.length === 0">
+                <div class="col">
+                  <div class="d-flex justify-content-center">
+                    <h6 class="text-500">No product added to this group.</h6>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="details?.products.length > 0">
+                <div
+                  class="row header-row border-bottom bg-light py-2 d-flex align-items-center"
+                >
+                  <div class="col-4">
+                    <h6 class="font-weight-bold mb-0">Product Name</h6>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <h6 class="font-weight-bold mb-0">Original Price</h6>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <h6 class="font-weight-bold mb-0">Custom Price</h6>
+                  </div>
+                  <div class="col d-flex justify-content-center">
+                    <h6 class="font-weight-bold mb-0">Actions</h6>
+                  </div>
+                </div>
+                <div
+                  class="row p-2 py-2 border-bottom hover-shadow d-flex align-items-center pointer"
+                  *ngFor="let _i of details?.products; index as i"
+                >
+                  <div class="col-4">
+                    <h6 class="font-weight-light mb-0">
+                      {{ _i.productName }}
+                      <br />
+                      <small class="text-500">
+                        {{ _i.productDescription }}</small
+                      >
+                    </h6>
+                  </div>
+
+                  <div class="col-2 d-flex justify-content-center">
+                    <h6 class="font-weight-light text-500">
+                      {{ _i.actualPrice | currency }}
+                    </h6>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <h6 class="font-weight-bold">
+                      <span
+                        [ngClass]="{
+                          'text-danger': _i.unitPrice < _i.actualPrice,
+                          'text-success': _i.unitPrice > _i.actualPrice
+                        }"
+                      >
+                        {{ _i.unitPrice | currency }}</span
+                      >
+                    </h6>
+                  </div>
+                  <div class="col d-flex justify-content-center">
+                    <button
+                      class="btn btn-sm btn-falcon-default mr-1"
+                      type="button"
+                      (click)="onEditButtonClicked(_i)"
+                    >
+                      <i class="fa fa-pencil"></i>
+                    </button>
+                    <app-delete-button
+                      iconOnly="true"
+                      (onConfirmation)="onDeleteClicked(_i)"
+                    ></app-delete-button>
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </ng-template>
         </li>
         <li ngbNavItem>
-          <a class="tab-link" ngbNavLink>Customers</a>
-          <ng-template ngbNavContent> CUSTOMERS </ng-template>
+          <a class="tab-link" ngbNavLink
+            >Customers
+            <span class="ml-2 badge badge-primary">{{
+              details.customers.length
+            }}</span></a
+          >
+          <ng-template ngbNavContent>
+            <div>
+              <div class="row">
+                <div class="col">
+                  <div class="d-flex justify-content-start">
+                    <button
+                      class="btn btn-xs btn-falcon-primary"
+                      (click)="addProductClicked()"
+                    >
+                      <i class="fa fa-plus mr-1"></i>Add Customer to Pricing
+                    </button>
+                    <button class="btn btn-xs btn-falcon-warning ml-1">
+                      <i class="fa fa-cloud-upload mr-1"></i>Upload
+                    </button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <form class="form-inline search-box">
+                    <input
+                      class="form-control form-control-sm rounded-pill search-input"
+                      type="search"
+                      placeholder="Search customer..."
+                      aria-label="Search"
+                    />
+                  </form>
+                </div>
+              </div>
+              <div class="row mt-4" *ngIf="details.customers.length === 0">
+                <div class="col">
+                  <div class="d-flex justify-content-center">
+                    <h6 class="text-500">No customer added to this group.</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
         </li>
       </ul>
       <div [ngbNavOutlet]="nav" class="py-2"></div>
