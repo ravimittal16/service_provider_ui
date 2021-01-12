@@ -6,7 +6,7 @@ import {
 } from "./custom.pricing.reducer";
 import { CustomPricingStoreState } from "./custom.pricing.state";
 
-export const expenseStoreState = createFeatureSelector<CustomPricingStoreState>(
+export const customPricingStoreState = createFeatureSelector<CustomPricingStoreState>(
   customPricingStoreFeatureKey
 );
 
@@ -16,23 +16,28 @@ const {
   (x) => x.individualPricingState
 );
 
-const {
-  selectAll: selectAllPricingGroups,
-} = groupPricingAdapter.getSelectors<CustomPricingStoreState>(
+const groupPricingState = groupPricingAdapter.getSelectors<CustomPricingStoreState>(
   (x) => x.groupPricingState
 );
 
+const { selectAll: selectAllPricingGroups } = groupPricingState;
+
+export const selectGroupDetails = createSelector(
+  customPricingStoreState,
+  (state) => state.groupPricingState?.selecteGroupDetails
+);
+
 export const selectAllIndividualPricingList = createSelector(
-  expenseStoreState,
+  customPricingStoreState,
   selectAllIndividualPricing
 );
 
 export const selectAllPricingGroupsList = createSelector(
-  expenseStoreState,
+  customPricingStoreState,
   selectAllPricingGroups
 );
 
 export const selectAllErrors = createSelector(
-  expenseStoreState,
+  customPricingStoreState,
   (state) => state.errors
 );

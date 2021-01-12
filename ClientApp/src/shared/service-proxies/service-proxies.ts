@@ -1455,6 +1455,62 @@ export class CustompricingServiceProxy {
         }
         return _observableOf<PricingGroupDto[]>(<any>null);
     }
+
+    /**
+     * @param pricingGroupId (optional) 
+     * @return Success
+     */
+    getPricingGroupDetail(pricingGroupId: number | undefined): Observable<PricingGroupDetailDtoGenericResponse> {
+        let url_ = this.baseUrl + "/api/custompricing/GetPricingGroupDetail?";
+        if (pricingGroupId === null)
+            throw new Error("The parameter 'pricingGroupId' cannot be null.");
+        else if (pricingGroupId !== undefined)
+            url_ += "pricingGroupId=" + encodeURIComponent("" + pricingGroupId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPricingGroupDetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPricingGroupDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<PricingGroupDetailDtoGenericResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PricingGroupDetailDtoGenericResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPricingGroupDetail(response: HttpResponseBase): Observable<PricingGroupDetailDtoGenericResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PricingGroupDetailDtoGenericResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PricingGroupDetailDtoGenericResponse>(<any>null);
+    }
 }
 
 @Injectable()
@@ -5258,6 +5314,7 @@ export class IndividualPricingDto implements IIndividualPricingDto {
     addedByName: string | undefined;
     addedById: string | undefined;
     createDate: moment.Moment | undefined;
+    pricingGroupId: number | undefined;
 
     constructor(data?: IIndividualPricingDto) {
         if (data) {
@@ -5279,6 +5336,7 @@ export class IndividualPricingDto implements IIndividualPricingDto {
             this.addedByName = _data["addedByName"];
             this.addedById = _data["addedById"];
             this.createDate = _data["createDate"] ? moment(_data["createDate"].toString()) : <any>undefined;
+            this.pricingGroupId = _data["pricingGroupId"];
         }
     }
 
@@ -5300,6 +5358,7 @@ export class IndividualPricingDto implements IIndividualPricingDto {
         data["addedByName"] = this.addedByName;
         data["addedById"] = this.addedById;
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        data["pricingGroupId"] = this.pricingGroupId;
         return data; 
     }
 
@@ -5321,6 +5380,7 @@ export interface IIndividualPricingDto {
     addedByName: string | undefined;
     addedById: string | undefined;
     createDate: moment.Moment | undefined;
+    pricingGroupId: number | undefined;
 }
 
 export class IndividualPricingModel implements IIndividualPricingModel {
@@ -5329,6 +5389,7 @@ export class IndividualPricingModel implements IIndividualPricingModel {
     pricingId: number;
     unitPrice: number;
     productId: number;
+    pricingGroupId: number | undefined;
 
     constructor(data?: IIndividualPricingModel) {
         if (data) {
@@ -5346,6 +5407,7 @@ export class IndividualPricingModel implements IIndividualPricingModel {
             this.pricingId = _data["pricingId"];
             this.unitPrice = _data["unitPrice"];
             this.productId = _data["productId"];
+            this.pricingGroupId = _data["pricingGroupId"];
         }
     }
 
@@ -5363,6 +5425,7 @@ export class IndividualPricingModel implements IIndividualPricingModel {
         data["pricingId"] = this.pricingId;
         data["unitPrice"] = this.unitPrice;
         data["productId"] = this.productId;
+        data["pricingGroupId"] = this.pricingGroupId;
         return data; 
     }
 
@@ -5380,6 +5443,7 @@ export interface IIndividualPricingModel {
     pricingId: number;
     unitPrice: number;
     productId: number;
+    pricingGroupId: number | undefined;
 }
 
 export class IndividualPricingDtoGenericResponse implements IIndividualPricingDtoGenericResponse {
@@ -5633,6 +5697,207 @@ export interface IPricingGroupDtoGenericResponse {
     hasError: boolean;
     isSuccess: boolean;
     entity: PricingGroupDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+}
+
+export class PricingGroupCustomerDto implements IPricingGroupCustomerDto {
+    displayName: string | undefined;
+    customerId: number;
+    pricingGroupId: number;
+    createdByName: string | undefined;
+    createdById: string | undefined;
+
+    constructor(data?: IPricingGroupCustomerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.displayName = _data["displayName"];
+            this.customerId = _data["customerId"];
+            this.pricingGroupId = _data["pricingGroupId"];
+            this.createdByName = _data["createdByName"];
+            this.createdById = _data["createdById"];
+        }
+    }
+
+    static fromJS(data: any): PricingGroupCustomerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PricingGroupCustomerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["displayName"] = this.displayName;
+        data["customerId"] = this.customerId;
+        data["pricingGroupId"] = this.pricingGroupId;
+        data["createdByName"] = this.createdByName;
+        data["createdById"] = this.createdById;
+        return data; 
+    }
+
+    clone(): PricingGroupCustomerDto {
+        const json = this.toJSON();
+        let result = new PricingGroupCustomerDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPricingGroupCustomerDto {
+    displayName: string | undefined;
+    customerId: number;
+    pricingGroupId: number;
+    createdByName: string | undefined;
+    createdById: string | undefined;
+}
+
+export class PricingGroupDetailDto implements IPricingGroupDetailDto {
+    group: PricingGroupDto;
+    products: IndividualPricingDto[] | undefined;
+    customers: PricingGroupCustomerDto[] | undefined;
+
+    constructor(data?: IPricingGroupDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.group = _data["group"] ? PricingGroupDto.fromJS(_data["group"]) : <any>undefined;
+            if (Array.isArray(_data["products"])) {
+                this.products = [] as any;
+                for (let item of _data["products"])
+                    this.products.push(IndividualPricingDto.fromJS(item));
+            }
+            if (Array.isArray(_data["customers"])) {
+                this.customers = [] as any;
+                for (let item of _data["customers"])
+                    this.customers.push(PricingGroupCustomerDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PricingGroupDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PricingGroupDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["group"] = this.group ? this.group.toJSON() : <any>undefined;
+        if (Array.isArray(this.products)) {
+            data["products"] = [];
+            for (let item of this.products)
+                data["products"].push(item.toJSON());
+        }
+        if (Array.isArray(this.customers)) {
+            data["customers"] = [];
+            for (let item of this.customers)
+                data["customers"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PricingGroupDetailDto {
+        const json = this.toJSON();
+        let result = new PricingGroupDetailDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPricingGroupDetailDto {
+    group: PricingGroupDto;
+    products: IndividualPricingDto[] | undefined;
+    customers: PricingGroupCustomerDto[] | undefined;
+}
+
+export class PricingGroupDetailDtoGenericResponse implements IPricingGroupDetailDtoGenericResponse {
+    httpStatusCode: number;
+    readonly hasError: boolean;
+    isSuccess: boolean;
+    entity: PricingGroupDetailDto;
+    errors: string[] | undefined;
+    errorType: ErrorTypes;
+    actionReturnCode: ActionReturnCode;
+
+    constructor(data?: IPricingGroupDetailDtoGenericResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.httpStatusCode = _data["httpStatusCode"];
+            (<any>this).hasError = _data["hasError"];
+            this.isSuccess = _data["isSuccess"];
+            this.entity = _data["entity"] ? PricingGroupDetailDto.fromJS(_data["entity"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+            this.errorType = _data["errorType"];
+            this.actionReturnCode = _data["actionReturnCode"] ? ActionReturnCode.fromJS(_data["actionReturnCode"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): PricingGroupDetailDtoGenericResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new PricingGroupDetailDtoGenericResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["httpStatusCode"] = this.httpStatusCode;
+        data["hasError"] = this.hasError;
+        data["isSuccess"] = this.isSuccess;
+        data["entity"] = this.entity ? this.entity.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        data["errorType"] = this.errorType;
+        data["actionReturnCode"] = this.actionReturnCode ? this.actionReturnCode.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): PricingGroupDetailDtoGenericResponse {
+        const json = this.toJSON();
+        let result = new PricingGroupDetailDtoGenericResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPricingGroupDetailDtoGenericResponse {
+    httpStatusCode: number;
+    hasError: boolean;
+    isSuccess: boolean;
+    entity: PricingGroupDetailDto;
     errors: string[] | undefined;
     errorType: ErrorTypes;
     actionReturnCode: ActionReturnCode;

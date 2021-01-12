@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CustomPricingFacade } from "@core-data/index";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -14,6 +14,7 @@ import {
 })
 export class AddUpdateIndividualPricingModalComponent implements OnInit {
   @ViewChild("unitPriceInput") unitPriceInputElRef: ElementRef;
+  @Input() pricingGroupId: number;
   pricingFormGroup: FormGroup;
   constructor(
     private _fb: FormBuilder,
@@ -54,6 +55,7 @@ export class AddUpdateIndividualPricingModalComponent implements OnInit {
     this.pricingFormGroup = this._fb.group({
       pricingId: [0],
       actualPrice: [0],
+      pricingGroupId: [this.pricingGroupId],
       unitPrice: [0, [Validators.required]],
       productId: [null, [Validators.required]],
       product: [null, [Validators.required]],

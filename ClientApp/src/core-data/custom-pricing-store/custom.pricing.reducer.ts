@@ -60,6 +60,8 @@ const groupPricingInitialState: GroupPricingState = groupPricingAdapter.getIniti
     success: false,
     actionReturnCode: null,
     items: [],
+    selectGroupId: 0,
+    selecteGroupDetails: null,
   }
 );
 
@@ -129,6 +131,17 @@ const createFeatureReducer = createReducer(
       props.groups,
       __groupPricingState
     );
+    return {
+      ...state,
+      groupPricingState: __groupPricingState,
+      isBusy: false,
+    };
+  }),
+  on(fromAllActions.fetchPricingGroupDetailCompletedAction, (state, props) => {
+    const __groupPricingState: GroupPricingState = {
+      ...state.groupPricingState,
+    };
+    __groupPricingState.selecteGroupDetails = props.details;
     return {
       ...state,
       groupPricingState: __groupPricingState,

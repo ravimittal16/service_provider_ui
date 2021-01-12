@@ -56,6 +56,7 @@ export class CustomPricingEffects extends BaseEffect {
       )
     );
   });
+
   addUpdateIndividualPricing$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.addUpdateIndividualPricing),
@@ -82,6 +83,21 @@ export class CustomPricingEffects extends BaseEffect {
               })
             );
           })
+        )
+      )
+    );
+  });
+
+  fetchPricingGroupDetailsAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.fetchPricingGroupDetailsAction),
+      mergeMap((action) =>
+        this._dataService.getPricingGroupDetail(action.pricingGroupId).pipe(
+          map((res) =>
+            fromAllActions.fetchPricingGroupDetailCompletedAction({
+              details: res.entity,
+            })
+          )
         )
       )
     );
