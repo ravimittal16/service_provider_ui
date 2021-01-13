@@ -1,6 +1,7 @@
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { createAction, props } from "@ngrx/store";
 import {
+  ActionReturnCode,
   IndividualPricingDto,
   IndividualPricingModel,
   PricingGroupDetailDto,
@@ -38,6 +39,7 @@ export const addUpdateIndividualPricingCompletedAction = createAction(
     success: boolean;
     entity: IndividualPricingDto;
     isFromAdd: boolean;
+    forGroupPricing: boolean;
   }>()
 );
 // ==========================================================
@@ -72,4 +74,17 @@ export const fetchPricingGroupDetailsAction = createAction(
 export const fetchPricingGroupDetailCompletedAction = createAction(
   "[Custom Pricing] Fetch pricing group details completed action.",
   props<{ details: PricingGroupDetailDto }>()
+);
+export const deleteProductFromPricingAction = createAction(
+  "[Custom Pricing] Delete Product from Pricing event.",
+  props<{ pricingId: number; pricingGroupId: number }>()
+);
+export const deleteProductFromPricingCompletedAction = createAction(
+  "[Custom Pricing] Delete Product from Pricing Completed event.",
+  props<{
+    returnCode: ActionReturnCode;
+    isSuccess: boolean;
+    pricingId: number;
+    forGroupPricing: boolean;
+  }>()
 );

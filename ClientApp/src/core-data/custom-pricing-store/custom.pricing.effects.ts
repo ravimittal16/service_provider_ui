@@ -57,6 +57,37 @@ export class CustomPricingEffects extends BaseEffect {
     );
   });
 
+  deleteProductFromPricingAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.deleteProductFromPricingAction),
+      mergeMap((action) =>
+        this._dataService
+          .deleteProductFromPricing(action.pricingId, action.pricingGroupId)
+          .pipe(
+            map((data) =>
+              fromAllActions.deleteProductFromPricingCompletedAction({
+                isSuccess: data.isSuccess,
+                pricingId: action.pricingId,
+                returnCode: data.returnCode,
+                forGroupPricing: (action.pricingGroupId ?? 0) !== 0,
+              })
+            ),
+            catchError((error) => {
+              return this.parseErrorWithAction(error).pipe(
+                switchMap((error) => {
+                  return of(
+                    fromAllActions.updateErrorStateAction({
+                      errors: [...error],
+                    })
+                  );
+                })
+              );
+            })
+          )
+      )
+    );
+  });
+
   addUpdateIndividualPricing$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.addUpdateIndividualPricing),
@@ -70,6 +101,7 @@ export class CustomPricingEffects extends BaseEffect {
               entity: data.entity,
               success: data.isSuccess,
               isFromAdd: action.model.pricingId === 0,
+              forGroupPricing: action.model?.pricingGroupId > 0,
             });
           }),
           catchError((error) => {

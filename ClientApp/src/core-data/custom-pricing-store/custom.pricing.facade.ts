@@ -40,6 +40,16 @@ export class CustomPricingFacade implements Facade {
     this.dispatch(fromAllActions.uiStateBusyAction({ isBusy: isBusy }));
   }
 
+  deleteProductFromPricing(pricingId: number, pricingGroupId: number) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.deleteProductFromPricingAction({
+        pricingGroupId: pricingGroupId,
+        pricingId: pricingId,
+      })
+    );
+  }
+
   fetchGroupDetails(pricingGroupId: number) {
     this._setBusy(true);
     this.dispatch(

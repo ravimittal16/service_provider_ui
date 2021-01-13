@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import {
   IndividualPricingDto,
+  PricingGroupDetailDto,
   PricingGroupDto,
 } from "@shared/service-proxies/service-proxies";
 import {
@@ -79,21 +80,47 @@ const createFeatureReducer = createReducer(
     fromAllActions.addUpdateIndividualPricingCompletedAction,
     (state, props) => {
       let __individualPricingState = state.individualPricingState;
+      let __groupPricingState = state.groupPricingState;
       if (props.success) {
         if (props.isFromAdd) {
-          __individualPricingState = individualPricingAdapter.addOne(
-            props.entity,
-            __individualPricingState
-          );
+          if (!props.forGroupPricing) {
+            __individualPricingState = individualPricingAdapter.addOne(
+              props.entity,
+              __individualPricingState
+            );
+          } else {
+            // ==========================================================
+            // GROUP PRICING
+            // ==========================================================
+            const _selectedGroupDetails = {
+              ...__groupPricingState.selecteGroupDetails,
+            } as PricingGroupDetailDto;
+            const __groupProducts = [
+              ...__groupPricingState.selecteGroupDetails.products,
+              props.entity,
+            ];
+            _selectedGroupDetails.products = __groupProducts;
+            __groupPricingState = {
+              ...__groupPricingState,
+              selecteGroupDetails: _selectedGroupDetails,
+            };
+          }
         }
       }
       return {
         ...state,
         isBusy: false,
+        groupPricingState: __groupPricingState,
         individualPricingState: __individualPricingState,
       };
     }
   ),
+  on(fromAllActions.deleteProductFromPricingCompletedAction, (state, props) => {
+    return {
+      ...state,
+      isBusy: false,
+    };
+  }),
   on(
     fromAllActions.onFetchAllIndividualPricingListCompletedAction,
     (state, props) => {
