@@ -45,7 +45,12 @@ export class EditPricingGroupModalComponent implements OnInit {
     );
   }
 
-  onDeleteClicked(item: IndividualPricingDto) {}
+  onDeleteClicked(item: IndividualPricingDto) {
+    this._customPricingFacade.deleteProductFromPricing(
+      item.pricingId,
+      item.pricingGroupId
+    );
+  }
 
   onEditButtonClicked(item: IndividualPricingDto) {}
 

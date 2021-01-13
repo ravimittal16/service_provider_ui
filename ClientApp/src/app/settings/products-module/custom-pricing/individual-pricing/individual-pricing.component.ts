@@ -23,7 +23,13 @@ export class IndividualPricingComponent implements OnInit, OnDestroy {
     this.individualPricingList$ = _customPricingFacade.individualPricingList$;
   }
 
-  onDeleteClicked(item: IndividualPricingDto) {}
+  onDeleteClicked(item: IndividualPricingDto) {
+    console.log(item);
+    this._customPricingFacade.deleteProductFromPricing(
+      item.pricingId,
+      item.pricingGroupId ?? 0
+    );
+  }
 
   onEditButtonClicked(item: IndividualPricingDto) {
     const modalRef = this.modalService.open(
