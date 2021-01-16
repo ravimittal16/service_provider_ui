@@ -116,8 +116,30 @@ const createFeatureReducer = createReducer(
     }
   ),
   on(fromAllActions.deleteProductFromPricingCompletedAction, (state, props) => {
+    let __individualPricingState = state.individualPricingState;
+    let __groupPricingState = state.groupPricingState;
+    if (props.forGroupPricing) {
+      const __items = __groupPricingState.selecteGroupDetails.products.filter(
+        (x) => x.pricingId !== props.pricingId
+      );
+      const _selectedGroupDetails = {
+        ...__groupPricingState.selecteGroupDetails,
+      } as PricingGroupDetailDto;
+      _selectedGroupDetails.products = __items;
+      __groupPricingState = {
+        ...__groupPricingState,
+        selecteGroupDetails: _selectedGroupDetails,
+      };
+    } else {
+      __individualPricingState = individualPricingAdapter.removeOne(
+        props.pricingId,
+        __individualPricingState
+      );
+    }
     return {
       ...state,
+      groupPricingState: __groupPricingState,
+      individualPricingState: __individualPricingState,
       isBusy: false,
     };
   }),
