@@ -4,8 +4,10 @@ import {
   OnInit,
   Input,
 } from "@angular/core";
+import { CustomersFacade } from "@core-data/index";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { CustomerDto } from "@shared/service-proxies/service-proxies";
+import { Observable } from "rxjs";
 import { SharedDataService } from "../shared.data.service";
 
 @Component({
@@ -17,12 +19,27 @@ import { SharedDataService } from "../shared.data.service";
 export class CustomerSelectorModalComponent implements OnInit {
   groups: { groupName: string; checked?: boolean }[] = [];
   @Input() selectionCallback: (product: CustomerDto) => void;
+  filterCustomersForModal$: Observable<CustomerDto[]>;
+  searchCriteria: string;
   constructor(
     public activeModal: NgbActiveModal,
-    private _sharedDateService: SharedDataService
-  ) {}
+    private _sharedDateService: SharedDataService,
+    private _customerStoreFacade: CustomersFacade
+  ) {
+    this.filterCustomersForModal$ =
+      _customerStoreFacade.filterCustomersForModal$;
+  }
 
-  onSelectionChanged(grp: any): void {}
+  onCustomerRowClicked(customer: CustomerDto): void {
+    if (this.selectionCallback) {
+      this.selectionCallback(customer);
+    }
+    this.activeModal.close();
+  }
+
+  onSelectionChanged(grp: any): void {
+    this._customerStoreFacade.onGroupSelected(grp);
+  }
 
   ngOnInit(): void {
     this.groups = this._sharedDateService.filterButtonsGroup;

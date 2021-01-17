@@ -29,6 +29,15 @@ export const selectCustomerErrors = createSelector(
   (state) => state.errors
 );
 
+export const selectCustomersByFilter = createSelector(
+  customerFeatureState,
+  (state) => {
+    if (state.selectedGroupFromModal && state.selectedGroupFromModal.groupName)
+      return state.filteredCustomers[state.selectedGroupFromModal.groupName];
+    return null;
+  }
+);
+
 export const selectCustomerUiState = createSelector(
   customerFeatureState,
   (state) => state.isBusy

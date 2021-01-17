@@ -115,6 +115,31 @@ const createFeatureReducer = createReducer(
       };
     }
   ),
+  on(
+    fromAllActions.addUpdateCustomerToPricingGroupCompletedAction,
+    (state, props) => {
+      let __groupPricingState = state.groupPricingState;
+      if (props.isSuccess && props.response.entity) {
+        const _selectedGroupDetails = {
+          ...__groupPricingState.selecteGroupDetails,
+        } as PricingGroupDetailDto;
+        const __groupCustomers = [
+          ...__groupPricingState.selecteGroupDetails.customers,
+          props.response.entity,
+        ];
+        _selectedGroupDetails.customers = __groupCustomers;
+        __groupPricingState = {
+          ...__groupPricingState,
+          selecteGroupDetails: _selectedGroupDetails,
+        };
+      }
+      return {
+        ...state,
+        groupPricingState: __groupPricingState,
+        isBusy: false,
+      };
+    }
+  ),
   on(fromAllActions.deleteProductFromPricingCompletedAction, (state, props) => {
     let __individualPricingState = state.individualPricingState;
     let __groupPricingState = state.groupPricingState;

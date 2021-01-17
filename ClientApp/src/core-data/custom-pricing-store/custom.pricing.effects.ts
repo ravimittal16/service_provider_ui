@@ -2,7 +2,10 @@ import { Injectable } from "@angular/core";
 import { BaseEffect } from "@core-data/base.effect";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { CustompricingServiceProxy } from "@shared/service-proxies/service-proxies";
+import {
+  CustompricingServiceProxy,
+  PricingGroupCustomerModel,
+} from "@shared/service-proxies/service-proxies";
 import { of } from "rxjs";
 import {
   catchError,
@@ -54,6 +57,37 @@ export class CustomPricingEffects extends BaseEffect {
           })
         )
       )
+    );
+  });
+
+  addUpdateCustomerToPricingGroupAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.addUpdateCustomerToPricingGroupAction),
+      mergeMap((action) => {
+        const __model = {
+          customerId: action.customerId,
+          pricingGroupId: action.pricingGroupId,
+        } as PricingGroupCustomerModel;
+        return this._dataService.addCustomerToPricingGroup(__model).pipe(
+          map((data) =>
+            fromAllActions.addUpdateCustomerToPricingGroupCompletedAction({
+              isSuccess: data.isSuccess,
+              response: data,
+            })
+          ),
+          catchError((error) => {
+            return this.parseErrorWithAction(error).pipe(
+              switchMap((error) => {
+                return of(
+                  fromAllActions.updateErrorStateAction({
+                    errors: [...error],
+                  })
+                );
+              })
+            );
+          })
+        );
+      })
     );
   });
 

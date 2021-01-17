@@ -15,6 +15,8 @@ export const initialState: CustomerState = adapter.getInitialState({
   errors: [],
   success: false,
   editedCustomerDetails: null,
+  selectedGroupFromModal: null,
+  filteredCustomers: {},
 });
 
 const customerReducer = createReducer(
@@ -38,6 +40,20 @@ const customerReducer = createReducer(
     ...state,
     editedCustomerDetails: null,
   })),
+  on(customerActions.onGroupSelectionAction, (state, props) => {
+    return {
+      ...state,
+      selectedGroupFromModal: props.group,
+    };
+  }),
+  on(customerActions.customersLoadedByFilterAction, (state, props) => {
+    const __filerCustomers = { ...state.filteredCustomers };
+    __filerCustomers[props.filterBy] = [...props.customers];
+    return {
+      ...state,
+      filteredCustomers: __filerCustomers,
+    };
+  }),
   on(
     customerActions.createEditCustomerModalDismissedAction,
     (state, props) => ({
@@ -57,7 +73,15 @@ const customerReducer = createReducer(
   on(customerActions.batchActionExecutionCompleted, (state) => ({
     ...state,
     isBusy: false,
-  }))
+  })),
+  on(customerActions.onGroupSelectionAction, (state, props) => {
+    const __state = state;
+
+    return {
+      ...state,
+      selectedGroupFromModal: props.group,
+    };
+  })
 );
 
 export function reducer(state: CustomerState | undefined, action: Action) {

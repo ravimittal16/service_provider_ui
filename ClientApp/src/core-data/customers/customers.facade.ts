@@ -20,6 +20,7 @@ export class CustomersFacade implements Facade {
   editedCustomerDetails$: Observable<CustomerDetailModel>;
   errors$: Observable<string[]>;
   isBusy$: Observable<boolean>;
+  filterCustomersForModal$: Observable<CustomerDto[]>;
   constructor(private _store: Store<CustomerState>) {
     this.customers$ = this._store.pipe(
       select(customerStateSelectors.selectAllCustomers)
@@ -35,6 +36,18 @@ export class CustomersFacade implements Facade {
     );
     this.isBusy$ = this._store.pipe(
       select(customerStateSelectors.selectCustomerUiState)
+    );
+    this.filterCustomersForModal$ = this._store.pipe(
+      select(customerStateSelectors.selectCustomersByFilter)
+    );
+  }
+
+  onGroupSelected(group: any) {
+    this.dispatch(customerActions.onGroupSelectionAction({ group: group }));
+    this.dispatch(
+      customerActions.loadCustomersByFilterAction({
+        filterBy: group.groupName,
+      })
     );
   }
 

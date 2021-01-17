@@ -817,10 +817,13 @@ export class CustomersServiceProxy {
     }
 
     /**
+     * @param filterBy (optional) 
      * @return Success
      */
-    getAllCustomers(): Observable<CustomerDto[]> {
-        let url_ = this.baseUrl + "/api/Customers/GetAllCustomers";
+    getAllCustomers(filterBy: string | null | undefined): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/Customers/GetAllCustomers?";
+        if (filterBy !== undefined && filterBy !== null)
+            url_ += "filterBy=" + encodeURIComponent("" + filterBy) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -5821,6 +5824,8 @@ export interface IPricingGroupDtoGenericResponse {
 
 export class PricingGroupCustomerDto implements IPricingGroupCustomerDto {
     displayName: string | undefined;
+    fullName: string | undefined;
+    companyName: string | undefined;
     customerId: number;
     pricingGroupId: number;
     createdByName: string | undefined;
@@ -5838,6 +5843,8 @@ export class PricingGroupCustomerDto implements IPricingGroupCustomerDto {
     init(_data?: any) {
         if (_data) {
             this.displayName = _data["displayName"];
+            this.fullName = _data["fullName"];
+            this.companyName = _data["companyName"];
             this.customerId = _data["customerId"];
             this.pricingGroupId = _data["pricingGroupId"];
             this.createdByName = _data["createdByName"];
@@ -5855,6 +5862,8 @@ export class PricingGroupCustomerDto implements IPricingGroupCustomerDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["displayName"] = this.displayName;
+        data["fullName"] = this.fullName;
+        data["companyName"] = this.companyName;
         data["customerId"] = this.customerId;
         data["pricingGroupId"] = this.pricingGroupId;
         data["createdByName"] = this.createdByName;
@@ -5872,6 +5881,8 @@ export class PricingGroupCustomerDto implements IPricingGroupCustomerDto {
 
 export interface IPricingGroupCustomerDto {
     displayName: string | undefined;
+    fullName: string | undefined;
+    companyName: string | undefined;
     customerId: number;
     pricingGroupId: number;
     createdByName: string | undefined;

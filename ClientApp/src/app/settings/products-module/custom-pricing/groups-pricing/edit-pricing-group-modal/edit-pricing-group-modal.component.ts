@@ -39,7 +39,7 @@ export class EditPricingGroupModalComponent implements OnInit {
         backdrop: "static",
       }
     );
-    modalRef.componentInstance.pricingGroupId = this.selectedPricingGroup.pricingGroupId;
+    modalRef.componentInstance.pricingGroupId = this.pricingGroupId;
     this._subs.add(
       modalRef.closed.subscribe((success?: boolean) => {
         if (success) {
@@ -48,9 +48,18 @@ export class EditPricingGroupModalComponent implements OnInit {
     );
   }
 
+  get pricingGroupId() {
+    return this.selectedPricingGroup.pricingGroupId;
+  }
+
   openCustomerModal() {
     const __modal = this._uiComponentService.openCustomSelectorModal(
-      (customer: CustomerDto) => {}
+      (customer: CustomerDto) => {
+        this._customPricingFacade.addCustomerToPricingGroup(
+          customer.id,
+          this.pricingGroupId
+        );
+      }
     );
   }
 
