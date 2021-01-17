@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h5 class="modal-title">Customer Selection</h5>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div>
+    <div class="row">
+      <div class="col-auto pr-0">
+        <div
+          class="btn-group-vertical btn-group-sm btn-group-toggle"
+          data-toggle="buttons"
+        >
+          <label
+            class="btn btn-xs btn-falcon-default"
+            [ngClass]="{ active: i === 1 }"
+            *ngFor="let grp of groups; index as i"
+          >
+            <input
+              type="radio"
+              name="group"
+              (click)="onSelectionChanged(grp)"
+              [id]="grp.groupName"
+              [title]="grp.groupName"
+            />
+            {{ grp.groupName }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

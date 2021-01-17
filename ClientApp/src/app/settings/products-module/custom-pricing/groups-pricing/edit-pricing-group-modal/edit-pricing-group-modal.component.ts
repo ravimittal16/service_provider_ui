@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { UiComponentsService } from "@app/shared-ui-components/ui.components.service";
 import { CustomPricingFacade } from "@core-data/index";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import {
+  CustomerDto,
   IndividualPricingDto,
   PricingGroupDetailDto,
   PricingGroupDto,
@@ -22,7 +24,8 @@ export class EditPricingGroupModalComponent implements OnInit {
   constructor(
     private activeModal: NgbActiveModal,
     private modalService: NgbModal,
-    private _customPricingFacade: CustomPricingFacade
+    private _customPricingFacade: CustomPricingFacade,
+    private _uiComponentService: UiComponentsService
   ) {
     this.groupDetails$ = _customPricingFacade.selectGroupDetails$;
   }
@@ -42,6 +45,12 @@ export class EditPricingGroupModalComponent implements OnInit {
         if (success) {
         }
       })
+    );
+  }
+
+  openCustomerModal() {
+    const __modal = this._uiComponentService.openCustomSelectorModal(
+      (customer: CustomerDto) => {}
     );
   }
 
