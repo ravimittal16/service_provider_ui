@@ -817,10 +817,13 @@ export class CustomersServiceProxy {
     }
 
     /**
+     * @param filterBy (optional) 
      * @return Success
      */
-    getAllCustomers(): Observable<CustomerDto[]> {
-        let url_ = this.baseUrl + "/api/Customers/GetAllCustomers";
+    getAllCustomers(filterBy: string | null | undefined): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/Customers/GetAllCustomers?";
+        if (filterBy !== undefined && filterBy !== null)
+            url_ += "filterBy=" + encodeURIComponent("" + filterBy) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

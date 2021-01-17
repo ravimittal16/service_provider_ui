@@ -78,10 +78,10 @@ export const onGroupSelectionAction = createAction(
   props<{ group: any }>()
 );
 export const loadCustomersByFilterAction = createAction(
-  "[Customer] Loading products by filter",
+  "[Customer] Loading Customers by filter",
   props<{ filterBy: string }>()
 );
-export const productsLoadedByFilterAction = createAction(
-  "[Customer] Loaded products by filter",
-  props<{ products: CustomerDto[]; filterBy: string }>()
+export const customersLoadedByFilterAction = createAction(
+  "[Customer] Loaded Customers by filter",
+  props<{ customers: CustomerDto[]; filterBy: string }>()
 );

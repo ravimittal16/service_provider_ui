@@ -34,6 +34,76 @@
           </label>
         </div>
       </div>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="d-flex justify-content-end">
+              <div class="input-group input-group-sm">
+                <input
+                  #titleInput
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="search customer here..."
+                  [(ngModel)]="searchCriteria"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary btn-sm"
+                    type="button"
+                    tabindex="-1"
+                  >
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col">
+            <ng-container *ngIf="filterCustomersForModal$ | async as customers">
+              <div class="p-3 border-bottom" *ngIf="customers.length === 0">
+                <div class="col d-flex justify-content-center">
+                  <h6 class="font-weight-normal mb-0 text-500">
+                    No customers found.
+                  </h6>
+                </div>
+              </div>
+              <ng-container *ngIf="customers.length > 0">
+                <div
+                  class="header-row border-bottom bg-light p-2 mt-2 d-flex align-items-center"
+                >
+                  <div class="col">
+                    <h6 class="font-weight-bold mb-0">Customer Detail</h6>
+                  </div>
+                </div>
+                <div
+                  class="p-2 py-2 border-bottom hover-shadow d-flex align-items-center pointer"
+                  *ngFor="let customer of customers; index as i"
+                  (click)="onCustomerRowClicked(customer)"
+                >
+                  <div class="col">
+                    <h6 class="font-weight-light mb-0">
+                      {{ customer.displayName }}
+                      <small class="text-500">{{ customer.companyName }}</small>
+                      <div>
+                        <small class="mr-2">
+                          <strong class="mr-1">Full Name:</strong
+                          >{{ customer.fullName }}
+                        </small>
+                        <small class="mr-2" *ngIf="customer.businessAddress">
+                          <strong class="mr-1">Business Address:</strong
+                          >{{ customer.businessAddress }}
+                        </small>
+                      </div>
+                    </h6>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

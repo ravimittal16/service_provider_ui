@@ -28,6 +28,35 @@ export class CustomerEffects extends BaseEffect {
     super();
   }
 
+  loadCustomersByFilter$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.loadCustomersByFilterAction),
+      withLatestFrom(
+        this._store.select(customerStateSelectors.selectCustomersByFilter)
+      ),
+      filter(([action, customers]) => {
+        return customers === undefined || customers.length === 0;
+      }),
+      mergeMap((action) => {
+        return this.customerService.getAllCustomers(action[0].filterBy).pipe(
+          map((data) => {
+            return customerActions.customersLoadedByFilterAction({
+              customers: data,
+              filterBy: action[0].filterBy,
+            });
+          }),
+          catchError((error) =>
+            of(
+              customerActions.createCustomerErrorAction({
+                errors: ["Error while loading customers.", error],
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
   deactivateCustomers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(customerActions.executeCustomerBatchAction),
@@ -124,7 +153,7 @@ export class CustomerEffects extends BaseEffect {
         return Object.keys(commonData).length === 0;
       }),
       mergeMap((action) =>
-        this.customerService.getAllCustomers().pipe(
+        this.customerService.getAllCustomers(null).pipe(
           map((data) => {
             return customerActions.customersLoadedAction({ customers: data });
           }),
