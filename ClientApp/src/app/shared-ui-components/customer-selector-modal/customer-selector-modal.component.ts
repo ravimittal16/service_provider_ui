@@ -31,7 +31,10 @@ export class CustomerSelectorModalComponent implements OnInit {
   }
 
   onCustomerRowClicked(customer: CustomerDto): void {
-    console.log(customer);
+    if (this.selectionCallback) {
+      this.selectionCallback(customer);
+    }
+    this.activeModal.close();
   }
 
   onSelectionChanged(grp: any): void {

@@ -59,6 +59,16 @@ export class CustomPricingFacade implements Facade {
     );
   }
 
+  addCustomerToPricingGroup(customerId: number, pricingGroupId: number) {
+    this._setBusy(true);
+    this.dispatch(
+      fromAllActions.addUpdateCustomerToPricingGroupAction({
+        customerId: customerId,
+        pricingGroupId: pricingGroupId,
+      })
+    );
+  }
+
   addUpdatePricingGroup(model: PricingGroupModel, modal: NgbActiveModal) {
     this._setBusy(true);
     this.dispatch(

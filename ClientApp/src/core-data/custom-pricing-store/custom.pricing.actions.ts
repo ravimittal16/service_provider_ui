@@ -4,6 +4,7 @@ import {
   ActionReturnCode,
   IndividualPricingDto,
   IndividualPricingModel,
+  PricingGroupCustomerDtoGenericResponse,
   PricingGroupDetailDto,
   PricingGroupDto,
   PricingGroupModel,
@@ -99,7 +100,7 @@ export const addUpdateCustomerToPricingGroupAction = createAction(
 export const addUpdateCustomerToPricingGroupCompletedAction = createAction(
   "[Custom Pricing] Add Update Custom to pricing group Completed event.",
   props<{
-    returnCode: any;
+    response: PricingGroupCustomerDtoGenericResponse;
     isSuccess: boolean;
   }>()
 );
