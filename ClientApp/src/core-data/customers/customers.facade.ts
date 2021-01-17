@@ -38,6 +38,15 @@ export class CustomersFacade implements Facade {
     );
   }
 
+  onGroupSelected(group: any) {
+    this.dispatch(customerActions.onGroupSelectionAction({ group: group }));
+    this.dispatch(
+      customerActions.loadCustomersByFilterAction({
+        filterBy: group.groupName,
+      })
+    );
+  }
+
   dispatch(action: Action) {
     this._store.dispatch(action);
   }

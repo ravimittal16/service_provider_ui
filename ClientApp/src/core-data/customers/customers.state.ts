@@ -16,5 +16,5 @@ export interface CustomerState extends EntityState<CustomerDto> {
   companyId: number;
   success: boolean;
   selectedGroupFromModal: any;
-  filteredProducts: IFilteredCustomers;
+  filteredCustomers: IFilteredCustomers;
 }

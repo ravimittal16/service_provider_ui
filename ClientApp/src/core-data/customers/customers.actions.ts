@@ -73,3 +73,15 @@ export const executeCustomerBatchAction = createAction(
 export const batchActionExecutionCompleted = createAction(
   "[Customer] Batch Action Execution Completed"
 );
+export const onGroupSelectionAction = createAction(
+  "[Customer] On Group Selected",
+  props<{ group: any }>()
+);
+export const loadCustomersByFilterAction = createAction(
+  "[Customer] Loading products by filter",
+  props<{ filterBy: string }>()
+);
+export const productsLoadedByFilterAction = createAction(
+  "[Customer] Loaded products by filter",
+  props<{ products: CustomerDto[]; filterBy: string }>()
+);

@@ -15,6 +15,8 @@ export const initialState: CustomerState = adapter.getInitialState({
   errors: [],
   success: false,
   editedCustomerDetails: null,
+  selectedGroupFromModal: null,
+  filteredCustomers: {},
 });
 
 const customerReducer = createReducer(
@@ -57,7 +59,15 @@ const customerReducer = createReducer(
   on(customerActions.batchActionExecutionCompleted, (state) => ({
     ...state,
     isBusy: false,
-  }))
+  })),
+  on(customerActions.onGroupSelectionAction, (state, props) => {
+    const __state = state;
+
+    return {
+      ...state,
+      selectedGroupFromModal: props.group,
+    };
+  })
 );
 
 export function reducer(state: CustomerState | undefined, action: Action) {
