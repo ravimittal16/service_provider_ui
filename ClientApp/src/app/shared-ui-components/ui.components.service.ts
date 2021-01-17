@@ -2,11 +2,13 @@ import { Injectable } from "@angular/core";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import {
   AddressDto,
+  CustomerDto,
   ProductDto,
 } from "@shared/service-proxies/service-proxies";
 import { AddressModalComponent } from "./address-modal/address-modal.component";
 import { EntityTypes, AddressTypes } from "@shared/AppConsts";
 import { ProductSelectorModalComponent } from "./product-selector-modal/product-selector-modal.component";
+import { CustomerSelectorModalComponent } from "./customer-selector-modal/customer-selector-modal.component";
 
 @Injectable({
   providedIn: "root",
@@ -32,6 +34,17 @@ export class UiComponentsService {
     );
     _modal.componentInstance.entityType = entityType;
     _modal.componentInstance.addressType = addressType;
+    return _modal;
+  }
+
+  openCustomSelectorModal(callback?: (product: CustomerDto) => void) {
+    this._modalStyle.size = "lg";
+    const _modal = this.modalService.open(
+      CustomerSelectorModalComponent,
+      this._modalStyle
+    );
+
+    _modal.componentInstance.selectionCallback = callback;
     return _modal;
   }
 

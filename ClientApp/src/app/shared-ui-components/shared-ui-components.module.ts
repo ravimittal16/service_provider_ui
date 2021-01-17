@@ -19,6 +19,7 @@ import { AgGridModule } from "ag-grid-angular";
 import { ConfirmationActionsModalComponent } from "./confirmation-actions-modal/confirmation-actions-modal.component";
 import { CustomItemsInputComponent } from "./custom-items-input/custom-items-input.component";
 import { DeleteButtonComponent } from "./delete-button/delete-button.component";
+import { CustomerSelectorModalComponent } from "./customer-selector-modal/customer-selector-modal.component";
 
 const __exportableComponents = [
   CollapsibleCardComponent,
@@ -34,6 +35,7 @@ const __exportableComponents = [
   ConfirmationActionsModalComponent,
   CustomItemsInputComponent,
   DeleteButtonComponent,
+  CustomerSelectorModalComponent,
 ];
 
 @NgModule({

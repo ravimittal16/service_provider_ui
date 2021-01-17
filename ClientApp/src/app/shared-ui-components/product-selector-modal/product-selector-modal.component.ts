@@ -2,11 +2,9 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -18,7 +16,6 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { SubSink } from "subsink";
 import { SharedDataService } from "../shared.data.service";
-import { UiComponentsService } from "../ui.components.service";
 @Component({
   selector: "app-product-selector-modal",
   templateUrl: "./product-selector-modal.component.html",

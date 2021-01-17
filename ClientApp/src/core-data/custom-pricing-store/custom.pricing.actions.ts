@@ -88,3 +88,18 @@ export const deleteProductFromPricingCompletedAction = createAction(
     forGroupPricing: boolean;
   }>()
 );
+// ==========================================================
+// ADD UPDATE CUSTOM TO PRICING GROUP
+// ==========================================================
+export const addUpdateCustomerToPricingGroupAction = createAction(
+  "[Custom Pricing] Add Update Custom to pricing group",
+  props<{ customerId: number; pricingGroupId: number }>()
+);
+
+export const addUpdateCustomerToPricingGroupCompletedAction = createAction(
+  "[Custom Pricing] Add Update Custom to pricing group Completed event.",
+  props<{
+    returnCode: any;
+    isSuccess: boolean;
+  }>()
+);

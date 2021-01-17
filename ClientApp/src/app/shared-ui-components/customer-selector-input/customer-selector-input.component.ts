@@ -22,6 +22,7 @@ import {
   map,
 } from "rxjs/operators";
 import { SubSink } from "subsink";
+import { UiComponentsService } from "../ui.components.service";
 
 @Component({
   selector: "app-customer-selector-input",
@@ -40,9 +41,8 @@ export class CustomerSelectorInputComponent
   @Input() lable: string = "Select Customer";
   @Input() validationMessages: { [key: string]: string } = {};
   @Input() validationMessagesKey: string = "";
-  @Output() onSelectionChanged: EventEmitter<CustomerDto> = new EventEmitter<
-    CustomerDto
-  >();
+  @Output()
+  onSelectionChanged: EventEmitter<CustomerDto> = new EventEmitter<CustomerDto>();
   public value: CustomerDto;
   elementId: string;
   isDisabled = false;
@@ -51,12 +51,19 @@ export class CustomerSelectorInputComponent
   constructor(
     private _renderer: Renderer2,
     private _elementRef: ElementRef,
-    private _customerFacade: CustomersFacade
+    private _customerFacade: CustomersFacade,
+    private _componentService: UiComponentsService
   ) {}
 
   onChange: (_: any) => {};
 
   onTouched = () => {};
+
+  openCustomerSelctorModal() {
+    const __modal = this._componentService.openCustomSelectorModal(
+      (customer) => {}
+    );
+  }
 
   onCustomerSelectionChanged(): void {
     setTimeout(() => {

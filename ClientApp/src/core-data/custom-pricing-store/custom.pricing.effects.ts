@@ -124,7 +124,7 @@ export class CustomPricingEffects extends BaseEffect {
     return this.actions$.pipe(
       ofType(fromAllActions.fetchPricingGroupDetailsAction),
       mergeMap((action) =>
-        this._dataService.getPricingGroupDetail(action.pricingGroupId).pipe(
+        this._dataService.pricingGroupDetail(action.pricingGroupId).pipe(
           map((res) =>
             fromAllActions.fetchPricingGroupDetailCompletedAction({
               details: res.entity,
@@ -145,7 +145,7 @@ export class CustomPricingEffects extends BaseEffect {
         return Object.keys(commonData).length === 0;
       }),
       mergeMap((action) =>
-        this._dataService.getAllIndividualPricingList().pipe(
+        this._dataService.allIndividualPricingList().pipe(
           map((res) =>
             fromAllActions.onFetchAllIndividualPricingListCompletedAction({
               list: res,
