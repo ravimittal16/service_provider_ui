@@ -71,8 +71,8 @@
                   <div class="col-2 d-flex justify-content-center">
                     <h6 class="font-weight-bold mb-0">Custom Price</h6>
                   </div>
-                  <div class="col-auto d-flex justify-content-center">
-                    <h6 class="font-weight-bold mb-0">Actions</h6>
+                  <div class="col d-flex justify-content-end">
+                    <h6 class="font-weight-bold mb-0">&nbsp;</h6>
                   </div>
                 </div>
                 <div
@@ -106,7 +106,7 @@
                       >
                     </h6>
                   </div>
-                  <div class="col-auto">
+                  <div class="col">
                     <div class="d-flex justify-content-end">
                       <button
                         class="btn btn-sm btn-falcon-default mr-1"
@@ -192,7 +192,10 @@
                     </h6>
                   </div>
                   <div class="col-auto">
-                    <app-delete-button iconOnly="true"></app-delete-button>
+                    <app-delete-button
+                      iconOnly="true"
+                      (onConfirmation)="onDeleteCustomerClicked(customer)"
+                    ></app-delete-button>
                   </div>
                 </div>
               </ng-container>
