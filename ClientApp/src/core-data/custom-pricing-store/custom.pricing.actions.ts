@@ -104,3 +104,15 @@ export const addUpdateCustomerToPricingGroupCompletedAction = createAction(
     isSuccess: boolean;
   }>()
 );
+export const deleteCustomerFromPricingGroupAction = createAction(
+  "[Custom Pricing] Delete customer from pricing group",
+  props<{ customerId: number; pricingGroupId: number }>()
+);
+export const deleteCustomerFromPricingGroupCompletedAction = createAction(
+  "[Custom Pricing] Delete customer from pricing group",
+  props<{
+    pricingId: number;
+    actionReturnCode: ActionReturnCode;
+    isSuccess: boolean;
+  }>()
+);
