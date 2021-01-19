@@ -21,13 +21,20 @@ export abstract class BaseEffect {
   }
 
   parseErrorWithAction(error: any): Observable<any> {
-    if (error instanceof Blob) {
+    if (error && error instanceof Blob) {
       return this.blobToText(error).pipe(
         switchMap((json) => {
           var errorBody = json == "" || json == "null" ? {} : JSON.parse(json);
-          if (errorBody && errorBody["ErrorMessageClient"]) {
+
+          if (
+            errorBody &&
+            (errorBody["ErrorMessageClient"] || errorBody["errorMessageClient"])
+          ) {
             return new Observable(function (observer) {
-              observer.next(errorBody["ErrorMessageClient"]);
+              observer.next(
+                errorBody["ErrorMessageClient"] ||
+                  errorBody["errorMessageClient"]
+              );
               observer.complete();
             });
           } else if (

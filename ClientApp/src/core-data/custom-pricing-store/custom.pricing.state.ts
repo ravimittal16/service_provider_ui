@@ -1,6 +1,7 @@
 import { BaseState } from "@core-data/base.state";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import {
+  ActionReturnCode,
   IndividualPricingDto,
   PricingGroupDetailDto,
   PricingGroupDto,
@@ -20,6 +21,7 @@ export interface CustomPricingStoreState {
   isBusy: boolean;
   errors: [];
   isSuccess: boolean;
+  actionReturnCode: ActionReturnCode;
   individualPricingState: IndividualPricingState;
   groupPricingState: GroupPricingState;
 }

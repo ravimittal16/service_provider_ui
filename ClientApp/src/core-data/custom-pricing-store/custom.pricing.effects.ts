@@ -80,7 +80,7 @@ export class CustomPricingEffects extends BaseEffect {
               switchMap((error) => {
                 return of(
                   fromAllActions.updateErrorStateAction({
-                    errors: [...error],
+                    errors: Array.isArray(error) ? [...error] : [error],
                   })
                 );
               })
@@ -91,6 +91,36 @@ export class CustomPricingEffects extends BaseEffect {
     );
   });
 
+  deleteCustomerFromPricingAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(fromAllActions.deleteCustomerFromPricingGroupAction),
+      mergeMap((action) =>
+        this._dataService
+          .deleteCustomerFromPricing(action.customerId, action.pricingGroupId)
+          .pipe(
+            map((data) =>
+              fromAllActions.deleteCustomerFromPricingGroupCompletedAction({
+                isSuccess: data.isSuccess,
+                actionReturnCode: data.returnCode,
+                pricingGroupId: action.pricingGroupId,
+                customerId: action.customerId,
+              })
+            ),
+            catchError((error) => {
+              return this.parseErrorWithAction(error).pipe(
+                switchMap((error) => {
+                  return of(
+                    fromAllActions.updateErrorStateAction({
+                      errors: Array.isArray(error) ? [...error] : [error],
+                    })
+                  );
+                })
+              );
+            })
+          )
+      )
+    );
+  });
   deleteProductFromPricingAction$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(fromAllActions.deleteProductFromPricingAction),
@@ -111,7 +141,7 @@ export class CustomPricingEffects extends BaseEffect {
                 switchMap((error) => {
                   return of(
                     fromAllActions.updateErrorStateAction({
-                      errors: [...error],
+                      errors: Array.isArray(error) ? [...error] : [error],
                     })
                   );
                 })
@@ -143,7 +173,7 @@ export class CustomPricingEffects extends BaseEffect {
               switchMap((error) => {
                 return of(
                   fromAllActions.updateErrorStateAction({
-                    errors: [...error],
+                    errors: Array.isArray(error) ? [...error] : [error],
                   })
                 );
               })

@@ -19,6 +19,7 @@ import { AddUpdateIndividualPricingModalComponent } from "./custom-pricing/indiv
 import { SharedUiComponentsModule } from "@app/shared-ui-components/shared-ui-components.module";
 import { AddPricingGroupModalComponent } from "./custom-pricing/groups-pricing/add-pricing-group-modal/add-pricing-group-modal.component";
 import { EditPricingGroupModalComponent } from "./custom-pricing/groups-pricing/edit-pricing-group-modal/edit-pricing-group-modal.component";
+import { SharedModule } from "@shared/shared.module";
 
 const routes: Routes = [
   { path: "list", component: ListComponentComponent },
@@ -51,6 +52,7 @@ const __otherComponents = [
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     NgxMaskModule.forRoot(),
     SharedUiComponentsModule,

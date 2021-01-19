@@ -1572,6 +1572,67 @@ export class CustompricingServiceProxy {
     }
 
     /**
+     * @param customerId (optional) 
+     * @param pricingGroupId (optional) 
+     * @return Success
+     */
+    deleteCustomerFromPricing(customerId: number | undefined, pricingGroupId: number | undefined): Observable<OperationResult> {
+        let url_ = this.baseUrl + "/api/custompricing/DeleteCustomerFromPricing?";
+        if (customerId === null)
+            throw new Error("The parameter 'customerId' cannot be null.");
+        else if (customerId !== undefined)
+            url_ += "customerId=" + encodeURIComponent("" + customerId) + "&";
+        if (pricingGroupId === null)
+            throw new Error("The parameter 'pricingGroupId' cannot be null.");
+        else if (pricingGroupId !== undefined)
+            url_ += "pricingGroupId=" + encodeURIComponent("" + pricingGroupId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteCustomerFromPricing(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteCustomerFromPricing(<any>response_);
+                } catch (e) {
+                    return <Observable<OperationResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OperationResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteCustomerFromPricing(response: HttpResponseBase): Observable<OperationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OperationResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OperationResult>(<any>null);
+    }
+
+    /**
      * @param pricingId (optional) 
      * @param pricingGroupId (optional) 
      * @return Success
@@ -4311,6 +4372,7 @@ export class OperationResult implements IOperationResult {
     errors: string[] | undefined;
     warnings: string[] | undefined;
     clientMessages: string[] | undefined;
+    entityId: any | undefined;
     returnCode: ActionReturnCode;
 
     constructor(data?: IOperationResult) {
@@ -4341,6 +4403,7 @@ export class OperationResult implements IOperationResult {
                 for (let item of _data["clientMessages"])
                     this.clientMessages.push(item);
             }
+            this.entityId = _data["entityId"];
             this.returnCode = _data["returnCode"] ? ActionReturnCode.fromJS(_data["returnCode"]) : <any>undefined;
         }
     }
@@ -4371,6 +4434,7 @@ export class OperationResult implements IOperationResult {
             for (let item of this.clientMessages)
                 data["clientMessages"].push(item);
         }
+        data["entityId"] = this.entityId;
         data["returnCode"] = this.returnCode ? this.returnCode.toJSON() : <any>undefined;
         return data; 
     }
@@ -4389,6 +4453,7 @@ export interface IOperationResult {
     errors: string[] | undefined;
     warnings: string[] | undefined;
     clientMessages: string[] | undefined;
+    entityId: any | undefined;
     returnCode: ActionReturnCode;
 }
 
