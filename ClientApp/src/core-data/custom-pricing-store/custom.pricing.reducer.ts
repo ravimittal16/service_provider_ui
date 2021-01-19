@@ -72,10 +72,18 @@ export const initialState: CustomPricingStoreState = {
   isSuccess: false,
   individualPricingState: individualPricingInitialState,
   groupPricingState: groupPricingInitialState,
+  actionReturnCode: null,
 };
 
 const createFeatureReducer = createReducer(
   initialState,
+  on(fromAllActions.updateErrorStateAction, (state, props) => {
+    return {
+      ...state,
+      isBusy: false,
+      errors: props.errors,
+    };
+  }),
   on(
     fromAllActions.addUpdateIndividualPricingCompletedAction,
     (state, props) => {
@@ -135,6 +143,39 @@ const createFeatureReducer = createReducer(
       }
       return {
         ...state,
+        errors: [],
+        groupPricingState: __groupPricingState,
+        isBusy: false,
+      };
+    }
+  ),
+  on(
+    fromAllActions.deleteCustomerFromPricingGroupCompletedAction,
+    (state, props) => {
+      let __groupPricingState = state.groupPricingState;
+      let actionReturnCode = null;
+      if (props.isSuccess) {
+        const __customers = __groupPricingState.selecteGroupDetails.customers.filter(
+          (x) =>
+            x.pricingGroupId === props.pricingGroupId &&
+            x.customerId !== props.customerId
+        );
+
+        const _selectedGroupDetails = {
+          ...__groupPricingState.selecteGroupDetails,
+        } as PricingGroupDetailDto;
+        _selectedGroupDetails.customers = __customers;
+        __groupPricingState = {
+          ...__groupPricingState,
+          selecteGroupDetails: _selectedGroupDetails,
+        };
+      } else {
+        actionReturnCode = props.actionReturnCode;
+      }
+      return {
+        ...state,
+        errors: [],
+        actionReturnCode: actionReturnCode,
         groupPricingState: __groupPricingState,
         isBusy: false,
       };
@@ -143,26 +184,33 @@ const createFeatureReducer = createReducer(
   on(fromAllActions.deleteProductFromPricingCompletedAction, (state, props) => {
     let __individualPricingState = state.individualPricingState;
     let __groupPricingState = state.groupPricingState;
-    if (props.forGroupPricing) {
-      const __items = __groupPricingState.selecteGroupDetails.products.filter(
-        (x) => x.pricingId !== props.pricingId
-      );
-      const _selectedGroupDetails = {
-        ...__groupPricingState.selecteGroupDetails,
-      } as PricingGroupDetailDto;
-      _selectedGroupDetails.products = __items;
-      __groupPricingState = {
-        ...__groupPricingState,
-        selecteGroupDetails: _selectedGroupDetails,
-      };
+    let actionReturnCode = null;
+    if (props.isSuccess) {
+      if (props.forGroupPricing) {
+        const __items = __groupPricingState.selecteGroupDetails.products.filter(
+          (x) => x.pricingId !== props.pricingId
+        );
+        const _selectedGroupDetails = {
+          ...__groupPricingState.selecteGroupDetails,
+        } as PricingGroupDetailDto;
+        _selectedGroupDetails.products = __items;
+        __groupPricingState = {
+          ...__groupPricingState,
+          selecteGroupDetails: _selectedGroupDetails,
+        };
+      } else {
+        __individualPricingState = individualPricingAdapter.removeOne(
+          props.pricingId,
+          __individualPricingState
+        );
+      }
     } else {
-      __individualPricingState = individualPricingAdapter.removeOne(
-        props.pricingId,
-        __individualPricingState
-      );
+      actionReturnCode = props.returnCode;
     }
     return {
       ...state,
+      errors: [],
+      actionReturnCode: actionReturnCode,
       groupPricingState: __groupPricingState,
       individualPricingState: __individualPricingState,
       isBusy: false,

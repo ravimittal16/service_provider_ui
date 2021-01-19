@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import {
   CustomerDto,
   IndividualPricingDto,
+  PricingGroupCustomerDto,
   PricingGroupDetailDto,
   PricingGroupDto,
 } from "@shared/service-proxies/service-proxies";
@@ -21,6 +22,7 @@ export class EditPricingGroupModalComponent implements OnInit {
   @Input() selectedPricingGroup: PricingGroupDto;
   private _subs = new SubSink();
   groupDetails$: Observable<PricingGroupDetailDto>;
+  errors$: Observable<string[]>;
   constructor(
     private activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -28,6 +30,7 @@ export class EditPricingGroupModalComponent implements OnInit {
     private _uiComponentService: UiComponentsService
   ) {
     this.groupDetails$ = _customPricingFacade.selectGroupDetails$;
+    this.errors$ = _customPricingFacade.errors$;
   }
 
   addProductClicked(): void {
@@ -63,7 +66,12 @@ export class EditPricingGroupModalComponent implements OnInit {
     );
   }
 
-  onDeleteCustomerClicked(customer: CustomerDto) {}
+  onDeleteCustomerClicked(customer: PricingGroupCustomerDto) {
+    this._customPricingFacade.deleteCustomerFromPricing(
+      customer.customerId,
+      this.selectedPricingGroup.pricingGroupId
+    );
+  }
 
   onDeleteClicked(item: IndividualPricingDto) {
     this._customPricingFacade.deleteProductFromPricing(

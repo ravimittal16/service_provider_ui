@@ -27,7 +27,7 @@ export class CustomPricingFacade implements Facade {
     this.individualPricingList$ = this._store.pipe(
       select(fromAllSelectors.selectAllIndividualPricingList)
     );
-
+    this.errors$ = this._store.pipe(select(fromAllSelectors.selectAllErrors));
     this.pricingGroupsList$ = this._store.pipe(
       select(fromAllSelectors.selectAllPricingGroupsList)
     );

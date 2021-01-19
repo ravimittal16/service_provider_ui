@@ -15,6 +15,10 @@
         >
       </h5>
     </div>
+    <app-error-view
+      [errors$]="errors$"
+      [observableDefined]="true"
+    ></app-error-view>
     <div>
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
         <li ngbNavItem>
