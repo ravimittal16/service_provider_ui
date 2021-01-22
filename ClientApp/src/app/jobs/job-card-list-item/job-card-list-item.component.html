@@ -8,19 +8,59 @@
       <div class="col-11">
         <span>
           <h6 class="mb-0 pb-0">
-            <a class="job-number-link" (click)="onJobTitleClicked()"
+            <a class="job-number-link" (click)="onJobTitleClicked($event)"
               >#{{ job.fullJobNumber }}</a
             >
             <span class="ml-1">{{ job.title }}</span>
           </h6>
         </span>
+        <div class="mt-1 text-500 description fs--1">
+          <span>
+            {{ job.description }}
+          </span>
+        </div>
+
+        <div class="fs--1">
+          <span class="mr-2">
+            <strong class="mr-1">Customer: </strong>
+            <a class="job-number-link" [ngbTooltip]="customerTooltip">
+              <span>{{ job.customer?.displayName }}</span>
+            </a>
+            <span
+              class="ml-1 fs-0"
+              [ngbTooltip]="job.jobAddress?.formattedAddress"
+            >
+              <i class="fa fa-map-marker text-primary"></i>
+            </span>
+          </span>
+          <span class="mr-2" *ngIf="!job.isUnassigned">
+            <strong class="mr-1">Assigned To: </strong>
+            <span>Ravi Mittal</span>
+          </span>
+          <span
+            class="badge badge-pill badge-soft-danger mr-2"
+            *ngIf="job.isUnassigned"
+          >
+            Unassigned
+          </span>
+          <span class="mr-2">
+            <span class="mr-1"> <strong> Status: </strong> </span>
+            <div
+              class="badge badge-pill badge-soft-{{
+                job.jobStatusText?.toLowerCase().replace(' ', '-')
+              }}"
+            >
+              {{ job.jobStatusText }}
+            </div>
+          </span>
+        </div>
       </div>
       <div class="col-1 d-flex">
         <div
           class="dropdown text-sans-serif btn-reveal-trigger position-static"
         >
           <button
-            class="btn btn-falcon-default btn-sm dropdown-toggle btn-reveal dropdown-caret-none"
+            class="btn btn-falcon-default btn-xs dropdown-toggle btn-reveal dropdown-caret-none"
             type="button"
             id="dropdown-total-saldes"
             data-toggle="dropdown"
@@ -86,43 +126,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="mt-1 text-500 description fs--1">
-      <span>
-        {{ job.description }}
-      </span>
-    </div>
-    <div class="fs--1">
-      <span class="mr-2">
-        <strong class="mr-1">Customer: </strong>
-        <a class="job-number-link" [ngbTooltip]="customerTooltip">
-          <span>{{ job.customer?.displayName }}</span>
-        </a>
-        <span class="ml-1 fs-0" [ngbTooltip]="job.jobAddress?.formattedAddress">
-          <i class="fa fa-map-marker text-primary"></i>
-        </span>
-      </span>
-      <span class="mr-2" *ngIf="!job.isUnassigned">
-        <strong class="mr-1">Assigned To: </strong>
-        <span>Ravi Mittal</span>
-      </span>
-      <span
-        class="badge badge-pill badge-soft-danger mr-2"
-        *ngIf="job.isUnassigned"
-      >
-        Unassigned
-      </span>
-      <span class="mr-2">
-        <span class="mr-1"> <strong> Status: </strong> </span>
-        <div
-          class="badge badge-pill badge-soft-{{
-            job.jobStatusText?.toLowerCase().replace(' ', '-')
-          }}"
-        >
-          {{ job.jobStatusText }}
-        </div>
-      </span>
     </div>
   </div>
 </div>
