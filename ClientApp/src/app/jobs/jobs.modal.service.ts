@@ -30,12 +30,13 @@ export class JobsModalService {
     this.jobVerticalModalBehaviour.next({ jobDto: job, open: open });
   }
 
-  openVisitDetailsModal() {
+  openVisitDetailsModal(jobId: number) {
     this.modalConfig.size = "md";
     const modalRef = this.modalService.open(
       JobVisitDetailModalComponent,
       this.modalConfig
     );
+    modalRef.componentInstance.jobId = jobId;
     return modalRef;
   }
 

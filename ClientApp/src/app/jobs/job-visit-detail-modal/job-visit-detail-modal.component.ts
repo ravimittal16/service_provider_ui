@@ -18,6 +18,7 @@ export class JobVisitDetailModalComponent implements OnInit, OnDestroy {
   @Input() visitId: number;
   @Input() jobId: number;
   private _subs = new SubSink();
+  visitNote: string;
   visitDetails: { visit: JobVisitDto; items: JobLineItemDto[] };
   job: JobDetailsDto = null;
   constructor(
@@ -52,6 +53,17 @@ export class JobVisitDetailModalComponent implements OnInit, OnDestroy {
       });
 
     $event.stopPropagation();
+  }
+
+  saveVisitNote() {
+    this._jobFacade.addNewJobNote(
+      this.visitNote,
+      this.jobId,
+      this.visitDetails.visit.visitId
+    );
+    setTimeout(() => {
+      this.visitNote = "";
+    }, 100);
   }
 
   onDeleteVisitClicked($event: any): void {
