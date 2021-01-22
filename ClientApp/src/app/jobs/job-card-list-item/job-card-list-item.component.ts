@@ -32,9 +32,10 @@ export class JobCardListItemComponent implements OnInit {
   private _onJobEditClicked() {
     this._router.navigate(["app/jobs/editJob", this.job.jobId]);
   }
-  onJobTitleClicked(): void {
+  onJobTitleClicked($event: MouseEvent): void {
     // this._router.navigate(["app/jobs/editJob", this.job.jobId]);
     this._jobsModalService.openJobDetailModal(true, this.job);
+    $event.stopPropagation();
   }
 
   ngOnInit(): void {}

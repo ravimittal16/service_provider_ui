@@ -8,6 +8,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { SharedModule } from "@shared/shared.module";
 import { ColorPickerModule } from "ngx-color-picker";
+
 // ==========================================================
 // FULL CAL INTERGARION
 
@@ -36,6 +37,7 @@ import { JobFormsListModalComponent } from "./job-forms-list-modal/job-forms-lis
 import { JobFormsDetailModalComponent } from "./job-forms-detail-modal/job-forms-detail-modal.component";
 import { JobFormsFieldControlComponent } from "./job-forms-field-control/job-forms-field-control.component";
 import { ExpenseModule } from "@app/expense-module/expense.module";
+
 const __modalComponents = [
   AddJobModalComponent,
   JobVisitDetailModalComponent,
