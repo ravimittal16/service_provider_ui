@@ -34,7 +34,7 @@ export class CustomerSelectorModalComponent implements OnInit {
     if (this.selectionCallback) {
       this.selectionCallback(customer);
     }
-    this.activeModal.close();
+    this.activeModal.close(customer);
   }
 
   onSelectionChanged(grp: any): void {

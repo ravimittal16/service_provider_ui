@@ -1,5 +1,13 @@
 <div class="modal-header">
   {{ title }}
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <div class="modal-body">
   <div>
@@ -111,15 +119,7 @@
     </div>
   </div>
 </div>
-<div class="modal-footer">
-  <button
-    type="button"
-    class="btn btn-info btn-sm"
-    (click)="activeModal.close(true)"
-  >
-    Done
-  </button>
-</div>
+
 <ng-template #popQuantityContent>
   <div>
     <div class="row">

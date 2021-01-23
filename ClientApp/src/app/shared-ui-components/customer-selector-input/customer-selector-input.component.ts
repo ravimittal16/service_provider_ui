@@ -60,14 +60,18 @@ export class CustomerSelectorInputComponent
   onTouched = () => {};
 
   openCustomerSelctorModal() {
-    const __modal = this._componentService.openCustomSelectorModal(
-      (customer) => {}
-    );
+    const __modal = this._componentService.openCustomSelectorModal(null);
+    __modal.result.then((customer: CustomerDto) => {
+      this.writeValue(customer);
+      if (this.onSelectionChanged) {
+        this.onSelectionChanged.emit(customer);
+      }
+    });
   }
 
   onCustomerSelectionChanged(): void {
     setTimeout(() => {
-      this.onChange(this.value);
+      this.writeValue(this.value);
       if (this.onSelectionChanged) {
         this.onSelectionChanged.emit(this.value);
       }
@@ -100,6 +104,12 @@ export class CustomerSelectorInputComponent
   writeValue(obj: any): void {
     if (this._elementRef.nativeElement) {
       this._renderer.setProperty(this._elementRef.nativeElement, "value", obj);
+    }
+    if (obj as CustomerDto) {
+      this.value = obj;
+      setTimeout(() => {
+        this.onChange(obj);
+      }, 100);
     }
   }
   registerOnChange(fn: any): void {

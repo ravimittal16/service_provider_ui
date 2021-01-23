@@ -55,6 +55,10 @@ export class JobVisitDetailModalComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
   }
 
+  clearVisitNote() {
+    this.visitNote = "";
+  }
+
   saveVisitNote() {
     this._jobFacade.addNewJobNote(
       this.visitNote,

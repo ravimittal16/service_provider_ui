@@ -1,5 +1,5 @@
 import { BaseState } from "@core-data/base.state";
-import { Dictionary } from "@ngrx/entity";
+
 import {
   JobDetailsDto,
   JobDto,
