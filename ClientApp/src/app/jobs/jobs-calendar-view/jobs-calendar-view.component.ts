@@ -15,7 +15,7 @@ export class JobsCalendarViewComponent implements OnInit, AfterViewInit {
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "timeGridWeek,timeGridDay,dayGridMonth,listMonth,listWeek",
+      right: "timeGridWeek,timeGridDay,dayGridMonth,listMonth,listWeek,listDay",
     },
     weekends: false,
     views: {
@@ -24,9 +24,10 @@ export class JobsCalendarViewComponent implements OnInit, AfterViewInit {
       dayGridMonth: { buttonText: "Month" },
       listWeek: { buttonText: "Agenda Week" },
       listMonth: { buttonText: "Agenda Month" },
+      listDay: { buttonText: "Agenda Day" },
     },
     dayMaxEvents: 2,
-    height: "100%",
+    height: "800px",
 
     dateClick: (params) => {
       console.log(params);
@@ -35,6 +36,7 @@ export class JobsCalendarViewComponent implements OnInit, AfterViewInit {
   constructor() {}
   ngAfterViewInit(): void {
     this.calendarApi = this.calendarComponent.getApi();
+    this.calendarOptions.height = window.outerHeight - 210 + "px";
   }
 
   ngOnInit(): void {}

@@ -47,7 +47,7 @@ export class JobVisitsViewComponent implements OnInit {
   onVisitClicked($eventArgs: any, visit: JobVisitDto, openModal: boolean) {
     this._jobFacade.prepareVisitDetails(visit.visitId);
 
-    const __modal = this._modalService.openVisitDetailsModal();
+    const __modal = this._modalService.openVisitDetailsModal(this.jobId);
 
     $eventArgs.stopPropagation();
   }

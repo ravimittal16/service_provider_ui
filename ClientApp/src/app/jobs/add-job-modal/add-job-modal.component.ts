@@ -9,6 +9,13 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+
+import { Observable } from "rxjs";
+import { finalize } from "rxjs/operators";
+
+import { SubSink } from "subsink";
+import { isEmpty } from "lodash";
+
 import { AddressCardComponent } from "@app/shared-ui-components/address-card/address-card.component";
 import { CustomerSelectorInputComponent } from "@app/shared-ui-components/customer-selector-input/customer-selector-input.component";
 import { SharedDataService } from "@app/shared-ui-components/shared.data.service";
@@ -28,10 +35,6 @@ import {
 } from "@shared/service-proxies/service-proxies";
 import { ToastService } from "@shared/services/toast.service";
 
-import { Observable } from "rxjs";
-import { finalize } from "rxjs/operators";
-
-import { SubSink } from "subsink";
 import { JobsDataService } from "../jobs.data.service";
 @Component({
   selector: "app-add-job-modal",
@@ -142,7 +145,13 @@ export class AddJobModalComponent implements OnInit, OnDestroy {
 
   onServiceTypeChanged(product: ProductDto): void {
     if (product) {
-      this.jobFormGroup.get("jobDescription").patchValue(product.description);
+      const jobDescriptionField = this.jobFormGroup.get("jobDescription");
+      // ==========================================================
+      // if description is empty use selected producs description
+      // ==========================================================
+      if (isEmpty(jobDescriptionField)) {
+        this.jobFormGroup.get("jobDescription").patchValue(product.description);
+      }
     }
   }
 
