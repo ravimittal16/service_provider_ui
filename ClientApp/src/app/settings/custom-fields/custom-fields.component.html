@@ -85,15 +85,12 @@
             *ngFor="let field of fields; index as i"
           >
             <div class="col-7">
-              <h6 class="font-weight-light mb-0">
-                {{ field.label }}<br />
+              <h6 class="font-weight-light fs--0 mb-0">
+                {{ field.label }}
+                <span class="text-danger" *ngIf="field.isRequired">*</span>
+                <br />
 
                 <div>
-                  <small class="mr-2"
-                    ><strong class="text-500 mr-1">Is Required:</strong
-                    >{{ field.isRequired ? "Yes" : "No" }}</small
-                  >
-
                   <small class="mr-2"
                     ><strong class="text-500 mr-1">Added By:</strong
                     >{{ field.createdByName }}
