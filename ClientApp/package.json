@@ -59,7 +59,7 @@
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
     "jquery": "^3.5.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "moment": "^2.29.0",
     "moment-timezone": "^0.5.31",
     "ngx-color-picker": "^9.1.0",
